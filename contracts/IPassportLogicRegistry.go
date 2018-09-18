@@ -3,26 +3,19 @@
 
 package contracts
 
-import "strings"
+import (
+	"strings"
+
+	ethereum "github.com/ethereum/go-ethereum"
+	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/event"
+)
 
 // IPassportLogicRegistryContractABI is the input ABI used to generate the binding from.
 const IPassportLogicRegistryContractABI = "[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"version\",\"type\":\"string\"},{\"indexed\":false,\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"PassportLogicAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"version\",\"type\":\"string\"},{\"indexed\":false,\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"CurrentPassportLogicSet\",\"type\":\"event\"},{\"constant\":true,\"inputs\":[{\"name\":\"_version\",\"type\":\"string\"}],\"name\":\"getPassportLogic\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getCurrentPassportLogicVersion\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getCurrentPassportLogic\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}]"
-
-// IPassportLogicRegistryContractBin is the compiled bytecode used for deploying new contracts.
-const IPassportLogicRegistryContractBin = `0x`
-
-// DeployIPassportLogicRegistryContract deploys a new Ethereum contract, binding an instance of IPassportLogicRegistryContract to it.
-func DeployIPassportLogicRegistryContract(auth *bind.TransactOpts, backend bind.ContractBackend) (common.Address, *types.Transaction, *IPassportLogicRegistryContract, error) {
-	parsed, err := abi.JSON(strings.NewReader(IPassportLogicRegistryContractABI))
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	address, tx, contract, err := bind.DeployContract(auth, parsed, common.FromHex(IPassportLogicRegistryContractBin), backend)
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	return address, tx, &IPassportLogicRegistryContract{IPassportLogicRegistryContractCaller: IPassportLogicRegistryContractCaller{contract: contract}, IPassportLogicRegistryContractTransactor: IPassportLogicRegistryContractTransactor{contract: contract}, IPassportLogicRegistryContractFilterer: IPassportLogicRegistryContractFilterer{contract: contract}}, nil
-}
 
 // IPassportLogicRegistryContract is an auto generated Go binding around an Ethereum contract.
 type IPassportLogicRegistryContract struct {

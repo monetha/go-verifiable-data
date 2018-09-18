@@ -1,0 +1,23 @@
+package: github.com/monetha/go-ethereum
+import:
+- package: github.com/ethereum/go-ethereum
+  version: ^1.8.12
+  subpackages:
+  - common
+  - contracts/chequebook
+  - core/types
+- package: golang.org/x/lint
+  repo: https://github.com/golang/lint
+  vcs: git
+  subpackages:
+  - golint
+- package: golang.org/x/tools
+  subpackages:
+  - cmd/goimports
+- package: honnef.co/go/tools
+  version: ^2017.2.2
+  subpackages:
+  - cmd/simple
+  - cmd/staticcheck
+  - cmd/unused
+- package: github.com/kisielk/gotool

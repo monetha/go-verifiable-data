@@ -1,0 +1,28 @@
+hash: 70df60d1888ec09ce0f735ecd45f97a1269a6496de334b60eb36d7fc4a289f94
+updated: 2018-09-18T18:44:25.756188587+03:00
+imports:
+- name: github.com/ethereum/go-ethereum
+  version: 89451f7c382ad2185987ee369f16416f89c28a7d
+  subpackages:
+  - common
+  - contracts/chequebook
+  - core/types
+- name: github.com/kisielk/gotool
+  version: 80517062f582ea3340cd4baf70e86d539ae7d84d
+- name: golang.org/x/lint
+  version: 06c8688daad7faa9da5a0c2f163a3d14aac986ca
+  repo: https://github.com/golang/lint
+  vcs: git
+  subpackages:
+  - golint
+- name: golang.org/x/tools
+  version: 90fa682c2a6e6a37b3a1364ce2fe1d5e41af9d6d
+  subpackages:
+  - cmd/goimports
+- name: honnef.co/go/tools
+  version: d73ab98e7c39fdcf9ba65062e43d34310f198353
+  subpackages:
+  - cmd/simple
+  - cmd/staticcheck
+  - cmd/unused
+testImports: []
