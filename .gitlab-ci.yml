@@ -1,13 +1,16 @@
-image: golang:1.11
+image: docker:latest
+
+services:
+- docker:dind
 
 # This folder is cached between builds
 # http://docs.gitlab.com/ce/ci/yaml/README.html#cache
 cache:
   paths:
   - vendor/
+  - .glide/
 
 build and test:
   script:
-  - make dependencies
-  - make lint
-  - make test
+  - apk --no-cache add bash
+  - bash -x ./scripts/build.sh
