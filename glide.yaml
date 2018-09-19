@@ -1,4 +1,4 @@
-package: github.com/monetha/go-ethereum
+package: gitlab.com/monetha/protocol-go-sdk
 import:
 - package: github.com/ethereum/go-ethereum
   version: ^1.8.15
