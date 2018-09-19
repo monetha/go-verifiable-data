@@ -3,6 +3,9 @@ image: docker:latest
 services:
 - docker:dind
 
+variables:
+  PACKAGE_NAME: gitlab.com/monetha/protocol-go-sdk
+
 # This folder is cached between builds
 # http://docs.gitlab.com/ce/ci/yaml/README.html#cache
 cache:
