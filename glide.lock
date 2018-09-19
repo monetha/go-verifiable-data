@@ -1,4 +1,4 @@
-hash: 84cebc597b9c58a64cbfd656ff7bdf78dc9ae3b2b80a66fd4232e5ee79bab686
+hash: 85c32f0b6f420cc90e7ef1ac685ca4b8ba255f5818e90dbddfcf1d18c637f2bd
 updated: 2018-09-19T09:16:59.776495031+03:00
 imports:
 - name: github.com/aristanetworks/goarista
@@ -93,4 +93,11 @@ imports:
   - cmd/simple
   - cmd/staticcheck
   - cmd/unused
+- name: github.com/monetha/go-ethereum
+  version: e7e7ff90cf6f091a867c009b54164332d5eb2440
+  subpackages:
+  - backend
+  - blocksource
+  - client
+  - gasestimator
 testImports: []

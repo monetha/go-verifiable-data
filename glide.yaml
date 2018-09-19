@@ -21,3 +21,4 @@ import:
   - cmd/staticcheck
   - cmd/unused
 - package: github.com/kisielk/gotool
+- package: github.com/monetha/go-ethereum
