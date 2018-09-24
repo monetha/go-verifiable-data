@@ -44,28 +44,29 @@ func CheckTx(ctx context.Context, backend chequebook.Backend, txHash common.Hash
 	CheckErr(err, fmt.Sprintf("tx 0x%x", txHash))
 }
 
-func WaitForTx(ctx context.Context, backend chequebook.Backend, txHash common.Hash) error {
-	log.Warn("Waiting for transaction", "hash", txHash.Hex())
+func CheckTxReceipt(ctx context.Context, backend chequebook.Backend, txHash common.Hash) *types.Receipt {
+	txr, err := WaitForTxReceipt(ctx, backend, txHash)
+	CheckErr(err, fmt.Sprintf("tx 0x%x", txHash))
+	return txr
+}
 
-	tr, err := waitForTxReceipt(ctx, backend, txHash)
+func WaitForTx(ctx context.Context, backend chequebook.Backend, txHash common.Hash) error {
+	_, err := WaitForTxReceipt(ctx, backend, txHash)
 	if err != nil {
 		return err
 	}
-	if tr.Status != types.ReceiptStatusSuccessful {
-		return fmt.Errorf("tx failed: %+v", tr)
-	}
-
-	log.Warn("Transaction mined", "tx_hash", tr.TxHash.Hex(), "cumulative_gas_used", tr.CumulativeGasUsed)
 	return nil
 }
 
-func waitForTxReceipt(ctx context.Context, backend chequebook.Backend, txHash common.Hash) (tr *types.Receipt, err error) {
+func WaitForTxReceipt(ctx context.Context, backend chequebook.Backend, txHash common.Hash) (tr *types.Receipt, err error) {
+	log.Warn("Waiting for transaction", "hash", txHash.Hex())
+
 	type commiter interface {
 		Commit()
 	}
 	if sim, ok := backend.(commiter); ok {
 		sim.Commit()
-		tr, err = backend.TransactionReceipt(ctx, txHash)
+		tr, err = onlySuccessfulReceipt(backend.TransactionReceipt(ctx, txHash))
 		return
 	}
 
@@ -76,12 +77,23 @@ func waitForTxReceipt(ctx context.Context, backend chequebook.Backend, txHash co
 		case <-time.After(4 * time.Second):
 		}
 
-		tr, err = backend.TransactionReceipt(ctx, txHash)
+		tr, err = onlySuccessfulReceipt(backend.TransactionReceipt(ctx, txHash))
 		if err == ethereum.NotFound {
 			continue
 		}
 		return
 	}
+}
+
+func onlySuccessfulReceipt(tr *types.Receipt, err error) (*types.Receipt, error) {
+	if err != nil {
+		return nil, err
+	}
+	if tr.Status != types.ReceiptStatusSuccessful {
+		return nil, fmt.Errorf("tx failed: %+v", tr)
+	}
+	log.Warn("Transaction successfully mined", "tx_hash", tr.TxHash.Hex(), "cumulative_gas_used", tr.CumulativeGasUsed)
+	return tr, nil
 }
 
 func KeyAddress(privateKeyECDSA *ecdsa.PrivateKey, errorMsg string) common.Address {
