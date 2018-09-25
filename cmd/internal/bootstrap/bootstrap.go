@@ -111,7 +111,7 @@ func (b Bootstrap) DeployPassport(ctx context.Context, contractBackend chequeboo
 		return common.Address{}, fmt.Errorf("initializing PassportFactoryLogFilterer: %v", err)
 	}
 
-	evs, err := lf.FilterPassportCreated(txr.Logs, nil, nil)
+	evs, err := lf.FilterPassportCreated(txr.Logs, nil, []common.Address{ownerAuth.From})
 	if err != nil {
 		return common.Address{}, fmt.Errorf("filtering PassportCreated events: %v", err)
 	}
