@@ -23,7 +23,7 @@ func (b Bootstrap) DeployPassportFactory(ctx context.Context, contractBackend ch
 	e := eth.Eth{Log: b.Log}
 
 	///////////////////////////////////////////////////////
-	// PassportLogic
+	// deploying PassportLogic
 	///////////////////////////////////////////////////////
 
 	b.log("Deploying PassportLogic", "owner_address", ownerAuth.From)
@@ -39,7 +39,7 @@ func (b Bootstrap) DeployPassportFactory(ctx context.Context, contractBackend ch
 	b.log("PassportLogic deployed", "contract_address", passportLogicAddress.Hex())
 
 	///////////////////////////////////////////////////////
-	// PassportLogicRegistry
+	// deploying PassportLogicRegistry
 	///////////////////////////////////////////////////////
 
 	version := "0.1"
@@ -56,7 +56,7 @@ func (b Bootstrap) DeployPassportFactory(ctx context.Context, contractBackend ch
 	b.log("PassportLogicRegistry deployed", "contract_address", passportLogicRegistryAddress.Hex())
 
 	///////////////////////////////////////////////////////
-	// PassportFactory
+	// deploying PassportFactory
 	///////////////////////////////////////////////////////
 
 	b.log("Deploying PassportFactory", "owner_address", ownerAuth.From, "registry", passportLogicRegistryAddress)
@@ -79,7 +79,7 @@ func (b Bootstrap) DeployPassport(ctx context.Context, contractBackend chequeboo
 	e := eth.Eth{Log: b.Log}
 
 	///////////////////////////////////////////////////////
-	// PassportFactory
+	// initializing PassportFactory
 	///////////////////////////////////////////////////////
 
 	b.log("Initializing PassportFactory contract", "factory", passportFactoryAddress.Hex())
@@ -89,7 +89,7 @@ func (b Bootstrap) DeployPassport(ctx context.Context, contractBackend chequeboo
 	}
 
 	///////////////////////////////////////////////////////
-	// Passport
+	// deploying Passport
 	///////////////////////////////////////////////////////
 
 	b.log("Deploying Passport contract", "owner_address", ownerAuth.From.Hex())
@@ -103,7 +103,7 @@ func (b Bootstrap) DeployPassport(ctx context.Context, contractBackend chequeboo
 	}
 
 	///////////////////////////////////////////////////////
-	// PassportCreated events
+	// filtering PassportCreated events
 	///////////////////////////////////////////////////////
 
 	lf, err := contracts.NewPassportFactoryLogFilterer()
@@ -123,7 +123,7 @@ func (b Bootstrap) DeployPassport(ctx context.Context, contractBackend chequeboo
 	b.log("Passport deployed", "contract_address", passportAddress.Hex())
 
 	///////////////////////////////////////////////////////
-	// Passport
+	// initializing Passport
 	///////////////////////////////////////////////////////
 
 	b.log("Initializing Passport contract", "passport", passportFactoryAddress.Hex())
@@ -133,7 +133,7 @@ func (b Bootstrap) DeployPassport(ctx context.Context, contractBackend chequeboo
 	}
 
 	///////////////////////////////////////////////////////
-	// ClaimOwnership
+	// Claiming ownership
 	///////////////////////////////////////////////////////
 
 	b.log("Claiming ownership", "owner_address", ownerAuth.From)
