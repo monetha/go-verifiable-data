@@ -16,8 +16,8 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-ethereum/backend"
-	"gitlab.com/monetha/protocol-go-sdk/cmd/cmdutils"
-	"gitlab.com/monetha/protocol-go-sdk/contracts"
+	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/bootstrap"
+	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/cmdutils"
 )
 
 var (
@@ -58,13 +58,12 @@ func main() {
 	}
 
 	ownerAuth := bind.NewKeyedTransactor(ownerKey)
-	ownerAddress := cmdutils.KeyAddress(ownerKey, "invalid owner key")
-	log.Warn("Loaded configuration", "owner_address", ownerAddress.Hex(), "backend_url", *backendURL)
+	log.Warn("Loaded configuration", "owner_address", ownerAuth.From.Hex(), "backend_url", *backendURL)
 
 	var contractBackend chequebook.Backend
 	if *backendURL == "" {
 		alloc := core.GenesisAlloc{
-			ownerAddress: {Balance: oneEthInWei},
+			ownerAuth.From: {Balance: oneEthInWei},
 		}
 		sim := backends.NewSimulatedBackend(alloc, 10000000)
 		sim.Commit()
@@ -77,7 +76,7 @@ func main() {
 		}
 	}
 
-	contractBackend = backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAddress})
+	contractBackend = backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAuth.From})
 
 	ctx := cmdutils.CreateCtrlCContext()
 
@@ -85,44 +84,9 @@ func main() {
 	// Check budgets
 	///////////////////////////////////////////////////////
 
-	cmdutils.CheckBalance(ctx, contractBackend, ownerAddress, oneEthInWei)
+	cmdutils.CheckBalance(ctx, contractBackend, ownerAuth.From, oneEthInWei)
 
-	///////////////////////////////////////////////////////
-	// PassportLogic
-	///////////////////////////////////////////////////////
-
-	log.Warn("Deploying PassportLogic", "owner_address", ownerAddress)
-	passportLogicAddress, tx, passportLogicContract, err := contracts.DeployPassportLogicContract(ownerAuth, contractBackend)
-	cmdutils.CheckErr(err, "deployment PassportLogic contract")
-	cmdutils.CheckTx(ctx, contractBackend, tx.Hash())
-
-	log.Warn("PassportLogic deployed", "contract_address", passportLogicAddress.Hex())
-	_ = passportLogicContract
-
-	///////////////////////////////////////////////////////
-	// PassportLogicRegistry
-	///////////////////////////////////////////////////////
-
-	version := "0.1"
-	log.Warn("Deploying PassportLogicRegistry", "owner_address", ownerAddress, "impl_version", version, "impl_address", passportLogicAddress)
-	passportLogicRegistryAddress, tx, passportLogicRegistryContract, err := contracts.DeployPassportLogicRegistryContract(ownerAuth, contractBackend, version, passportLogicAddress)
-	cmdutils.CheckErr(err, "deployment PassportLogicRegistry contract")
-	cmdutils.CheckTx(ctx, contractBackend, tx.Hash())
-
-	log.Warn("PassportLogicRegistry deployed", "contract_address", passportLogicRegistryAddress.Hex())
-	_ = passportLogicRegistryContract
-
-	///////////////////////////////////////////////////////
-	// PassportFactory
-	///////////////////////////////////////////////////////
-
-	log.Warn("Deploying PassportFactory", "owner_address", ownerAddress, "registry", passportLogicRegistryAddress)
-	passportFactoryAddress, tx, passportFactoryContract, err := contracts.DeployPassportFactoryContract(ownerAuth, contractBackend, passportLogicRegistryAddress)
-	cmdutils.CheckErr(err, "deployment PassportFactory contract")
-	cmdutils.CheckTx(ctx, contractBackend, tx.Hash())
-
-	log.Warn("PassportFactory deployed", "contract_address", passportFactoryAddress.Hex())
-	_ = passportFactoryContract
+	_ = bootstrap.PassportFactory(ctx, contractBackend, ownerAuth)
 
 	log.Warn("Done.")
 }

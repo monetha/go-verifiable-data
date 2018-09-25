@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"crypto/ecdsa"
 	"errors"
 	"flag"
@@ -18,7 +17,8 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-ethereum/backend"
-	"gitlab.com/monetha/protocol-go-sdk/cmd/cmdutils"
+	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/bootstrap"
+	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/cmdutils"
 	"gitlab.com/monetha/protocol-go-sdk/contracts"
 )
 
@@ -46,7 +46,7 @@ func main() {
 	log.Root().SetHandler(glogger)
 
 	switch {
-	case *factoryAddr == "":
+	case *factoryAddr == "" && *backendURL != "":
 		utils.Fatalf("Use -factoryaddr to specify an address of passport factory contract")
 	case *ownerKeyFile == "" && *ownerKeyHex == "":
 		utils.Fatalf("Use -ownerkey or -ownerkeyhex to specify a private key")
@@ -64,22 +64,21 @@ func main() {
 
 	passportFactoryAddress := common.HexToAddress(*factoryAddr)
 	ownerAuth := bind.NewKeyedTransactor(ownerKey)
-	ownerAddress := cmdutils.KeyAddress(ownerKey, "invalid owner key")
-	log.Warn("Loaded configuration", "owner_address", ownerAddress.Hex(), "backend_url", *backendURL, "factory", passportFactoryAddress.Hex())
+	log.Warn("Loaded configuration", "owner_address", ownerAuth.From.Hex(), "backend_url", *backendURL, "factory", passportFactoryAddress.Hex())
 
 	ctx := cmdutils.CreateCtrlCContext()
 
 	var contractBackend chequebook.Backend
 	if *backendURL == "" {
 		alloc := core.GenesisAlloc{
-			ownerAddress: {Balance: new(big.Int).Add(oneEthInWei, oneEthInWei)},
+			ownerAuth.From: {Balance: new(big.Int).Add(oneEthInWei, oneEthInWei)},
 		}
 		sim := backends.NewSimulatedBackend(alloc, 10000000)
 		sim.Commit()
 
 		contractBackend = sim
 
-		passportFactoryAddress = bootstrapPassportFactory(ctx, contractBackend, ownerAuth)
+		passportFactoryAddress = bootstrap.PassportFactory(ctx, contractBackend, ownerAuth)
 
 	} else {
 		contractBackend, err = ethclient.Dial(*backendURL)
@@ -88,13 +87,13 @@ func main() {
 		}
 	}
 
-	contractBackend = backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAddress})
+	contractBackend = backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAuth.From})
 
 	///////////////////////////////////////////////////////
 	// Check budgets
 	///////////////////////////////////////////////////////
 
-	cmdutils.CheckBalance(ctx, contractBackend, ownerAddress, oneEthInWei)
+	cmdutils.CheckBalance(ctx, contractBackend, ownerAuth.From, oneEthInWei)
 
 	///////////////////////////////////////////////////////
 	// PassportFactoryContract
@@ -108,7 +107,7 @@ func main() {
 	// Creating Passport
 	///////////////////////////////////////////////////////
 
-	log.Warn("Creating Passport", "owner_address", ownerAddress.Hex())
+	log.Warn("Creating Passport", "owner_address", ownerAuth.From.Hex())
 	tx, err := passportFactoryContract.CreatePassport(ownerAuth)
 	cmdutils.CheckErr(err, "creating Passport contract")
 	txr := cmdutils.CheckTxReceipt(ctx, contractBackend, tx.Hash())
@@ -127,7 +126,7 @@ func main() {
 	passportContract, err := contracts.NewPassportContract(passportAddress, contractBackend)
 	cmdutils.CheckErr(err, "initialize Passport contract")
 
-	log.Warn("ClaimOwnership", "owner_address", ownerAddress)
+	log.Warn("ClaimOwnership", "owner_address", ownerAuth.From)
 	tx, err = passportContract.ClaimOwnership(ownerAuth)
 	cmdutils.CheckErr(err, "claiming ownership")
 	cmdutils.CheckTx(ctx, contractBackend, tx.Hash())
@@ -140,45 +139,4 @@ func validatePassportCreatedEvent(evs []contracts.PassportFactoryContractPasspor
 		return errors.New("expected exactly one PassportCreated event")
 	}
 	return nil
-}
-
-func bootstrapPassportFactory(ctx context.Context, contractBackend chequebook.Backend, ownerAuth *bind.TransactOpts) common.Address {
-	///////////////////////////////////////////////////////
-	// PassportLogic
-	///////////////////////////////////////////////////////
-
-	log.Warn("Deploying PassportLogic", "owner_address", ownerAuth.From)
-	passportLogicAddress, tx, passportLogicContract, err := contracts.DeployPassportLogicContract(ownerAuth, contractBackend)
-	cmdutils.CheckErr(err, "deployment PassportLogic contract")
-	cmdutils.CheckTx(ctx, contractBackend, tx.Hash())
-
-	log.Warn("PassportLogic deployed", "contract_address", passportLogicAddress.Hex())
-	_ = passportLogicContract
-
-	///////////////////////////////////////////////////////
-	// PassportLogicRegistry
-	///////////////////////////////////////////////////////
-
-	version := "0.1"
-	log.Warn("Deploying PassportLogicRegistry", "owner_address", ownerAuth.From, "impl_version", version, "impl_address", passportLogicAddress)
-	passportLogicRegistryAddress, tx, passportLogicRegistryContract, err := contracts.DeployPassportLogicRegistryContract(ownerAuth, contractBackend, version, passportLogicAddress)
-	cmdutils.CheckErr(err, "deployment PassportLogicRegistry contract")
-	cmdutils.CheckTx(ctx, contractBackend, tx.Hash())
-
-	log.Warn("PassportLogicRegistry deployed", "contract_address", passportLogicRegistryAddress.Hex())
-	_ = passportLogicRegistryContract
-
-	///////////////////////////////////////////////////////
-	// PassportFactory
-	///////////////////////////////////////////////////////
-
-	log.Warn("Deploying PassportFactory", "owner_address", ownerAuth.From, "registry", passportLogicRegistryAddress)
-	passportFactoryAddress, tx, passportFactoryContract, err := contracts.DeployPassportFactoryContract(ownerAuth, contractBackend, passportLogicRegistryAddress)
-	cmdutils.CheckErr(err, "deployment PassportFactory contract")
-	cmdutils.CheckTx(ctx, contractBackend, tx.Hash())
-
-	log.Warn("PassportFactory deployed", "contract_address", passportFactoryAddress.Hex())
-	_ = passportFactoryContract
-
-	return passportFactoryAddress
 }

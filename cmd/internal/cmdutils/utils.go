@@ -2,8 +2,6 @@ package cmdutils
 
 import (
 	"context"
-	"crypto/ecdsa"
-	"errors"
 	"fmt"
 	"math/big"
 	"os"
@@ -12,11 +10,9 @@ import (
 	"time"
 
 	"github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/cmd/utils"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/contracts/chequebook"
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/log"
 )
 
@@ -94,22 +90,6 @@ func onlySuccessfulReceipt(tr *types.Receipt, err error) (*types.Receipt, error)
 	}
 	log.Warn("Transaction successfully mined", "tx_hash", tr.TxHash.Hex(), "cumulative_gas_used", tr.CumulativeGasUsed)
 	return tr, nil
-}
-
-func KeyAddress(privateKeyECDSA *ecdsa.PrivateKey, errorMsg string) common.Address {
-	addr, err := pubkeyToAddress(privateKeyECDSA.PublicKey)
-	if err != nil {
-		utils.Fatalf(errorMsg, err)
-	}
-	return addr
-}
-
-func pubkeyToAddress(p ecdsa.PublicKey) (common.Address, error) {
-	pubBytes := crypto.FromECDSAPub(&p)
-	if pubBytes == nil {
-		return common.Address{}, errors.New("invalid key")
-	}
-	return common.Address(common.BytesToAddress(crypto.Keccak256(pubBytes[1:])[12:])), nil
 }
 
 func CreateCtrlCContext() context.Context {
