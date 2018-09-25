@@ -17,8 +17,8 @@ type Bootstrap struct {
 	Log log.Fun
 }
 
-// CreatePassportFactory deploys PassportFactory contract and all contracts needed in order to deploy it
-func (b Bootstrap) CreatePassportFactory(ctx context.Context, contractBackend chequebook.Backend, ownerAuth *bind.TransactOpts) (common.Address, error) {
+// DeployPassportFactory deploys PassportFactory contract and all contracts needed in order to deploy it
+func (b Bootstrap) DeployPassportFactory(ctx context.Context, contractBackend chequebook.Backend, ownerAuth *bind.TransactOpts) (common.Address, error) {
 	e := eth.Eth{Log: b.Log}
 
 	///////////////////////////////////////////////////////
