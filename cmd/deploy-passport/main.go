@@ -78,7 +78,8 @@ func main() {
 
 		contractBackend = sim
 
-		passportFactoryAddress = bootstrap.PassportFactory(ctx, contractBackend, ownerAuth)
+		b := bootstrap.New(log.Warn)
+		passportFactoryAddress = b.CreatePassportFactory(ctx, contractBackend, ownerAuth)
 
 	} else {
 		contractBackend, err = ethclient.Dial(*backendURL)
