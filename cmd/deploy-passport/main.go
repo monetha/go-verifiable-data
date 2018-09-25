@@ -2,7 +2,6 @@ package main
 
 import (
 	"crypto/ecdsa"
-	"errors"
 	"flag"
 	"math/big"
 	"os"
@@ -19,7 +18,6 @@ import (
 	"github.com/monetha/go-ethereum/backend"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/bootstrap"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/cmdutils"
-	"gitlab.com/monetha/protocol-go-sdk/contracts"
 )
 
 var (
@@ -97,11 +95,4 @@ func main() {
 	cmdutils.CheckErr(err, "deploying passport")
 
 	log.Warn("Done.")
-}
-
-func validatePassportCreatedEvent(evs []contracts.PassportFactoryContractPassportCreated) error {
-	if len(evs) != 1 {
-		return errors.New("expected exactly one PassportCreated event")
-	}
-	return nil
 }
