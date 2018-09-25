@@ -86,7 +86,7 @@ func main() {
 
 	cmdutils.CheckBalance(ctx, contractBackend, ownerAuth.From, oneEthInWei)
 
-	b := bootstrap.New(log.Warn)
+	b := bootstrap.Bootstrap{Log: log.Warn}
 	_, err = b.CreatePassportFactory(ctx, contractBackend, ownerAuth)
 	cmdutils.CheckErr(err, "create passport factory")
 

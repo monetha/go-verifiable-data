@@ -7,22 +7,20 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/contracts/chequebook"
-	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/cmdutils"
+	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/eth"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/log"
 	"gitlab.com/monetha/protocol-go-sdk/contracts"
 )
 
+// Bootstrap contains methods to deploy contracts
 type Bootstrap struct {
-	log log.Fun
-}
-
-// New returns an instance of Bootstrap
-func New(lf log.Fun) *Bootstrap {
-	return &Bootstrap{log: lf}
+	Log log.Fun
 }
 
 // CreatePassportFactory deploys PassportFactory contract and all contracts needed in order to deploy it
-func (b *Bootstrap) CreatePassportFactory(ctx context.Context, contractBackend chequebook.Backend, ownerAuth *bind.TransactOpts) (common.Address, error) {
+func (b Bootstrap) CreatePassportFactory(ctx context.Context, contractBackend chequebook.Backend, ownerAuth *bind.TransactOpts) (common.Address, error) {
+	e := eth.Eth{Log: b.Log}
+
 	///////////////////////////////////////////////////////
 	// PassportLogic
 	///////////////////////////////////////////////////////
@@ -32,7 +30,10 @@ func (b *Bootstrap) CreatePassportFactory(ctx context.Context, contractBackend c
 	if err != nil {
 		return common.Address{}, fmt.Errorf("deploying PassportLogic contract: %v", err)
 	}
-	cmdutils.CheckTx(ctx, contractBackend, tx.Hash())
+	_, err = e.WaitForTxReceipt(ctx, contractBackend, tx.Hash())
+	if err != nil {
+		return common.Address{}, err
+	}
 
 	b.log("PassportLogic deployed", "contract_address", passportLogicAddress.Hex())
 
@@ -46,7 +47,10 @@ func (b *Bootstrap) CreatePassportFactory(ctx context.Context, contractBackend c
 	if err != nil {
 		return common.Address{}, fmt.Errorf("deploying PassportLogicRegistry contract: %v", err)
 	}
-	cmdutils.CheckTx(ctx, contractBackend, tx.Hash())
+	_, err = e.WaitForTxReceipt(ctx, contractBackend, tx.Hash())
+	if err != nil {
+		return common.Address{}, err
+	}
 
 	b.log("PassportLogicRegistry deployed", "contract_address", passportLogicRegistryAddress.Hex())
 
@@ -59,9 +63,19 @@ func (b *Bootstrap) CreatePassportFactory(ctx context.Context, contractBackend c
 	if err != nil {
 		return common.Address{}, fmt.Errorf("deploying PassportFactory contract: %v", err)
 	}
-	cmdutils.CheckTx(ctx, contractBackend, tx.Hash())
+	_, err = e.WaitForTxReceipt(ctx, contractBackend, tx.Hash())
+	if err != nil {
+		return common.Address{}, err
+	}
 
 	b.log("PassportFactory deployed", "contract_address", passportFactoryAddress.Hex())
 
 	return passportFactoryAddress, nil
+}
+
+func (b Bootstrap) log(msg string, ctx ...interface{}) {
+	l := b.Log
+	if l != nil {
+		l(msg, ctx...)
+	}
 }

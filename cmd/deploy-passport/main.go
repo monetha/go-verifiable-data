@@ -78,7 +78,7 @@ func main() {
 
 		contractBackend = sim
 
-		b := bootstrap.New(log.Warn)
+		b := bootstrap.Bootstrap{Log: log.Warn}
 		passportFactoryAddress, err = b.CreatePassportFactory(ctx, contractBackend, ownerAuth)
 		cmdutils.CheckErr(err, "create passport factory")
 
