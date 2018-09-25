@@ -68,6 +68,7 @@ func main() {
 
 	ctx := cmdutils.CreateCtrlCContext()
 
+	b := bootstrap.Bootstrap{Log: log.Warn}
 	var contractBackend chequebook.Backend
 	if *backendURL == "" {
 		alloc := core.GenesisAlloc{
@@ -78,7 +79,6 @@ func main() {
 
 		contractBackend = sim
 
-		b := bootstrap.Bootstrap{Log: log.Warn}
 		passportFactoryAddress, err = b.DeployPassportFactory(ctx, contractBackend, ownerAuth)
 		cmdutils.CheckErr(err, "create passport factory")
 
@@ -91,47 +91,10 @@ func main() {
 
 	contractBackend = backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAuth.From})
 
-	///////////////////////////////////////////////////////
-	// Check budgets
-	///////////////////////////////////////////////////////
-
 	cmdutils.CheckBalance(ctx, contractBackend, ownerAuth.From, oneEthInWei)
 
-	///////////////////////////////////////////////////////
-	// PassportFactoryContract
-	///////////////////////////////////////////////////////
-
-	log.Warn("Initializing PassportFactory contract", "factory", passportFactoryAddress.Hex())
-	passportFactoryContract, err := contracts.NewPassportFactoryContract(passportFactoryAddress, contractBackend)
-	cmdutils.CheckErr(err, "initialize PassportFactory contract")
-
-	///////////////////////////////////////////////////////
-	// Creating Passport
-	///////////////////////////////////////////////////////
-
-	log.Warn("Creating Passport", "owner_address", ownerAuth.From.Hex())
-	tx, err := passportFactoryContract.CreatePassport(ownerAuth)
-	cmdutils.CheckErr(err, "creating Passport contract")
-	txr := cmdutils.CheckTxReceipt(ctx, contractBackend, tx.Hash())
-
-	lf, err := contracts.NewPassportFactoryLogFilterer()
-	cmdutils.CheckErr(err, "initialize PassportFactoryLogFilterer")
-
-	evs, err := lf.FilterPassportCreated(txr.Logs, nil, nil)
-	cmdutils.CheckErr(err, "filter PassportCreated events")
-	cmdutils.CheckErr(validatePassportCreatedEvent(evs), "validating PassportCreated events")
-
-	passportAddress := evs[0].Passport
-	log.Warn("Passport deployed", "contract_address", passportAddress.Hex())
-
-	log.Warn("Initializing Passport contract", "passport", passportFactoryAddress.Hex())
-	passportContract, err := contracts.NewPassportContract(passportAddress, contractBackend)
-	cmdutils.CheckErr(err, "initialize Passport contract")
-
-	log.Warn("ClaimOwnership", "owner_address", ownerAuth.From)
-	tx, err = passportContract.ClaimOwnership(ownerAuth)
-	cmdutils.CheckErr(err, "claiming ownership")
-	cmdutils.CheckTx(ctx, contractBackend, tx.Hash())
+	_, err = b.DeployPassport(ctx, contractBackend, ownerAuth, passportFactoryAddress)
+	cmdutils.CheckErr(err, "deploying passport")
 
 	log.Warn("Done.")
 }
