@@ -76,9 +76,10 @@ func (t Eth) log(msg string, ctx ...interface{}) {
 // PrepareAuth prepares authorization data required to create a valid Ethereum transaction.
 // It retrieves the currently suggested gas price to allow a timely	execution of a transaction and sets it in authorization data.
 // It also checks if the balance of the given account has enough weis to execute transaction(s) for the given `minGasLimit`.
-func PrepareAuth(ctx context.Context, contractBackend chequebook.Backend, key *ecdsa.PrivateKey, minGasLimit int64) (*bind.TransactOpts, error) {
+func (t Eth) PrepareAuth(ctx context.Context, contractBackend chequebook.Backend, key *ecdsa.PrivateKey, minGasLimit int64) (*bind.TransactOpts, error) {
 	auth := bind.NewKeyedTransactor(key)
 
+	t.log("Retrieving the currently suggested gas price")
 	gasPrice, err := contractBackend.SuggestGasPrice(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("backend SuggestGasPrice: %v", err)
@@ -87,6 +88,7 @@ func PrepareAuth(ctx context.Context, contractBackend chequebook.Backend, key *e
 
 	minBalance := new(big.Int).Mul(big.NewInt(minGasLimit), gasPrice)
 
+	t.log("Getting balance", "address", auth.From.Hex())
 	balance, err := contractBackend.BalanceAt(ctx, auth.From, nil)
 	if err != nil {
 		return nil, fmt.Errorf("backend BalanceAt(%v): %v", auth.From.Hex(), err)

@@ -30,7 +30,7 @@ const (
 func (b Deploy) DeployPassportFactory(ctx context.Context, contractBackend chequebook.Backend, ownerKey *ecdsa.PrivateKey) (common.Address, error) {
 	e := eth.Eth{Log: b.Log}
 
-	ownerAuth, err := eth.PrepareAuth(ctx, contractBackend, ownerKey, PassportFactoryGasLimit)
+	ownerAuth, err := e.PrepareAuth(ctx, contractBackend, ownerKey, PassportFactoryGasLimit)
 	if err != nil {
 		return common.Address{}, fmt.Errorf("prepare authorization data: %v", err)
 	}
@@ -91,7 +91,7 @@ func (b Deploy) DeployPassportFactory(ctx context.Context, contractBackend chequ
 func (b Deploy) DeployPassport(ctx context.Context, contractBackend chequebook.Backend, ownerKey *ecdsa.PrivateKey, passportFactoryAddress common.Address) (common.Address, error) {
 	e := eth.Eth{Log: b.Log}
 
-	ownerAuth, err := eth.PrepareAuth(ctx, contractBackend, ownerKey, PassportGasLimit)
+	ownerAuth, err := e.PrepareAuth(ctx, contractBackend, ownerKey, PassportGasLimit)
 	if err != nil {
 		return common.Address{}, fmt.Errorf("prepare authorization data: %v", err)
 	}
