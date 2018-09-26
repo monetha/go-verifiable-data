@@ -2,8 +2,10 @@ package deploy
 
 import (
 	"context"
+	"crypto/ecdsa"
 	"errors"
 	"fmt"
+	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -17,6 +19,14 @@ import (
 type Deploy struct {
 	Log log.Fun
 }
+
+const (
+	// PassportFactoryGasLimit is a minimum gas amount needed to fully deploy passport factory contract with all dependent contracts
+	PassportFactoryGasLimit = 3505000
+
+	// PassportGasLimit is a minimum gas amount needed to fully deploy passport contract
+	PassportGasLimit = 460000
+)
 
 // DeployPassportFactory deploys PassportFactory contract and all contracts needed in order to deploy it
 func (b Deploy) DeployPassportFactory(ctx context.Context, contractBackend chequebook.Backend, ownerAuth *bind.TransactOpts) (common.Address, error) {
@@ -75,8 +85,26 @@ func (b Deploy) DeployPassportFactory(ctx context.Context, contractBackend chequ
 }
 
 // DeployPassport deploys only Passport contract using existing PassportFactory contract
-func (b Deploy) DeployPassport(ctx context.Context, contractBackend chequebook.Backend, ownerAuth *bind.TransactOpts, passportFactoryAddress common.Address) (common.Address, error) {
+func (b Deploy) DeployPassport(ctx context.Context, contractBackend chequebook.Backend, ownerKey *ecdsa.PrivateKey, passportFactoryAddress common.Address) (common.Address, error) {
 	e := eth.Eth{Log: b.Log}
+
+	ownerAuth := bind.NewKeyedTransactor(ownerKey)
+
+	gasPrice, err := contractBackend.SuggestGasPrice(ctx)
+	if err != nil {
+		return common.Address{}, fmt.Errorf("backend SuggestGasPrice: %v", err)
+	}
+
+	ownerAuth.GasPrice = gasPrice
+	minBalance := new(big.Int).Mul(big.NewInt(PassportGasLimit), gasPrice)
+
+	balance, err := contractBackend.BalanceAt(ctx, ownerAuth.From, nil)
+	if err != nil {
+		return common.Address{}, fmt.Errorf("backend BalanceAt(%v): %v", ownerAuth.From.Hex(), err)
+	}
+	if balance.Cmp(minBalance) == -1 {
+		return common.Address{}, fmt.Errorf("balance too low: %v wei < %v wei", balance, minBalance)
+	}
 
 	///////////////////////////////////////////////////////
 	// initializing PassportFactory

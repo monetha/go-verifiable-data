@@ -20,10 +20,6 @@ import (
 	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/deploy"
 )
 
-var (
-	oneEthInWei = big.NewInt(1000000000000000000)
-)
-
 func main() {
 	var (
 		backendURL   = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
@@ -74,8 +70,8 @@ func main() {
 		monethaAuth := bind.NewKeyedTransactor(monethaKey)
 
 		alloc := core.GenesisAlloc{
-			monethaAuth.From: {Balance: oneEthInWei},
-			ownerAuth.From:   {Balance: oneEthInWei},
+			monethaAuth.From: {Balance: big.NewInt(deploy.PassportFactoryGasLimit)},
+			ownerAuth.From:   {Balance: big.NewInt(deploy.PassportGasLimit)},
 		}
 		sim := backends.NewSimulatedBackend(alloc, 10000000)
 		sim.Commit()
@@ -94,9 +90,7 @@ func main() {
 
 	contractBackend = backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAuth.From})
 
-	cmdutils.CheckBalance(ctx, contractBackend, ownerAuth.From, oneEthInWei)
-
-	_, err = d.DeployPassport(ctx, contractBackend, ownerAuth, passportFactoryAddress)
+	_, err = d.DeployPassport(ctx, contractBackend, ownerKey, passportFactoryAddress)
 	cmdutils.CheckErr(err, "deploying passport")
 
 	log.Warn("Done.")
