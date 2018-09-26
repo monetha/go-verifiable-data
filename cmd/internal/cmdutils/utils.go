@@ -25,6 +25,8 @@ func CheckBalance(ctx context.Context, backend chequebook.Backend, address commo
 	}
 }
 
+// CheckErr prints error if it's not nil and causes the current program to exit with the status code equal to 1.
+// The program terminates immediately; deferred functions are not run.
 func CheckErr(err error, hint string) {
 	if err != nil {
 		log.Error(hint, "err", err)
@@ -32,6 +34,7 @@ func CheckErr(err error, hint string) {
 	}
 }
 
+// CreateCtrlCContext returns context which's Done channel is closed when application should be terminated (on SIGINT, SIGTERM, SIGHUP, SIGQUIT signal)
 func CreateCtrlCContext() context.Context {
 	ctx, cancel := context.WithCancel(context.Background())
 	go func() {
