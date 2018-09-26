@@ -5,7 +5,6 @@ import (
 	"crypto/ecdsa"
 	"errors"
 	"fmt"
-	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -88,22 +87,9 @@ func (b Deploy) DeployPassportFactory(ctx context.Context, contractBackend chequ
 func (b Deploy) DeployPassport(ctx context.Context, contractBackend chequebook.Backend, ownerKey *ecdsa.PrivateKey, passportFactoryAddress common.Address) (common.Address, error) {
 	e := eth.Eth{Log: b.Log}
 
-	ownerAuth := bind.NewKeyedTransactor(ownerKey)
-
-	gasPrice, err := contractBackend.SuggestGasPrice(ctx)
+	ownerAuth, err := eth.PrepareAuth(ctx, contractBackend, ownerKey, PassportGasLimit)
 	if err != nil {
-		return common.Address{}, fmt.Errorf("backend SuggestGasPrice: %v", err)
-	}
-
-	ownerAuth.GasPrice = gasPrice
-	minBalance := new(big.Int).Mul(big.NewInt(PassportGasLimit), gasPrice)
-
-	balance, err := contractBackend.BalanceAt(ctx, ownerAuth.From, nil)
-	if err != nil {
-		return common.Address{}, fmt.Errorf("backend BalanceAt(%v): %v", ownerAuth.From.Hex(), err)
-	}
-	if balance.Cmp(minBalance) == -1 {
-		return common.Address{}, fmt.Errorf("balance too low: %v wei < %v wei", balance, minBalance)
+		return common.Address{}, fmt.Errorf("prepare authorization data: %v", err)
 	}
 
 	///////////////////////////////////////////////////////
