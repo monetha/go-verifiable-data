@@ -74,10 +74,8 @@ func main() {
 
 	contractBackend = backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAddress})
 
-	ctx := cmdutils.CreateCtrlCContext()
-
-	d := deploy.Deploy{Log: log.Warn}
-	_, err = d.DeployPassportFactory(ctx, contractBackend, ownerKey)
+	_, err = deploy.Deploy{Log: log.Warn}.
+		DeployPassportFactory(cmdutils.CreateCtrlCContext(), contractBackend, ownerKey)
 	cmdutils.CheckErr(err, "create passport factory")
 
 	log.Warn("Done.")
