@@ -12,7 +12,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/contracts/chequebook"
 	"github.com/ethereum/go-ethereum/core/types"
-	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/log"
+	"gitlab.com/monetha/protocol-go-sdk/log"
 )
 
 // Eth contains code to wait for transaction

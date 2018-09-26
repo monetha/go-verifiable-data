@@ -17,7 +17,7 @@ import (
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-ethereum/backend"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/cmdutils"
-	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/deploy"
+	"gitlab.com/monetha/protocol-go-sdk/deploy"
 )
 
 func main() {

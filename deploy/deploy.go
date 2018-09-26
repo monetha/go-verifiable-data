@@ -8,9 +8,9 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/contracts/chequebook"
-	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/eth"
-	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/log"
 	"gitlab.com/monetha/protocol-go-sdk/contracts"
+	"gitlab.com/monetha/protocol-go-sdk/eth"
+	"gitlab.com/monetha/protocol-go-sdk/log"
 )
 
 // Deploy contains methods to deploy contracts
