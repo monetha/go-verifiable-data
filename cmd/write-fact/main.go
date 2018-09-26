@@ -108,7 +108,7 @@ func main() {
 		if err != nil {
 			utils.Fatalf("dial backend %v", err)
 		}
-		
+
 		// retrieving suggested gas price
 		gasPrice, err = contractBackend.SuggestGasPrice(ctx)
 		cmdutils.CheckErr(err, "SuggestGasPrice")
