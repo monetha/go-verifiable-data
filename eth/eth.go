@@ -15,15 +15,66 @@ import (
 	"gitlab.com/monetha/protocol-go-sdk/log"
 )
 
-// Eth contains code to wait for transaction
-type Eth struct {
-	Log log.Fun
+// Session provides holds basic pre-configured parameters like backend, authorization, logging
+type Session struct {
+	Backend      chequebook.Backend
+	TransactOpts bind.TransactOpts
+	Log          log.Fun
+}
+
+// NewSession creates an instance of Session
+func NewSession(backend chequebook.Backend, key *ecdsa.PrivateKey) *Session {
+	return &Session{
+		Backend:      backend,
+		TransactOpts: *bind.NewKeyedTransactor(key),
+	}
+}
+
+// SetLog sets log function
+func (s *Session) SetLog(lf log.Fun) *Session {
+	s.Log = lf
+	return s
+}
+
+// SetGasPrice sets gas price
+func (s *Session) SetGasPrice(gasPrice *big.Int) *Session {
+	s.TransactOpts.GasPrice = gasPrice
+	return s
+}
+
+// IsEnoughFunds retrieves current account balance and checks if it's enough funds given gas limit.
+// SetGasPrice needs to be called with non-nil parameter before calling this method.
+func (s *Session) IsEnoughFunds(ctx context.Context, gasLimit int64) (enough bool, minBalance *big.Int, err error) {
+	gasPrice := s.TransactOpts.GasPrice
+	if gasPrice == nil {
+		panic("gas price must be non nil")
+	}
+
+	minBalance = new(big.Int).Mul(big.NewInt(gasLimit), gasPrice)
+
+	s.log("Getting balance", "address", s.TransactOpts.From.Hex())
+
+	var balance *big.Int
+	balance, err = s.Backend.BalanceAt(ctx, s.TransactOpts.From, nil)
+	if err != nil {
+		err = fmt.Errorf("backend BalanceAt(%v): %v", s.TransactOpts.From.Hex(), err)
+		return
+	}
+
+	if balance.Cmp(minBalance) == -1 {
+		return
+	}
+
+	enough = true
+	return
 }
 
 // WaitForTxReceipt waits until the transaction is successfully mined. It returns error if receipt status is not equal to `types.ReceiptStatusSuccessful`.
-func (t Eth) WaitForTxReceipt(ctx context.Context, backend chequebook.Backend, txHash common.Hash) (tr *types.Receipt, err error) {
+func (s *Session) WaitForTxReceipt(ctx context.Context, txHash common.Hash) (tr *types.Receipt, err error) {
+	backend := s.Backend
+
 	txHashStr := txHash.Hex()
-	t.log("Waiting for transaction", "hash", txHashStr)
+	s.log("Waiting for transaction", "hash", txHashStr)
 
 	defer func() {
 		if err != nil {
@@ -36,7 +87,7 @@ func (t Eth) WaitForTxReceipt(ctx context.Context, backend chequebook.Backend, t
 	}
 	if sim, ok := backend.(commiter); ok {
 		sim.Commit()
-		tr, err = t.onlySuccessfulReceipt(backend.TransactionReceipt(ctx, txHash))
+		tr, err = s.onlySuccessfulReceipt(backend.TransactionReceipt(ctx, txHash))
 		return
 	}
 
@@ -47,7 +98,7 @@ func (t Eth) WaitForTxReceipt(ctx context.Context, backend chequebook.Backend, t
 		case <-time.After(4 * time.Second):
 		}
 
-		tr, err = t.onlySuccessfulReceipt(backend.TransactionReceipt(ctx, txHash))
+		tr, err = s.onlySuccessfulReceipt(backend.TransactionReceipt(ctx, txHash))
 		if err == ethereum.NotFound {
 			continue
 		}
@@ -55,47 +106,20 @@ func (t Eth) WaitForTxReceipt(ctx context.Context, backend chequebook.Backend, t
 	}
 }
 
-func (t Eth) onlySuccessfulReceipt(tr *types.Receipt, err error) (*types.Receipt, error) {
+func (s *Session) onlySuccessfulReceipt(tr *types.Receipt, err error) (*types.Receipt, error) {
 	if err != nil {
 		return nil, err
 	}
 	if tr.Status != types.ReceiptStatusSuccessful {
 		return nil, fmt.Errorf("tx failed: %+v", tr)
 	}
-	t.log("Transaction successfully mined", "tx_hash", tr.TxHash.Hex(), "cumulative_gas_used", tr.CumulativeGasUsed)
+	s.log("Transaction successfully mined", "tx_hash", tr.TxHash.Hex(), "cumulative_gas_used", tr.CumulativeGasUsed)
 	return tr, nil
 }
 
-func (t Eth) log(msg string, ctx ...interface{}) {
-	l := t.Log
+func (s *Session) log(msg string, ctx ...interface{}) {
+	l := s.Log
 	if l != nil {
 		l(msg, ctx...)
 	}
-}
-
-// PrepareAuth prepares authorization data required to create a valid Ethereum transaction.
-// It retrieves the currently suggested gas price to allow a timely	execution of a transaction and sets it in authorization data.
-// It also checks if the balance of the given account has enough weis to execute transaction(s) for the given `minGasLimit`.
-func (t Eth) PrepareAuth(ctx context.Context, contractBackend chequebook.Backend, key *ecdsa.PrivateKey, minGasLimit int64) (*bind.TransactOpts, error) {
-	auth := bind.NewKeyedTransactor(key)
-
-	t.log("Retrieving the currently suggested gas price")
-	gasPrice, err := contractBackend.SuggestGasPrice(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("backend SuggestGasPrice: %v", err)
-	}
-	auth.GasPrice = gasPrice
-
-	minBalance := new(big.Int).Mul(big.NewInt(minGasLimit), gasPrice)
-
-	t.log("Getting balance", "address", auth.From.Hex())
-	balance, err := contractBackend.BalanceAt(ctx, auth.From, nil)
-	if err != nil {
-		return nil, fmt.Errorf("backend BalanceAt(%v): %v", auth.From.Hex(), err)
-	}
-	if balance.Cmp(minBalance) == -1 {
-		return nil, fmt.Errorf("balance too low: %v wei < %v wei", balance, minBalance)
-	}
-
-	return auth, nil
 }

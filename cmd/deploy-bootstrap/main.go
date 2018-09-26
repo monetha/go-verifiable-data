@@ -18,6 +18,7 @@ import (
 	"github.com/monetha/go-ethereum/backend"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/cmdutils"
 	"gitlab.com/monetha/protocol-go-sdk/deploy"
+	"gitlab.com/monetha/protocol-go-sdk/eth"
 )
 
 func main() {
@@ -64,7 +65,6 @@ func main() {
 		sim := backends.NewSimulatedBackend(alloc, 10000000)
 		sim.Commit()
 		contractBackend = sim
-
 	} else {
 		contractBackend, err = ethclient.Dial(*backendURL)
 		if err != nil {
@@ -74,8 +74,19 @@ func main() {
 
 	contractBackend = backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAddress})
 
-	_, err = deploy.Deploy{Log: log.Warn}.
-		DeployPassportFactory(cmdutils.CreateCtrlCContext(), contractBackend, ownerKey)
+	ctx := cmdutils.CreateCtrlCContext()
+
+	// retrieving suggested gas price
+	gasPrice, err := contractBackend.SuggestGasPrice(ctx)
+	cmdutils.CheckErr(err, "SuggestGasPrice")
+
+	// creating owner session and checking balance
+	ownerSession := eth.NewSession(contractBackend, ownerKey).SetGasPrice(gasPrice).SetLog(log.Warn)
+	cmdutils.CheckBalance(ctx, ownerSession, deploy.PassportFactoryGasLimit)
+
+	// deploying passport factory
+	_, err = (*deploy.Deploy)(ownerSession).
+		DeployPassportFactory(ctx)
 	cmdutils.CheckErr(err, "create passport factory")
 
 	log.Warn("Done.")

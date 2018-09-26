@@ -7,6 +7,7 @@ import (
 	"syscall"
 
 	"github.com/ethereum/go-ethereum/log"
+	"gitlab.com/monetha/protocol-go-sdk/eth"
 )
 
 // CheckErr prints error if it's not nil and causes the current program to exit with the status code equal to 1.
@@ -31,4 +32,14 @@ func CreateCtrlCContext() context.Context {
 	}()
 
 	return ctx
+}
+
+// CheckBalance checks if it's enough funds to spend specified gas limit
+func CheckBalance(ctx context.Context, session *eth.Session, gasLimit int64) {
+	enoughFunds, minBalance, err := session.IsEnoughFunds(ctx, gasLimit)
+	CheckErr(err, "IsEnoughFunds")
+	if !enoughFunds {
+		log.Warn("not enough funds", "min_balance_required", minBalance.String())
+		os.Exit(1)
+	}
 }
