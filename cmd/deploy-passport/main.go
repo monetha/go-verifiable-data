@@ -16,8 +16,8 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-ethereum/backend"
-	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/bootstrap"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/cmdutils"
+	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/deploy"
 )
 
 var (
@@ -66,7 +66,7 @@ func main() {
 
 	ctx := cmdutils.CreateCtrlCContext()
 
-	b := bootstrap.Bootstrap{Log: log.Warn}
+	d := deploy.Deploy{Log: log.Warn}
 	var contractBackend chequebook.Backend
 	if *backendURL == "" {
 		alloc := core.GenesisAlloc{
@@ -77,7 +77,7 @@ func main() {
 
 		contractBackend = sim
 
-		passportFactoryAddress, err = b.DeployPassportFactory(ctx, contractBackend, ownerAuth)
+		passportFactoryAddress, err = d.DeployPassportFactory(ctx, contractBackend, ownerAuth)
 		cmdutils.CheckErr(err, "create passport factory")
 
 	} else {
@@ -91,7 +91,7 @@ func main() {
 
 	cmdutils.CheckBalance(ctx, contractBackend, ownerAuth.From, oneEthInWei)
 
-	_, err = b.DeployPassport(ctx, contractBackend, ownerAuth, passportFactoryAddress)
+	_, err = d.DeployPassport(ctx, contractBackend, ownerAuth, passportFactoryAddress)
 	cmdutils.CheckErr(err, "deploying passport")
 
 	log.Warn("Done.")

@@ -16,8 +16,8 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-ethereum/backend"
-	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/bootstrap"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/cmdutils"
+	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/deploy"
 )
 
 var (
@@ -86,8 +86,8 @@ func main() {
 
 	cmdutils.CheckBalance(ctx, contractBackend, ownerAuth.From, oneEthInWei)
 
-	b := bootstrap.Bootstrap{Log: log.Warn}
-	_, err = b.DeployPassportFactory(ctx, contractBackend, ownerAuth)
+	d := deploy.Deploy{Log: log.Warn}
+	_, err = d.DeployPassportFactory(ctx, contractBackend, ownerAuth)
 	cmdutils.CheckErr(err, "create passport factory")
 
 	log.Warn("Done.")

@@ -1,4 +1,4 @@
-package bootstrap
+package deploy
 
 import (
 	"context"
@@ -13,13 +13,13 @@ import (
 	"gitlab.com/monetha/protocol-go-sdk/contracts"
 )
 
-// Bootstrap contains methods to deploy contracts
-type Bootstrap struct {
+// Deploy contains methods to deploy contracts
+type Deploy struct {
 	Log log.Fun
 }
 
 // DeployPassportFactory deploys PassportFactory contract and all contracts needed in order to deploy it
-func (b Bootstrap) DeployPassportFactory(ctx context.Context, contractBackend chequebook.Backend, ownerAuth *bind.TransactOpts) (common.Address, error) {
+func (b Deploy) DeployPassportFactory(ctx context.Context, contractBackend chequebook.Backend, ownerAuth *bind.TransactOpts) (common.Address, error) {
 	e := eth.Eth{Log: b.Log}
 
 	///////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ func (b Bootstrap) DeployPassportFactory(ctx context.Context, contractBackend ch
 }
 
 // DeployPassport deploys only Passport contract using existing PassportFactory contract
-func (b Bootstrap) DeployPassport(ctx context.Context, contractBackend chequebook.Backend, ownerAuth *bind.TransactOpts, passportFactoryAddress common.Address) (common.Address, error) {
+func (b Deploy) DeployPassport(ctx context.Context, contractBackend chequebook.Backend, ownerAuth *bind.TransactOpts, passportFactoryAddress common.Address) (common.Address, error) {
 	e := eth.Eth{Log: b.Log}
 
 	///////////////////////////////////////////////////////
@@ -149,7 +149,7 @@ func (b Bootstrap) DeployPassport(ctx context.Context, contractBackend chequeboo
 	return passportAddress, nil
 }
 
-func (b Bootstrap) log(msg string, ctx ...interface{}) {
+func (b Deploy) log(msg string, ctx ...interface{}) {
 	l := b.Log
 	if l != nil {
 		l(msg, ctx...)
