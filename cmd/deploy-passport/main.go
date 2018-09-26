@@ -69,15 +69,20 @@ func main() {
 	d := deploy.Deploy{Log: log.Warn}
 	var contractBackend chequebook.Backend
 	if *backendURL == "" {
+		monethaKey, err := crypto.GenerateKey()
+		cmdutils.CheckErr(err, "generating key")
+		monethaAuth := bind.NewKeyedTransactor(monethaKey)
+
 		alloc := core.GenesisAlloc{
-			ownerAuth.From: {Balance: new(big.Int).Add(oneEthInWei, oneEthInWei)},
+			monethaAuth.From: {Balance: oneEthInWei},
+			ownerAuth.From:   {Balance: oneEthInWei},
 		}
 		sim := backends.NewSimulatedBackend(alloc, 10000000)
 		sim.Commit()
 
 		contractBackend = sim
 
-		passportFactoryAddress, err = d.DeployPassportFactory(ctx, contractBackend, ownerAuth)
+		passportFactoryAddress, err = d.DeployPassportFactory(ctx, contractBackend, monethaAuth)
 		cmdutils.CheckErr(err, "create passport factory")
 
 	} else {
