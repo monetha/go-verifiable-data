@@ -20,10 +20,6 @@ import (
 	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/deploy"
 )
 
-var (
-	oneEthInWei = big.NewInt(1000000000000000000)
-)
-
 func main() {
 	var (
 		backendURL   = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
@@ -57,13 +53,13 @@ func main() {
 		}
 	}
 
-	ownerAuth := bind.NewKeyedTransactor(ownerKey)
-	log.Warn("Loaded configuration", "owner_address", ownerAuth.From.Hex(), "backend_url", *backendURL)
+	ownerAddress := bind.NewKeyedTransactor(ownerKey).From
+	log.Warn("Loaded configuration", "owner_address", ownerAddress.Hex(), "backend_url", *backendURL)
 
 	var contractBackend chequebook.Backend
 	if *backendURL == "" {
 		alloc := core.GenesisAlloc{
-			ownerAuth.From: {Balance: oneEthInWei},
+			ownerAddress: {Balance: big.NewInt(deploy.PassportFactoryGasLimit)},
 		}
 		sim := backends.NewSimulatedBackend(alloc, 10000000)
 		sim.Commit()
@@ -76,18 +72,12 @@ func main() {
 		}
 	}
 
-	contractBackend = backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAuth.From})
+	contractBackend = backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAddress})
 
 	ctx := cmdutils.CreateCtrlCContext()
 
-	///////////////////////////////////////////////////////
-	// Check budgets
-	///////////////////////////////////////////////////////
-
-	cmdutils.CheckBalance(ctx, contractBackend, ownerAuth.From, oneEthInWei)
-
 	d := deploy.Deploy{Log: log.Warn}
-	_, err = d.DeployPassportFactory(ctx, contractBackend, ownerAuth)
+	_, err = d.DeployPassportFactory(ctx, contractBackend, ownerKey)
 	cmdutils.CheckErr(err, "create passport factory")
 
 	log.Warn("Done.")

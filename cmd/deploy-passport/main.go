@@ -57,8 +57,8 @@ func main() {
 	}
 
 	passportFactoryAddress := common.HexToAddress(*factoryAddr)
-	ownerAuth := bind.NewKeyedTransactor(ownerKey)
-	log.Warn("Loaded configuration", "owner_address", ownerAuth.From.Hex(), "backend_url", *backendURL, "factory", passportFactoryAddress.Hex())
+	ownerAddress := bind.NewKeyedTransactor(ownerKey).From
+	log.Warn("Loaded configuration", "owner_address", ownerAddress.Hex(), "backend_url", *backendURL, "factory", passportFactoryAddress.Hex())
 
 	ctx := cmdutils.CreateCtrlCContext()
 
@@ -67,18 +67,18 @@ func main() {
 	if *backendURL == "" {
 		monethaKey, err := crypto.GenerateKey()
 		cmdutils.CheckErr(err, "generating key")
-		monethaAuth := bind.NewKeyedTransactor(monethaKey)
+		monethaAddress := bind.NewKeyedTransactor(monethaKey).From
 
 		alloc := core.GenesisAlloc{
-			monethaAuth.From: {Balance: big.NewInt(deploy.PassportFactoryGasLimit)},
-			ownerAuth.From:   {Balance: big.NewInt(deploy.PassportGasLimit)},
+			monethaAddress: {Balance: big.NewInt(deploy.PassportFactoryGasLimit)},
+			ownerAddress:   {Balance: big.NewInt(deploy.PassportGasLimit)},
 		}
 		sim := backends.NewSimulatedBackend(alloc, 10000000)
 		sim.Commit()
 
 		contractBackend = sim
 
-		passportFactoryAddress, err = d.DeployPassportFactory(ctx, contractBackend, monethaAuth)
+		passportFactoryAddress, err = d.DeployPassportFactory(ctx, contractBackend, monethaKey)
 		cmdutils.CheckErr(err, "create passport factory")
 
 	} else {
@@ -88,7 +88,7 @@ func main() {
 		}
 	}
 
-	contractBackend = backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAuth.From})
+	contractBackend = backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAddress})
 
 	_, err = d.DeployPassport(ctx, contractBackend, ownerKey, passportFactoryAddress)
 	cmdutils.CheckErr(err, "deploying passport")

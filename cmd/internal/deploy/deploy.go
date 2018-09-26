@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/contracts/chequebook"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/eth"
@@ -28,8 +27,13 @@ const (
 )
 
 // DeployPassportFactory deploys PassportFactory contract and all contracts needed in order to deploy it
-func (b Deploy) DeployPassportFactory(ctx context.Context, contractBackend chequebook.Backend, ownerAuth *bind.TransactOpts) (common.Address, error) {
+func (b Deploy) DeployPassportFactory(ctx context.Context, contractBackend chequebook.Backend, ownerKey *ecdsa.PrivateKey) (common.Address, error) {
 	e := eth.Eth{Log: b.Log}
+
+	ownerAuth, err := eth.PrepareAuth(ctx, contractBackend, ownerKey, PassportFactoryGasLimit)
+	if err != nil {
+		return common.Address{}, fmt.Errorf("prepare authorization data: %v", err)
+	}
 
 	///////////////////////////////////////////////////////
 	// deploying PassportLogic
