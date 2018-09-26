@@ -1,7 +1,6 @@
-deploy-passport
----------------
+# deploy-passport
 
-Utility tool to deploy passport contract.
+Utility tool to deploy [Passport](../../contracts/code/Passport.sol) contract.
 
 ## Usage
 
