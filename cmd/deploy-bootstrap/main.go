@@ -71,16 +71,19 @@ func main() {
 		}
 	}
 
-	contractBackend = backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAddress})
+	e := &eth.Eth{
+		Backend: backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAddress}),
+		LogFun:  log.Warn,
+	}
 
 	ctx := cmdutils.CreateCtrlCContext()
 
 	// retrieving suggested gas price
-	gasPrice, err := contractBackend.SuggestGasPrice(ctx)
+	gasPrice, err := e.Backend.SuggestGasPrice(ctx)
 	cmdutils.CheckErr(err, "SuggestGasPrice")
 
 	// creating owner session and checking balance
-	ownerSession := eth.NewSession(contractBackend, ownerKey).SetGasPrice(gasPrice).SetLogFun(log.Warn)
+	ownerSession := eth.NewSession(e, ownerKey).SetGasPrice(gasPrice)
 	cmdutils.CheckBalance(ctx, ownerSession, deploy.PassportFactoryGasLimit)
 
 	// deploying passport factory

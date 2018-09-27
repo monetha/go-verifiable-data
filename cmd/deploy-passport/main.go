@@ -79,12 +79,17 @@ func main() {
 
 		contractBackend = sim
 
+		e := &eth.Eth{
+			Backend: sim,
+			LogFun:  log.Warn,
+		}
+
 		// retrieving suggested gas price
 		gasPrice, err = contractBackend.SuggestGasPrice(ctx)
 		cmdutils.CheckErr(err, "SuggestGasPrice")
 
 		// creating owner session and checking balance
-		monethaSession := eth.NewSession(contractBackend, monethaKey).SetGasPrice(gasPrice).SetLogFun(log.Warn)
+		monethaSession := eth.NewSession(e, monethaKey).SetGasPrice(gasPrice)
 		cmdutils.CheckBalance(ctx, monethaSession, deploy.PassportFactoryGasLimit)
 
 		// deploying passport factory
@@ -102,10 +107,13 @@ func main() {
 		cmdutils.CheckErr(err, "SuggestGasPrice")
 	}
 
-	contractBackend = backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAddress})
+	e := &eth.Eth{
+		Backend: backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAddress}),
+		LogFun:  log.Warn,
+	}
 
 	// creating owner session and checking balance
-	ownerSession := eth.NewSession(contractBackend, ownerKey).SetGasPrice(gasPrice).SetLogFun(log.Warn)
+	ownerSession := eth.NewSession(e, ownerKey).SetGasPrice(gasPrice).SetLogFun(log.Warn)
 	cmdutils.CheckBalance(ctx, ownerSession, deploy.PassportGasLimit)
 
 	// deploy passport

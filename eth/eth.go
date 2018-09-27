@@ -83,14 +83,10 @@ type Session struct {
 	TransactOpts bind.TransactOpts
 }
 
-// TODO: add method to initialize Session from Eth
-
 // NewSession creates an instance of Session
-func NewSession(b backend.Backend, key *ecdsa.PrivateKey) *Session {
+func NewSession(e *Eth, key *ecdsa.PrivateKey) *Session {
 	return &Session{
-		Eth: &Eth{
-			Backend: b,
-		},
+		Eth:          e,
 		TransactOpts: *bind.NewKeyedTransactor(key),
 	}
 }
