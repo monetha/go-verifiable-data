@@ -52,10 +52,14 @@ func main() {
 		}
 	}
 
+	ctx := cmdutils.CreateCtrlCContext()
+
 	ownerAddress := bind.NewKeyedTransactor(ownerKey).From
 	log.Warn("Loaded configuration", "owner_address", ownerAddress.Hex(), "backend_url", *backendURL)
 
-	var contractBackend backend.Backend
+	var (
+		b backend.Backend
+	)
 	if *backendURL == "" {
 		alloc := core.GenesisAlloc{
 			ownerAddress: {Balance: big.NewInt(deploy.PassportFactoryGasLimit)},
@@ -63,27 +67,19 @@ func main() {
 		sim := backend.NewSimulatedBackendExtended(alloc, 10000000)
 		sim.Commit()
 
-		contractBackend = sim
+		b = sim
 	} else {
-		contractBackend, err = ethclient.Dial(*backendURL)
-		if err != nil {
-			utils.Fatalf("dial backend %v", err)
-		}
+		client, err := ethclient.Dial(*backendURL)
+		cmdutils.CheckErr(err, "ethclient.Dial")
+
+		b = client
 	}
 
-	e := &eth.Eth{
-		Backend: backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAddress}),
-		LogFun:  log.Warn,
-	}
-
-	ctx := cmdutils.CreateCtrlCContext()
-
-	// retrieving suggested gas price
-	gasPrice, err := e.Backend.SuggestGasPrice(ctx)
-	cmdutils.CheckErr(err, "SuggestGasPrice")
+	e := eth.New(b, log.Warn).NewHandleNonceBackend([]common.Address{ownerAddress})
+	cmdutils.CheckErr(e.UpdateSuggestedGasPrice(ctx), "SuggestGasPrice")
 
 	// creating owner session and checking balance
-	ownerSession := eth.NewSession(e, ownerKey).SetGasPrice(gasPrice)
+	ownerSession := eth.NewSession(e, ownerKey)
 	cmdutils.CheckBalance(ctx, ownerSession, deploy.PassportFactoryGasLimit)
 
 	// deploying passport factory

@@ -62,8 +62,7 @@ func main() {
 	ctx := cmdutils.CreateCtrlCContext()
 
 	var (
-		contractBackend backend.Backend
-		gasPrice        *big.Int
+		e *eth.Eth
 	)
 	if *backendURL == "" {
 		monethaKey, err := crypto.GenerateKey()
@@ -77,19 +76,11 @@ func main() {
 		sim := backend.NewSimulatedBackendExtended(alloc, 10000000)
 		sim.Commit()
 
-		contractBackend = sim
-
-		e := &eth.Eth{
-			Backend: sim,
-			LogFun:  log.Warn,
-		}
-
-		// retrieving suggested gas price
-		gasPrice, err = contractBackend.SuggestGasPrice(ctx)
-		cmdutils.CheckErr(err, "SuggestGasPrice")
+		e = eth.New(sim, log.Warn)
+		cmdutils.CheckErr(e.UpdateSuggestedGasPrice(ctx), "SuggestGasPrice")
 
 		// creating owner session and checking balance
-		monethaSession := eth.NewSession(e, monethaKey).SetGasPrice(gasPrice)
+		monethaSession := eth.NewSession(e, monethaKey)
 		cmdutils.CheckBalance(ctx, monethaSession, deploy.PassportFactoryGasLimit)
 
 		// deploying passport factory
@@ -97,23 +88,17 @@ func main() {
 		cmdutils.CheckErr(err, "create passport factory")
 
 	} else {
-		contractBackend, err = ethclient.Dial(*backendURL)
-		if err != nil {
-			utils.Fatalf("dial backend %v", err)
-		}
+		client, err := ethclient.Dial(*backendURL)
+		cmdutils.CheckErr(err, "ethclient.Dial")
 
-		// retrieving suggested gas price
-		gasPrice, err = contractBackend.SuggestGasPrice(ctx)
-		cmdutils.CheckErr(err, "SuggestGasPrice")
+		e = eth.New(client, log.Warn)
+		cmdutils.CheckErr(e.UpdateSuggestedGasPrice(ctx), "SuggestGasPrice")
 	}
 
-	e := &eth.Eth{
-		Backend: backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAddress}),
-		LogFun:  log.Warn,
-	}
+	e = e.NewHandleNonceBackend([]common.Address{ownerAddress})
 
 	// creating owner session and checking balance
-	ownerSession := eth.NewSession(e, ownerKey).SetGasPrice(gasPrice).SetLogFun(log.Warn)
+	ownerSession := eth.NewSession(e, ownerKey)
 	cmdutils.CheckBalance(ctx, ownerSession, deploy.PassportGasLimit)
 
 	// deploy passport

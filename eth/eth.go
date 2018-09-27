@@ -17,8 +17,40 @@ import (
 
 // Eth simplifies some operations with the Ethereum network
 type Eth struct {
-	Backend backend.Backend
-	LogFun  log.Fun
+	Backend           backend.Backend
+	LogFun            log.Fun
+	SuggestedGasPrice *big.Int
+}
+
+// New creates new instance of Eth
+func New(b backend.Backend, lf log.Fun) *Eth {
+	return &Eth{
+		Backend: b,
+		LogFun:  lf,
+	}
+}
+
+// UpdateSuggestedGasPrice initializes suggested gas price from backend
+func (e *Eth) UpdateSuggestedGasPrice(ctx context.Context) error {
+	gasPrice, err := e.Backend.SuggestGasPrice(ctx)
+	if err != nil {
+		return err
+	}
+	e.SuggestedGasPrice = gasPrice
+	return nil
+}
+
+// NewHandleNonceBackend returns new instance of Eth which internally handles nonce of the given addresses. It still calls PendingNonceAt of
+// inner backend, but returns PendingNonceAt as a maximum of pending nonce in block-chain and internally stored nonce.
+// It increments nonce for the given addresses after each successfully sent transaction (transaction may eventually
+// fail in block-cain).
+// Implementation is not thread-safe and should be used within one goroutine because otherwise invocations of
+// PendingNonceAt and SendTransaction should be done atomically to have sequence of nonce without gaps (so that
+// nonce would be equal to number of transactions sent).
+func (e *Eth) NewHandleNonceBackend(handleAddresses []common.Address) *Eth {
+	res := *e
+	res.Backend = backend.NewHandleNonceBackend(res.Backend, handleAddresses)
+	return &res
 }
 
 // WaitForTxReceipt waits until the transaction is successfully mined. It returns error if receipt status is not equal to `types.ReceiptStatusSuccessful`.
@@ -85,9 +117,11 @@ type Session struct {
 
 // NewSession creates an instance of Session
 func NewSession(e *Eth, key *ecdsa.PrivateKey) *Session {
+	transactOpts := bind.NewKeyedTransactor(key)
+	transactOpts.GasPrice = e.SuggestedGasPrice
 	return &Session{
 		Eth:          e,
-		TransactOpts: *bind.NewKeyedTransactor(key),
+		TransactOpts: *transactOpts,
 	}
 }
 
