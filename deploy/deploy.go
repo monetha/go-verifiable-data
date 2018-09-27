@@ -10,9 +10,6 @@ import (
 	"gitlab.com/monetha/protocol-go-sdk/eth"
 )
 
-// Deploy contains methods to deploy contracts
-type Deploy eth.Session
-
 const (
 	// PassportFactoryGasLimit is a minimum gas amount needed to fully deploy passport factory contract with all dependent contracts
 	PassportFactoryGasLimit = 3505000
@@ -20,6 +17,14 @@ const (
 	// PassportGasLimit is a minimum gas amount needed to fully deploy passport contract
 	PassportGasLimit = 460000
 )
+
+// Deploy contains methods to deploy contracts
+type Deploy eth.Session
+
+// New converts session to Deploy
+func New(s *eth.Session) *Deploy {
+	return (*Deploy)(s)
+}
 
 // DeployPassportFactory deploys PassportFactory contract and all contracts needed in order to deploy it
 func (d *Deploy) DeployPassportFactory(ctx context.Context) (common.Address, error) {

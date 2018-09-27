@@ -93,7 +93,7 @@ func main() {
 		cmdutils.CheckBalance(ctx, monethaSession, deploy.PassportFactoryGasLimit)
 
 		// deploying passport factory
-		passportFactoryAddress, err := (*deploy.Deploy)(monethaSession).DeployPassportFactory(ctx)
+		passportFactoryAddress, err := deploy.New(monethaSession).DeployPassportFactory(ctx)
 		cmdutils.CheckErr(err, "create passport factory")
 
 		// creating passport owner session and checking balance
@@ -101,8 +101,7 @@ func main() {
 		cmdutils.CheckBalance(ctx, passportOwnerSession, deploy.PassportGasLimit)
 
 		// deploying passport
-		passportAddress, err = (*deploy.Deploy)(passportOwnerSession).
-			DeployPassport(ctx, passportFactoryAddress)
+		passportAddress, err = deploy.New(passportOwnerSession).DeployPassport(ctx, passportFactoryAddress)
 	} else {
 		contractBackend, err = ethclient.Dial(*backendURL)
 		if err != nil {

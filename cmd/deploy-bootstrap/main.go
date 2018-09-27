@@ -85,7 +85,7 @@ func main() {
 	cmdutils.CheckBalance(ctx, ownerSession, deploy.PassportFactoryGasLimit)
 
 	// deploying passport factory
-	_, err = (*deploy.Deploy)(ownerSession).
+	_, err = deploy.New(ownerSession).
 		DeployPassportFactory(ctx)
 	cmdutils.CheckErr(err, "create passport factory")
 

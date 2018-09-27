@@ -90,7 +90,7 @@ func main() {
 		cmdutils.CheckBalance(ctx, monethaSession, deploy.PassportFactoryGasLimit)
 
 		// deploying passport factory
-		passportFactoryAddress, err = (*deploy.Deploy)(monethaSession).DeployPassportFactory(ctx)
+		passportFactoryAddress, err = deploy.New(monethaSession).DeployPassportFactory(ctx)
 		cmdutils.CheckErr(err, "create passport factory")
 
 	} else {
@@ -111,7 +111,7 @@ func main() {
 	cmdutils.CheckBalance(ctx, ownerSession, deploy.PassportGasLimit)
 
 	// deploy passport
-	_, err = (*deploy.Deploy)(ownerSession).
+	_, err = deploy.New(ownerSession).
 		DeployPassport(ctx, passportFactoryAddress)
 	cmdutils.CheckErr(err, "deploying passport")
 
