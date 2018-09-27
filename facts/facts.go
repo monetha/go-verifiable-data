@@ -26,7 +26,7 @@ func NewProvider(s *eth.Session) *FactProvider {
 	return (*FactProvider)(s)
 }
 
-// NewProvider converts eth to FactReader
+// NewReader converts eth to FactReader
 func NewReader(e *eth.Eth) *FactReader {
 	return (*FactReader)(e)
 }
