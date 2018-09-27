@@ -83,6 +83,8 @@ type Session struct {
 	TransactOpts bind.TransactOpts
 }
 
+// TODO: add method to initialize Session from Eth
+
 // NewSession creates an instance of Session
 func NewSession(backend chequebook.Backend, key *ecdsa.PrivateKey) *Session {
 	return &Session{

@@ -7,7 +7,6 @@ import (
 	"os"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind/backends"
 	"github.com/ethereum/go-ethereum/cmd/utils"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/contracts/chequebook"
@@ -18,7 +17,8 @@ import (
 	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/cmdutils"
 	"gitlab.com/monetha/protocol-go-sdk/deploy"
 	"gitlab.com/monetha/protocol-go-sdk/eth"
-	"gitlab.com/monetha/protocol-go-sdk/factprovider"
+	"gitlab.com/monetha/protocol-go-sdk/eth/backend"
+	"gitlab.com/monetha/protocol-go-sdk/facts"
 )
 
 func main() {
@@ -59,7 +59,7 @@ func main() {
 
 	passportAddress := common.HexToAddress(*passportAddr)
 	factProviderAddress := bind.NewKeyedTransactor(factProviderKey).From
-	log.Warn("Loaded configuration", "fact_provider_address", factProviderAddress.Hex(), "backend_url", *backendURL, "passport", passportAddress.Hex())
+	log.Warn("Loaded configuration", "fact_provider", factProviderAddress.Hex(), "backend_url", *backendURL, "passport", passportAddress.Hex())
 
 	ctx := cmdutils.CreateCtrlCContext()
 
@@ -81,7 +81,7 @@ func main() {
 			passportOwnerAddress: {Balance: big.NewInt(deploy.PassportGasLimit)},
 			factProviderAddress:  {Balance: big.NewInt(10000000000000)},
 		}
-		sim := backends.NewSimulatedBackend(alloc, 10000000)
+		sim := backend.NewSimulatedBackendExtended(alloc, 10000000)
 		sim.Commit()
 
 		contractBackend = sim
@@ -123,7 +123,7 @@ func main() {
 	var key [32]byte
 	data := []byte("some text")
 
-	err = factprovider.New(factProviderSession).
+	err = facts.NewProvider(factProviderSession).
 		WriteTxData(ctx, passportAddress, key, data)
 	cmdutils.CheckErr(err, "WriteTxData")
 
