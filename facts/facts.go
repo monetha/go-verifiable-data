@@ -65,6 +65,7 @@ func (r *FactReader) ReadTxData(ctx context.Context, passport common.Address, fa
 		BlockNumber *big.Int
 	}
 
+	(*eth.Eth)(r).Log("Getting block number for tx data", "fact_provider", factProvider, "key", key)
 	bn, err = passportLogicContract.GetTxDataBlockNumber(nil, factProvider, key)
 	if err != nil {
 		return nil, fmt.Errorf("facts: GetTxDataBlockNumber: %v", err)
@@ -113,6 +114,7 @@ func (r *FactReader) ReadTxData(ctx context.Context, passport common.Address, fa
 	}
 
 	txHash := txDataUpdatedEvent.Raw.TxHash
+	(*eth.Eth)(r).Log("Getting transaction by hash", "tx_hash", txHash.Hex())
 	tx, _, err := backend.TransactionByHash(ctx, txHash)
 	if err != nil {
 		return nil, fmt.Errorf("facts: TransactionByHash(%v): %v", txHash, err)
