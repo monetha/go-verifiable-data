@@ -145,10 +145,12 @@ type customABI abi.ABI
 
 // UnpackInput parses input according to the abi specification
 func (abi customABI) UnpackInput(v interface{}, name string, input []byte) (err error) {
-	input = input[4:] // remove signature
-	if len(input) == 0 {
-		return fmt.Errorf("abi: unmarshalling empty input")
+	if len(input) <= 4 {
+		return fmt.Errorf("abi: insufficient input data")
 	}
+
+	input = input[4:] // remove signature
+
 	// since there can't be naming collisions with contracts and events,
 	// we need to decide whether we're calling a method or an event
 	if method, ok := abi.Methods[name]; ok {
