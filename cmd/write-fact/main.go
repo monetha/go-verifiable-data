@@ -14,7 +14,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/log"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/cmdutils"
-	"gitlab.com/monetha/protocol-go-sdk/deploy"
+	"gitlab.com/monetha/protocol-go-sdk/deployer"
 	"gitlab.com/monetha/protocol-go-sdk/eth"
 	"gitlab.com/monetha/protocol-go-sdk/eth/backend"
 	"gitlab.com/monetha/protocol-go-sdk/facts"
@@ -75,8 +75,8 @@ func main() {
 		passportOwnerAddress := bind.NewKeyedTransactor(passportOwnerKey).From
 
 		alloc := core.GenesisAlloc{
-			monethaAddress:       {Balance: big.NewInt(deploy.PassportFactoryGasLimit)},
-			passportOwnerAddress: {Balance: big.NewInt(deploy.PassportGasLimit)},
+			monethaAddress:       {Balance: big.NewInt(deployer.PassportFactoryGasLimit)},
+			passportOwnerAddress: {Balance: big.NewInt(deployer.PassportGasLimit)},
 			factProviderAddress:  {Balance: big.NewInt(10000000000000)},
 		}
 		sim := backend.NewSimulatedBackendExtended(alloc, 10000000)
@@ -87,18 +87,18 @@ func main() {
 
 		// creating owner session and checking balance
 		monethaSession := e.NewSession(monethaKey)
-		cmdutils.CheckBalance(ctx, monethaSession, deploy.PassportFactoryGasLimit)
+		cmdutils.CheckBalance(ctx, monethaSession, deployer.PassportFactoryGasLimit)
 
 		// deploying passport factory
-		passportFactoryAddress, err := deploy.New(monethaSession).DeployPassportFactory(ctx)
+		passportFactoryAddress, err := deployer.New(monethaSession).DeployPassportFactory(ctx)
 		cmdutils.CheckErr(err, "create passport factory")
 
 		// creating passport owner session and checking balance
 		passportOwnerSession := e.NewSession(passportOwnerKey)
-		cmdutils.CheckBalance(ctx, passportOwnerSession, deploy.PassportGasLimit)
+		cmdutils.CheckBalance(ctx, passportOwnerSession, deployer.PassportGasLimit)
 
 		// deploying passport
-		passportAddress, err = deploy.New(passportOwnerSession).DeployPassport(ctx, passportFactoryAddress)
+		passportAddress, err = deployer.New(passportOwnerSession).DeployPassport(ctx, passportFactoryAddress)
 	} else {
 		client, err := ethclient.Dial(*backendURL)
 		cmdutils.CheckErr(err, "ethclient.Dial")

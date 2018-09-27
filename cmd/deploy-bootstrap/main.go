@@ -14,7 +14,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/log"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/cmdutils"
-	"gitlab.com/monetha/protocol-go-sdk/deploy"
+	"gitlab.com/monetha/protocol-go-sdk/deployer"
 	"gitlab.com/monetha/protocol-go-sdk/eth"
 	"gitlab.com/monetha/protocol-go-sdk/eth/backend"
 )
@@ -62,7 +62,7 @@ func main() {
 	)
 	if *backendURL == "" {
 		alloc := core.GenesisAlloc{
-			ownerAddress: {Balance: big.NewInt(deploy.PassportFactoryGasLimit)},
+			ownerAddress: {Balance: big.NewInt(deployer.PassportFactoryGasLimit)},
 		}
 		sim := backend.NewSimulatedBackendExtended(alloc, 10000000)
 		sim.Commit()
@@ -80,10 +80,10 @@ func main() {
 
 	// creating owner session and checking balance
 	ownerSession := e.NewSession(ownerKey)
-	cmdutils.CheckBalance(ctx, ownerSession, deploy.PassportFactoryGasLimit)
+	cmdutils.CheckBalance(ctx, ownerSession, deployer.PassportFactoryGasLimit)
 
 	// deploying passport factory
-	_, err = deploy.New(ownerSession).
+	_, err = deployer.New(ownerSession).
 		DeployPassportFactory(ctx)
 	cmdutils.CheckErr(err, "create passport factory")
 

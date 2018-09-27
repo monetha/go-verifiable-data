@@ -1,4 +1,4 @@
-package deploy
+package deployer
 
 import (
 	"context"
@@ -11,14 +11,14 @@ import (
 )
 
 const (
-	// PassportFactoryGasLimit is a minimum gas amount needed to fully deploy passport factory contract with all dependent contracts
+	// PassportFactoryGasLimit is a minimum gas amount needed to fully deployer passport factory contract with all dependent contracts
 	PassportFactoryGasLimit = 3505000
 
-	// PassportGasLimit is a minimum gas amount needed to fully deploy passport contract
+	// PassportGasLimit is a minimum gas amount needed to fully deployer passport contract
 	PassportGasLimit = 460000
 )
 
-// Deploy contains methods to deploy contracts
+// Deploy contains methods to deployer contracts
 type Deploy eth.Session
 
 // New converts session to Deploy
@@ -26,7 +26,7 @@ func New(s *eth.Session) *Deploy {
 	return (*Deploy)(s)
 }
 
-// DeployPassportFactory deploys PassportFactory contract and all contracts needed in order to deploy it
+// DeployPassportFactory deploys PassportFactory contract and all contracts needed in order to deployer it
 func (d *Deploy) DeployPassportFactory(ctx context.Context) (common.Address, error) {
 	backend := d.Backend
 	ownerAuth := &d.TransactOpts
