@@ -1,8 +1,9 @@
 package main
 
 import (
-	"crypto/ecdsa"
+	"errors"
 	"flag"
+	"io/ioutil"
 	"math/big"
 	"os"
 
@@ -22,15 +23,16 @@ import (
 
 func main() {
 	var (
-		backendURL   = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
-		passportAddr = flag.String("passportaddr", "", "Ethereum address of passport contract")
-		ownerKeyFile = flag.String("ownerkey", "", "fact provider private key filename")
-		ownerKeyHex  = flag.String("ownerkeyhex", "", "fact provider private key as hex (for testing)")
-		verbosity    = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
-		vmodule      = flag.String("vmodule", "", "log verbosity pattern")
+		backendURL       = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
+		passportAddr     = flag.String("passportaddr", "", "Ethereum address of passport contract")
+		factProviderAddr = flag.String("factprovideraddr", "", "Ethereum address of fact provider")
+		factKeyStr       = flag.String("factkey", "", "the key of the fact (max. 32 bytes)")
+		fileName         = flag.String("filename", "", "filename of file to save retrieved bytes")
+		verbosity        = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
+		vmodule          = flag.String("vmodule", "", "log verbosity pattern")
 
-		factProviderKey *ecdsa.PrivateKey
-		err             error
+		factKey [32]byte
+		err     error
 	)
 	flag.Parse()
 
@@ -42,23 +44,22 @@ func main() {
 	switch {
 	case *passportAddr == "" && *backendURL != "":
 		utils.Fatalf("Use -passportaddr to specify an address of passport contract")
-	case *ownerKeyFile == "" && *ownerKeyHex == "":
-		utils.Fatalf("Use -ownerkey or -ownerkeyhex to specify a private key of fact provider")
-	case *ownerKeyFile != "" && *ownerKeyHex != "":
-		utils.Fatalf("Options -ownerkey or -ownerkeyhex are mutually exclusive")
-	case *ownerKeyFile != "":
-		if factProviderKey, err = crypto.LoadECDSA(*ownerKeyFile); err != nil {
-			utils.Fatalf("-ownerkey: %v", err)
+	case *fileName == "":
+		utils.Fatalf("Use -filename to specify the file name for the read data")
+	case *factKeyStr == "":
+		utils.Fatalf("Use -factkey to specify the key of the fact")
+	case *factKeyStr != "":
+		factKeyBytes := []byte(*factKeyStr)
+		if len(factKeyBytes) > 32 {
+			utils.Fatalf("The key string should fit into 32 bytes")
 		}
-	case *ownerKeyHex != "":
-		if factProviderKey, err = crypto.HexToECDSA(*ownerKeyHex); err != nil {
-			utils.Fatalf("-ownerkeyhex: %v", err)
-		}
+		copy(factKey[:], factKeyBytes)
 	}
 
 	passportAddress := common.HexToAddress(*passportAddr)
-	factProviderAddress := bind.NewKeyedTransactor(factProviderKey).From
-	log.Warn("Loaded configuration", "fact_provider", factProviderAddress.Hex(), "backend_url", *backendURL, "passport", passportAddress.Hex())
+	factProviderAddress := common.HexToAddress(*factProviderAddr)
+	log.Warn("Loaded configuration", "fact_provider", factProviderAddress.Hex(), "fact_key", factKey,
+		"backend_url", *backendURL, "passport", passportAddress.Hex())
 
 	ctx := cmdutils.CreateCtrlCContext()
 
@@ -73,6 +74,10 @@ func main() {
 		passportOwnerKey, err := crypto.GenerateKey()
 		cmdutils.CheckErr(err, "generating key")
 		passportOwnerAddress := bind.NewKeyedTransactor(passportOwnerKey).From
+
+		factProviderKey, err := crypto.GenerateKey()
+		cmdutils.CheckErr(err, "generating key")
+		factProviderAddress = bind.NewKeyedTransactor(factProviderKey).From
 
 		alloc := core.GenesisAlloc{
 			monethaAddress:       {Balance: big.NewInt(deployer.PassportFactoryGasLimit)},
@@ -100,6 +105,11 @@ func main() {
 		// deploying passport
 		passportAddress, err = deployer.New(passportOwnerSession).DeployPassport(ctx, passportFactoryAddress)
 		cmdutils.CheckErr(err, "create passport")
+
+		factProviderSession := e.NewSession(factProviderKey)
+		err = facts.NewProvider(factProviderSession).
+			WriteTxData(ctx, passportAddress, factKey, []byte("This is test only data!"))
+		cmdutils.CheckErr(err, "WriteTxData")
 	} else {
 		client, err := ethclient.Dial(*backendURL)
 		cmdutils.CheckErr(err, "ethclient.Dial")
@@ -108,17 +118,20 @@ func main() {
 		cmdutils.CheckErr(e.UpdateSuggestedGasPrice(ctx), "SuggestGasPrice")
 	}
 
-	factProviderSession := e.NewSession(factProviderKey)
+	data, err := facts.NewReader(e).ReadTxData(ctx, passportAddress, factProviderAddress, factKey)
+	cmdutils.CheckErr(err, "ReadTxData")
+	cmdutils.CheckErr(dataIsNotNil(data), "Read data")
 
-	// TODO: check balance
-
-	// TODO: get key/data from command line
-	var key [32]byte
-	data := []byte("some text")
-
-	err = facts.NewProvider(factProviderSession).
-		WriteTxData(ctx, passportAddress, key, data)
-	cmdutils.CheckErr(err, "WriteTxData")
+	log.Warn("Writing read data")
+	err = ioutil.WriteFile(*fileName, data, 0644)
+	cmdutils.CheckErr(err, "WriteFile")
 
 	log.Warn("Done.")
+}
+
+func dataIsNotNil(data []byte) (err error) {
+	if data == nil {
+		err = errors.New("no data available")
+	}
+	return
 }
