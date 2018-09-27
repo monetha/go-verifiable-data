@@ -30,6 +30,16 @@ func New(b backend.Backend, lf log.Fun) *Eth {
 	}
 }
 
+// NewSession creates an instance of Session
+func (e *Eth) NewSession(key *ecdsa.PrivateKey) *Session {
+	transactOpts := bind.NewKeyedTransactor(key)
+	transactOpts.GasPrice = e.SuggestedGasPrice
+	return &Session{
+		Eth:          e,
+		TransactOpts: *transactOpts,
+	}
+}
+
 // UpdateSuggestedGasPrice initializes suggested gas price from backend
 func (e *Eth) UpdateSuggestedGasPrice(ctx context.Context) error {
 	gasPrice, err := e.Backend.SuggestGasPrice(ctx)
@@ -113,28 +123,6 @@ func (e *Eth) Log(msg string, ctx ...interface{}) {
 type Session struct {
 	*Eth
 	TransactOpts bind.TransactOpts
-}
-
-// NewSession creates an instance of Session
-func NewSession(e *Eth, key *ecdsa.PrivateKey) *Session {
-	transactOpts := bind.NewKeyedTransactor(key)
-	transactOpts.GasPrice = e.SuggestedGasPrice
-	return &Session{
-		Eth:          e,
-		TransactOpts: *transactOpts,
-	}
-}
-
-// SetLogFun sets Log function
-func (s *Session) SetLogFun(lf log.Fun) *Session {
-	s.LogFun = lf
-	return s
-}
-
-// SetGasPrice sets gas price
-func (s *Session) SetGasPrice(gasPrice *big.Int) *Session {
-	s.TransactOpts.GasPrice = gasPrice
-	return s
 }
 
 // IsEnoughFunds retrieves current account balance and checks if it's enough funds given gas limit.

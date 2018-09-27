@@ -86,7 +86,7 @@ func main() {
 		cmdutils.CheckErr(e.UpdateSuggestedGasPrice(ctx), "SuggestGasPrice")
 
 		// creating owner session and checking balance
-		monethaSession := eth.NewSession(e, monethaKey)
+		monethaSession := e.NewSession(monethaKey)
 		cmdutils.CheckBalance(ctx, monethaSession, deploy.PassportFactoryGasLimit)
 
 		// deploying passport factory
@@ -94,7 +94,7 @@ func main() {
 		cmdutils.CheckErr(err, "create passport factory")
 
 		// creating passport owner session and checking balance
-		passportOwnerSession := eth.NewSession(e, passportOwnerKey)
+		passportOwnerSession := e.NewSession(passportOwnerKey)
 		cmdutils.CheckBalance(ctx, passportOwnerSession, deploy.PassportGasLimit)
 
 		// deploying passport
@@ -107,7 +107,7 @@ func main() {
 		cmdutils.CheckErr(e.UpdateSuggestedGasPrice(ctx), "SuggestGasPrice")
 	}
 
-	factProviderSession := eth.NewSession(e, factProviderKey)
+	factProviderSession := e.NewSession(factProviderKey)
 
 	// TODO: check balance
 

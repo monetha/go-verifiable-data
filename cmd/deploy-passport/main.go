@@ -80,7 +80,7 @@ func main() {
 		cmdutils.CheckErr(e.UpdateSuggestedGasPrice(ctx), "SuggestGasPrice")
 
 		// creating owner session and checking balance
-		monethaSession := eth.NewSession(e, monethaKey)
+		monethaSession := e.NewSession(monethaKey)
 		cmdutils.CheckBalance(ctx, monethaSession, deploy.PassportFactoryGasLimit)
 
 		// deploying passport factory
@@ -98,7 +98,7 @@ func main() {
 	e = e.NewHandleNonceBackend([]common.Address{ownerAddress})
 
 	// creating owner session and checking balance
-	ownerSession := eth.NewSession(e, ownerKey)
+	ownerSession := e.NewSession(ownerKey)
 	cmdutils.CheckBalance(ctx, ownerSession, deploy.PassportGasLimit)
 
 	// deploy passport
