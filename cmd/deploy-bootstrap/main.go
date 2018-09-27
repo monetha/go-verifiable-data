@@ -81,7 +81,7 @@ func main() {
 	cmdutils.CheckErr(err, "SuggestGasPrice")
 
 	// creating owner session and checking balance
-	ownerSession := eth.NewSession(contractBackend, ownerKey).SetGasPrice(gasPrice).SetLog(log.Warn)
+	ownerSession := eth.NewSession(contractBackend, ownerKey).SetGasPrice(gasPrice).SetLogFun(log.Warn)
 	cmdutils.CheckBalance(ctx, ownerSession, deploy.PassportFactoryGasLimit)
 
 	// deploying passport factory
