@@ -85,12 +85,17 @@ func main() {
 
 		contractBackend = sim
 
+		e := &eth.Eth{
+			Backend: sim,
+			LogFun:  log.Warn,
+		}
+
 		// retrieving suggested gas price
 		gasPrice, err = contractBackend.SuggestGasPrice(ctx)
 		cmdutils.CheckErr(err, "SuggestGasPrice")
 
 		// creating owner session and checking balance
-		monethaSession := eth.NewSession(contractBackend, monethaKey).SetGasPrice(gasPrice).SetLogFun(log.Warn)
+		monethaSession := eth.NewSession(e, monethaKey).SetGasPrice(gasPrice)
 		cmdutils.CheckBalance(ctx, monethaSession, deploy.PassportFactoryGasLimit)
 
 		// deploying passport factory
@@ -98,7 +103,7 @@ func main() {
 		cmdutils.CheckErr(err, "create passport factory")
 
 		// creating passport owner session and checking balance
-		passportOwnerSession := eth.NewSession(contractBackend, passportOwnerKey).SetGasPrice(gasPrice).SetLogFun(log.Warn)
+		passportOwnerSession := eth.NewSession(e, passportOwnerKey).SetGasPrice(gasPrice)
 		cmdutils.CheckBalance(ctx, passportOwnerSession, deploy.PassportGasLimit)
 
 		// deploying passport
@@ -114,7 +119,12 @@ func main() {
 		cmdutils.CheckErr(err, "SuggestGasPrice")
 	}
 
-	factProviderSession := eth.NewSession(contractBackend, factProviderKey).SetGasPrice(gasPrice).SetLogFun(log.Warn)
+	e := &eth.Eth{
+		Backend: contractBackend,
+		LogFun:  log.Warn,
+	}
+
+	factProviderSession := eth.NewSession(e, factProviderKey).SetGasPrice(gasPrice)
 
 	// TODO: check balance
 
