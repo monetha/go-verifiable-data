@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/ecdsa"
 	"flag"
+	"io/ioutil"
 	"math/big"
 	"os"
 
@@ -24,12 +25,16 @@ func main() {
 	var (
 		backendURL   = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
 		passportAddr = flag.String("passportaddr", "", "Ethereum address of passport contract")
+		factKeyStr   = flag.String("factkey", "", "the key of the fact (max. 32 bytes)")
+		fileName     = flag.String("filename", "", "filename of the file with fact data")
 		ownerKeyFile = flag.String("ownerkey", "", "fact provider private key filename")
 		ownerKeyHex  = flag.String("ownerkeyhex", "", "fact provider private key as hex (for testing)")
 		verbosity    = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
 		vmodule      = flag.String("vmodule", "", "log verbosity pattern")
 
 		factProviderKey *ecdsa.PrivateKey
+		factKey         [32]byte
+		factData        []byte
 		err             error
 	)
 	flag.Parse()
@@ -42,6 +47,10 @@ func main() {
 	switch {
 	case *passportAddr == "" && *backendURL != "":
 		utils.Fatalf("Use -passportaddr to specify an address of passport contract")
+	case *fileName == "":
+		utils.Fatalf("Use -filename to specify the file name of the file with fact data")
+	case *factKeyStr == "":
+		utils.Fatalf("Use -factkey to specify the key of the fact")
 	case *ownerKeyFile == "" && *ownerKeyHex == "":
 		utils.Fatalf("Use -ownerkey or -ownerkeyhex to specify a private key of fact provider")
 	case *ownerKeyFile != "" && *ownerKeyHex != "":
@@ -54,6 +63,16 @@ func main() {
 		if factProviderKey, err = crypto.HexToECDSA(*ownerKeyHex); err != nil {
 			utils.Fatalf("-ownerkeyhex: %v", err)
 		}
+	}
+
+	if factKeyBytes := []byte(*factKeyStr); len(factKeyBytes) < 32 {
+		copy(factKey[:], factKeyBytes)
+	} else {
+		utils.Fatalf("The key string should fit into 32 bytes")
+	}
+
+	if factData, err = ioutil.ReadFile(*fileName); err != nil {
+		utils.Fatalf("failed to read fact data file: %v", err)
 	}
 
 	passportAddress := common.HexToAddress(*passportAddr)
@@ -112,12 +131,8 @@ func main() {
 
 	// TODO: check balance
 
-	// TODO: get key/data from command line
-	var key [32]byte
-	data := []byte("some text")
-
 	err = facts.NewProvider(factProviderSession).
-		WriteTxData(ctx, passportAddress, key, data)
+		WriteTxData(ctx, passportAddress, factKey, factData)
 	cmdutils.CheckErr(err, "WriteTxData")
 
 	log.Warn("Done.")

@@ -48,12 +48,12 @@ func main() {
 		utils.Fatalf("Use -filename to specify the file name for the read data")
 	case *factKeyStr == "":
 		utils.Fatalf("Use -factkey to specify the key of the fact")
-	case *factKeyStr != "":
-		factKeyBytes := []byte(*factKeyStr)
-		if len(factKeyBytes) > 32 {
-			utils.Fatalf("The key string should fit into 32 bytes")
-		}
+	}
+
+	if factKeyBytes := []byte(*factKeyStr); len(factKeyBytes) < 32 {
 		copy(factKey[:], factKeyBytes)
+	} else {
+		utils.Fatalf("The key string should fit into 32 bytes")
 	}
 
 	passportAddress := common.HexToAddress(*passportAddr)
