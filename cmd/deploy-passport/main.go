@@ -7,18 +7,16 @@ import (
 	"os"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind/backends"
 	"github.com/ethereum/go-ethereum/cmd/utils"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/contracts/chequebook"
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/log"
-	"github.com/monetha/go-ethereum/backend"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/cmdutils"
 	"gitlab.com/monetha/protocol-go-sdk/deploy"
 	"gitlab.com/monetha/protocol-go-sdk/eth"
+	"gitlab.com/monetha/protocol-go-sdk/eth/backend"
 )
 
 func main() {
@@ -64,7 +62,7 @@ func main() {
 	ctx := cmdutils.CreateCtrlCContext()
 
 	var (
-		contractBackend chequebook.Backend
+		contractBackend backend.Backend
 		gasPrice        *big.Int
 	)
 	if *backendURL == "" {
@@ -76,7 +74,7 @@ func main() {
 			monethaAddress: {Balance: big.NewInt(deploy.PassportFactoryGasLimit)},
 			ownerAddress:   {Balance: big.NewInt(deploy.PassportGasLimit)},
 		}
-		sim := backends.NewSimulatedBackend(alloc, 10000000)
+		sim := backend.NewSimulatedBackendExtended(alloc, 10000000)
 		sim.Commit()
 
 		contractBackend = sim
@@ -103,8 +101,6 @@ func main() {
 		gasPrice, err = contractBackend.SuggestGasPrice(ctx)
 		cmdutils.CheckErr(err, "SuggestGasPrice")
 	}
-
-	contractBackend = backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAddress})
 
 	// creating owner session and checking balance
 	ownerSession := eth.NewSession(contractBackend, ownerKey).SetGasPrice(gasPrice).SetLogFun(log.Warn)

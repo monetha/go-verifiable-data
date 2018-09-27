@@ -12,6 +12,9 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 )
 
+// make sure SimulatedBackendExt implements Backend
+var _ Backend = &SimulatedBackendExt{}
+
 // NewSimulatedBackendExtended creates a new binding backend using a simulated blockchain
 // for testing purposes. It uses `backends.SimulatedBackend` under the hood, but extends it to support
 // `ethereum.TransactionReader` interface.

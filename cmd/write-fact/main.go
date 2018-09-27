@@ -9,7 +9,6 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/cmd/utils"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/contracts/chequebook"
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
@@ -64,7 +63,7 @@ func main() {
 	ctx := cmdutils.CreateCtrlCContext()
 
 	var (
-		contractBackend chequebook.Backend
+		contractBackend backend.Backend
 		gasPrice        *big.Int
 	)
 	if *backendURL == "" {

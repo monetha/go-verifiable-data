@@ -10,20 +10,20 @@ import (
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/contracts/chequebook"
 	"github.com/ethereum/go-ethereum/core/types"
+	"gitlab.com/monetha/protocol-go-sdk/eth/backend"
 	"gitlab.com/monetha/protocol-go-sdk/log"
 )
 
 // Eth simplifies some operations with the Ethereum network
 type Eth struct {
-	Backend chequebook.Backend
+	Backend backend.Backend
 	LogFun  log.Fun
 }
 
 // WaitForTxReceipt waits until the transaction is successfully mined. It returns error if receipt status is not equal to `types.ReceiptStatusSuccessful`.
 func (e *Eth) WaitForTxReceipt(ctx context.Context, txHash common.Hash) (tr *types.Receipt, err error) {
-	backend := e.Backend
+	b := e.Backend
 
 	txHashStr := txHash.Hex()
 	e.Log("Waiting for transaction", "hash", txHashStr)
@@ -37,9 +37,9 @@ func (e *Eth) WaitForTxReceipt(ctx context.Context, txHash common.Hash) (tr *typ
 	type commiter interface {
 		Commit()
 	}
-	if sim, ok := backend.(commiter); ok {
+	if sim, ok := b.(commiter); ok {
 		sim.Commit()
-		tr, err = e.onlySuccessfulReceipt(backend.TransactionReceipt(ctx, txHash))
+		tr, err = e.onlySuccessfulReceipt(b.TransactionReceipt(ctx, txHash))
 		return
 	}
 
@@ -50,7 +50,7 @@ func (e *Eth) WaitForTxReceipt(ctx context.Context, txHash common.Hash) (tr *typ
 		case <-time.After(4 * time.Second):
 		}
 
-		tr, err = e.onlySuccessfulReceipt(backend.TransactionReceipt(ctx, txHash))
+		tr, err = e.onlySuccessfulReceipt(b.TransactionReceipt(ctx, txHash))
 		if err == ethereum.NotFound {
 			continue
 		}
@@ -86,10 +86,10 @@ type Session struct {
 // TODO: add method to initialize Session from Eth
 
 // NewSession creates an instance of Session
-func NewSession(backend chequebook.Backend, key *ecdsa.PrivateKey) *Session {
+func NewSession(b backend.Backend, key *ecdsa.PrivateKey) *Session {
 	return &Session{
 		Eth: &Eth{
-			Backend: backend,
+			Backend: b,
 		},
 		TransactOpts: *bind.NewKeyedTransactor(key),
 	}

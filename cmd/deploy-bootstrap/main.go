@@ -7,18 +7,15 @@ import (
 	"os"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind/backends"
 	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/contracts/chequebook"
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/log"
-	"github.com/monetha/go-ethereum/backend"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/cmdutils"
 	"gitlab.com/monetha/protocol-go-sdk/deploy"
 	"gitlab.com/monetha/protocol-go-sdk/eth"
+	"gitlab.com/monetha/protocol-go-sdk/eth/backend"
 )
 
 func main() {
@@ -57,13 +54,14 @@ func main() {
 	ownerAddress := bind.NewKeyedTransactor(ownerKey).From
 	log.Warn("Loaded configuration", "owner_address", ownerAddress.Hex(), "backend_url", *backendURL)
 
-	var contractBackend chequebook.Backend
+	var contractBackend backend.Backend
 	if *backendURL == "" {
 		alloc := core.GenesisAlloc{
 			ownerAddress: {Balance: big.NewInt(deploy.PassportFactoryGasLimit)},
 		}
-		sim := backends.NewSimulatedBackend(alloc, 10000000)
+		sim := backend.NewSimulatedBackendExtended(alloc, 10000000)
 		sim.Commit()
+
 		contractBackend = sim
 	} else {
 		contractBackend, err = ethclient.Dial(*backendURL)
@@ -71,8 +69,6 @@ func main() {
 			utils.Fatalf("dial backend %v", err)
 		}
 	}
-
-	contractBackend = backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAddress})
 
 	ctx := cmdutils.CreateCtrlCContext()
 

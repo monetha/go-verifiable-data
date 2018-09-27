@@ -2,12 +2,10 @@ package facts
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"math/big"
 	"strings"
 
-	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -51,9 +49,6 @@ func (p *FactProvider) WriteTxData(ctx context.Context, passportAddress common.A
 
 	return err
 }
-
-// ErrBackendDoesNotImplementTransactionReader returned by some methods when they need to cast backend to ethereum.TransactionReader
-var ErrBackendDoesNotImplementTransactionReader = errors.New("facts: backend does not implement ethereum.TransactionReader interface")
 
 // ReadTxData reads the data from the specific key of the given data provider
 func (r *FactReader) ReadTxData(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) ([]byte, error) {
@@ -117,12 +112,8 @@ func (r *FactReader) ReadTxData(ctx context.Context, passport common.Address, fa
 		return nil, fmt.Errorf("facts: no TxDataUpdated event found for fact provider (%v) and key (%v) in block %v", factProvider.Hex(), key, blockNumber)
 	}
 
-	transactionReader, ok := backend.(ethereum.TransactionReader)
-	if !ok {
-		return nil, ErrBackendDoesNotImplementTransactionReader
-	}
 	txHash := txDataUpdatedEvent.Raw.TxHash
-	tx, _, err := transactionReader.TransactionByHash(ctx, txHash)
+	tx, _, err := backend.TransactionByHash(ctx, txHash)
 	if err != nil {
 		return nil, fmt.Errorf("facts: TransactionByHash(%v): %v", txHash, err)
 	}
