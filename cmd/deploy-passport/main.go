@@ -102,6 +102,8 @@ func main() {
 		cmdutils.CheckErr(err, "SuggestGasPrice")
 	}
 
+	contractBackend = backend.NewHandleNonceBackend(contractBackend, []common.Address{ownerAddress})
+
 	// creating owner session and checking balance
 	ownerSession := eth.NewSession(contractBackend, ownerKey).SetGasPrice(gasPrice).SetLogFun(log.Warn)
 	cmdutils.CheckBalance(ctx, ownerSession, deploy.PassportGasLimit)
