@@ -18,6 +18,7 @@ import (
 	"gitlab.com/monetha/protocol-go-sdk/cmd/internal/cmdutils"
 	"gitlab.com/monetha/protocol-go-sdk/deploy"
 	"gitlab.com/monetha/protocol-go-sdk/eth"
+	"gitlab.com/monetha/protocol-go-sdk/factprovider"
 )
 
 func main() {
@@ -78,6 +79,7 @@ func main() {
 		alloc := core.GenesisAlloc{
 			monethaAddress:       {Balance: big.NewInt(deploy.PassportFactoryGasLimit)},
 			passportOwnerAddress: {Balance: big.NewInt(deploy.PassportGasLimit)},
+			factProviderAddress:  {Balance: big.NewInt(10000000000000)},
 		}
 		sim := backends.NewSimulatedBackend(alloc, 10000000)
 		sim.Commit()
@@ -113,7 +115,17 @@ func main() {
 		cmdutils.CheckErr(err, "SuggestGasPrice")
 	}
 
-	// TODO: write fact
+	factProviderSession := eth.NewSession(contractBackend, factProviderKey).SetGasPrice(gasPrice).SetLogFun(log.Warn)
+
+	// TODO: check balance
+
+	// TODO: get key/data from command line
+	var key [32]byte
+	data := []byte("some text")
+
+	err = factprovider.New(factProviderSession).
+		WriteTxData(ctx, passportAddress, key, data)
+	cmdutils.CheckErr(err, "WriteTxData")
 
 	log.Warn("Done.")
 }
