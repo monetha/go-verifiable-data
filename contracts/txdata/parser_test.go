@@ -26,9 +26,7 @@ func TestPassportLogicInputParser_ParseSetTxDataBlockNumberCallData(t *testing.T
 		panic(err)
 	}
 
-	transactOpts := &bind.TransactOpts{Signer: bind.SignerFn(func(signer types.Signer, from common.Address, tx *types.Transaction) (*types.Transaction, error) {
-		return tx, nil
-	})}
+	transactOpts := &bind.TransactOpts{Signer: bind.SignerFn(noSign)}
 
 	tests := []struct {
 		name  string
@@ -64,6 +62,10 @@ func TestPassportLogicInputParser_ParseSetTxDataBlockNumberCallData(t *testing.T
 			}
 		})
 	}
+}
+
+func noSign(signer types.Signer, from common.Address, tx *types.Transaction) (*types.Transaction, error) {
+	return tx, nil
 }
 
 type transactorMock struct {
