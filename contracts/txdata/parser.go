@@ -30,29 +30,36 @@ type SetTxDataBlockNumberParameters struct {
 
 // ParseSetTxDataBlockNumberCallData parses setTxDataBlockNumber method call parameters from transaction input data.
 func (p *PassportLogicInputParser) ParseSetTxDataBlockNumberCallData(input []byte) (parms *SetTxDataBlockNumberParameters, err error) {
-	err = abiExt(p.abi).UnpackInput(parms, "setTxDataBlockNumber", input)
+	v := &SetTxDataBlockNumberParameters{}
+	err = unpackInput(p.abi, v, "setTxDataBlockNumber", input)
+	if err == nil {
+		parms = v
+	}
 	return
 }
 
-type abiExt abi.ABI
-
-// UnpackInput parses input according to the abi specification
-func (abi abiExt) UnpackInput(v interface{}, name string, input []byte) (err error) {
-	if len(input) <= 4 {
-		return fmt.Errorf("abi: insufficient input data")
+func unpackInput(abi abi.ABI, v interface{}, name string, input []byte) (err error) {
+	if len(input) < 4 {
+		return fmt.Errorf("invalid ABI-data, incomplete method signature of (%d bytes)", len(input))
 	}
 
-	input = input[4:] // remove signature
+	sigData, argData := input[:4], input[4:]
+	if len(argData)%32 != 0 {
+		return fmt.Errorf("not ABI-encoded data; length should be a multiple of 32 (was %d)", len(argData))
+	}
 
-	// since there can't be naming collisions with contracts and events,
-	// we need to decide whether we're calling a method or an event
-	if method, ok := abi.Methods[name]; ok {
-		if len(input)%32 != 0 {
-			return fmt.Errorf("abi: improperly formatted input")
+	parsedMethod, err := abi.MethodById(sigData)
+	if err != nil {
+		return err
+	}
+
+	if expectedMethod, ok := abi.Methods[name]; ok {
+		if expectedMethod.Name != parsedMethod.Name {
+			return fmt.Errorf("parsed method signature %v, expected method signature: %v", parsedMethod.Sig(), expectedMethod.Sig())
 		}
-		return method.Inputs.Unpack(v, input)
-	} else if event, ok := abi.Events[name]; ok {
-		return event.Inputs.Unpack(v, input)
+
+		return parsedMethod.Inputs.Unpack(v, argData)
 	}
-	return fmt.Errorf("abi: could not locate named method or event")
+
+	return fmt.Errorf("could not locate named method %v", name)
 }
