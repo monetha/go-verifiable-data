@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/big"
 
+	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"gitlab.com/monetha/protocol-go-sdk/contracts"
@@ -61,7 +62,8 @@ func (p *FactProvider) WriteTxData(ctx context.Context, passportAddress common.A
 	return err
 }
 
-// ReadTxData reads the data from the specific key of the given data provider
+// ReadTxData reads the data from the specific key of the given data provider.
+// `ethereum.NotFound` error returned in case no value exists for the given key.
 func (r *FactReader) ReadTxData(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) ([]byte, error) {
 	backend := r.Backend
 
@@ -84,7 +86,7 @@ func (r *FactReader) ReadTxData(ctx context.Context, passport common.Address, fa
 	// check if block number exists for the key
 	if !bn.Success {
 		// no data
-		return nil, nil
+		return nil, ethereum.NotFound
 	}
 
 	blockNumber := bn.BlockNumber.Uint64()
