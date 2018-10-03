@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"flag"
 	"io/ioutil"
 	"math/big"
@@ -120,18 +119,10 @@ func main() {
 
 	data, err := facts.NewReader(e).ReadTxData(ctx, passportAddress, factProviderAddress, factKey)
 	cmdutils.CheckErr(err, "ReadTxData")
-	cmdutils.CheckErr(dataIsNotNil(data), "Read data")
 
 	log.Warn("Writing read data")
 	err = ioutil.WriteFile(*fileName, data, 0644)
 	cmdutils.CheckErr(err, "WriteFile")
 
 	log.Warn("Done.")
-}
-
-func dataIsNotNil(data []byte) (err error) {
-	if data == nil {
-		err = errors.New("no data available")
-	}
-	return
 }
