@@ -18,7 +18,6 @@ import (
 )
 
 func TestFactReader_ReadTxData(t *testing.T) {
-
 	tests := []struct {
 		name string
 		key  [32]byte
@@ -32,17 +31,19 @@ func TestFactReader_ReadTxData(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			passportAddress, factProviderSession := createPassportAndFactProviderSession(t)
+			ctx := context.Background()
+
+			passportAddress, factProviderSession := createPassportAndFactProviderSession(ctx, t)
 
 			e := factProviderSession.Eth
 			factProviderAddress := factProviderSession.TransactOpts.From
 
-			err := facts.NewProvider(factProviderSession).WriteTxData(context.TODO(), passportAddress, tt.key, tt.data)
+			err := facts.NewProvider(factProviderSession).WriteTxData(ctx, passportAddress, tt.key, tt.data)
 			if err != nil {
 				t.Errorf("FactProvider.WriteTxData() error = %v", err)
 			}
 
-			readData, err := facts.NewReader(e).ReadTxData(context.TODO(), passportAddress, factProviderAddress, tt.key)
+			readData, err := facts.NewReader(e).ReadTxData(ctx, passportAddress, factProviderAddress, tt.key)
 			if err != nil {
 				t.Errorf("FactReader.ReadTxData() error = %v", err)
 			}
@@ -54,23 +55,23 @@ func TestFactReader_ReadTxData(t *testing.T) {
 	}
 
 	t.Run("reading non existing key value", func(t *testing.T) {
-		passportAddress, factProviderSession := createPassportAndFactProviderSession(t)
+		ctx := context.Background()
+
+		passportAddress, factProviderSession := createPassportAndFactProviderSession(ctx, t)
 
 		e := factProviderSession.Eth
 		factProviderAddress := factProviderSession.TransactOpts.From
 
 		key := [32]byte{1, 2, 3}
 
-		_, err := facts.NewReader(e).ReadTxData(context.TODO(), passportAddress, factProviderAddress, key)
+		_, err := facts.NewReader(e).ReadTxData(ctx, passportAddress, factProviderAddress, key)
 		if err != ethereum.NotFound {
 			t.Errorf("FactReader.ReadTxData() expecting error = %v, got error = %v", ethereum.NotFound, err)
 		}
 	})
 }
 
-func createPassportAndFactProviderSession(t *testing.T) (common.Address, *eth.Session) {
-	ctx := context.TODO()
-
+func createPassportAndFactProviderSession(ctx context.Context, t *testing.T) (common.Address, *eth.Session) {
 	monethaKey, err := crypto.GenerateKey()
 	if err != nil {
 		t.Errorf("crypto.GenerateKey() error = %v", err)
