@@ -28,6 +28,7 @@ HOME=$PACKAGE_FULL_PATH
 make dependencies
 make lint
 make test
+make cover
 COMMANDS
 
 echo Done.

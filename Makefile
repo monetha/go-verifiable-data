@@ -1,4 +1,5 @@
 PKGS ?= $(shell glide novendor)
+PKGS_NO_CMDS ?= $(shell glide novendor | grep -v ./cmd/)
 BENCH_FLAGS ?= -benchmem
 
 .PHONY: all
@@ -43,6 +44,13 @@ test:
 BENCH ?= .
 bench:
 	$(foreach pkg,$(PKGS),go test -bench=$(BENCH) -run="^$$" $(BENCH_FLAGS) $(pkg);)
+
+.PHONY: cover
+cover:
+	mkdir -p ./.cover
+	go test -race -coverprofile=./.cover/cover.out -covermode=atomic -coverpkg=./... $(PKGS_NO_CMDS)
+	go tool cover -func=./.cover/cover.out
+	go tool cover -html=./.cover/cover.out -o ./.cover/cover.html
 
 .PHONY: fmt
 fmt:

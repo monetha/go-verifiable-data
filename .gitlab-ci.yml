@@ -10,3 +10,7 @@ build and test:
   script:
   - apk --no-cache add bash
   - bash -x ./scripts/build.sh
+  artifacts:
+    paths:
+    - .cover/
+    expire_in: 1 month

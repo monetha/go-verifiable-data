@@ -40,3 +40,5 @@ _testmain.go
 vendor/
 
 .cache/
+
+.cover/
