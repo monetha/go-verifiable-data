@@ -3,9 +3,12 @@ package main
 import (
 	"crypto/ecdsa"
 	"flag"
+	"fmt"
+	"io"
 	"io/ioutil"
 	"math/big"
 	"os"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/cmd/utils"
@@ -21,11 +24,47 @@ import (
 	"gitlab.com/monetha/protocol-go-sdk/facts"
 )
 
+type factType int
+
+const (
+	ftTxData  factType = iota
+	ftString  factType = iota
+	ftBytes   factType = iota
+	ftAddress factType = iota
+	ftUint    factType = iota
+	ftInt     factType = iota
+	ftBool    factType = iota
+)
+
+var (
+	factTypes = map[string]factType{
+		"txdata":  ftTxData,
+		"string":  ftString,
+		"bytes":   ftBytes,
+		"address": ftAddress,
+		"uint":    ftUint,
+		"int":     ftInt,
+		"bool":    ftBool,
+	}
+
+	factSetStr string
+)
+
+func init() {
+	keys := make([]string, 0, len(factTypes))
+	for key := range factTypes {
+		keys = append(keys, key)
+	}
+
+	factSetStr = strings.Join(keys, ", ")
+}
+
 func main() {
 	var (
 		backendURL   = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
 		passportAddr = flag.String("passportaddr", "", "Ethereum address of passport contract")
-		factKeyStr   = flag.String("factkey", "", "the key of the fact (max. 32 bytes)")
+		factKeyStr   = flag.String("fkey", "", "the key of the fact (max. 32 bytes)")
+		factTypeStr  = flag.String("ftype", "", fmt.Sprintf("the data type of fact (%v)", factSetStr))
 		ownerKeyFile = flag.String("ownerkey", "", "fact provider private key filename")
 		ownerKeyHex  = flag.String("ownerkeyhex", "", "fact provider private key as hex (for testing)")
 		verbosity    = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
@@ -33,7 +72,10 @@ func main() {
 
 		factProviderKey *ecdsa.PrivateKey
 		factKey         [32]byte
-		factData        []byte
+		knownFactType   bool
+		factType        factType
+		factBytes       []byte
+		factString      string
 		err             error
 	)
 	flag.Parse()
@@ -43,11 +85,17 @@ func main() {
 	glogger.Vmodule(*vmodule)
 	log.Root().SetHandler(glogger)
 
+	factType, knownFactType = factTypes[*factTypeStr]
+
 	switch {
 	case *passportAddr == "" && *backendURL != "":
 		utils.Fatalf("Use -passportaddr to specify an address of passport contract")
 	case *factKeyStr == "":
-		utils.Fatalf("Use -factkey to specify the key of the fact")
+		utils.Fatalf("Use -fkey to specify the key of the fact")
+	case *factTypeStr == "":
+		utils.Fatalf("Use -ftype to specify the data type of fact")
+	case !knownFactType:
+		utils.Fatalf("Unsupported data type of fact '%v', use one of: %v", *factTypeStr, factSetStr)
 	case *ownerKeyFile == "" && *ownerKeyHex == "":
 		utils.Fatalf("Use -ownerkey or -ownerkeyhex to specify a private key of fact provider")
 	case *ownerKeyFile != "" && *ownerKeyHex != "":
@@ -68,8 +116,22 @@ func main() {
 		utils.Fatalf("The key string should fit into 32 bytes")
 	}
 
-	if factData, err = ioutil.ReadAll(os.Stdin); err != nil {
-		utils.Fatalf("failed to read fact data: %v", err)
+	// parse fact data
+	switch {
+	case factType == ftTxData || factType == ftBytes:
+		if factBytes, err = ioutil.ReadAll(os.Stdin); err != nil {
+			utils.Fatalf("failed to read fact bytes: %v", err)
+		}
+	case factType == ftString:
+		var sb strings.Builder
+		if _, err = io.Copy(&sb, os.Stdin); err != nil {
+			utils.Fatalf("failed to read fact string: %v", err)
+		}
+		factString = sb.String()
+	case factType == ftAddress:
+	case factType == ftUint:
+	case factType == ftInt:
+	case factType == ftBool:
 	}
 
 	passportAddress := common.HexToAddress(*passportAddr)
@@ -128,9 +190,20 @@ func main() {
 
 	// TODO: check balance
 
-	err = facts.NewProvider(factProviderSession).
-		WriteTxData(ctx, passportAddress, factKey, factData)
-	cmdutils.CheckErr(err, "WriteTxData")
+	factProvider := facts.NewProvider(factProviderSession)
+
+	switch factType {
+	case ftTxData:
+		cmdutils.CheckErr(factProvider.WriteTxData(ctx, passportAddress, factKey, factBytes), "WriteTxData")
+	case ftString:
+		cmdutils.CheckErr(factProvider.WriteString(ctx, passportAddress, factKey, factString), "WriteString")
+	case ftBytes:
+		cmdutils.CheckErr(factProvider.WriteBytes(ctx, passportAddress, factKey, factBytes), "WriteBytes")
+	case ftAddress:
+	case ftUint:
+	case ftInt:
+	case ftBool:
+	}
 
 	log.Warn("Done.")
 }

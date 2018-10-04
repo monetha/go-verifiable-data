@@ -41,7 +41,7 @@ func NewReader(e *eth.Eth) *FactReader {
 	return (*FactReader)(e)
 }
 
-// WriteTxData writes data for the specific key
+// WriteTxData writes data for the specific key (uses transaction data)
 func (p *FactProvider) WriteTxData(ctx context.Context, passportAddress common.Address, key [32]byte, data []byte) error {
 	backend := p.Backend
 	factProviderAuth := &p.TransactOpts
@@ -56,6 +56,48 @@ func (p *FactProvider) WriteTxData(ctx context.Context, passportAddress common.A
 	tx, err := passportLogicContract.SetTxDataBlockNumber(factProviderAuth, key, data)
 	if err != nil {
 		return fmt.Errorf("facts: SetTxDataBlockNumber: %v", err)
+	}
+	_, err = p.WaitForTxReceipt(ctx, tx.Hash())
+
+	return err
+}
+
+// WriteBytes writes data for the specific key (uses Ethereum storage)
+func (p *FactProvider) WriteBytes(ctx context.Context, passportAddress common.Address, key [32]byte, data []byte) error {
+	backend := p.Backend
+	factProviderAuth := &p.TransactOpts
+
+	p.Log("Initialising passport", "passport", passportAddress)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passportAddress, backend)
+	if err != nil {
+		return fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	p.Log("Writing bytes to passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	tx, err := passportLogicContract.SetBytes(factProviderAuth, key, data)
+	if err != nil {
+		return fmt.Errorf("facts: SetBytes: %v", err)
+	}
+	_, err = p.WaitForTxReceipt(ctx, tx.Hash())
+
+	return err
+}
+
+// WriteString writes data for the specific key (uses Ethereum storage)
+func (p *FactProvider) WriteString(ctx context.Context, passportAddress common.Address, key [32]byte, data string) error {
+	backend := p.Backend
+	factProviderAuth := &p.TransactOpts
+
+	p.Log("Initialising passport", "passport", passportAddress)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passportAddress, backend)
+	if err != nil {
+		return fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	p.Log("Writing bytes to passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	tx, err := passportLogicContract.SetString(factProviderAuth, key, data)
+	if err != nil {
+		return fmt.Errorf("facts: SetString: %v", err)
 	}
 	_, err = p.WaitForTxReceipt(ctx, tx.Hash())
 
