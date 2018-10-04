@@ -26,7 +26,6 @@ func main() {
 		backendURL   = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
 		passportAddr = flag.String("passportaddr", "", "Ethereum address of passport contract")
 		factKeyStr   = flag.String("factkey", "", "the key of the fact (max. 32 bytes)")
-		fileName     = flag.String("filename", "", "filename of the file with fact data")
 		ownerKeyFile = flag.String("ownerkey", "", "fact provider private key filename")
 		ownerKeyHex  = flag.String("ownerkeyhex", "", "fact provider private key as hex (for testing)")
 		verbosity    = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
@@ -47,8 +46,6 @@ func main() {
 	switch {
 	case *passportAddr == "" && *backendURL != "":
 		utils.Fatalf("Use -passportaddr to specify an address of passport contract")
-	case *fileName == "":
-		utils.Fatalf("Use -filename to specify the file name of the file with fact data")
 	case *factKeyStr == "":
 		utils.Fatalf("Use -factkey to specify the key of the fact")
 	case *ownerKeyFile == "" && *ownerKeyHex == "":
@@ -71,8 +68,8 @@ func main() {
 		utils.Fatalf("The key string should fit into 32 bytes")
 	}
 
-	if factData, err = ioutil.ReadFile(*fileName); err != nil {
-		utils.Fatalf("failed to read fact data file: %v", err)
+	if factData, err = ioutil.ReadAll(os.Stdin); err != nil {
+		utils.Fatalf("failed to read fact data: %v", err)
 	}
 
 	passportAddress := common.HexToAddress(*passportAddr)
