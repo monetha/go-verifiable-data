@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"crypto/ecdsa"
 	"flag"
 	"fmt"
@@ -76,6 +77,7 @@ func main() {
 		factType        factType
 		factBytes       []byte
 		factString      string
+		factAddress     common.Address
 		err             error
 	)
 	flag.Parse()
@@ -123,12 +125,18 @@ func main() {
 			utils.Fatalf("failed to read fact bytes: %v", err)
 		}
 	case factType == ftString:
-		var sb strings.Builder
-		if _, err = io.Copy(&sb, os.Stdin); err != nil {
+		if factString, err = copyToString(os.Stdin); err != nil {
 			utils.Fatalf("failed to read fact string: %v", err)
 		}
-		factString = sb.String()
 	case factType == ftAddress:
+		var addressStr string
+		if addressStr, err = readLine(os.Stdin); err != nil {
+			utils.Fatalf("failed to read fact address: %v", err)
+		}
+		if !common.IsHexAddress(addressStr) {
+			utils.Fatalf("invalid fact address: %v", addressStr)
+		}
+		factAddress = common.HexToAddress(addressStr)
 	case factType == ftUint:
 	case factType == ftInt:
 	case factType == ftBool:
@@ -200,10 +208,29 @@ func main() {
 	case ftBytes:
 		cmdutils.CheckErr(factProvider.WriteBytes(ctx, passportAddress, factKey, factBytes), "WriteBytes")
 	case ftAddress:
+		cmdutils.CheckErr(factProvider.WriteAddress(ctx, passportAddress, factKey, factAddress), "WriteAddress")
 	case ftUint:
 	case ftInt:
 	case ftBool:
 	}
 
 	log.Warn("Done.")
+}
+
+func copyToString(r io.Reader) (res string, err error) {
+	var sb strings.Builder
+	if _, err = io.Copy(&sb, r); err == nil {
+		res = sb.String()
+	}
+	return
+}
+
+func readLine(r io.Reader) (res string, err error) {
+	scanner := bufio.NewScanner(os.Stdin)
+	if scanner.Scan() {
+		res = scanner.Text()
+	} else {
+		err = scanner.Err()
+	}
+	return
 }

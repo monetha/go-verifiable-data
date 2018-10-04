@@ -94,10 +94,31 @@ func (p *FactProvider) WriteString(ctx context.Context, passportAddress common.A
 		return fmt.Errorf("facts: NewPassportLogicContract: %v", err)
 	}
 
-	p.Log("Writing bytes to passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	p.Log("Writing string to passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
 	tx, err := passportLogicContract.SetString(factProviderAuth, key, data)
 	if err != nil {
 		return fmt.Errorf("facts: SetString: %v", err)
+	}
+	_, err = p.WaitForTxReceipt(ctx, tx.Hash())
+
+	return err
+}
+
+// WriteAddress writes data for the specific key (uses Ethereum storage)
+func (p *FactProvider) WriteAddress(ctx context.Context, passportAddress common.Address, key [32]byte, data common.Address) error {
+	backend := p.Backend
+	factProviderAuth := &p.TransactOpts
+
+	p.Log("Initialising passport", "passport", passportAddress)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passportAddress, backend)
+	if err != nil {
+		return fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	p.Log("Writing address to passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	tx, err := passportLogicContract.SetAddress(factProviderAuth, key, data)
+	if err != nil {
+		return fmt.Errorf("facts: SetAddress: %v", err)
 	}
 	_, err = p.WaitForTxReceipt(ctx, tx.Hash())
 
