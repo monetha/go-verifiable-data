@@ -2,7 +2,7 @@
 
 Utility tool to write facts to passport.
 
-## tx data vs. string
+## Gas usage
 
 Cumulative gas usage in simulated backend to store number of character of `a` under the key 
 `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` using different data types:

@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"flag"
-	"io/ioutil"
+	"fmt"
 	"math/big"
 	"os"
+	"strconv"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/cmd/utils"
@@ -20,18 +23,56 @@ import (
 	"gitlab.com/monetha/protocol-go-sdk/facts"
 )
 
+type factType int
+
+const (
+	ftTxData  factType = iota
+	ftString  factType = iota
+	ftBytes   factType = iota
+	ftAddress factType = iota
+	ftUint    factType = iota
+	ftInt     factType = iota
+	ftBool    factType = iota
+)
+
+var (
+	factTypes = map[string]factType{
+		"txdata":  ftTxData,
+		"string":  ftString,
+		"bytes":   ftBytes,
+		"address": ftAddress,
+		"uint":    ftUint,
+		"int":     ftInt,
+		"bool":    ftBool,
+	}
+
+	factSetStr string
+)
+
+func init() {
+	keys := make([]string, 0, len(factTypes))
+	for key := range factTypes {
+		keys = append(keys, key)
+	}
+
+	factSetStr = strings.Join(keys, ", ")
+}
+
 func main() {
 	var (
 		backendURL       = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
 		passportAddr     = flag.String("passportaddr", "", "Ethereum address of passport contract")
 		factProviderAddr = flag.String("factprovideraddr", "", "Ethereum address of fact provider")
-		factKeyStr       = flag.String("factkey", "", "the key of the fact (max. 32 bytes)")
+		factKeyStr       = flag.String("fkey", "", "the key of the fact (max. 32 bytes)")
+		factTypeStr      = flag.String("ftype", "", fmt.Sprintf("the data type of fact (%v)", factSetStr))
 		fileName         = flag.String("filename", "", "filename of file to save retrieved bytes")
 		verbosity        = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
 		vmodule          = flag.String("vmodule", "", "log verbosity pattern")
 
-		factKey [32]byte
-		err     error
+		factKey       [32]byte
+		factType      factType
+		knownFactType bool
+		err           error
 	)
 	flag.Parse()
 
@@ -40,13 +81,19 @@ func main() {
 	glogger.Vmodule(*vmodule)
 	log.Root().SetHandler(glogger)
 
+	factType, knownFactType = factTypes[*factTypeStr]
+
 	switch {
 	case *passportAddr == "" && *backendURL != "":
 		utils.Fatalf("Use -passportaddr to specify an address of passport contract")
 	case *fileName == "":
 		utils.Fatalf("Use -filename to specify the file name for the read data")
 	case *factKeyStr == "":
-		utils.Fatalf("Use -factkey to specify the key of the fact")
+		utils.Fatalf("Use -fkey to specify the key of the fact")
+	case *factTypeStr == "":
+		utils.Fatalf("Use -ftype to specify the data type of fact")
+	case !knownFactType:
+		utils.Fatalf("Unsupported data type of fact '%v', use one of: %v", *factTypeStr, factSetStr)
 	}
 
 	if factKeyBytes := []byte(*factKeyStr); len(factKeyBytes) <= 32 {
@@ -105,10 +152,28 @@ func main() {
 		passportAddress, err = deployer.New(passportOwnerSession).DeployPassport(ctx, passportFactoryAddress)
 		cmdutils.CheckErr(err, "create passport")
 
-		factProviderSession := e.NewSession(factProviderKey)
-		err = facts.NewProvider(factProviderSession).
-			WriteTxData(ctx, passportAddress, factKey, []byte("This is test only data!"))
+		factProvider := facts.NewProvider(e.NewSession(factProviderKey))
+
+		err = factProvider.WriteTxData(ctx, passportAddress, factKey, []byte("This is test only tx data!"))
 		cmdutils.CheckErr(err, "WriteTxData")
+
+		err = factProvider.WriteString(ctx, passportAddress, factKey, "This is test only string data!")
+		cmdutils.CheckErr(err, "WriteString")
+
+		err = factProvider.WriteBytes(ctx, passportAddress, factKey, []byte("This is test only bytes data!"))
+		cmdutils.CheckErr(err, "WriteBytes")
+
+		err = factProvider.WriteAddress(ctx, passportAddress, factKey, factProviderAddress)
+		cmdutils.CheckErr(err, "WriteAddress")
+
+		err = factProvider.WriteUint(ctx, passportAddress, factKey, big.NewInt(123456789))
+		cmdutils.CheckErr(err, "WriteUint")
+
+		err = factProvider.WriteInt(ctx, passportAddress, factKey, big.NewInt(987654321))
+		cmdutils.CheckErr(err, "WriteInt")
+
+		err = factProvider.WriteBool(ctx, passportAddress, factKey, true)
+		cmdutils.CheckErr(err, "WriteBool")
 	} else {
 		client, err := ethclient.Dial(*backendURL)
 		cmdutils.CheckErr(err, "ethclient.Dial")
@@ -117,12 +182,47 @@ func main() {
 		cmdutils.CheckErr(e.UpdateSuggestedGasPrice(ctx), "SuggestGasPrice")
 	}
 
-	data, err := facts.NewReader(e).ReadTxData(ctx, passportAddress, factProviderAddress, factKey)
-	cmdutils.CheckErr(err, "ReadTxData")
+	factReader := facts.NewReader(e)
+	buf := new(bytes.Buffer)
 
-	log.Warn("Writing read data")
-	err = ioutil.WriteFile(*fileName, data, 0644)
-	cmdutils.CheckErr(err, "WriteFile")
+	switch factType {
+	case ftTxData:
+		data, err := factReader.ReadTxData(ctx, passportAddress, factProviderAddress, factKey)
+		cmdutils.CheckErr(err, "ReadTxData")
+		buf.Write(data)
+	case ftString:
+		data, err := factReader.ReadString(ctx, passportAddress, factProviderAddress, factKey)
+		cmdutils.CheckErr(err, "ReadString")
+		buf.WriteString(data)
+	case ftBytes:
+		data, err := factReader.ReadBytes(ctx, passportAddress, factProviderAddress, factKey)
+		cmdutils.CheckErr(err, "ReadBytes")
+		buf.Write(data)
+	case ftAddress:
+		data, err := factReader.ReadAddress(ctx, passportAddress, factProviderAddress, factKey)
+		cmdutils.CheckErr(err, "ReadAddress")
+		buf.WriteString(data.String())
+	case ftUint:
+		data, err := factReader.ReadUint(ctx, passportAddress, factProviderAddress, factKey)
+		cmdutils.CheckErr(err, "ReadUint")
+		buf.WriteString(data.String())
+	case ftInt:
+		data, err := factReader.ReadInt(ctx, passportAddress, factProviderAddress, factKey)
+		cmdutils.CheckErr(err, "ReadInt")
+		buf.WriteString(data.String())
+	case ftBool:
+		data, err := factReader.ReadBool(ctx, passportAddress, factProviderAddress, factKey)
+		cmdutils.CheckErr(err, "ReadBool")
+		buf.WriteString(strconv.FormatBool(data))
+	}
+
+	log.Warn("Writing data to file")
+
+	f, err := os.Create(*fileName)
+	cmdutils.CheckErr(err, "Create file")
+
+	_, err = buf.WriteTo(f)
+	cmdutils.CheckErr(err, "Write to file")
 
 	log.Warn("Done.")
 }

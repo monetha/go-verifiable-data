@@ -269,3 +269,183 @@ func (r *FactReader) ReadTxData(ctx context.Context, passport common.Address, fa
 
 	return params.Data, nil
 }
+
+// ReadBytes reads the data from the specific key of the given data provider.
+// `ethereum.NotFound` error returned in case no value exists for the given key.
+func (r *FactReader) ReadBytes(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) ([]byte, error) {
+	backend := r.Backend
+
+	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passport, backend)
+	if err != nil {
+		return nil, fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	var res struct {
+		Success bool
+		Value   []byte
+	}
+
+	(*eth.Eth)(r).Log("Getting bytes", "fact_provider", factProvider, "key", key)
+	res, err = passportLogicContract.GetBytes(nil, factProvider, key)
+	if err != nil {
+		return nil, fmt.Errorf("facts: GetBytes: %v", err)
+	}
+	// check if block number exists for the key
+	if !res.Success {
+		// no data
+		return nil, ethereum.NotFound
+	}
+
+	return res.Value, nil
+}
+
+// ReadString reads the data from the specific key of the given data provider.
+// `ethereum.NotFound` error returned in case no value exists for the given key.
+func (r *FactReader) ReadString(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (string, error) {
+	backend := r.Backend
+
+	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passport, backend)
+	if err != nil {
+		return "", fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	var res struct {
+		Success bool
+		Value   string
+	}
+
+	(*eth.Eth)(r).Log("Getting string", "fact_provider", factProvider, "key", key)
+	res, err = passportLogicContract.GetString(nil, factProvider, key)
+	if err != nil {
+		return "", fmt.Errorf("facts: GetBytes: %v", err)
+	}
+	// check if block number exists for the key
+	if !res.Success {
+		// no data
+		return "", ethereum.NotFound
+	}
+
+	return res.Value, nil
+}
+
+// ReadAddress reads the data from the specific key of the given data provider.
+// `ethereum.NotFound` error returned in case no value exists for the given key.
+func (r *FactReader) ReadAddress(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (common.Address, error) {
+	backend := r.Backend
+
+	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passport, backend)
+	if err != nil {
+		return common.Address{}, fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	var res struct {
+		Success bool
+		Value   common.Address
+	}
+
+	(*eth.Eth)(r).Log("Getting address", "fact_provider", factProvider, "key", key)
+	res, err = passportLogicContract.GetAddress(nil, factProvider, key)
+	if err != nil {
+		return common.Address{}, fmt.Errorf("facts: GetAddress: %v", err)
+	}
+	// check if block number exists for the key
+	if !res.Success {
+		// no data
+		return common.Address{}, ethereum.NotFound
+	}
+
+	return res.Value, nil
+}
+
+// ReadUint reads the data from the specific key of the given data provider.
+// `ethereum.NotFound` error returned in case no value exists for the given key.
+func (r *FactReader) ReadUint(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (*big.Int, error) {
+	backend := r.Backend
+
+	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passport, backend)
+	if err != nil {
+		return nil, fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	var res struct {
+		Success bool
+		Value   *big.Int
+	}
+
+	(*eth.Eth)(r).Log("Getting uint", "fact_provider", factProvider, "key", key)
+	res, err = passportLogicContract.GetUint(nil, factProvider, key)
+	if err != nil {
+		return nil, fmt.Errorf("facts: GetUint: %v", err)
+	}
+	// check if block number exists for the key
+	if !res.Success {
+		// no data
+		return nil, ethereum.NotFound
+	}
+
+	return res.Value, nil
+}
+
+// ReadInt reads the data from the specific key of the given data provider.
+// `ethereum.NotFound` error returned in case no value exists for the given key.
+func (r *FactReader) ReadInt(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (*big.Int, error) {
+	backend := r.Backend
+
+	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passport, backend)
+	if err != nil {
+		return nil, fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	var res struct {
+		Success bool
+		Value   *big.Int
+	}
+
+	(*eth.Eth)(r).Log("Getting int", "fact_provider", factProvider, "key", key)
+	res, err = passportLogicContract.GetInt(nil, factProvider, key)
+	if err != nil {
+		return nil, fmt.Errorf("facts: GetUint: %v", err)
+	}
+	// check if block number exists for the key
+	if !res.Success {
+		// no data
+		return nil, ethereum.NotFound
+	}
+
+	return res.Value, nil
+}
+
+// ReadBool reads the data from the specific key of the given data provider.
+// `ethereum.NotFound` error returned in case no value exists for the given key.
+func (r *FactReader) ReadBool(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (bool, error) {
+	backend := r.Backend
+
+	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passport, backend)
+	if err != nil {
+		return false, fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	var res struct {
+		Success bool
+		Value   bool
+	}
+
+	(*eth.Eth)(r).Log("Getting bool", "fact_provider", factProvider, "key", key)
+	res, err = passportLogicContract.GetBool(nil, factProvider, key)
+	if err != nil {
+		return false, fmt.Errorf("facts: GetBool: %v", err)
+	}
+	// check if block number exists for the key
+	if !res.Success {
+		// no data
+		return false, ethereum.NotFound
+	}
+
+	return res.Value, nil
+}
