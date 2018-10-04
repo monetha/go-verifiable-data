@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"math/big"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -78,6 +79,8 @@ func main() {
 		factBytes       []byte
 		factString      string
 		factAddress     common.Address
+		factInt         *big.Int
+		factBool        bool
 		err             error
 	)
 	flag.Parse()
@@ -129,17 +132,22 @@ func main() {
 			utils.Fatalf("failed to read fact string: %v", err)
 		}
 	case factType == ftAddress:
-		var addressStr string
-		if addressStr, err = readLine(os.Stdin); err != nil {
-			utils.Fatalf("failed to read fact address: %v", err)
-		}
-		if !common.IsHexAddress(addressStr) {
-			utils.Fatalf("invalid fact address: %v", addressStr)
-		}
-		factAddress = common.HexToAddress(addressStr)
+		factAddress = parseAddress(os.Stdin)
 	case factType == ftUint:
+		factInt = parseBigInt(os.Stdin)
+		if factInt.Cmp(new(big.Int)) == -1 {
+			utils.Fatalf("expected non-negative number, but got %v", factInt)
+		}
 	case factType == ftInt:
+		factInt = parseBigInt(os.Stdin)
 	case factType == ftBool:
+		var boolStr string
+		if boolStr, err = readLine(os.Stdin); err != nil {
+			utils.Fatalf("failed to read fact bool: %v", err)
+		}
+		if factBool, err = strconv.ParseBool(boolStr); err != nil {
+			utils.Fatalf("invalid fact bool: %v", boolStr)
+		}
 	}
 
 	passportAddress := common.HexToAddress(*passportAddr)
@@ -198,20 +206,23 @@ func main() {
 
 	// TODO: check balance
 
-	factProvider := facts.NewProvider(factProviderSession)
+	provider := facts.NewProvider(factProviderSession)
 
 	switch factType {
 	case ftTxData:
-		cmdutils.CheckErr(factProvider.WriteTxData(ctx, passportAddress, factKey, factBytes), "WriteTxData")
+		cmdutils.CheckErr(provider.WriteTxData(ctx, passportAddress, factKey, factBytes), "WriteTxData")
 	case ftString:
-		cmdutils.CheckErr(factProvider.WriteString(ctx, passportAddress, factKey, factString), "WriteString")
+		cmdutils.CheckErr(provider.WriteString(ctx, passportAddress, factKey, factString), "WriteString")
 	case ftBytes:
-		cmdutils.CheckErr(factProvider.WriteBytes(ctx, passportAddress, factKey, factBytes), "WriteBytes")
+		cmdutils.CheckErr(provider.WriteBytes(ctx, passportAddress, factKey, factBytes), "WriteBytes")
 	case ftAddress:
-		cmdutils.CheckErr(factProvider.WriteAddress(ctx, passportAddress, factKey, factAddress), "WriteAddress")
+		cmdutils.CheckErr(provider.WriteAddress(ctx, passportAddress, factKey, factAddress), "WriteAddress")
 	case ftUint:
+		cmdutils.CheckErr(provider.WriteUint(ctx, passportAddress, factKey, factInt), "WriteUint")
 	case ftInt:
+		cmdutils.CheckErr(provider.WriteInt(ctx, passportAddress, factKey, factInt), "WriteInt")
 	case ftBool:
+		cmdutils.CheckErr(provider.WriteBool(ctx, passportAddress, factKey, factBool), "WriteBool")
 	}
 
 	log.Warn("Done.")
@@ -226,11 +237,40 @@ func copyToString(r io.Reader) (res string, err error) {
 }
 
 func readLine(r io.Reader) (res string, err error) {
-	scanner := bufio.NewScanner(os.Stdin)
+	scanner := bufio.NewScanner(r)
 	if scanner.Scan() {
 		res = scanner.Text()
 	} else {
 		err = scanner.Err()
+	}
+	return
+}
+
+func parseAddress(r io.Reader) common.Address {
+	var (
+		addressStr string
+		err        error
+	)
+	if addressStr, err = readLine(r); err != nil {
+		utils.Fatalf("failed to read fact address: %v", err)
+	}
+	if !common.IsHexAddress(addressStr) {
+		utils.Fatalf("invalid fact address: %v", addressStr)
+	}
+	return common.HexToAddress(addressStr)
+}
+
+func parseBigInt(r io.Reader) (res *big.Int) {
+	var (
+		s   string
+		err error
+	)
+	if s, err = readLine(r); err != nil {
+		utils.Fatalf("failed to read fact number: %v", err)
+	}
+	var ok bool
+	if res, ok = new(big.Int).SetString(s, 0); !ok {
+		utils.Fatalf("failed to parse number: %v", s)
 	}
 	return
 }

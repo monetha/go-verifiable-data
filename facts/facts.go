@@ -125,6 +125,69 @@ func (p *FactProvider) WriteAddress(ctx context.Context, passportAddress common.
 	return err
 }
 
+// WriteUint writes data for the specific key (uses Ethereum storage)
+func (p *FactProvider) WriteUint(ctx context.Context, passportAddress common.Address, key [32]byte, data *big.Int) error {
+	backend := p.Backend
+	factProviderAuth := &p.TransactOpts
+
+	p.Log("Initialising passport", "passport", passportAddress)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passportAddress, backend)
+	if err != nil {
+		return fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	p.Log("Writing uint to passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	tx, err := passportLogicContract.SetUint(factProviderAuth, key, data)
+	if err != nil {
+		return fmt.Errorf("facts: SetUint: %v", err)
+	}
+	_, err = p.WaitForTxReceipt(ctx, tx.Hash())
+
+	return err
+}
+
+// WriteInt writes data for the specific key (uses Ethereum storage)
+func (p *FactProvider) WriteInt(ctx context.Context, passportAddress common.Address, key [32]byte, data *big.Int) error {
+	backend := p.Backend
+	factProviderAuth := &p.TransactOpts
+
+	p.Log("Initialising passport", "passport", passportAddress)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passportAddress, backend)
+	if err != nil {
+		return fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	p.Log("Writing int to passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	tx, err := passportLogicContract.SetInt(factProviderAuth, key, data)
+	if err != nil {
+		return fmt.Errorf("facts: SetInt: %v", err)
+	}
+	_, err = p.WaitForTxReceipt(ctx, tx.Hash())
+
+	return err
+}
+
+// WriteBool writes data for the specific key (uses Ethereum storage)
+func (p *FactProvider) WriteBool(ctx context.Context, passportAddress common.Address, key [32]byte, data bool) error {
+	backend := p.Backend
+	factProviderAuth := &p.TransactOpts
+
+	p.Log("Initialising passport", "passport", passportAddress)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passportAddress, backend)
+	if err != nil {
+		return fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	p.Log("Writing bool to passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	tx, err := passportLogicContract.SetBool(factProviderAuth, key, data)
+	if err != nil {
+		return fmt.Errorf("facts: SetBool: %v", err)
+	}
+	_, err = p.WaitForTxReceipt(ctx, tx.Hash())
+
+	return err
+}
+
 // ReadTxData reads the data from the specific key of the given data provider.
 // `ethereum.NotFound` error returned in case no value exists for the given key.
 func (r *FactReader) ReadTxData(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) ([]byte, error) {
