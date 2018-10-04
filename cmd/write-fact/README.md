@@ -4,21 +4,21 @@ Utility tool to write facts to passport.
 
 ## tx data vs. string
 
-Cumulative gas used in simulated backend to store bytes:
+Cumulative gas used in simulated backend to store number of character of `a` under the key `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`:
 
-| Number of bytes  |     tx data    |
-|-----------------:|---------------:|
-| 10 | 70436 |
-| 100 | 76598 |
-| 500 | 103870 |
-| 1000 | 138016 |
-| 5000 | 410814 |
-| 10000 | 751864 |
-| 50000 | 3483963 |
-| 100000 | 6907662 |
-| 110000 | 7593621 |
-| 120000 | 8279814 |
-| 130000 | 8966537 |
+| Number of characters |     tx data, gas used    |  string, gas used |
+|---------------------:|-------------------------:|------------------:|
+| 10 | 70436 | |
+| 100 | 76598 | |
+| 500 | 103870 | |
+| 1000 | 138016 | |
+| 5000 | 410814 | |
+| 10000 | 751864 | |
+| 50000 | 3483963 | |
+| 100000 | 6907662 | |
+| 110000 | 7593621 | |
+| 120000 | 8279814 | |
+| 130000 | 8966537 | |
 
 ## Examples
 
