@@ -62,7 +62,7 @@ func main() {
 		}
 	}
 
-	if factKeyBytes := []byte(*factKeyStr); len(factKeyBytes) < 32 {
+	if factKeyBytes := []byte(*factKeyStr); len(factKeyBytes) <= 32 {
 		copy(factKey[:], factKeyBytes)
 	} else {
 		utils.Fatalf("The key string should fit into 32 bytes")
