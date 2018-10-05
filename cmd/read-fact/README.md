@@ -11,7 +11,7 @@ Usage of `./read-fact`:
   -factprovideraddr string
     	Ethereum address of fact provider
   -filename string
-    	filename of file to save retrieved bytes
+    	filename of file to save retrieved data
   -fkey string
     	the key of the fact (max. 32 bytes)
   -ftype string

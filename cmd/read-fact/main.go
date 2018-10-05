@@ -65,7 +65,7 @@ func main() {
 		factProviderAddr = flag.String("factprovideraddr", "", "Ethereum address of fact provider")
 		factKeyStr       = flag.String("fkey", "", "the key of the fact (max. 32 bytes)")
 		factTypeStr      = flag.String("ftype", "", fmt.Sprintf("the data type of fact (%v)", factSetStr))
-		fileName         = flag.String("filename", "", "filename of file to save retrieved bytes")
+		fileName         = flag.String("filename", "", "filename of file to save retrieved data")
 		verbosity        = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
 		vmodule          = flag.String("vmodule", "", "log verbosity pattern")
 
