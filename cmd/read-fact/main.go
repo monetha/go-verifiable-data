@@ -86,6 +86,8 @@ func main() {
 	switch {
 	case *passportAddr == "" && *backendURL != "":
 		utils.Fatalf("Use -passportaddr to specify an address of passport contract")
+	case *factProviderAddr == "" && *backendURL != "":
+		utils.Fatalf("Use -factprovideraddr to specify fact provider address")
 	case *fileName == "":
 		utils.Fatalf("Use -filename to specify the file name for the read data")
 	case *factKeyStr == "":

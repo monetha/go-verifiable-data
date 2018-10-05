@@ -2,6 +2,28 @@
 
 Utility tool to write facts to passport.
 
+## Usage
+
+Usage of `./write-fact`:
+```
+  -backendurl string
+    	backend URL (simulated backend used if empty)
+  -fkey string
+    	the key of the fact (max. 32 bytes)
+  -ftype string
+    	the data type of fact (string, bytes, address, uint, int, bool, txdata)
+  -ownerkey string
+    	fact provider private key filename
+  -ownerkeyhex string
+    	fact provider private key as hex (for testing)
+  -passportaddr string
+    	Ethereum address of passport contract
+  -verbosity int
+    	log verbosity (0-9) (default 2)
+  -vmodule string
+    	log verbosity pattern
+```
+
 ## Gas usage
 
 Cumulative gas usage in simulated backend to store number of character of `a` under the key 
@@ -30,4 +52,14 @@ using fact provider private key `1dae9ab9e0c080371c56d816f4b6323e6c229e1cea4d15b
     -fkey aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa \
     -ftype txdata \
     -ownerkeyhex 1dae9ab9e0c080371c56d816f4b6323e6c229e1cea4d15bc7f828c40ad9729d6
+  ```
+
+* Store image from file `~/Downloads/monetha.jpg` under the key `monetha.jpg` as `txdata` in passport
+  [`0x9CfabB3172DFd5ED740c3b8A327BF573226c5064`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064):
+  ```bash
+  ./write-fact -ownerkey fact_provider.key \
+    -fkey monetha.jpg \
+    -ftype txdata \
+    -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+    -backendurl https://ropsten.infura.io < ~/Downloads/monetha.jpg
   ```
