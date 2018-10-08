@@ -127,6 +127,12 @@ func (p *FactProvider) WriteAddress(ctx context.Context, passportAddress common.
 
 // WriteUint writes data for the specific key (uses Ethereum storage)
 func (p *FactProvider) WriteUint(ctx context.Context, passportAddress common.Address, key [32]byte, data *big.Int) error {
+	if data == nil {
+		panic("big-integer cannot be nil")
+	}
+
+	data = new(big.Int).Set(data)
+
 	backend := p.Backend
 	factProviderAuth := &p.TransactOpts
 
@@ -148,6 +154,12 @@ func (p *FactProvider) WriteUint(ctx context.Context, passportAddress common.Add
 
 // WriteInt writes data for the specific key (uses Ethereum storage)
 func (p *FactProvider) WriteInt(ctx context.Context, passportAddress common.Address, key [32]byte, data *big.Int) error {
+	if data == nil {
+		panic("big-integer cannot be nil")
+	}
+
+	data = new(big.Int).Set(data)
+
 	backend := p.Backend
 	factProviderAuth := &p.TransactOpts
 
