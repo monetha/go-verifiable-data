@@ -2,6 +2,7 @@ package facts
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"math/big"
 
@@ -15,6 +16,11 @@ import (
 
 var (
 	passportLogicInputParser *txdata.PassportLogicInputParser
+
+	// ErrOutOfUint256Range error returned when value is out of uint256 range [0; 2^256-1]
+	ErrOutOfUint256Range = errors.New("facts: out of uint256 range")
+	// ErrOutOfInt256Range error returned when value is out of int256 range [-2^255; 2^255-1]
+	ErrOutOfInt256Range = errors.New("facts: out of int256 range")
 )
 
 func init() {
@@ -131,6 +137,10 @@ func (p *FactProvider) WriteUint(ctx context.Context, passportAddress common.Add
 		panic("big-integer cannot be nil")
 	}
 
+	if data.Sign() == -1 || data.BitLen() > 256 {
+		return ErrOutOfUint256Range
+	}
+
 	data = new(big.Int).Set(data)
 
 	backend := p.Backend
@@ -152,10 +162,19 @@ func (p *FactProvider) WriteUint(ctx context.Context, passportAddress common.Add
 	return err
 }
 
+var (
+	two255    = new(big.Int).Exp(big.NewInt(2), big.NewInt(255), nil) // = 2^255
+	maxInt256 = new(big.Int).Sub(two255, big.NewInt(1))               // = 2^255-1
+	minInt256 = new(big.Int).Neg(two255)                              // = -2^255
+)
+
 // WriteInt writes data for the specific key (uses Ethereum storage)
 func (p *FactProvider) WriteInt(ctx context.Context, passportAddress common.Address, key [32]byte, data *big.Int) error {
 	if data == nil {
 		panic("big-integer cannot be nil")
+	}
+	if data.Cmp(maxInt256) == 1 || minInt256.Cmp(data) == 1 {
+		return ErrOutOfInt256Range
 	}
 
 	data = new(big.Int).Set(data)
