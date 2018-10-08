@@ -1,5 +1,5 @@
-hash: 85c32f0b6f420cc90e7ef1ac685ca4b8ba255f5818e90dbddfcf1d18c637f2bd
-updated: 2018-09-19T09:16:59.776495031+03:00
+hash: aafda16de8b1a3ab9749be0091535c968749182646ecd7cdfe382944aff51eb3
+updated: 2018-10-08T09:16:59.776495031+03:00
 imports:
 - name: github.com/aristanetworks/goarista
   version: ff33da284e760fcdb03c33d37a719e5ed30ba844
@@ -12,7 +12,7 @@ imports:
 - name: github.com/deckarep/golang-set
   version: cbaa98ba5575e67703b32b4b19f73c91f3c4159e
 - name: github.com/ethereum/go-ethereum
-  version: 89451f7c382ad2185987ee369f16416f89c28a7d
+  version: 477eb0933b9529f7deeccc233cc815fe34a8ea56
   subpackages:
   - accounts
   - accounts/abi
