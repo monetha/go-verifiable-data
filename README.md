@@ -42,3 +42,4 @@ The protocol-go-sdk project comes with several executables found in the [`cmd`](
 | [`deploy-passport`](cmd/deploy-passport) | Utility tool to deploy [Passport](contracts/code/Passport.sol) contracts using already deployed [PassportFactory](contracts/code/PassportFactory.sol). |
 | [`write-fact`](cmd/write-fact) | Utility tool to write facts to passport. |
 | [`read-fact`](cmd/read-fact) | Utility tool to read facts from passport. |
+| [`passport-list`](cmd/passport-list) | Utility tool for getting a list of passports created using specific [PassportFactory](../../contracts/code/PassportFactory.sol) contract. |
