@@ -13,8 +13,8 @@ import (
 // Reader retrieves data from passport factory
 type Reader eth.Eth
 
-// New converts session to Reader
-func New(e *eth.Eth) *Reader {
+// NewReader converts session to Reader
+func NewReader(e *eth.Eth) *Reader {
 	return (*Reader)(e)
 }
 

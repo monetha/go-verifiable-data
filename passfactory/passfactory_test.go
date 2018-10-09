@@ -93,7 +93,7 @@ func prepareReaderFilterPassports(t *testing.T, optsFun func(passportCreationRes
 
 	opts := optsFun(passCreation)
 
-	pf := passfactory.New(e)
+	pf := passfactory.NewReader(e)
 	if opts != nil {
 		opts.Context = ctx
 	}
