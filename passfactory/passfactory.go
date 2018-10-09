@@ -35,8 +35,8 @@ type Passport struct {
 // PassportIterator is returned from FilterPassports and is used to iterate over the passports and unpacked data for
 // PassportCreated events raised by the PassportFactoryContract contract.
 type PassportIterator struct {
-	Passport *Passport // Passport containing the info of the last retrieved passport
 	it       *contracts.PassportFactoryContractPassportCreatedIterator
+	Passport *Passport // Passport containing the info of the last retrieved passport
 }
 
 // Next advances the iterator to the subsequent passport, returning whether there
@@ -73,6 +73,21 @@ func (pit *PassportIterator) Error() error {
 func (pit *PassportIterator) Close() error {
 	pit.it.Close()
 	return nil
+}
+
+// ToSlice retrieves all passports and saves them into slice.
+func (pit *PassportIterator) ToSlice() ([]*Passport, error) {
+	defer pit.Close()
+
+	var ps []*Passport
+	for pit.Next() {
+		if err := pit.Error(); err != nil {
+			return nil, err
+		}
+		ps = append(ps, pit.Passport)
+	}
+
+	return ps, nil
 }
 
 // PassportFilterOpts is the collection of options to fine tune filtering for passports.
