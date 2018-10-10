@@ -71,15 +71,13 @@ func (pit *PassportIterator) Error() error {
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
 func (pit *PassportIterator) Close() error {
-	pit.it.Close()
-	return nil
+	return pit.it.Close()
 }
 
 // ToSlice retrieves all passports and saves them into slice.
-func (pit *PassportIterator) ToSlice() ([]*Passport, error) {
-	defer pit.Close()
+func (pit *PassportIterator) ToSlice() (ps []*Passport, err error) {
+	defer func() { err = pit.Close() }()
 
-	var ps []*Passport
 	for pit.Next() {
 		if err := pit.Error(); err != nil {
 			return nil, err
@@ -87,7 +85,7 @@ func (pit *PassportIterator) ToSlice() ([]*Passport, error) {
 		ps = append(ps, pit.Passport)
 	}
 
-	return ps, nil
+	return
 }
 
 // PassportFilterOpts is the collection of options to fine tune filtering for passports.
