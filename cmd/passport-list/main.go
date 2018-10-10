@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"math/big"
 	"os"
 
@@ -23,6 +24,7 @@ func main() {
 	var (
 		backendURL  = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
 		factoryAddr = flag.String("factoryaddr", "", "Ethereum address of passport factory contract")
+		fileName    = flag.String("out", "", "save retrieved passports to the specified file")
 		verbosity   = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
 		vmodule     = flag.String("vmodule", "", "log verbosity pattern")
 	)
@@ -36,6 +38,8 @@ func main() {
 	switch {
 	case *factoryAddr == "" && *backendURL != "":
 		utils.Fatalf("Use -factoryaddr to specify an address of passport factory contract")
+	case *fileName == "":
+		utils.Fatalf("Use -out to save retrieved passports to the specified file")
 	}
 
 	passportFactoryAddress := common.HexToAddress(*factoryAddr)
@@ -104,10 +108,19 @@ func main() {
 	cmdutils.CheckErr(err, "FilterPassports")
 	defer it.Close()
 
+	log.Warn("Writing collected passports to file")
+
+	f, err := os.Create(*fileName)
+	cmdutils.CheckErr(err, "Create file")
+	defer f.Close()
+
+	f.WriteString("passport_address,first_owner,block_number,tx_hash\n")
 	for it.Next() {
 		cmdutils.CheckErr(it.Error(), "getting next passport")
 
 		p := it.Passport
-		log.Warn("passport", "block_number", p.BlockNumber, "passport_address", p.ContractAddress.Hex(), "first_owner", p.FirstOwner.Hex(), "tx_hash", p.TxHash.Hex())
+		f.WriteString(fmt.Sprintf("%v,%v,%v,%v\n", p.ContractAddress.Hex(), p.FirstOwner.Hex(), p.BlockNumber, p.TxHash.Hex()))
 	}
+
+	log.Warn("Done.")
 }

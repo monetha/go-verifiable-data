@@ -10,6 +10,8 @@ Usage of `./passport-list`:
     	backend URL (simulated backend used if empty)
   -factoryaddr string
     	Ethereum address of passport factory contract
+  -out string
+    	save retrieved passports to the specified file
   -verbosity int
     	log verbosity (0-9) (default 2)
   -vmodule string
@@ -23,7 +25,10 @@ Usage of `./passport-list`:
   ./passport-list
   ```
 
-* Get all passports created by the passport factory [`0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2`](https://ropsten.etherscan.io/address/0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2#code) in Ropsten network:
+* Get all passports created by the passport factory [`0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2`](https://ropsten.etherscan.io/address/0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2#code) in Ropsten network
+  and write them to the file `./passports.csv`:
   ```bash
-  ./passport-list -backendurl https://ropsten.infura.io -factoryaddr 0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2
+  ./passport-list -out ./passports.csv \
+    -backendurl https://ropsten.infura.io \
+    -factoryaddr 0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2
   ```

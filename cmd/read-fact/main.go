@@ -222,6 +222,7 @@ func main() {
 
 	f, err := os.Create(*fileName)
 	cmdutils.CheckErr(err, "Create file")
+	defer f.Close()
 
 	_, err = buf.WriteTo(f)
 	cmdutils.CheckErr(err, "Write to file")
