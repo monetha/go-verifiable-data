@@ -32,7 +32,7 @@ func main() {
 
 	glogger := log.NewGlogHandler(log.StreamHandler(os.Stderr, log.TerminalFormat(false)))
 	glogger.Verbosity(log.Lvl(*verbosity))
-	glogger.Vmodule(*vmodule)
+	_ = glogger.Vmodule(*vmodule)
 	log.Root().SetHandler(glogger)
 
 	switch {
@@ -106,20 +106,22 @@ func main() {
 
 	it, err := pfr.FilterPassports(filterOpts, passportFactoryAddress)
 	cmdutils.CheckErr(err, "FilterPassports")
-	defer it.Close()
+	defer func() { _ = it.Close() }()
 
 	log.Warn("Writing collected passports to file")
 
 	f, err := os.Create(*fileName)
 	cmdutils.CheckErr(err, "Create file")
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
-	f.WriteString("passport_address,first_owner,block_number,tx_hash\n")
+	_, err = f.WriteString("passport_address,first_owner,block_number,tx_hash\n")
+	cmdutils.CheckErr(err, "WriteString to file")
 	for it.Next() {
 		cmdutils.CheckErr(it.Error(), "getting next passport")
 
 		p := it.Passport
-		f.WriteString(fmt.Sprintf("%v,%v,%v,%v\n", p.ContractAddress.Hex(), p.FirstOwner.Hex(), p.BlockNumber, p.TxHash.Hex()))
+		_, err = f.WriteString(fmt.Sprintf("%v,%v,%v,%v\n", p.ContractAddress.Hex(), p.FirstOwner.Hex(), p.BlockNumber, p.TxHash.Hex()))
+		cmdutils.CheckErr(err, "WriteString to file")
 	}
 
 	log.Warn("Done.")
