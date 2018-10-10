@@ -65,7 +65,7 @@ func main() {
 		factProviderAddr = flag.String("factprovideraddr", "", "Ethereum address of fact provider")
 		factKeyStr       = flag.String("fkey", "", "the key of the fact (max. 32 bytes)")
 		factTypeStr      = flag.String("ftype", "", fmt.Sprintf("the data type of fact (%v)", factSetStr))
-		fileName         = flag.String("filename", "", "filename of file to save retrieved data")
+		fileName         = flag.String("out", "", "save retrieved data to the specified file")
 		verbosity        = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
 		vmodule          = flag.String("vmodule", "", "log verbosity pattern")
 
@@ -89,7 +89,7 @@ func main() {
 	case *factProviderAddr == "" && *backendURL != "":
 		utils.Fatalf("Use -factprovideraddr to specify fact provider address")
 	case *fileName == "":
-		utils.Fatalf("Use -filename to specify the file name for the read data")
+		utils.Fatalf("Use -out to save retrieved data to the specified file")
 	case *factKeyStr == "":
 		utils.Fatalf("Use -fkey to specify the key of the fact")
 	case *factTypeStr == "":
