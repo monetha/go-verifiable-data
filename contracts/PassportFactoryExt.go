@@ -25,18 +25,22 @@ func NewPassportFactoryLogFilterer() (*PassportFactoryLogFilterer, error) {
 }
 
 // FilterPassportCreated parses event logs and returns PassportCreated events if any found.
-func (f *PassportFactoryLogFilterer) FilterPassportCreated(logs []*types.Log, passport []common.Address, owner []common.Address) ([]PassportFactoryContractPassportCreated, error) {
+func (f *PassportFactoryLogFilterer) FilterPassportCreated(logs []*types.Log, passport []common.Address, owner []common.Address) (events []PassportFactoryContractPassportCreated, err error) {
 	cf := &PassportFactoryContractFilterer{
 		contract: bind.NewBoundContract(common.Address{}, f.abi, nil, nil, methereum.SliceLogFilterer(logs)),
 	}
 
-	it, err := cf.FilterPassportCreated(nil, passport, owner)
+	var it *PassportFactoryContractPassportCreatedIterator
+	it, err = cf.FilterPassportCreated(nil, passport, owner)
 	if err != nil {
-		return nil, err
+		return
 	}
-	defer it.Close()
+	defer func() {
+		if cErr := it.Close(); err == nil && cErr != nil {
+			err = cErr
+		}
+	}()
 
-	events := make([]PassportFactoryContractPassportCreated, 0, len(logs))
 	for it.Next() {
 		if err = it.Error(); err != nil {
 			return nil, err
@@ -50,5 +54,5 @@ func (f *PassportFactoryLogFilterer) FilterPassportCreated(logs []*types.Log, pa
 		events = append(events, *ev)
 	}
 
-	return events, nil
+	return
 }
