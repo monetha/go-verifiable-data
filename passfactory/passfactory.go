@@ -76,7 +76,11 @@ func (pit *PassportIterator) Close() error {
 
 // ToSlice retrieves all passports and saves them into slice.
 func (pit *PassportIterator) ToSlice() (ps []*Passport, err error) {
-	defer func() { err = pit.Close() }()
+	defer func() {
+		if cErr := pit.Close(); err == nil && cErr != nil {
+			err = cErr
+		}
+	}()
 
 	for pit.Next() {
 		if err := pit.Error(); err != nil {
