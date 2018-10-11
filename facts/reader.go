@@ -25,17 +25,17 @@ func init() {
 	}
 }
 
-// FactReader reads the facts
-type FactReader eth.Eth
+// Reader reads the facts
+type Reader eth.Eth
 
-// NewReader converts eth to FactReader
-func NewReader(e *eth.Eth) *FactReader {
-	return (*FactReader)(e)
+// NewReader converts eth to Reader
+func NewReader(e *eth.Eth) *Reader {
+	return (*Reader)(e)
 }
 
 // ReadTxData reads the data from the specific key of the given data provider.
 // `ethereum.NotFound` error returned in case no value exists for the given key.
-func (r *FactReader) ReadTxData(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) ([]byte, error) {
+func (r *Reader) ReadTxData(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) ([]byte, error) {
 	backend := r.Backend
 
 	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
@@ -117,7 +117,7 @@ func (r *FactReader) ReadTxData(ctx context.Context, passport common.Address, fa
 
 // ReadBytes reads the data from the specific key of the given data provider.
 // `ethereum.NotFound` error returned in case no value exists for the given key.
-func (r *FactReader) ReadBytes(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) ([]byte, error) {
+func (r *Reader) ReadBytes(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) ([]byte, error) {
 	backend := r.Backend
 
 	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
@@ -147,7 +147,7 @@ func (r *FactReader) ReadBytes(ctx context.Context, passport common.Address, fac
 
 // ReadString reads the data from the specific key of the given data provider.
 // `ethereum.NotFound` error returned in case no value exists for the given key.
-func (r *FactReader) ReadString(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (string, error) {
+func (r *Reader) ReadString(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (string, error) {
 	backend := r.Backend
 
 	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
@@ -177,7 +177,7 @@ func (r *FactReader) ReadString(ctx context.Context, passport common.Address, fa
 
 // ReadAddress reads the data from the specific key of the given data provider.
 // `ethereum.NotFound` error returned in case no value exists for the given key.
-func (r *FactReader) ReadAddress(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (common.Address, error) {
+func (r *Reader) ReadAddress(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (common.Address, error) {
 	backend := r.Backend
 
 	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
@@ -207,7 +207,7 @@ func (r *FactReader) ReadAddress(ctx context.Context, passport common.Address, f
 
 // ReadUint reads the data from the specific key of the given data provider.
 // `ethereum.NotFound` error returned in case no value exists for the given key.
-func (r *FactReader) ReadUint(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (*big.Int, error) {
+func (r *Reader) ReadUint(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (*big.Int, error) {
 	backend := r.Backend
 
 	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
@@ -237,7 +237,7 @@ func (r *FactReader) ReadUint(ctx context.Context, passport common.Address, fact
 
 // ReadInt reads the data from the specific key of the given data provider.
 // `ethereum.NotFound` error returned in case no value exists for the given key.
-func (r *FactReader) ReadInt(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (*big.Int, error) {
+func (r *Reader) ReadInt(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (*big.Int, error) {
 	backend := r.Backend
 
 	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
@@ -267,7 +267,7 @@ func (r *FactReader) ReadInt(ctx context.Context, passport common.Address, factP
 
 // ReadBool reads the data from the specific key of the given data provider.
 // `ethereum.NotFound` error returned in case no value exists for the given key.
-func (r *FactReader) ReadBool(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (bool, error) {
+func (r *Reader) ReadBool(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (bool, error) {
 	backend := r.Backend
 
 	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)

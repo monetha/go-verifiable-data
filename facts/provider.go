@@ -18,16 +18,16 @@ var (
 	ErrOutOfInt256Range = errors.New("facts: out of int256 range")
 )
 
-// FactProvider provides the facts
-type FactProvider eth.Session
+// Provider provides the facts
+type Provider eth.Session
 
-// NewProvider converts session to FactProvider
-func NewProvider(s *eth.Session) *FactProvider {
-	return (*FactProvider)(s)
+// NewProvider converts session to Provider
+func NewProvider(s *eth.Session) *Provider {
+	return (*Provider)(s)
 }
 
 // WriteTxData writes data for the specific key (uses transaction data)
-func (p *FactProvider) WriteTxData(ctx context.Context, passportAddress common.Address, key [32]byte, data []byte) error {
+func (p *Provider) WriteTxData(ctx context.Context, passportAddress common.Address, key [32]byte, data []byte) error {
 	backend := p.Backend
 	factProviderAuth := &p.TransactOpts
 
@@ -48,7 +48,7 @@ func (p *FactProvider) WriteTxData(ctx context.Context, passportAddress common.A
 }
 
 // WriteBytes writes data for the specific key (uses Ethereum storage)
-func (p *FactProvider) WriteBytes(ctx context.Context, passportAddress common.Address, key [32]byte, data []byte) error {
+func (p *Provider) WriteBytes(ctx context.Context, passportAddress common.Address, key [32]byte, data []byte) error {
 	backend := p.Backend
 	factProviderAuth := &p.TransactOpts
 
@@ -69,7 +69,7 @@ func (p *FactProvider) WriteBytes(ctx context.Context, passportAddress common.Ad
 }
 
 // WriteString writes data for the specific key (uses Ethereum storage)
-func (p *FactProvider) WriteString(ctx context.Context, passportAddress common.Address, key [32]byte, data string) error {
+func (p *Provider) WriteString(ctx context.Context, passportAddress common.Address, key [32]byte, data string) error {
 	backend := p.Backend
 	factProviderAuth := &p.TransactOpts
 
@@ -90,7 +90,7 @@ func (p *FactProvider) WriteString(ctx context.Context, passportAddress common.A
 }
 
 // WriteAddress writes data for the specific key (uses Ethereum storage)
-func (p *FactProvider) WriteAddress(ctx context.Context, passportAddress common.Address, key [32]byte, data common.Address) error {
+func (p *Provider) WriteAddress(ctx context.Context, passportAddress common.Address, key [32]byte, data common.Address) error {
 	backend := p.Backend
 	factProviderAuth := &p.TransactOpts
 
@@ -111,7 +111,7 @@ func (p *FactProvider) WriteAddress(ctx context.Context, passportAddress common.
 }
 
 // WriteUint writes data for the specific key (uses Ethereum storage)
-func (p *FactProvider) WriteUint(ctx context.Context, passportAddress common.Address, key [32]byte, data *big.Int) error {
+func (p *Provider) WriteUint(ctx context.Context, passportAddress common.Address, key [32]byte, data *big.Int) error {
 	if data == nil {
 		panic("big-integer cannot be nil")
 	}
@@ -148,7 +148,7 @@ var (
 )
 
 // WriteInt writes data for the specific key (uses Ethereum storage)
-func (p *FactProvider) WriteInt(ctx context.Context, passportAddress common.Address, key [32]byte, data *big.Int) error {
+func (p *Provider) WriteInt(ctx context.Context, passportAddress common.Address, key [32]byte, data *big.Int) error {
 	if data == nil {
 		panic("big-integer cannot be nil")
 	}
@@ -178,7 +178,7 @@ func (p *FactProvider) WriteInt(ctx context.Context, passportAddress common.Addr
 }
 
 // WriteBool writes data for the specific key (uses Ethereum storage)
-func (p *FactProvider) WriteBool(ctx context.Context, passportAddress common.Address, key [32]byte, data bool) error {
+func (p *Provider) WriteBool(ctx context.Context, passportAddress common.Address, key [32]byte, data bool) error {
 	backend := p.Backend
 	factProviderAuth := &p.TransactOpts
 

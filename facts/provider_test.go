@@ -28,7 +28,7 @@ func TestFactProvider_WriteUint(t *testing.T) {
 
 			err := facts.NewProvider(factProviderSession).WriteUint(ctx, passportAddress, tt.key, tt.data)
 			if err != tt.err {
-				t.Errorf("FactProvider.WriteUint() error = %v, want err = %v", err, tt.err)
+				t.Errorf("Provider.WriteUint() error = %v, want err = %v", err, tt.err)
 			}
 		})
 	}
@@ -57,7 +57,7 @@ func TestFactProvider_WriteInt(t *testing.T) {
 
 			err := facts.NewProvider(factProviderSession).WriteInt(ctx, passportAddress, tt.key, tt.data)
 			if err != tt.err {
-				t.Errorf("FactProvider.WriteInt() error = %v, want err = %v", err, tt.err)
+				t.Errorf("Provider.WriteInt() error = %v, want err = %v", err, tt.err)
 			}
 		})
 	}

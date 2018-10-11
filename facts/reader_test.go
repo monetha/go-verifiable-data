@@ -34,12 +34,12 @@ func TestFactReader_ReadTxData(t *testing.T) {
 
 			err := facts.NewProvider(factProviderSession).WriteTxData(ctx, passportAddress, tt.key, tt.data)
 			if err != nil {
-				t.Errorf("FactProvider.WriteTxData() error = %v", err)
+				t.Errorf("Provider.WriteTxData() error = %v", err)
 			}
 
 			readData, err := facts.NewReader(e).ReadTxData(ctx, passportAddress, factProviderAddress, tt.key)
 			if err != nil {
-				t.Errorf("FactReader.ReadTxData() error = %v", err)
+				t.Errorf("Reader.ReadTxData() error = %v", err)
 			}
 
 			if !bytes.Equal(tt.data, readData) {
@@ -60,7 +60,7 @@ func TestFactReader_ReadTxData(t *testing.T) {
 
 		_, err := facts.NewReader(e).ReadTxData(ctx, passportAddress, factProviderAddress, key)
 		if err != ethereum.NotFound {
-			t.Errorf("FactReader.ReadTxData() expecting error = %v, got error = %v", ethereum.NotFound, err)
+			t.Errorf("Reader.ReadTxData() expecting error = %v, got error = %v", ethereum.NotFound, err)
 		}
 	})
 }
@@ -88,12 +88,12 @@ func TestFactReader_ReadBytes(t *testing.T) {
 
 			err := facts.NewProvider(factProviderSession).WriteBytes(ctx, passportAddress, tt.key, tt.data)
 			if err != nil {
-				t.Errorf("FactProvider.WriteBytes() error = %v", err)
+				t.Errorf("Provider.WriteBytes() error = %v", err)
 			}
 
 			readData, err := facts.NewReader(e).ReadBytes(ctx, passportAddress, factProviderAddress, tt.key)
 			if err != nil {
-				t.Errorf("FactReader.ReadBytes() error = %v", err)
+				t.Errorf("Reader.ReadBytes() error = %v", err)
 			}
 
 			if !bytes.Equal(tt.data, readData) {
@@ -114,7 +114,7 @@ func TestFactReader_ReadBytes(t *testing.T) {
 
 		_, err := facts.NewReader(e).ReadBytes(ctx, passportAddress, factProviderAddress, key)
 		if err != ethereum.NotFound {
-			t.Errorf("FactReader.ReadBytes() expecting error = %v, got error = %v", ethereum.NotFound, err)
+			t.Errorf("Reader.ReadBytes() expecting error = %v, got error = %v", ethereum.NotFound, err)
 		}
 	})
 }
@@ -141,12 +141,12 @@ func TestFactReader_ReadString(t *testing.T) {
 
 			err := facts.NewProvider(factProviderSession).WriteString(ctx, passportAddress, tt.key, tt.data)
 			if err != nil {
-				t.Errorf("FactProvider.WriteString() error = %v", err)
+				t.Errorf("Provider.WriteString() error = %v", err)
 			}
 
 			readData, err := facts.NewReader(e).ReadString(ctx, passportAddress, factProviderAddress, tt.key)
 			if err != nil {
-				t.Errorf("FactReader.ReadString() error = %v", err)
+				t.Errorf("Reader.ReadString() error = %v", err)
 			}
 
 			if tt.data != readData {
@@ -167,7 +167,7 @@ func TestFactReader_ReadString(t *testing.T) {
 
 		_, err := facts.NewReader(e).ReadString(ctx, passportAddress, factProviderAddress, key)
 		if err != ethereum.NotFound {
-			t.Errorf("FactReader.ReadString() expecting error = %v, got error = %v", ethereum.NotFound, err)
+			t.Errorf("Reader.ReadString() expecting error = %v, got error = %v", ethereum.NotFound, err)
 		}
 	})
 }
@@ -193,12 +193,12 @@ func TestFactReader_ReadAddress(t *testing.T) {
 
 			err := facts.NewProvider(factProviderSession).WriteAddress(ctx, passportAddress, tt.key, tt.data)
 			if err != nil {
-				t.Errorf("FactProvider.WriteAddress() error = %v", err)
+				t.Errorf("Provider.WriteAddress() error = %v", err)
 			}
 
 			readData, err := facts.NewReader(e).ReadAddress(ctx, passportAddress, factProviderAddress, tt.key)
 			if err != nil {
-				t.Errorf("FactReader.ReadAddress() error = %v", err)
+				t.Errorf("Reader.ReadAddress() error = %v", err)
 			}
 
 			if tt.data != readData {
@@ -219,7 +219,7 @@ func TestFactReader_ReadAddress(t *testing.T) {
 
 		_, err := facts.NewReader(e).ReadAddress(ctx, passportAddress, factProviderAddress, key)
 		if err != ethereum.NotFound {
-			t.Errorf("FactReader.ReadAddress() expecting error = %v, got error = %v", ethereum.NotFound, err)
+			t.Errorf("Reader.ReadAddress() expecting error = %v, got error = %v", ethereum.NotFound, err)
 		}
 	})
 }
@@ -245,12 +245,12 @@ func TestFactReader_ReadUint(t *testing.T) {
 
 			err := facts.NewProvider(factProviderSession).WriteUint(ctx, passportAddress, tt.key, tt.data)
 			if err != nil {
-				t.Errorf("FactProvider.WriteUint() error = %v", err)
+				t.Errorf("Provider.WriteUint() error = %v", err)
 			}
 
 			readData, err := facts.NewReader(e).ReadUint(ctx, passportAddress, factProviderAddress, tt.key)
 			if err != nil {
-				t.Errorf("FactReader.ReadUint() error = %v", err)
+				t.Errorf("Reader.ReadUint() error = %v", err)
 			}
 
 			if tt.data.Cmp(readData) != 0 {
@@ -271,7 +271,7 @@ func TestFactReader_ReadUint(t *testing.T) {
 
 		_, err := facts.NewReader(e).ReadUint(ctx, passportAddress, factProviderAddress, key)
 		if err != ethereum.NotFound {
-			t.Errorf("FactReader.ReadUint() expecting error = %v, got error = %v", ethereum.NotFound, err)
+			t.Errorf("Reader.ReadUint() expecting error = %v, got error = %v", ethereum.NotFound, err)
 		}
 	})
 }
@@ -301,12 +301,12 @@ func TestFactReader_ReadInt(t *testing.T) {
 
 			err := facts.NewProvider(factProviderSession).WriteInt(ctx, passportAddress, tt.key, tt.data)
 			if err != nil {
-				t.Errorf("FactProvider.WriteInt() error = %v", err)
+				t.Errorf("Provider.WriteInt() error = %v", err)
 			}
 
 			readData, err := facts.NewReader(e).ReadInt(ctx, passportAddress, factProviderAddress, tt.key)
 			if err != nil {
-				t.Errorf("FactReader.ReadInt() error = %v", err)
+				t.Errorf("Reader.ReadInt() error = %v", err)
 			}
 
 			if tt.data.Cmp(readData) != 0 {
@@ -327,7 +327,7 @@ func TestFactReader_ReadInt(t *testing.T) {
 
 		_, err := facts.NewReader(e).ReadInt(ctx, passportAddress, factProviderAddress, key)
 		if err != ethereum.NotFound {
-			t.Errorf("FactReader.ReadInt() expecting error = %v, got error = %v", ethereum.NotFound, err)
+			t.Errorf("Reader.ReadInt() expecting error = %v, got error = %v", ethereum.NotFound, err)
 		}
 	})
 }
@@ -354,12 +354,12 @@ func TestFactReader_ReadBool(t *testing.T) {
 
 			err := facts.NewProvider(factProviderSession).WriteBool(ctx, passportAddress, tt.key, tt.data)
 			if err != nil {
-				t.Errorf("FactProvider.WriteBool() error = %v", err)
+				t.Errorf("Provider.WriteBool() error = %v", err)
 			}
 
 			readData, err := facts.NewReader(e).ReadBool(ctx, passportAddress, factProviderAddress, tt.key)
 			if err != nil {
-				t.Errorf("FactReader.ReadBool() error = %v", err)
+				t.Errorf("Reader.ReadBool() error = %v", err)
 			}
 
 			if tt.data != readData {
@@ -380,7 +380,7 @@ func TestFactReader_ReadBool(t *testing.T) {
 
 		_, err := facts.NewReader(e).ReadBool(ctx, passportAddress, factProviderAddress, key)
 		if err != ethereum.NotFound {
-			t.Errorf("FactReader.ReadBool() expecting error = %v, got error = %v", ethereum.NotFound, err)
+			t.Errorf("Reader.ReadBool() expecting error = %v, got error = %v", ethereum.NotFound, err)
 		}
 	})
 }
