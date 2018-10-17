@@ -197,3 +197,150 @@ func (p *Provider) WriteBool(ctx context.Context, passportAddress common.Address
 
 	return err
 }
+
+// DeleteTxData deletes tx data for the specific key
+func (p *Provider) DeleteTxData(ctx context.Context, passportAddress common.Address, key [32]byte) error {
+	backend := p.Backend
+	factProviderAuth := &p.TransactOpts
+
+	p.Log("Initialising passport", "passport", passportAddress)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passportAddress, backend)
+	if err != nil {
+		return fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	p.Log("Deleting tx data from passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	tx, err := passportLogicContract.DeleteTxDataBlockNumber(factProviderAuth, key)
+	if err != nil {
+		return fmt.Errorf("facts: DeleteTxDataBlockNumber: %v", err)
+	}
+	_, err = p.WaitForTxReceipt(ctx, tx.Hash())
+
+	return err
+}
+
+// DeleteBytes deletes bytes data for the specific key
+func (p *Provider) DeleteBytes(ctx context.Context, passportAddress common.Address, key [32]byte) error {
+	backend := p.Backend
+	factProviderAuth := &p.TransactOpts
+
+	p.Log("Initialising passport", "passport", passportAddress)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passportAddress, backend)
+	if err != nil {
+		return fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	p.Log("Deleting bytes from passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	tx, err := passportLogicContract.DeleteBytes(factProviderAuth, key)
+	if err != nil {
+		return fmt.Errorf("facts: DeleteBytes: %v", err)
+	}
+	_, err = p.WaitForTxReceipt(ctx, tx.Hash())
+
+	return err
+}
+
+// DeleteString deletes string data for the specific key
+func (p *Provider) DeleteString(ctx context.Context, passportAddress common.Address, key [32]byte) error {
+	backend := p.Backend
+	factProviderAuth := &p.TransactOpts
+
+	p.Log("Initialising passport", "passport", passportAddress)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passportAddress, backend)
+	if err != nil {
+		return fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	p.Log("Deleting string from passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	tx, err := passportLogicContract.DeleteString(factProviderAuth, key)
+	if err != nil {
+		return fmt.Errorf("facts: DeleteString: %v", err)
+	}
+	_, err = p.WaitForTxReceipt(ctx, tx.Hash())
+
+	return err
+}
+
+// DeleteAddress deletes address data for the specific key
+func (p *Provider) DeleteAddress(ctx context.Context, passportAddress common.Address, key [32]byte) error {
+	backend := p.Backend
+	factProviderAuth := &p.TransactOpts
+
+	p.Log("Initialising passport", "passport", passportAddress)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passportAddress, backend)
+	if err != nil {
+		return fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	p.Log("Deleting address from passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	tx, err := passportLogicContract.DeleteAddress(factProviderAuth, key)
+	if err != nil {
+		return fmt.Errorf("facts: DeleteAddress: %v", err)
+	}
+	_, err = p.WaitForTxReceipt(ctx, tx.Hash())
+
+	return err
+}
+
+// DeleteUint deletes uint data for the specific key
+func (p *Provider) DeleteUint(ctx context.Context, passportAddress common.Address, key [32]byte) error {
+	backend := p.Backend
+	factProviderAuth := &p.TransactOpts
+
+	p.Log("Initialising passport", "passport", passportAddress)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passportAddress, backend)
+	if err != nil {
+		return fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	p.Log("Deleting uint from passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	tx, err := passportLogicContract.DeleteUint(factProviderAuth, key)
+	if err != nil {
+		return fmt.Errorf("facts: DeleteUint: %v", err)
+	}
+	_, err = p.WaitForTxReceipt(ctx, tx.Hash())
+
+	return err
+}
+
+// DeleteInt deletes int data for the specific key
+func (p *Provider) DeleteInt(ctx context.Context, passportAddress common.Address, key [32]byte) error {
+	backend := p.Backend
+	factProviderAuth := &p.TransactOpts
+
+	p.Log("Initialising passport", "passport", passportAddress)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passportAddress, backend)
+	if err != nil {
+		return fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	p.Log("Deleting int from passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	tx, err := passportLogicContract.DeleteInt(factProviderAuth, key)
+	if err != nil {
+		return fmt.Errorf("facts: DeleteInt: %v", err)
+	}
+	_, err = p.WaitForTxReceipt(ctx, tx.Hash())
+
+	return err
+}
+
+// DeleteBool deletes bool data for the specific key
+func (p *Provider) DeleteBool(ctx context.Context, passportAddress common.Address, key [32]byte) error {
+	backend := p.Backend
+	factProviderAuth := &p.TransactOpts
+
+	p.Log("Initialising passport", "passport", passportAddress)
+	passportLogicContract, err := contracts.NewPassportLogicContract(passportAddress, backend)
+	if err != nil {
+		return fmt.Errorf("facts: NewPassportLogicContract: %v", err)
+	}
+
+	p.Log("Deleting bool from passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	tx, err := passportLogicContract.DeleteBool(factProviderAuth, key)
+	if err != nil {
+		return fmt.Errorf("facts: DeleteBool: %v", err)
+	}
+	_, err = p.WaitForTxReceipt(ctx, tx.Hash())
+
+	return err
+}

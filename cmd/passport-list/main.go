@@ -120,7 +120,7 @@ func main() {
 		cmdutils.CheckErr(it.Error(), "getting next passport")
 
 		p := it.Passport
-		_, err = f.WriteString(fmt.Sprintf("%v,%v,%v,%v\n", p.ContractAddress.Hex(), p.FirstOwner.Hex(), p.BlockNumber, p.TxHash.Hex()))
+		_, err = f.WriteString(fmt.Sprintf("%v,%v,%v,%v\n", p.ContractAddress.Hex(), p.FirstOwner.Hex(), p.Raw.BlockNumber, p.Raw.TxHash.Hex()))
 		cmdutils.CheckErr(err, "WriteString to file")
 	}
 

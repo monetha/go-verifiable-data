@@ -140,6 +140,24 @@ func (it *ChangeIterator) Close() error {
 	return nil
 }
 
+// ToSlice retrieves all changes and saves them into slice.
+func (it *ChangeIterator) ToSlice() (ps []*Change, err error) {
+	defer func() {
+		if cErr := it.Close(); err == nil && cErr != nil {
+			err = cErr
+		}
+	}()
+
+	for it.Next() {
+		if err := it.Error(); err != nil {
+			return nil, err
+		}
+		ps = append(ps, it.Change)
+	}
+
+	return
+}
+
 // ChangesFilterOpts is the collection of options to fine tune filtering for changes.
 type ChangesFilterOpts struct {
 	Start        uint64           // Start of the queried range
