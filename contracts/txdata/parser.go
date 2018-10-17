@@ -22,16 +22,34 @@ func NewPassportLogicInputParser() (*PassportLogicInputParser, error) {
 	return &PassportLogicInputParser{parsedABI}, nil
 }
 
-// SetTxDataBlockNumberParameters holds the parameters of the setTxDataBlockNumber method call
-type SetTxDataBlockNumberParameters struct {
-	Key  [32]byte
-	Data []byte
-}
+type (
+	// SetTxDataBlockNumberParameters holds the parameters of the setTxDataBlockNumber method call
+	SetTxDataBlockNumberParameters struct {
+		Key  [32]byte
+		Data []byte
+	}
+
+	// SetBytesParameters holds the parameters of the setBytes method call
+	SetBytesParameters struct {
+		Key  [32]byte
+		Data []byte
+	}
+)
 
 // ParseSetTxDataBlockNumberCallData parses setTxDataBlockNumber method call parameters from transaction input data.
 func (p *PassportLogicInputParser) ParseSetTxDataBlockNumberCallData(input []byte) (parms *SetTxDataBlockNumberParameters, err error) {
 	v := &SetTxDataBlockNumberParameters{}
 	err = unpackInput(p.abi, v, "setTxDataBlockNumber", input)
+	if err == nil {
+		parms = v
+	}
+	return
+}
+
+// ParseSetBytesCallData parses setBytes method call parameters from transaction input data.
+func (p *PassportLogicInputParser) ParseSetBytesCallData(input []byte) (parms *SetBytesParameters, err error) {
+	v := &SetBytesParameters{}
+	err = unpackInput(p.abi, v, "setBytes", input)
 	if err == nil {
 		parms = v
 	}

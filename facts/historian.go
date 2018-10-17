@@ -303,37 +303,70 @@ func (h *Historian) FilterChanges(opts *ChangesFilterOpts, passportAddress commo
 }
 
 type (
-	// TxDataHistoryItem
-	TxDataHistoryItem struct {
+	// WriteTxDataHistoryItem holds parameters of WriteTxData call
+	WriteTxDataHistoryItem struct {
+		FactProvider common.Address
+		Key          [32]byte
+		Data         []byte
+	}
+
+	// WriteBytesHistoryItem holds parameters of WriteBytes call
+	WriteBytesHistoryItem struct {
 		FactProvider common.Address
 		Key          [32]byte
 		Data         []byte
 	}
 )
 
-// ReadTxData returns the data value that was set in the given transaction.
-func (h *Historian) ReadTxData(ctx context.Context, passport common.Address, txHash common.Hash) (*TxDataHistoryItem, error) {
-	backend := h.Backend
-
-	(*eth.Eth)(h).Log("Getting transaction by hash", "tx_hash", txHash.Hex())
-	tx, _, err := backend.TransactionByHash(ctx, txHash)
-	if err != nil {
-		return nil, fmt.Errorf("facts: TransactionByHash(%v): %v", txHash, err)
-	}
-
-	from, err := types.Sender(types.HomesteadSigner{}, tx)
-	if err != nil {
-		return nil, fmt.Errorf("facts: types.Sender(): %v", err)
-	}
-
-	params, err := passportLogicInputParser.ParseSetTxDataBlockNumberCallData(tx.Data())
+// GetHistoryItemOfWriteTxData returns the data value that was set in the given transaction.
+func (h *Historian) GetHistoryItemOfWriteTxData(ctx context.Context, passport common.Address, txHash common.Hash) (*WriteTxDataHistoryItem, error) {
+	from, txData, err := h.getTransactionSenderData(ctx, txHash)
 	if err != nil {
 		return nil, err
 	}
 
-	return &TxDataHistoryItem{
+	params, err := passportLogicInputParser.ParseSetTxDataBlockNumberCallData(txData)
+	if err != nil {
+		return nil, err
+	}
+
+	return &WriteTxDataHistoryItem{
 		FactProvider: from,
 		Key:          params.Key,
 		Data:         params.Data,
 	}, nil
+}
+
+// GetHistoryItemOfWriteBytes returns the data value that was set in the given transaction.
+func (h *Historian) GetHistoryItemOfWriteBytes(ctx context.Context, passport common.Address, txHash common.Hash) (*WriteBytesHistoryItem, error) {
+	from, txData, err := h.getTransactionSenderData(ctx, txHash)
+	if err != nil {
+		return nil, err
+	}
+
+	params, err := passportLogicInputParser.ParseSetBytesCallData(txData)
+	if err != nil {
+		return nil, err
+	}
+
+	return &WriteBytesHistoryItem{
+		FactProvider: from,
+		Key:          params.Key,
+		Data:         params.Data,
+	}, nil
+}
+
+func (h *Historian) getTransactionSenderData(ctx context.Context, txHash common.Hash) (common.Address, []byte, error) {
+	(*eth.Eth)(h).Log("Getting transaction by hash", "tx_hash", txHash.Hex())
+	tx, _, err := h.Backend.TransactionByHash(ctx, txHash)
+	if err != nil {
+		return common.Address{}, nil, fmt.Errorf("facts: TransactionByHash(%v): %v", txHash, err)
+	}
+
+	from, err := types.Sender(types.HomesteadSigner{}, tx)
+	if err != nil {
+		return common.Address{}, nil, fmt.Errorf("facts: types.Sender(): %v", err)
+	}
+
+	return from, tx.Data(), nil
 }
