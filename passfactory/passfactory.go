@@ -6,6 +6,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/types"
 	"gitlab.com/monetha/protocol-go-sdk/contracts"
 	"gitlab.com/monetha/protocol-go-sdk/eth"
 )
@@ -24,12 +25,8 @@ type Passport struct {
 	ContractAddress common.Address
 	// FirstOwner contains address of first passport owner
 	FirstOwner common.Address
-	// Block number in which the passport was created
-	BlockNumber uint64
-	// Hash of the transaction in which the passport was created
-	TxHash common.Hash
-	// Index of the transaction in the block
-	TxIndex uint
+	// Blockchain specific contextual infos
+	Raw types.Log
 }
 
 // PassportIterator is returned from FilterPassports and is used to iterate over the passports and unpacked data for
@@ -52,13 +49,10 @@ func (pit *PassportIterator) Next() (next bool) {
 		return
 	}
 
-	rawLog := ev.Raw
 	pit.Passport = &Passport{
 		ContractAddress: ev.Passport,
 		FirstOwner:      ev.Owner,
-		BlockNumber:     rawLog.BlockNumber,
-		TxHash:          rawLog.TxHash,
-		TxIndex:         rawLog.TxIndex,
+		Raw:             ev.Raw,
 	}
 	return
 }
