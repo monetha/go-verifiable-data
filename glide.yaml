@@ -22,3 +22,12 @@ import:
   - cmd/unused
 - package: github.com/kisielk/gotool
 - package: github.com/monetha/go-ethereum
+- package: github.com/prometheus/prometheus
+  version: 3101606756c53221ed58ba94ecba6b26adf89dcc
+  subpackages:
+  - util/flock
+- package: golang.org/x/sys
+  version: 904bdc257025c7b3f43c19360ad3ab85783fad78
+  subpackages:
+  - cpu
+- package: github.com/go-test/deep

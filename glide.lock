@@ -1,5 +1,5 @@
-hash: aafda16de8b1a3ab9749be0091535c968749182646ecd7cdfe382944aff51eb3
-updated: 2018-10-08T09:16:59.776495031+03:00
+hash: e2748e981eaf19b33c86e4193cc4376f8e7cf3e7781c46edc2bb67fdbedc92f5
+updated: 2018-10-17T10:30:46.134146+03:00
 imports:
 - name: github.com/aristanetworks/goarista
   version: ff33da284e760fcdb03c33d37a719e5ed30ba844
@@ -9,43 +9,162 @@ imports:
   version: cff30e1d23fc9e800b2b5b4b41ef1817dda07e9f
   subpackages:
   - btcec
+- name: github.com/davecgh/go-spew
+  version: 8991bc29aa16c548c550c7ff78260e27b9ab7c73
+  subpackages:
+  - spew
 - name: github.com/deckarep/golang-set
   version: cbaa98ba5575e67703b32b4b19f73c91f3c4159e
+- name: github.com/edsrzf/mmap-go
+  version: 0bce6a6887123b67a60366d2c9fe2dfb74289d2e
+- name: github.com/elastic/gosigar
+  version: 56cb7e1f604b2748b231d8e0236e1e4782a20ad3
+  subpackages:
+  - sys/windows
 - name: github.com/ethereum/go-ethereum
-  version: 477eb0933b9529f7deeccc233cc815fe34a8ea56
+  version: 8bbe72075e4e16442c4e28d999edee12e294329e
   subpackages:
   - accounts
   - accounts/abi
   - accounts/abi/bind
+  - accounts/abi/bind/backends
   - accounts/keystore
+  - accounts/usbwallet
+  - accounts/usbwallet/internal/trezor
+  - cmd/utils
   - common
+  - common/bitutil
+  - common/fdlimit
   - common/hexutil
   - common/math
   - common/mclock
+  - common/prque
+  - consensus
+  - consensus/clique
+  - consensus/ethash
+  - consensus/misc
   - contracts/chequebook
+  - core
+  - core/bloombits
+  - core/rawdb
+  - core/state
   - core/types
+  - core/vm
   - crypto
+  - crypto/bn256
+  - crypto/bn256/cloudflare
+  - crypto/bn256/google
+  - crypto/ecies
   - crypto/secp256k1
   - crypto/sha3
+  - dashboard
+  - eth
+  - eth/downloader
+  - eth/fetcher
+  - eth/filters
+  - eth/gasprice
+  - eth/tracers
+  - eth/tracers/internal/tracers
+  - ethclient
   - ethdb
+  - ethstats
   - event
+  - internal/debug
+  - internal/ethapi
+  - les
+  - les/flowcontrol
+  - light
   - log
   - metrics
+  - metrics/exp
+  - metrics/influxdb
+  - miner
+  - node
+  - p2p
+  - p2p/discover
+  - p2p/discv5
+  - p2p/enode
+  - p2p/enr
+  - p2p/nat
+  - p2p/netutil
   - params
   - rlp
+  - rpc
   - trie
+  - whisper/whisperv6
+- name: github.com/fjl/memsize
+  version: 2a09253e352a56f419bd88effab0483f52da4c7d
+  subpackages:
+  - memsizeui
+- name: github.com/go-ole/go-ole
+  version: 7a0fa49edf48165190530c675167e2f319a05268
+  subpackages:
+  - oleutil
 - name: github.com/go-stack/stack
   version: 2fee6af1a9795aafbe0253a0cfbdf668e1fb8a9a
+- name: github.com/go-test/deep
+  version: 57af0be209c537ba1d9c2a4b285ab7aea0897e51
+- name: github.com/golang/protobuf
+  version: b4deda0973fb4c70b50d226b1af49f3da59f5265
+  subpackages:
+  - proto
+  - protoc-gen-go/descriptor
 - name: github.com/golang/snappy
   version: 2e65f85255dbc3072edf28d6b5b8efc472979f5a
 - name: github.com/google/uuid
   version: 9b3b1e0f5f99ae461456d768e7d301a7acdaa2d8
+- name: github.com/hashicorp/golang-lru
+  version: 0fb14efe8c47ae851c0034ed7a448854d3d34cf3
+  subpackages:
+  - simplelru
+- name: github.com/huin/goupnp
+  version: 656e61dfadd241c7cbdd22a023fa81ecb6860ea8
+  subpackages:
+  - dcps/internetgateway1
+  - dcps/internetgateway2
+  - httpu
+  - scpd
+  - soap
+  - ssdp
+- name: github.com/influxdata/influxdb
+  version: 0734f6fe214e881cddf5c4b61820d318f47b84f7
+  subpackages:
+  - client
+  - models
+  - pkg/escape
+- name: github.com/influxdata/platform
+  version: 1f98dc2d77520ac997b7e8087983082f782ce303
+  subpackages:
+  - models
+  - pkg/escape
+- name: github.com/jackpal/go-nat-pmp
+  version: 28a68d0c24adce1da43f8df6a57340909ecd7fdd
+- name: github.com/karalabe/hid
+  version: 2b4488a37358b7283de4f9622553e85ebbe73125
 - name: github.com/kisielk/gotool
   version: 80517062f582ea3340cd4baf70e86d539ae7d84d
+- name: github.com/mattn/go-colorable
+  version: efa589957cd060542a26d2dd7832fd6a6c6c3ade
+- name: github.com/mattn/go-isatty
+  version: 3fb116b820352b7f0c281308a4d6250c22d94e27
+- name: github.com/mohae/deepcopy
+  version: c48cc78d482608239f6c4c92a4abd87eb8761c90
+- name: github.com/monetha/go-ethereum
+  version: e7e7ff90cf6f091a867c009b54164332d5eb2440
 - name: github.com/pborman/uuid
   version: 8b1b92947f46224e3b97bb1a3a5b0382be00d31e
+- name: github.com/pkg/errors
+  version: 2233dee583dcf88f3c8b22cb7a33f05a499800d8
+- name: github.com/prometheus/prometheus
+  version: 3101606756c53221ed58ba94ecba6b26adf89dcc
+  subpackages:
+  - util/flock
 - name: github.com/rjeczalik/notify
   version: 0f065fa99b48b842c3fd3e2c8b194c6f2b69f6b8
+- name: github.com/rs/cors
+  version: 15587285ef6b6e7a3f657e2e00f9f271883bcf22
+- name: github.com/StackExchange/wmi
+  version: b12b22c5341f0c26d88c4d66176330500e84db68
 - name: github.com/syndtr/goleveldb
   version: ae2bd5eed72d46b28834ec3f60db3a3ebedd8dbd
   subpackages:
@@ -65,6 +184,7 @@ imports:
   version: 0e37d006457bf46f9e6692014ba72ef82c33022c
   subpackages:
   - pbkdf2
+  - ripemd160
   - scrypt
 - name: golang.org/x/lint
   version: 06c8688daad7faa9da5a0c2f163a3d14aac986ca
@@ -72,32 +192,55 @@ imports:
   vcs: git
   subpackages:
   - golint
-- name: golang.org/x/sys
-  version: ee1b12c67af419cf5a9be3bdbeea7fc1c5f32f11
+- name: golang.org/x/net
+  version: 92b859f39abd2d91a854c9f9c4621b2f5054a92d
   subpackages:
+  - html
+  - html/atom
+  - html/charset
+  - websocket
+- name: golang.org/x/sync
+  version: 1d60e4601c6fd243af51cc01ddf169918a5407ca
+  subpackages:
+  - syncmap
+- name: golang.org/x/sys
+  version: 904bdc257025c7b3f43c19360ad3ab85783fad78
+  subpackages:
+  - cpu
   - unix
+  - windows
+- name: golang.org/x/text
+  version: f21a4dfb5e38f5895301dc265a8def02365cc3d0
+  subpackages:
+  - encoding
+  - encoding/charmap
+  - encoding/htmlindex
+  - encoding/internal
+  - encoding/internal/identifier
+  - encoding/japanese
+  - encoding/korean
+  - encoding/simplifiedchinese
+  - encoding/traditionalchinese
+  - encoding/unicode
+  - internal/tag
+  - internal/utf8internal
+  - language
+  - runes
+  - transform
 - name: golang.org/x/tools
   version: 90fa682c2a6e6a37b3a1364ce2fe1d5e41af9d6d
   subpackages:
   - cmd/goimports
-  - go/ast/astutil
-  - imports
-  - internal/fastwalk
-- name: gopkg.in/karalabe/cookiejar.v2
-  version: 8dcd6a7f4951f6ff3ee9cbb919a06d8925822e57
-  subpackages:
-  - collections/prque
+- name: gopkg.in/natefinch/npipe.v2
+  version: c1b8fa8bdccecb0b8db834ee0b92fdbcfa606dd6
+- name: gopkg.in/olebedev/go-duktape.v3
+  version: d53328019b21fe1987c97f368f98c072c8f44455
+- name: gopkg.in/urfave/cli.v1
+  version: cfb38830724cc34fedffe9a2a29fb54fa9169cd1
 - name: honnef.co/go/tools
   version: d73ab98e7c39fdcf9ba65062e43d34310f198353
   subpackages:
   - cmd/simple
   - cmd/staticcheck
   - cmd/unused
-- name: github.com/monetha/go-ethereum
-  version: e7e7ff90cf6f091a867c009b54164332d5eb2440
-  subpackages:
-  - backend
-  - blocksource
-  - client
-  - gasestimator
 testImports: []
