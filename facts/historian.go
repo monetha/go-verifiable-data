@@ -59,6 +59,8 @@ type eventMetaInfo struct {
 	DataType   data.Type
 }
 
+// ChangeIterator is returned from FilterChanges and is used to iterate over the changes and unpacked data for
+// Updated and Deleted events raised by the PassportLogic contract.
 type ChangeIterator struct {
 	Change *Change // Change containing the info of the last retrieved change
 
@@ -84,16 +86,6 @@ func (it *ChangeIterator) Next() bool {
 	// If the iterator completed, deliver directly whatever's available
 	if it.done {
 		select {
-		/*
-			case log := <-it.logs:
-				var topics []string
-				for _, value := range log.Topics {
-					topics = append(topics, value.Hex())
-				}
-				fmt.Printf("Block number: %v Topics: %v Data: %v\n", log.BlockNumber, topics, common.Bytes2Hex(log.Data))
-				return true
-		*/
-
 		case log := <-it.logs:
 			if err := it.parseEvent(log); err != nil {
 				it.fail = err
@@ -107,15 +99,6 @@ func (it *ChangeIterator) Next() bool {
 	}
 	// Iterator still in progress, wait for either a data or an error event
 	select {
-	/*
-		case log := <-it.logs:
-			var topics []string
-			for _, value := range log.Topics {
-				topics = append(topics, value.Hex())
-			}
-			fmt.Printf("Block number: %v Topics: %v Data: %v\n", log.BlockNumber, topics, common.Bytes2Hex(log.Data))
-			return true
-	*/
 	case log := <-it.logs:
 		if err := it.parseEvent(log); err != nil {
 			it.fail = err
@@ -239,6 +222,7 @@ func (s *dataTypeSet) Contains(t data.Type) (ok bool) {
 	return
 }
 
+// FilterChanges retrieves changes from event log of passport.
 func (h *Historian) FilterChanges(opts *ChangesFilterOpts, passportAddress common.Address) (*ChangeIterator, error) {
 	if opts == nil {
 		opts = &ChangesFilterOpts{}
@@ -267,8 +251,8 @@ func (h *Historian) FilterChanges(opts *ChangesFilterOpts, passportAddress commo
 				if dataTypes.IsEmpty() || dataTypes.Contains(dataType) {
 					eventNames = append(eventNames, eventName)
 
-					eventId := passportLogicContractABI.Events[eventName].Id()
-					eventMetaInfos[eventId] = eventMetaInfo{
+					eventID := passportLogicContractABI.Events[eventName].Id()
+					eventMetaInfos[eventID] = eventMetaInfo{
 						EventName:  eventName,
 						ChangeType: changeType,
 						DataType:   dataType,
