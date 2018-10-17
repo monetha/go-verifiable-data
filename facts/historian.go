@@ -45,12 +45,8 @@ type Change struct {
 	FactProvider common.Address
 	// Key of the value
 	Key [32]byte
-	// Block number in which the change has happened
-	BlockNumber uint64
-	// Hash of the transaction in which he change has happened
-	TxHash common.Hash
-	// Index of the transaction in the block
-	TxIndex uint
+	// Blockchain specific contextual infos
+	Raw types.Log
 }
 
 type eventMetaInfo struct {
@@ -116,11 +112,9 @@ func (it *ChangeIterator) Next() bool {
 func (it *ChangeIterator) parseEvent(log types.Log) error {
 	emi := it.eventMetaInfos[log.Topics[0]]
 	it.Change = &Change{
-		ChangeType:  emi.ChangeType,
-		DataType:    emi.DataType,
-		BlockNumber: log.BlockNumber,
-		TxHash:      log.TxHash,
-		TxIndex:     log.TxIndex,
+		ChangeType: emi.ChangeType,
+		DataType:   emi.DataType,
+		Raw:        log,
 	}
 	event := &struct {
 		FactProvider common.Address
