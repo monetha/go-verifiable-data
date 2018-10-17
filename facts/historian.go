@@ -2,6 +2,7 @@ package facts
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"github.com/ethereum/go-ethereum"
@@ -299,4 +300,40 @@ func (h *Historian) FilterChanges(opts *ChangesFilterOpts, passportAddress commo
 
 	boundContract := bind.NewBoundContract(passportAddress, passportLogicContractABI, h.Backend, h.Backend, h.Backend)
 	return &ChangeIterator{logs: logs, sub: sub, contract: boundContract, eventMetaInfos: eventMetaInfos}, nil
+}
+
+type (
+	// TxDataHistoryItem
+	TxDataHistoryItem struct {
+		FactProvider common.Address
+		Key          [32]byte
+		Data         []byte
+	}
+)
+
+// ReadTxData returns the data value that was set in the given transaction.
+func (h *Historian) ReadTxData(ctx context.Context, passport common.Address, txHash common.Hash) (*TxDataHistoryItem, error) {
+	backend := h.Backend
+
+	(*eth.Eth)(h).Log("Getting transaction by hash", "tx_hash", txHash.Hex())
+	tx, _, err := backend.TransactionByHash(ctx, txHash)
+	if err != nil {
+		return nil, fmt.Errorf("facts: TransactionByHash(%v): %v", txHash, err)
+	}
+
+	from, err := types.Sender(types.HomesteadSigner{}, tx)
+	if err != nil {
+		return nil, fmt.Errorf("facts: types.Sender(): %v", err)
+	}
+
+	params, err := passportLogicInputParser.ParseSetTxDataBlockNumberCallData(tx.Data())
+	if err != nil {
+		return nil, err
+	}
+
+	return &TxDataHistoryItem{
+		FactProvider: from,
+		Key:          params.Key,
+		Data:         params.Data,
+	}, nil
 }
