@@ -401,3 +401,27 @@ func TestHistorian_GetHistoryItemOfWriteBytes(t *testing.T) {
 		t.Error(diff)
 	}
 }
+
+func TestHistorian_GetHistoryItemOfWriteString(t *testing.T) {
+	ctx := context.Background()
+
+	passportAddress, factProviderSession := createPassportAndFactProviderSession(ctx, t)
+	ehi := &facts.WriteStringHistoryItem{
+		FactProvider: factProviderSession.TransactOpts.From,
+		Key:          [32]byte{1, 2, 3, 4, 5, 6, 7, 8, 9},
+		Data:         "this is test only message",
+	}
+
+	provider := facts.NewProvider(factProviderSession)
+
+	txHash, err := provider.WriteString(ctx, passportAddress, ehi.Key, ehi.Data)
+	if err != nil {
+		t.Errorf("Provider.WriteString() errro = %v", err)
+	}
+
+	hi, err := facts.NewHistorian(factProviderSession.Eth).GetHistoryItemOfWriteString(ctx, passportAddress, txHash)
+
+	if diff := deep.Equal(ehi, hi); diff != nil {
+		t.Error(diff)
+	}
+}
