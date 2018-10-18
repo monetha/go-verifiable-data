@@ -45,25 +45,25 @@ type (
 
 	// SetAddressParameters holds the parameters of the setAddress method call
 	SetAddressParameters struct {
-		Key  [32]byte       `abi:"_value"`
+		Key  [32]byte       `abi:"_key"`
 		Data common.Address `abi:"_value"`
 	}
 
 	// SetUintParameters holds the parameters of the setUint method call
 	SetUintParameters struct {
-		Key  [32]byte `abi:"_value"`
+		Key  [32]byte `abi:"_key"`
 		Data *big.Int `abi:"_value"`
 	}
 
 	// SetIntParameters holds the parameters of the setInt method call
 	SetIntParameters struct {
-		Key  [32]byte `abi:"_value"`
+		Key  [32]byte `abi:"_key"`
 		Data *big.Int `abi:"_value"`
 	}
 
 	// SetBoolParameters holds the parameters of the setBool method call
 	SetBoolParameters struct {
-		Key  [32]byte `abi:"_value"`
+		Key  [32]byte `abi:"_key"`
 		Data bool     `abi:"_value"`
 	}
 )
