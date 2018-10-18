@@ -27,44 +27,44 @@ func NewPassportLogicInputParser() (*PassportLogicInputParser, error) {
 type (
 	// SetTxDataBlockNumberParameters holds the parameters of the setTxDataBlockNumber method call
 	SetTxDataBlockNumberParameters struct {
-		Key  [32]byte
-		Data []byte
+		Key  [32]byte `abi:"_key"`
+		Data []byte   `abi:"_data"`
 	}
 
 	// SetBytesParameters holds the parameters of the setBytes method call
 	SetBytesParameters struct {
-		Key  [32]byte
-		Data []byte
+		Key  [32]byte `abi:"_key"`
+		Data []byte   `abi:"_value"`
 	}
 
 	// SetStringParameters holds the parameters of the setString method call
 	SetStringParameters struct {
-		Key  [32]byte
-		Data string
+		Key  [32]byte `abi:"_key"`
+		Data string   `abi:"_value"`
 	}
 
 	// SetAddressParameters holds the parameters of the setAddress method call
 	SetAddressParameters struct {
-		Key  [32]byte
-		Data common.Address
+		Key  [32]byte       `abi:"_value"`
+		Data common.Address `abi:"_value"`
 	}
 
 	// SetUintParameters holds the parameters of the setUint method call
 	SetUintParameters struct {
-		Key  [32]byte
-		Data *big.Int
+		Key  [32]byte `abi:"_value"`
+		Data *big.Int `abi:"_value"`
 	}
 
 	// SetIntParameters holds the parameters of the setInt method call
 	SetIntParameters struct {
-		Key  [32]byte
-		Data *big.Int
+		Key  [32]byte `abi:"_value"`
+		Data *big.Int `abi:"_value"`
 	}
 
 	// SetBoolParameters holds the parameters of the setBool method call
 	SetBoolParameters struct {
-		Key  [32]byte
-		Data bool
+		Key  [32]byte `abi:"_value"`
+		Data bool     `abi:"_value"`
 	}
 )
 
