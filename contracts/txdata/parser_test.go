@@ -177,6 +177,131 @@ func TestPassportLogicInputParser_ParseSetAddressCallData(t *testing.T) {
 	}
 }
 
+func TestPassportLogicInputParser_ParseSetUintCallData(t *testing.T) {
+	parser, err := NewPassportLogicInputParser()
+	if err != nil {
+		panic(err)
+	}
+
+	address := common.Address{}
+	transactor := &transactorMock{}
+	contractTransactor, err := contracts.NewPassportLogicContractTransactor(address, transactor)
+	if err != nil {
+		panic(err)
+	}
+
+	transactOpts := &bind.TransactOpts{Signer: bind.SignerFn(noSign)}
+
+	tests := []struct {
+		name   string
+		params *SetUintParameters
+	}{
+		{"test 1", &SetUintParameters{[32]byte{}, big.NewInt(0)}},
+		{"test 2", &SetUintParameters{[32]byte{0x1, 0x2}, big.NewInt(1234567890)}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tx, err := contractTransactor.SetUint(transactOpts, tt.params.Key, tt.params.Data)
+			if err != nil {
+				t.Errorf("contractTransactor.SetUint: %v", err)
+			}
+
+			params, err := parser.ParseSetUintCallData(tx.Data())
+			if err != nil {
+				t.Errorf("parser.ParseSetUintCallData: %v", err)
+			}
+
+			if diff := deep.Equal(tt.params, params); diff != nil {
+				t.Error(diff)
+			}
+		})
+	}
+}
+
+func TestPassportLogicInputParser_ParseSetIntCallData(t *testing.T) {
+	parser, err := NewPassportLogicInputParser()
+	if err != nil {
+		panic(err)
+	}
+
+	address := common.Address{}
+	transactor := &transactorMock{}
+	contractTransactor, err := contracts.NewPassportLogicContractTransactor(address, transactor)
+	if err != nil {
+		panic(err)
+	}
+
+	transactOpts := &bind.TransactOpts{Signer: bind.SignerFn(noSign)}
+
+	tests := []struct {
+		name   string
+		params *SetIntParameters
+	}{
+		{"test 1", &SetIntParameters{[32]byte{}, big.NewInt(0)}},
+		{"test 2", &SetIntParameters{[32]byte{0x1, 0x2}, big.NewInt(1234567890)}},
+		{"test 3", &SetIntParameters{[32]byte{0x1, 0x2}, big.NewInt(-1234567890)}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tx, err := contractTransactor.SetInt(transactOpts, tt.params.Key, tt.params.Data)
+			if err != nil {
+				t.Errorf("contractTransactor.SetInt: %v", err)
+			}
+
+			params, err := parser.ParseSetIntCallData(tx.Data())
+			if err != nil {
+				t.Errorf("parser.ParseSetIntCallData: %v", err)
+			}
+
+			if diff := deep.Equal(tt.params, params); diff != nil {
+				t.Error(diff)
+			}
+		})
+	}
+}
+
+func TestPassportLogicInputParser_ParseSetBoolCallData(t *testing.T) {
+	parser, err := NewPassportLogicInputParser()
+	if err != nil {
+		panic(err)
+	}
+
+	address := common.Address{}
+	transactor := &transactorMock{}
+	contractTransactor, err := contracts.NewPassportLogicContractTransactor(address, transactor)
+	if err != nil {
+		panic(err)
+	}
+
+	transactOpts := &bind.TransactOpts{Signer: bind.SignerFn(noSign)}
+
+	tests := []struct {
+		name   string
+		params *SetBoolParameters
+	}{
+		{"test 1", &SetBoolParameters{[32]byte{}, false}},
+		{"test 2", &SetBoolParameters{[32]byte{0x1, 0x2}, true}},
+		{"test 3", &SetBoolParameters{[32]byte{0x1, 0x2}, false}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tx, err := contractTransactor.SetBool(transactOpts, tt.params.Key, tt.params.Data)
+			if err != nil {
+				t.Errorf("contractTransactor.SetBool: %v", err)
+			}
+
+			params, err := parser.ParseSetBoolCallData(tx.Data())
+			if err != nil {
+				t.Errorf("parser.ParseSetBoolCallData: %v", err)
+			}
+
+			if diff := deep.Equal(tt.params, params); diff != nil {
+				t.Error(diff)
+			}
+		})
+	}
+}
+
 func noSign(signer types.Signer, from common.Address, tx *types.Transaction) (*types.Transaction, error) {
 	return tx, nil
 }
