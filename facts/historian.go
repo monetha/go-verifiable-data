@@ -3,6 +3,7 @@ package facts
 import (
 	"context"
 	"fmt"
+	"math/big"
 	"strings"
 
 	"github.com/ethereum/go-ethereum"
@@ -323,6 +324,34 @@ type (
 		Key          [32]byte
 		Data         string
 	}
+
+	// WriteAddressHistoryItem holds parameters of WriteAddress call
+	WriteAddressHistoryItem struct {
+		FactProvider common.Address
+		Key          [32]byte
+		Data         common.Address
+	}
+
+	// WriteUintHistoryItem holds parameters of WriteUint call
+	WriteUintHistoryItem struct {
+		FactProvider common.Address
+		Key          [32]byte
+		Data         *big.Int
+	}
+
+	// WriteIntHistoryItem holds parameters of WriteInt call
+	WriteIntHistoryItem struct {
+		FactProvider common.Address
+		Key          [32]byte
+		Data         *big.Int
+	}
+
+	// WriteBoolHistoryItem holds parameters of WriteBool call
+	WriteBoolHistoryItem struct {
+		FactProvider common.Address
+		Key          [32]byte
+		Data         bool
+	}
 )
 
 // GetHistoryItemOfWriteTxData returns the data value that was set in the given transaction.
@@ -376,6 +405,82 @@ func (h *Historian) GetHistoryItemOfWriteString(ctx context.Context, passport co
 	}
 
 	return &WriteStringHistoryItem{
+		FactProvider: from,
+		Key:          params.Key,
+		Data:         params.Data,
+	}, nil
+}
+
+// GetHistoryItemOfWriteAddress returns the data value that was set in the given transaction.
+func (h *Historian) GetHistoryItemOfWriteAddress(ctx context.Context, passport common.Address, txHash common.Hash) (*WriteAddressHistoryItem, error) {
+	from, txData, err := h.getTransactionSenderData(ctx, txHash)
+	if err != nil {
+		return nil, err
+	}
+
+	params, err := passportLogicInputParser.ParseSetAddressCallData(txData)
+	if err != nil {
+		return nil, err
+	}
+
+	return &WriteAddressHistoryItem{
+		FactProvider: from,
+		Key:          params.Key,
+		Data:         params.Data,
+	}, nil
+}
+
+// GetHistoryItemOfWriteUint returns the data value that was set in the given transaction.
+func (h *Historian) GetHistoryItemOfWriteUint(ctx context.Context, passport common.Address, txHash common.Hash) (*WriteUintHistoryItem, error) {
+	from, txData, err := h.getTransactionSenderData(ctx, txHash)
+	if err != nil {
+		return nil, err
+	}
+
+	params, err := passportLogicInputParser.ParseSetUintCallData(txData)
+	if err != nil {
+		return nil, err
+	}
+
+	return &WriteUintHistoryItem{
+		FactProvider: from,
+		Key:          params.Key,
+		Data:         params.Data,
+	}, nil
+}
+
+// GetHistoryItemOfWriteInt returns the data value that was set in the given transaction.
+func (h *Historian) GetHistoryItemOfWriteInt(ctx context.Context, passport common.Address, txHash common.Hash) (*WriteIntHistoryItem, error) {
+	from, txData, err := h.getTransactionSenderData(ctx, txHash)
+	if err != nil {
+		return nil, err
+	}
+
+	params, err := passportLogicInputParser.ParseSetIntCallData(txData)
+	if err != nil {
+		return nil, err
+	}
+
+	return &WriteIntHistoryItem{
+		FactProvider: from,
+		Key:          params.Key,
+		Data:         params.Data,
+	}, nil
+}
+
+// GetHistoryItemOfWriteBool returns the data value that was set in the given transaction.
+func (h *Historian) GetHistoryItemOfWriteBool(ctx context.Context, passport common.Address, txHash common.Hash) (*WriteBoolHistoryItem, error) {
+	from, txData, err := h.getTransactionSenderData(ctx, txHash)
+	if err != nil {
+		return nil, err
+	}
+
+	params, err := passportLogicInputParser.ParseSetBoolCallData(txData)
+	if err != nil {
+		return nil, err
+	}
+
+	return &WriteBoolHistoryItem{
 		FactProvider: from,
 		Key:          params.Key,
 		Data:         params.Data,

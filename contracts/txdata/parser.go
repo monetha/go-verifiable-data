@@ -2,9 +2,11 @@ package txdata
 
 import (
 	"fmt"
+	"math/big"
 	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/ethereum/go-ethereum/common"
 	"gitlab.com/monetha/protocol-go-sdk/contracts"
 )
 
@@ -38,7 +40,31 @@ type (
 	// SetStringParameters holds the parameters of the setString method call
 	SetStringParameters struct {
 		Key  [32]byte
-		Data []byte
+		Data string
+	}
+
+	// SetAddressParameters holds the parameters of the setAddress method call
+	SetAddressParameters struct {
+		Key  [32]byte
+		Data common.Address
+	}
+
+	// SetUintParameters holds the parameters of the setUint method call
+	SetUintParameters struct {
+		Key  [32]byte
+		Data *big.Int
+	}
+
+	// SetIntParameters holds the parameters of the setInt method call
+	SetIntParameters struct {
+		Key  [32]byte
+		Data *big.Int
+	}
+
+	// SetBoolParameters holds the parameters of the setBool method call
+	SetBoolParameters struct {
+		Key  [32]byte
+		Data bool
 	}
 )
 
@@ -62,10 +88,50 @@ func (p *PassportLogicInputParser) ParseSetBytesCallData(input []byte) (parms *S
 	return
 }
 
-// ParseSetStringCallData parses setBytes method call parameters from transaction input data.
+// ParseSetStringCallData parses setString method call parameters from transaction input data.
 func (p *PassportLogicInputParser) ParseSetStringCallData(input []byte) (parms *SetStringParameters, err error) {
 	v := &SetStringParameters{}
 	err = unpackInput(p.abi, v, "setString", input)
+	if err == nil {
+		parms = v
+	}
+	return
+}
+
+// ParseSetAddressCallData parses setAddress method call parameters from transaction input data.
+func (p *PassportLogicInputParser) ParseSetAddressCallData(input []byte) (parms *SetAddressParameters, err error) {
+	v := &SetAddressParameters{}
+	err = unpackInput(p.abi, v, "setAddress", input)
+	if err == nil {
+		parms = v
+	}
+	return
+}
+
+// ParseSetUintCallData parses setUint method call parameters from transaction input data.
+func (p *PassportLogicInputParser) ParseSetUintCallData(input []byte) (parms *SetUintParameters, err error) {
+	v := &SetUintParameters{}
+	err = unpackInput(p.abi, v, "setUint", input)
+	if err == nil {
+		parms = v
+	}
+	return
+}
+
+// ParseSetIntCallData parses setInt method call parameters from transaction input data.
+func (p *PassportLogicInputParser) ParseSetIntCallData(input []byte) (parms *SetIntParameters, err error) {
+	v := &SetIntParameters{}
+	err = unpackInput(p.abi, v, "setInt", input)
+	if err == nil {
+		parms = v
+	}
+	return
+}
+
+// ParseSetBoolCallData parses setBool method call parameters from transaction input data.
+func (p *PassportLogicInputParser) ParseSetBoolCallData(input []byte) (parms *SetBoolParameters, err error) {
+	v := &SetBoolParameters{}
+	err = unpackInput(p.abi, v, "setBool", input)
 	if err == nil {
 		parms = v
 	}
