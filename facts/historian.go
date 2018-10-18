@@ -316,6 +316,13 @@ type (
 		Key          [32]byte
 		Data         []byte
 	}
+
+	// WriteStringHistoryItem holds parameters of WriteString call
+	WriteStringHistoryItem struct {
+		FactProvider common.Address
+		Key          [32]byte
+		Data         string
+	}
 )
 
 // GetHistoryItemOfWriteTxData returns the data value that was set in the given transaction.
@@ -350,6 +357,25 @@ func (h *Historian) GetHistoryItemOfWriteBytes(ctx context.Context, passport com
 	}
 
 	return &WriteBytesHistoryItem{
+		FactProvider: from,
+		Key:          params.Key,
+		Data:         params.Data,
+	}, nil
+}
+
+// GetHistoryItemOfWriteString returns the data value that was set in the given transaction.
+func (h *Historian) GetHistoryItemOfWriteString(ctx context.Context, passport common.Address, txHash common.Hash) (*WriteStringHistoryItem, error) {
+	from, txData, err := h.getTransactionSenderData(ctx, txHash)
+	if err != nil {
+		return nil, err
+	}
+
+	params, err := passportLogicInputParser.ParseSetStringCallData(txData)
+	if err != nil {
+		return nil, err
+	}
+
+	return &WriteStringHistoryItem{
 		FactProvider: from,
 		Key:          params.Key,
 		Data:         params.Data,

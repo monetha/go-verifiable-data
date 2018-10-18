@@ -34,6 +34,12 @@ type (
 		Key  [32]byte
 		Data []byte
 	}
+
+	// SetStringParameters holds the parameters of the setString method call
+	SetStringParameters struct {
+		Key  [32]byte
+		Data []byte
+	}
 )
 
 // ParseSetTxDataBlockNumberCallData parses setTxDataBlockNumber method call parameters from transaction input data.
@@ -50,6 +56,16 @@ func (p *PassportLogicInputParser) ParseSetTxDataBlockNumberCallData(input []byt
 func (p *PassportLogicInputParser) ParseSetBytesCallData(input []byte) (parms *SetBytesParameters, err error) {
 	v := &SetBytesParameters{}
 	err = unpackInput(p.abi, v, "setBytes", input)
+	if err == nil {
+		parms = v
+	}
+	return
+}
+
+// ParseSetStringCallData parses setBytes method call parameters from transaction input data.
+func (p *PassportLogicInputParser) ParseSetStringCallData(input []byte) (parms *SetStringParameters, err error) {
+	v := &SetStringParameters{}
+	err = unpackInput(p.abi, v, "setString", input)
 	if err == nil {
 		parms = v
 	}
