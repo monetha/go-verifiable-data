@@ -411,3 +411,99 @@ func TestHistorian_GetHistoryItemOfWriteString(t *testing.T) {
 		t.Error(diff)
 	}
 }
+
+func TestHistorian_GetHistoryItemOfWriteAddress(t *testing.T) {
+	ctx := context.Background()
+
+	passportAddress, factProviderSession := createPassportAndFactProviderSession(ctx, t)
+	ehi := &facts.WriteAddressHistoryItem{
+		FactProvider: factProviderSession.TransactOpts.From,
+		Key:          [32]byte{1, 2, 3, 4, 5, 6, 7, 8, 9},
+		Data:         common.HexToAddress("0xaF4DcE16Da2877f8c9e00544c93B62Ac40631F16"),
+	}
+
+	provider := facts.NewProvider(factProviderSession)
+
+	txHash, err := provider.WriteAddress(ctx, passportAddress, ehi.Key, ehi.Data)
+	if err != nil {
+		t.Errorf("Provider.WriteAddress() errro = %v", err)
+	}
+
+	hi, err := facts.NewHistorian(factProviderSession.Eth).GetHistoryItemOfWriteAddress(ctx, passportAddress, txHash)
+
+	if diff := deep.Equal(ehi, hi); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestHistorian_GetHistoryItemOfWriteUint(t *testing.T) {
+	ctx := context.Background()
+
+	passportAddress, factProviderSession := createPassportAndFactProviderSession(ctx, t)
+	ehi := &facts.WriteUintHistoryItem{
+		FactProvider: factProviderSession.TransactOpts.From,
+		Key:          [32]byte{1, 2, 3, 4, 5, 6, 7, 8, 9},
+		Data:         big.NewInt(1234567890),
+	}
+
+	provider := facts.NewProvider(factProviderSession)
+
+	txHash, err := provider.WriteUint(ctx, passportAddress, ehi.Key, ehi.Data)
+	if err != nil {
+		t.Errorf("Provider.WriteUint() errro = %v", err)
+	}
+
+	hi, err := facts.NewHistorian(factProviderSession.Eth).GetHistoryItemOfWriteUint(ctx, passportAddress, txHash)
+
+	if diff := deep.Equal(ehi, hi); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestHistorian_GetHistoryItemOfWriteInt(t *testing.T) {
+	ctx := context.Background()
+
+	passportAddress, factProviderSession := createPassportAndFactProviderSession(ctx, t)
+	ehi := &facts.WriteIntHistoryItem{
+		FactProvider: factProviderSession.TransactOpts.From,
+		Key:          [32]byte{1, 2, 3, 4, 5, 6, 7, 8, 9},
+		Data:         big.NewInt(-1234567890),
+	}
+
+	provider := facts.NewProvider(factProviderSession)
+
+	txHash, err := provider.WriteInt(ctx, passportAddress, ehi.Key, ehi.Data)
+	if err != nil {
+		t.Errorf("Provider.WriteInt() errro = %v", err)
+	}
+
+	hi, err := facts.NewHistorian(factProviderSession.Eth).GetHistoryItemOfWriteInt(ctx, passportAddress, txHash)
+
+	if diff := deep.Equal(ehi, hi); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestHistorian_GetHistoryItemOfWriteBool(t *testing.T) {
+	ctx := context.Background()
+
+	passportAddress, factProviderSession := createPassportAndFactProviderSession(ctx, t)
+	ehi := &facts.WriteBoolHistoryItem{
+		FactProvider: factProviderSession.TransactOpts.From,
+		Key:          [32]byte{1, 2, 3, 4, 5, 6, 7, 8, 9},
+		Data:         true,
+	}
+
+	provider := facts.NewProvider(factProviderSession)
+
+	txHash, err := provider.WriteBool(ctx, passportAddress, ehi.Key, ehi.Data)
+	if err != nil {
+		t.Errorf("Provider.WriteBool() errro = %v", err)
+	}
+
+	hi, err := facts.NewHistorian(factProviderSession.Eth).GetHistoryItemOfWriteBool(ctx, passportAddress, txHash)
+
+	if diff := deep.Equal(ehi, hi); diff != nil {
+		t.Error(diff)
+	}
+}
