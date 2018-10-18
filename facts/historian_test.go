@@ -23,66 +23,70 @@ func TestHistorian_FilterChanges(t *testing.T) {
 
 	key := [32]byte{99, 88, 77, 66, 55, 44, 33, 22, 11}
 
-	var allChanges []changeDetails
+	var (
+		allChanges []changeDetails
+		txHash     common.Hash
+		err        error
+	)
 	// make some updates
-	if err := provider.WriteTxData(ctx, passportAddress, key, []byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}); err != nil {
+	if txHash, err = provider.WriteTxData(ctx, passportAddress, key, []byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}); err != nil {
 		t.Errorf("Provider.WriteTxData() error = %v", err)
 	}
-	allChanges = append(allChanges, changeDetails{ChangeType: change.Updated, DataType: data.TxData, FactProvider: factProviderAddress, Key: key})
-	if err := provider.WriteBytes(ctx, passportAddress, key, []byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}); err != nil {
+	allChanges = append(allChanges, changeDetails{ChangeType: change.Updated, DataType: data.TxData, FactProvider: factProviderAddress, Key: key, TxHash: txHash})
+	if txHash, err = provider.WriteBytes(ctx, passportAddress, key, []byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}); err != nil {
 		t.Errorf("Provider.WriteBytes() error = %v", err)
 	}
-	allChanges = append(allChanges, changeDetails{ChangeType: change.Updated, DataType: data.Bytes, FactProvider: factProviderAddress, Key: key})
-	if err := provider.WriteString(ctx, passportAddress, key, "test only string"); err != nil {
+	allChanges = append(allChanges, changeDetails{ChangeType: change.Updated, DataType: data.Bytes, FactProvider: factProviderAddress, Key: key, TxHash: txHash})
+	if txHash, err = provider.WriteString(ctx, passportAddress, key, "test only string"); err != nil {
 		t.Errorf("Provider.WriteString() error = %v", err)
 	}
-	allChanges = append(allChanges, changeDetails{ChangeType: change.Updated, DataType: data.String, FactProvider: factProviderAddress, Key: key})
-	if err := provider.WriteAddress(ctx, passportAddress, key, common.HexToAddress("0xaF4DcE16Da2877f8c9e00544c93B62Ac40631F16")); err != nil {
+	allChanges = append(allChanges, changeDetails{ChangeType: change.Updated, DataType: data.String, FactProvider: factProviderAddress, Key: key, TxHash: txHash})
+	if txHash, err = provider.WriteAddress(ctx, passportAddress, key, common.HexToAddress("0xaF4DcE16Da2877f8c9e00544c93B62Ac40631F16")); err != nil {
 		t.Errorf("Provider.WriteAddress() error = %v", err)
 	}
-	allChanges = append(allChanges, changeDetails{ChangeType: change.Updated, DataType: data.Address, FactProvider: factProviderAddress, Key: key})
-	if err := provider.WriteInt(ctx, passportAddress, key, big.NewInt(-123456)); err != nil {
+	allChanges = append(allChanges, changeDetails{ChangeType: change.Updated, DataType: data.Address, FactProvider: factProviderAddress, Key: key, TxHash: txHash})
+	if txHash, err = provider.WriteInt(ctx, passportAddress, key, big.NewInt(-123456)); err != nil {
 		t.Errorf("Provider.WriteInt() error = %v", err)
 	}
-	allChanges = append(allChanges, changeDetails{ChangeType: change.Updated, DataType: data.Int, FactProvider: factProviderAddress, Key: key})
-	if err := provider.WriteUint(ctx, passportAddress, key, big.NewInt(123456)); err != nil {
+	allChanges = append(allChanges, changeDetails{ChangeType: change.Updated, DataType: data.Int, FactProvider: factProviderAddress, Key: key, TxHash: txHash})
+	if txHash, err = provider.WriteUint(ctx, passportAddress, key, big.NewInt(123456)); err != nil {
 		t.Errorf("Provider.WriteUint() error = %v", err)
 	}
-	allChanges = append(allChanges, changeDetails{ChangeType: change.Updated, DataType: data.Uint, FactProvider: factProviderAddress, Key: key})
-	if err := provider.WriteBool(ctx, passportAddress, key, true); err != nil {
+	allChanges = append(allChanges, changeDetails{ChangeType: change.Updated, DataType: data.Uint, FactProvider: factProviderAddress, Key: key, TxHash: txHash})
+	if txHash, err = provider.WriteBool(ctx, passportAddress, key, true); err != nil {
 		t.Errorf("Provider.WriteBool() error = %v", err)
 	}
-	allChanges = append(allChanges, changeDetails{ChangeType: change.Updated, DataType: data.Bool, FactProvider: factProviderAddress, Key: key})
+	allChanges = append(allChanges, changeDetails{ChangeType: change.Updated, DataType: data.Bool, FactProvider: factProviderAddress, Key: key, TxHash: txHash})
 
 	// make some deletes
-	if err := provider.DeleteTxData(ctx, passportAddress, key); err != nil {
+	if txHash, err = provider.DeleteTxData(ctx, passportAddress, key); err != nil {
 		t.Errorf("Provider.DeleteTxData() error = %v", err)
 	}
-	allChanges = append(allChanges, changeDetails{ChangeType: change.Deleted, DataType: data.TxData, FactProvider: factProviderAddress, Key: key})
-	if err := provider.DeleteBytes(ctx, passportAddress, key); err != nil {
+	allChanges = append(allChanges, changeDetails{ChangeType: change.Deleted, DataType: data.TxData, FactProvider: factProviderAddress, Key: key, TxHash: txHash})
+	if txHash, err = provider.DeleteBytes(ctx, passportAddress, key); err != nil {
 		t.Errorf("Provider.DeleteBytes() error = %v", err)
 	}
-	allChanges = append(allChanges, changeDetails{ChangeType: change.Deleted, DataType: data.Bytes, FactProvider: factProviderAddress, Key: key})
-	if err := provider.DeleteString(ctx, passportAddress, key); err != nil {
+	allChanges = append(allChanges, changeDetails{ChangeType: change.Deleted, DataType: data.Bytes, FactProvider: factProviderAddress, Key: key, TxHash: txHash})
+	if txHash, err = provider.DeleteString(ctx, passportAddress, key); err != nil {
 		t.Errorf("Provider.DeleteString() error = %v", err)
 	}
-	allChanges = append(allChanges, changeDetails{ChangeType: change.Deleted, DataType: data.String, FactProvider: factProviderAddress, Key: key})
-	if err := provider.DeleteAddress(ctx, passportAddress, key); err != nil {
+	allChanges = append(allChanges, changeDetails{ChangeType: change.Deleted, DataType: data.String, FactProvider: factProviderAddress, Key: key, TxHash: txHash})
+	if txHash, err = provider.DeleteAddress(ctx, passportAddress, key); err != nil {
 		t.Errorf("Provider.DeleteAddress() error = %v", err)
 	}
-	allChanges = append(allChanges, changeDetails{ChangeType: change.Deleted, DataType: data.Address, FactProvider: factProviderAddress, Key: key})
-	if err := provider.DeleteInt(ctx, passportAddress, key); err != nil {
+	allChanges = append(allChanges, changeDetails{ChangeType: change.Deleted, DataType: data.Address, FactProvider: factProviderAddress, Key: key, TxHash: txHash})
+	if txHash, err = provider.DeleteInt(ctx, passportAddress, key); err != nil {
 		t.Errorf("Provider.DeleteInt() error = %v", err)
 	}
-	allChanges = append(allChanges, changeDetails{ChangeType: change.Deleted, DataType: data.Int, FactProvider: factProviderAddress, Key: key})
-	if err := provider.DeleteUint(ctx, passportAddress, key); err != nil {
+	allChanges = append(allChanges, changeDetails{ChangeType: change.Deleted, DataType: data.Int, FactProvider: factProviderAddress, Key: key, TxHash: txHash})
+	if txHash, err = provider.DeleteUint(ctx, passportAddress, key); err != nil {
 		t.Errorf("Provider.DeleteUint() error = %v", err)
 	}
-	allChanges = append(allChanges, changeDetails{ChangeType: change.Deleted, DataType: data.Uint, FactProvider: factProviderAddress, Key: key})
-	if err := provider.DeleteBool(ctx, passportAddress, key); err != nil {
+	allChanges = append(allChanges, changeDetails{ChangeType: change.Deleted, DataType: data.Uint, FactProvider: factProviderAddress, Key: key, TxHash: txHash})
+	if txHash, err = provider.DeleteBool(ctx, passportAddress, key); err != nil {
 		t.Errorf("Provider.DeleteBool() error = %v", err)
 	}
-	allChanges = append(allChanges, changeDetails{ChangeType: change.Deleted, DataType: data.Bool, FactProvider: factProviderAddress, Key: key})
+	allChanges = append(allChanges, changeDetails{ChangeType: change.Deleted, DataType: data.Bool, FactProvider: factProviderAddress, Key: key, TxHash: txHash})
 
 	eth := factProviderSession.Eth
 	hist := facts.NewHistorian(eth)
@@ -107,7 +111,7 @@ func TestHistorian_FilterChanges(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			testFilterChangesExactOne(t, hist, tt.changeType, tt.dataType, passportAddress, factProviderAddress, key)
+			testFilterChangesExactOne(t, hist, tt.changeType, tt.dataType, passportAddress, factProviderAddress, key, allChanges)
 		})
 	}
 
@@ -129,9 +133,10 @@ type changeDetails struct {
 	DataType     data.Type
 	FactProvider common.Address
 	Key          [32]byte
+	TxHash       common.Hash
 }
 
-func testFilterChangesExactOne(t *testing.T, hist *facts.Historian, changeType change.Type, dataType data.Type, passportAddress common.Address, factProviderAddress common.Address, key [32]byte) {
+func testFilterChangesExactOne(t *testing.T, hist *facts.Historian, changeType change.Type, dataType data.Type, passportAddress common.Address, factProviderAddress common.Address, key [32]byte, allChanges []changeDetails) {
 	opts := &facts.ChangesFilterOpts{
 		ChangeType:   []change.Type{changeType},
 		DataType:     []data.Type{dataType},
@@ -155,11 +160,15 @@ func testFilterChangesExactOne(t *testing.T, hist *facts.Historian, changeType c
 
 	ch := changes[0]
 
-	expected := changeDetails{
-		ChangeType:   changeType,
-		DataType:     dataType,
-		FactProvider: factProviderAddress,
-		Key:          key,
+	var expected changeDetails
+	for _, v := range allChanges {
+		if v.ChangeType == changeType &&
+			v.DataType == dataType &&
+			v.FactProvider == factProviderAddress &&
+			v.Key == key {
+			expected = v
+			break
+		}
 	}
 
 	actual := changeDetails{
@@ -167,6 +176,7 @@ func testFilterChangesExactOne(t *testing.T, hist *facts.Historian, changeType c
 		DataType:     ch.DataType,
 		FactProvider: ch.FactProvider,
 		Key:          ch.Key,
+		TxHash:       ch.Raw.TxHash,
 	}
 
 	if diff := deep.Equal(expected, actual); diff != nil {
@@ -192,6 +202,7 @@ func testFilterChangesAll(t *testing.T, hist *facts.Historian, passportAddress c
 			DataType:     ch.DataType,
 			FactProvider: ch.FactProvider,
 			Key:          ch.Key,
+			TxHash:       ch.Raw.TxHash,
 		})
 	}
 
@@ -219,6 +230,7 @@ func testFilterChangesAllUpdates(t *testing.T, hist *facts.Historian, passportAd
 			DataType:     ch.DataType,
 			FactProvider: ch.FactProvider,
 			Key:          ch.Key,
+			TxHash:       ch.Raw.TxHash,
 		})
 	}
 
@@ -254,6 +266,7 @@ func testFilterChangesAllDeletes(t *testing.T, hist *facts.Historian, passportAd
 			DataType:     ch.DataType,
 			FactProvider: ch.FactProvider,
 			Key:          ch.Key,
+			TxHash:       ch.Raw.TxHash,
 		})
 	}
 
@@ -266,6 +279,33 @@ func testFilterChangesAllDeletes(t *testing.T, hist *facts.Historian, passportAd
 	}
 
 	if diff := deep.Equal(expectedChanges, actualChanges); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestHistorian_GetHistoryItemOfWriteTxData(t *testing.T) {
+	ctx := context.Background()
+
+	passportAddress, factProviderSession := createPassportAndFactProviderSession(ctx, t)
+	ehi := &facts.WriteTxDataHistoryItem{
+		FactProvider: factProviderSession.TransactOpts.From,
+		Key:          [32]byte{1, 2, 3, 4, 5, 6, 7, 8, 9},
+		Data:         ([]byte)("this is test only message"),
+	}
+
+	provider := facts.NewProvider(factProviderSession)
+
+	txHash, err := provider.WriteTxData(ctx, passportAddress, ehi.Key, ehi.Data)
+	if err != nil {
+		t.Errorf("Provider.WriteTxData() errro = %v", err)
+	}
+
+	eth := factProviderSession.Eth
+	historian := facts.NewHistorian(eth)
+
+	hi, err := historian.GetHistoryItemOfWriteTxData(ctx, passportAddress, txHash)
+
+	if diff := deep.Equal(ehi, hi); diff != nil {
 		t.Error(diff)
 	}
 }

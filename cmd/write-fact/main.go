@@ -210,22 +210,26 @@ func main() {
 
 	switch factType {
 	case ftTxData:
-		cmdutils.CheckErr(provider.WriteTxData(ctx, passportAddress, factKey, factBytes), "WriteTxData")
+		cmdutils.CheckErr(ignoreHash(provider.WriteTxData(ctx, passportAddress, factKey, factBytes)), "WriteTxData")
 	case ftString:
-		cmdutils.CheckErr(provider.WriteString(ctx, passportAddress, factKey, factString), "WriteString")
+		cmdutils.CheckErr(ignoreHash(provider.WriteString(ctx, passportAddress, factKey, factString)), "WriteString")
 	case ftBytes:
-		cmdutils.CheckErr(provider.WriteBytes(ctx, passportAddress, factKey, factBytes), "WriteBytes")
+		cmdutils.CheckErr(ignoreHash(provider.WriteBytes(ctx, passportAddress, factKey, factBytes)), "WriteBytes")
 	case ftAddress:
-		cmdutils.CheckErr(provider.WriteAddress(ctx, passportAddress, factKey, factAddress), "WriteAddress")
+		cmdutils.CheckErr(ignoreHash(provider.WriteAddress(ctx, passportAddress, factKey, factAddress)), "WriteAddress")
 	case ftUint:
-		cmdutils.CheckErr(provider.WriteUint(ctx, passportAddress, factKey, factInt), "WriteUint")
+		cmdutils.CheckErr(ignoreHash(provider.WriteUint(ctx, passportAddress, factKey, factInt)), "WriteUint")
 	case ftInt:
-		cmdutils.CheckErr(provider.WriteInt(ctx, passportAddress, factKey, factInt), "WriteInt")
+		cmdutils.CheckErr(ignoreHash(provider.WriteInt(ctx, passportAddress, factKey, factInt)), "WriteInt")
 	case ftBool:
-		cmdutils.CheckErr(provider.WriteBool(ctx, passportAddress, factKey, factBool), "WriteBool")
+		cmdutils.CheckErr(ignoreHash(provider.WriteBool(ctx, passportAddress, factKey, factBool)), "WriteBool")
 	}
 
 	log.Warn("Done.")
+}
+
+func ignoreHash(_ common.Hash, err error) error {
+	return err
 }
 
 func copyToString(r io.Reader) (res string, err error) {

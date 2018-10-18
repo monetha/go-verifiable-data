@@ -32,7 +32,7 @@ func TestFactReader_ReadTxData(t *testing.T) {
 			e := factProviderSession.Eth
 			factProviderAddress := factProviderSession.TransactOpts.From
 
-			err := facts.NewProvider(factProviderSession).WriteTxData(ctx, passportAddress, tt.key, tt.data)
+			_, err := facts.NewProvider(factProviderSession).WriteTxData(ctx, passportAddress, tt.key, tt.data)
 			if err != nil {
 				t.Errorf("Provider.WriteTxData() error = %v", err)
 			}
@@ -86,7 +86,7 @@ func TestFactReader_ReadBytes(t *testing.T) {
 			e := factProviderSession.Eth
 			factProviderAddress := factProviderSession.TransactOpts.From
 
-			err := facts.NewProvider(factProviderSession).WriteBytes(ctx, passportAddress, tt.key, tt.data)
+			_, err := facts.NewProvider(factProviderSession).WriteBytes(ctx, passportAddress, tt.key, tt.data)
 			if err != nil {
 				t.Errorf("Provider.WriteBytes() error = %v", err)
 			}
@@ -139,7 +139,7 @@ func TestFactReader_ReadString(t *testing.T) {
 			e := factProviderSession.Eth
 			factProviderAddress := factProviderSession.TransactOpts.From
 
-			err := facts.NewProvider(factProviderSession).WriteString(ctx, passportAddress, tt.key, tt.data)
+			_, err := facts.NewProvider(factProviderSession).WriteString(ctx, passportAddress, tt.key, tt.data)
 			if err != nil {
 				t.Errorf("Provider.WriteString() error = %v", err)
 			}
@@ -191,7 +191,7 @@ func TestFactReader_ReadAddress(t *testing.T) {
 			e := factProviderSession.Eth
 			factProviderAddress := factProviderSession.TransactOpts.From
 
-			err := facts.NewProvider(factProviderSession).WriteAddress(ctx, passportAddress, tt.key, tt.data)
+			_, err := facts.NewProvider(factProviderSession).WriteAddress(ctx, passportAddress, tt.key, tt.data)
 			if err != nil {
 				t.Errorf("Provider.WriteAddress() error = %v", err)
 			}
@@ -243,7 +243,7 @@ func TestFactReader_ReadUint(t *testing.T) {
 			e := factProviderSession.Eth
 			factProviderAddress := factProviderSession.TransactOpts.From
 
-			err := facts.NewProvider(factProviderSession).WriteUint(ctx, passportAddress, tt.key, tt.data)
+			_, err := facts.NewProvider(factProviderSession).WriteUint(ctx, passportAddress, tt.key, tt.data)
 			if err != nil {
 				t.Errorf("Provider.WriteUint() error = %v", err)
 			}
@@ -299,7 +299,7 @@ func TestFactReader_ReadInt(t *testing.T) {
 			e := factProviderSession.Eth
 			factProviderAddress := factProviderSession.TransactOpts.From
 
-			err := facts.NewProvider(factProviderSession).WriteInt(ctx, passportAddress, tt.key, tt.data)
+			_, err := facts.NewProvider(factProviderSession).WriteInt(ctx, passportAddress, tt.key, tt.data)
 			if err != nil {
 				t.Errorf("Provider.WriteInt() error = %v", err)
 			}
@@ -352,7 +352,7 @@ func TestFactReader_ReadBool(t *testing.T) {
 			e := factProviderSession.Eth
 			factProviderAddress := factProviderSession.TransactOpts.From
 
-			err := facts.NewProvider(factProviderSession).WriteBool(ctx, passportAddress, tt.key, tt.data)
+			_, err := facts.NewProvider(factProviderSession).WriteBool(ctx, passportAddress, tt.key, tt.data)
 			if err != nil {
 				t.Errorf("Provider.WriteBool() error = %v", err)
 			}

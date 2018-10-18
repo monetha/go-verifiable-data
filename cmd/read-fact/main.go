@@ -156,25 +156,25 @@ func main() {
 
 		factProvider := facts.NewProvider(e.NewSession(factProviderKey))
 
-		err = factProvider.WriteTxData(ctx, passportAddress, factKey, []byte("This is test only tx data!"))
+		_, err = factProvider.WriteTxData(ctx, passportAddress, factKey, []byte("This is test only tx data!"))
 		cmdutils.CheckErr(err, "WriteTxData")
 
-		err = factProvider.WriteString(ctx, passportAddress, factKey, "This is test only string data!")
+		_, err = factProvider.WriteString(ctx, passportAddress, factKey, "This is test only string data!")
 		cmdutils.CheckErr(err, "WriteString")
 
-		err = factProvider.WriteBytes(ctx, passportAddress, factKey, []byte("This is test only bytes data!"))
+		_, err = factProvider.WriteBytes(ctx, passportAddress, factKey, []byte("This is test only bytes data!"))
 		cmdutils.CheckErr(err, "WriteBytes")
 
-		err = factProvider.WriteAddress(ctx, passportAddress, factKey, factProviderAddress)
+		_, err = factProvider.WriteAddress(ctx, passportAddress, factKey, factProviderAddress)
 		cmdutils.CheckErr(err, "WriteAddress")
 
-		err = factProvider.WriteUint(ctx, passportAddress, factKey, big.NewInt(123456789))
+		_, err = factProvider.WriteUint(ctx, passportAddress, factKey, big.NewInt(123456789))
 		cmdutils.CheckErr(err, "WriteUint")
 
-		err = factProvider.WriteInt(ctx, passportAddress, factKey, big.NewInt(987654321))
+		_, err = factProvider.WriteInt(ctx, passportAddress, factKey, big.NewInt(987654321))
 		cmdutils.CheckErr(err, "WriteInt")
 
-		err = factProvider.WriteBool(ctx, passportAddress, factKey, true)
+		_, err = factProvider.WriteBool(ctx, passportAddress, factKey, true)
 		cmdutils.CheckErr(err, "WriteBool")
 	} else {
 		client, err := ethclient.Dial(*backendURL)
