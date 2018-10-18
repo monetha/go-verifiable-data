@@ -242,13 +242,7 @@ func testFilterChangesExactOne(t *testing.T, hist *facts.Historian, changeType c
 		}
 	}
 
-	actual := changeDetails{
-		ChangeType:   ch.ChangeType,
-		DataType:     ch.DataType,
-		FactProvider: ch.FactProvider,
-		Key:          ch.Key,
-		TxHash:       ch.Raw.TxHash,
-	}
+	actual := changeToDetails(ch)
 
 	if diff := deep.Equal(expected, actual); diff != nil {
 		t.Error(diff)
@@ -268,13 +262,7 @@ func testFilterChangesAll(t *testing.T, hist *facts.Historian, passportAddress c
 
 	var actualChanges []changeDetails
 	for _, ch := range changes {
-		actualChanges = append(actualChanges, changeDetails{
-			ChangeType:   ch.ChangeType,
-			DataType:     ch.DataType,
-			FactProvider: ch.FactProvider,
-			Key:          ch.Key,
-			TxHash:       ch.Raw.TxHash,
-		})
+		actualChanges = append(actualChanges, changeToDetails(ch))
 	}
 
 	if diff := deep.Equal(allChanges, actualChanges); diff != nil {
@@ -296,13 +284,7 @@ func testFilterChangesAllUpdates(t *testing.T, hist *facts.Historian, passportAd
 
 	var actualChanges []changeDetails
 	for _, ch := range changes {
-		actualChanges = append(actualChanges, changeDetails{
-			ChangeType:   ch.ChangeType,
-			DataType:     ch.DataType,
-			FactProvider: ch.FactProvider,
-			Key:          ch.Key,
-			TxHash:       ch.Raw.TxHash,
-		})
+		actualChanges = append(actualChanges, changeToDetails(ch))
 	}
 
 	var expectedChanges []changeDetails
@@ -332,13 +314,7 @@ func testFilterChangesAllDeletes(t *testing.T, hist *facts.Historian, passportAd
 
 	var actualChanges []changeDetails
 	for _, ch := range changes {
-		actualChanges = append(actualChanges, changeDetails{
-			ChangeType:   ch.ChangeType,
-			DataType:     ch.DataType,
-			FactProvider: ch.FactProvider,
-			Key:          ch.Key,
-			TxHash:       ch.Raw.TxHash,
-		})
+		actualChanges = append(actualChanges, changeToDetails(ch))
 	}
 
 	var expectedChanges []changeDetails
@@ -351,6 +327,16 @@ func testFilterChangesAllDeletes(t *testing.T, hist *facts.Historian, passportAd
 
 	if diff := deep.Equal(expectedChanges, actualChanges); diff != nil {
 		t.Error(diff)
+	}
+}
+
+func changeToDetails(ch *facts.Change) changeDetails {
+	return changeDetails{
+		ChangeType:   ch.ChangeType,
+		DataType:     ch.DataType,
+		FactProvider: ch.FactProvider,
+		Key:          ch.Key,
+		TxHash:       ch.Raw.TxHash,
 	}
 }
 
