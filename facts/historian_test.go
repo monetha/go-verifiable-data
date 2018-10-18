@@ -371,10 +371,31 @@ func TestHistorian_GetHistoryItemOfWriteTxData(t *testing.T) {
 		t.Errorf("Provider.WriteTxData() errro = %v", err)
 	}
 
-	eth := factProviderSession.Eth
-	historian := facts.NewHistorian(eth)
+	hi, err := facts.NewHistorian(factProviderSession.Eth).GetHistoryItemOfWriteTxData(ctx, passportAddress, txHash)
 
-	hi, err := historian.GetHistoryItemOfWriteTxData(ctx, passportAddress, txHash)
+	if diff := deep.Equal(ehi, hi); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestHistorian_GetHistoryItemOfWriteBytes(t *testing.T) {
+	ctx := context.Background()
+
+	passportAddress, factProviderSession := createPassportAndFactProviderSession(ctx, t)
+	ehi := &facts.WriteBytesHistoryItem{
+		FactProvider: factProviderSession.TransactOpts.From,
+		Key:          [32]byte{1, 2, 3, 4, 5, 6, 7, 8, 9},
+		Data:         ([]byte)("this is test only message"),
+	}
+
+	provider := facts.NewProvider(factProviderSession)
+
+	txHash, err := provider.WriteBytes(ctx, passportAddress, ehi.Key, ehi.Data)
+	if err != nil {
+		t.Errorf("Provider.WriteBytes() errro = %v", err)
+	}
+
+	hi, err := facts.NewHistorian(factProviderSession.Eth).GetHistoryItemOfWriteBytes(ctx, passportAddress, txHash)
 
 	if diff := deep.Equal(ehi, hi); diff != nil {
 		t.Error(diff)
