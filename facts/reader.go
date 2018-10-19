@@ -92,7 +92,7 @@ func (r *Reader) ReadTxData(ctx context.Context, passport common.Address, factPr
 		return nil, fmt.Errorf("facts: TransactionByHash(%v): %v", txHash, err)
 	}
 
-	params, err := txdata.NewPassportLogicInputParser().ParseSetTxDataBlockNumberCallData(tx.Data())
+	params, err := txdata.ParseSetTxDataBlockNumberCallData(tx.Data())
 	if err != nil {
 		return nil, err
 	}

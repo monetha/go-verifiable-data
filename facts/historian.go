@@ -348,7 +348,7 @@ func (h *Historian) GetHistoryItemOfWriteTxData(ctx context.Context, passport co
 		return nil, err
 	}
 
-	params, err := txdata.NewPassportLogicInputParser().ParseSetTxDataBlockNumberCallData(txData)
+	params, err := txdata.ParseSetTxDataBlockNumberCallData(txData)
 	if err != nil {
 		return nil, err
 	}
@@ -367,7 +367,7 @@ func (h *Historian) GetHistoryItemOfWriteBytes(ctx context.Context, passport com
 		return nil, err
 	}
 
-	params, err := txdata.NewPassportLogicInputParser().ParseSetBytesCallData(txData)
+	params, err := txdata.ParseSetBytesCallData(txData)
 	if err != nil {
 		return nil, err
 	}
@@ -386,7 +386,7 @@ func (h *Historian) GetHistoryItemOfWriteString(ctx context.Context, passport co
 		return nil, err
 	}
 
-	params, err := txdata.NewPassportLogicInputParser().ParseSetStringCallData(txData)
+	params, err := txdata.ParseSetStringCallData(txData)
 	if err != nil {
 		return nil, err
 	}
@@ -405,7 +405,7 @@ func (h *Historian) GetHistoryItemOfWriteAddress(ctx context.Context, passport c
 		return nil, err
 	}
 
-	params, err := txdata.NewPassportLogicInputParser().ParseSetAddressCallData(txData)
+	params, err := txdata.ParseSetAddressCallData(txData)
 	if err != nil {
 		return nil, err
 	}
@@ -424,7 +424,7 @@ func (h *Historian) GetHistoryItemOfWriteUint(ctx context.Context, passport comm
 		return nil, err
 	}
 
-	params, err := txdata.NewPassportLogicInputParser().ParseSetUintCallData(txData)
+	params, err := txdata.ParseSetUintCallData(txData)
 	if err != nil {
 		return nil, err
 	}
@@ -443,7 +443,7 @@ func (h *Historian) GetHistoryItemOfWriteInt(ctx context.Context, passport commo
 		return nil, err
 	}
 
-	params, err := txdata.NewPassportLogicInputParser().ParseSetIntCallData(txData)
+	params, err := txdata.ParseSetIntCallData(txData)
 	if err != nil {
 		return nil, err
 	}
@@ -462,7 +462,7 @@ func (h *Historian) GetHistoryItemOfWriteBool(ctx context.Context, passport comm
 		return nil, err
 	}
 
-	params, err := txdata.NewPassportLogicInputParser().ParseSetBoolCallData(txData)
+	params, err := txdata.ParseSetBoolCallData(txData)
 	if err != nil {
 		return nil, err
 	}

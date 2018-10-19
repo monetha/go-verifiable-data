@@ -13,9 +13,7 @@ import (
 	"gitlab.com/monetha/protocol-go-sdk/contracts"
 )
 
-func TestPassportLogicInputParser_ParseSetTxDataBlockNumberCallData(t *testing.T) {
-	parser := NewPassportLogicInputParser()
-
+func TestParseSetTxDataBlockNumberCallData(t *testing.T) {
 	address := common.Address{}
 	transactor := &transactorMock{}
 	contractTransactor, err := contracts.NewPassportLogicContractTransactor(address, transactor)
@@ -39,9 +37,9 @@ func TestPassportLogicInputParser_ParseSetTxDataBlockNumberCallData(t *testing.T
 				t.Errorf("contractTransactor.SetTxDataBlockNumber: %v", err)
 			}
 
-			params, err := parser.ParseSetTxDataBlockNumberCallData(tx.Data())
+			params, err := ParseSetTxDataBlockNumberCallData(tx.Data())
 			if err != nil {
-				t.Errorf("parser.ParseSetTxDataBlockNumberCallData: %v", err)
+				t.Errorf("ParseSetTxDataBlockNumberCallData: %v", err)
 			}
 
 			if diff := deep.Equal(tt.params, params); diff != nil {
@@ -51,9 +49,7 @@ func TestPassportLogicInputParser_ParseSetTxDataBlockNumberCallData(t *testing.T
 	}
 }
 
-func TestPassportLogicInputParser_ParseSetBytesCallData(t *testing.T) {
-	parser := NewPassportLogicInputParser()
-
+func TestParseSetBytesCallData(t *testing.T) {
 	address := common.Address{}
 	transactor := &transactorMock{}
 	contractTransactor, err := contracts.NewPassportLogicContractTransactor(address, transactor)
@@ -77,9 +73,9 @@ func TestPassportLogicInputParser_ParseSetBytesCallData(t *testing.T) {
 				t.Errorf("contractTransactor.SetBytes: %v", err)
 			}
 
-			params, err := parser.ParseSetBytesCallData(tx.Data())
+			params, err := ParseSetBytesCallData(tx.Data())
 			if err != nil {
-				t.Errorf("parser.ParseSetBytesCallData: %v", err)
+				t.Errorf("ParseSetBytesCallData: %v", err)
 			}
 
 			if diff := deep.Equal(tt.params, params); diff != nil {
@@ -89,9 +85,7 @@ func TestPassportLogicInputParser_ParseSetBytesCallData(t *testing.T) {
 	}
 }
 
-func TestPassportLogicInputParser_ParseSetStringCallData(t *testing.T) {
-	parser := NewPassportLogicInputParser()
-
+func TestParseSetStringCallData(t *testing.T) {
 	address := common.Address{}
 	transactor := &transactorMock{}
 	contractTransactor, err := contracts.NewPassportLogicContractTransactor(address, transactor)
@@ -115,9 +109,9 @@ func TestPassportLogicInputParser_ParseSetStringCallData(t *testing.T) {
 				t.Errorf("contractTransactor.SetString: %v", err)
 			}
 
-			params, err := parser.ParseSetStringCallData(tx.Data())
+			params, err := ParseSetStringCallData(tx.Data())
 			if err != nil {
-				t.Errorf("parser.ParseSetStringCallData: %v", err)
+				t.Errorf("ParseSetStringCallData: %v", err)
 			}
 
 			if diff := deep.Equal(tt.params, params); diff != nil {
@@ -127,9 +121,7 @@ func TestPassportLogicInputParser_ParseSetStringCallData(t *testing.T) {
 	}
 }
 
-func TestPassportLogicInputParser_ParseSetAddressCallData(t *testing.T) {
-	parser := NewPassportLogicInputParser()
-
+func TestParseSetAddressCallData(t *testing.T) {
 	address := common.Address{}
 	transactor := &transactorMock{}
 	contractTransactor, err := contracts.NewPassportLogicContractTransactor(address, transactor)
@@ -153,9 +145,9 @@ func TestPassportLogicInputParser_ParseSetAddressCallData(t *testing.T) {
 				t.Errorf("contractTransactor.SetAddress: %v", err)
 			}
 
-			params, err := parser.ParseSetAddressCallData(tx.Data())
+			params, err := ParseSetAddressCallData(tx.Data())
 			if err != nil {
-				t.Errorf("parser.ParseSetAddressCallData: %v", err)
+				t.Errorf("ParseSetAddressCallData: %v", err)
 			}
 
 			if diff := deep.Equal(tt.params, params); diff != nil {
@@ -165,9 +157,7 @@ func TestPassportLogicInputParser_ParseSetAddressCallData(t *testing.T) {
 	}
 }
 
-func TestPassportLogicInputParser_ParseSetUintCallData(t *testing.T) {
-	parser := NewPassportLogicInputParser()
-
+func TestParseSetUintCallData(t *testing.T) {
 	address := common.Address{}
 	transactor := &transactorMock{}
 	contractTransactor, err := contracts.NewPassportLogicContractTransactor(address, transactor)
@@ -191,9 +181,9 @@ func TestPassportLogicInputParser_ParseSetUintCallData(t *testing.T) {
 				t.Errorf("contractTransactor.SetUint: %v", err)
 			}
 
-			params, err := parser.ParseSetUintCallData(tx.Data())
+			params, err := ParseSetUintCallData(tx.Data())
 			if err != nil {
-				t.Errorf("parser.ParseSetUintCallData: %v", err)
+				t.Errorf("ParseSetUintCallData: %v", err)
 			}
 
 			if diff := deep.Equal(tt.params, params); diff != nil {
@@ -203,9 +193,7 @@ func TestPassportLogicInputParser_ParseSetUintCallData(t *testing.T) {
 	}
 }
 
-func TestPassportLogicInputParser_ParseSetIntCallData(t *testing.T) {
-	parser := NewPassportLogicInputParser()
-
+func TestParseSetIntCallData(t *testing.T) {
 	address := common.Address{}
 	transactor := &transactorMock{}
 	contractTransactor, err := contracts.NewPassportLogicContractTransactor(address, transactor)
@@ -230,9 +218,9 @@ func TestPassportLogicInputParser_ParseSetIntCallData(t *testing.T) {
 				t.Errorf("contractTransactor.SetInt: %v", err)
 			}
 
-			params, err := parser.ParseSetIntCallData(tx.Data())
+			params, err := ParseSetIntCallData(tx.Data())
 			if err != nil {
-				t.Errorf("parser.ParseSetIntCallData: %v", err)
+				t.Errorf("ParseSetIntCallData: %v", err)
 			}
 
 			if diff := deep.Equal(tt.params, params); diff != nil {
@@ -242,9 +230,7 @@ func TestPassportLogicInputParser_ParseSetIntCallData(t *testing.T) {
 	}
 }
 
-func TestPassportLogicInputParser_ParseSetBoolCallData(t *testing.T) {
-	parser := NewPassportLogicInputParser()
-
+func TestParseSetBoolCallData(t *testing.T) {
 	address := common.Address{}
 	transactor := &transactorMock{}
 	contractTransactor, err := contracts.NewPassportLogicContractTransactor(address, transactor)
@@ -269,9 +255,9 @@ func TestPassportLogicInputParser_ParseSetBoolCallData(t *testing.T) {
 				t.Errorf("contractTransactor.SetBool: %v", err)
 			}
 
-			params, err := parser.ParseSetBoolCallData(tx.Data())
+			params, err := ParseSetBoolCallData(tx.Data())
 			if err != nil {
-				t.Errorf("parser.ParseSetBoolCallData: %v", err)
+				t.Errorf("ParseSetBoolCallData: %v", err)
 			}
 
 			if diff := deep.Equal(tt.params, params); diff != nil {
