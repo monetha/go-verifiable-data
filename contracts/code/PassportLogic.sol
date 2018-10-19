@@ -1,358 +1,5 @@
 pragma solidity ^0.4.24;
 
-// File: contracts/storage/AddressStorage.sol
-
-contract AddressStorage {
-    struct AddressValue {
-        bool initialized;
-        address value;
-    }
-
-    event AddressUpdated(address indexed factProvider, bytes32 indexed key);
-    event AddressDeleted(address indexed factProvider, bytes32 indexed key);
-
-    mapping(address => mapping(bytes32 => AddressValue)) private addressStorage;
-
-    /// @param _key The key for the record
-    /// @param _value The value for the record
-    function setAddress(bytes32 _key, address _value) external {
-        _setAddress(_key, _value);
-    }
-
-    /// @param _key The key for the record
-    function deleteAddress(bytes32 _key) external {
-        _deleteAddress(_key);
-    }
-
-    /// @param _factProvider The fact provider
-    /// @param _key The key for the record
-    function getAddress(address _factProvider, bytes32 _key) external view returns (bool success, address value) {
-        return _getAddress(_factProvider, _key);
-    }
-
-    function _setAddress(bytes32 _key, address _value) internal {
-        addressStorage[msg.sender][_key] = AddressValue({
-            initialized : true,
-            value : _value
-            });
-        emit AddressUpdated(msg.sender, _key);
-    }
-
-    function _deleteAddress(bytes32 _key) internal {
-        delete addressStorage[msg.sender][_key];
-        emit AddressDeleted(msg.sender, _key);
-    }
-
-    function _getAddress(address _factProvider, bytes32 _key) internal view returns (bool success, address value) {
-        AddressValue storage initValue = addressStorage[_factProvider][_key];
-        return (initValue.initialized, initValue.value);
-    }
-}
-
-// File: contracts/storage/UintStorage.sol
-
-contract UintStorage {
-    struct UintValue {
-        bool initialized;
-        uint value;
-    }
-
-    event UintUpdated(address indexed factProvider, bytes32 indexed key);
-    event UintDeleted(address indexed factProvider, bytes32 indexed key);
-
-    mapping(address => mapping(bytes32 => UintValue)) private uintStorage;
-
-    /// @param _key The key for the record
-    /// @param _value The value for the record
-    function setUint(bytes32 _key, uint _value) external {
-        _setUint(_key, _value);
-    }
-
-    /// @param _key The key for the record
-    function deleteUint(bytes32 _key) external {
-        _deleteUint(_key);
-    }
-
-    /// @param _factProvider The fact provider
-    /// @param _key The key for the record
-    function getUint(address _factProvider, bytes32 _key) external view returns (bool success, uint value) {
-        return _getUint(_factProvider, _key);
-    }
-
-    function _setUint(bytes32 _key, uint _value) internal {
-        uintStorage[msg.sender][_key] = UintValue({
-            initialized : true,
-            value : _value
-            });
-        emit UintUpdated(msg.sender, _key);
-    }
-
-    function _deleteUint(bytes32 _key) internal {
-        delete uintStorage[msg.sender][_key];
-        emit UintDeleted(msg.sender, _key);
-    }
-
-    function _getUint(address _factProvider, bytes32 _key) internal view returns (bool success, uint value) {
-        UintValue storage initValue = uintStorage[_factProvider][_key];
-        return (initValue.initialized, initValue.value);
-    }
-}
-
-// File: contracts/storage/IntStorage.sol
-
-contract IntStorage {
-    struct IntValue {
-        bool initialized;
-        int value;
-    }
-
-    event IntUpdated(address indexed factProvider, bytes32 indexed key);
-    event IntDeleted(address indexed factProvider, bytes32 indexed key);
-
-    mapping(address => mapping(bytes32 => IntValue)) private intStorage;
-
-    /// @param _key The key for the record
-    /// @param _value The value for the record
-    function setInt(bytes32 _key, int _value) external {
-        _setInt(_key, _value);
-    }
-
-    /// @param _key The key for the record
-    function deleteInt(bytes32 _key) external {
-        _deleteInt(_key);
-    }
-
-    /// @param _factProvider The fact provider
-    /// @param _key The key for the record
-    function getInt(address _factProvider, bytes32 _key) external view returns (bool success, int value) {
-        return _getInt(_factProvider, _key);
-    }
-
-    function _setInt(bytes32 _key, int _value) internal {
-        intStorage[msg.sender][_key] = IntValue({
-            initialized : true,
-            value : _value
-            });
-        emit IntUpdated(msg.sender, _key);
-    }
-
-    function _deleteInt(bytes32 _key) internal {
-        delete intStorage[msg.sender][_key];
-        emit IntDeleted(msg.sender, _key);
-    }
-
-    function _getInt(address _factProvider, bytes32 _key) internal view returns (bool success, int value) {
-        IntValue storage initValue = intStorage[_factProvider][_key];
-        return (initValue.initialized, initValue.value);
-    }
-}
-
-// File: contracts/storage/BoolStorage.sol
-
-contract BoolStorage {
-    struct BoolValue {
-        bool initialized;
-        bool value;
-    }
-
-    event BoolUpdated(address indexed factProvider, bytes32 indexed key);
-    event BoolDeleted(address indexed factProvider, bytes32 indexed key);
-
-    mapping(address => mapping(bytes32 => BoolValue)) private boolStorage;
-
-    /// @param _key The key for the record
-    /// @param _value The value for the record
-    function setBool(bytes32 _key, bool _value) external {
-        _setBool(_key, _value);
-    }
-
-    /// @param _key The key for the record
-    function deleteBool(bytes32 _key) external {
-        _deleteBool(_key);
-    }
-
-    /// @param _factProvider The fact provider
-    /// @param _key The key for the record
-    function getBool(address _factProvider, bytes32 _key) external view returns (bool success, bool value) {
-        return _getBool(_factProvider, _key);
-    }
-
-    function _setBool(bytes32 _key, bool _value) internal {
-        boolStorage[msg.sender][_key] = BoolValue({
-            initialized : true,
-            value : _value
-            });
-        emit BoolUpdated(msg.sender, _key);
-    }
-
-    function _deleteBool(bytes32 _key) internal {
-        delete boolStorage[msg.sender][_key];
-        emit BoolDeleted(msg.sender, _key);
-    }
-
-    function _getBool(address _factProvider, bytes32 _key) internal view returns (bool success, bool value) {
-        BoolValue storage initValue = boolStorage[_factProvider][_key];
-        return (initValue.initialized, initValue.value);
-    }
-}
-
-// File: contracts/storage/StringStorage.sol
-
-contract StringStorage {
-    struct StringValue {
-        bool initialized;
-        string value;
-    }
-
-    event StringUpdated(address indexed factProvider, bytes32 indexed key);
-    event StringDeleted(address indexed factProvider, bytes32 indexed key);
-
-    mapping(address => mapping(bytes32 => StringValue)) private stringStorage;
-
-    /// @param _key The key for the record
-    /// @param _value The value for the record
-    function setString(bytes32 _key, string _value) external {
-        _setString(_key, _value);
-    }
-
-    /// @param _key The key for the record
-    function deleteString(bytes32 _key) external {
-        _deleteString(_key);
-    }
-
-    /// @param _factProvider The fact provider
-    /// @param _key The key for the record
-    function getString(address _factProvider, bytes32 _key) external view returns (bool success, string value) {
-        return _getString(_factProvider, _key);
-    }
-
-    function _setString(bytes32 _key, string _value) internal {
-        stringStorage[msg.sender][_key] = StringValue({
-            initialized : true,
-            value : _value
-            });
-        emit StringUpdated(msg.sender, _key);
-    }
-
-    function _deleteString(bytes32 _key) internal {
-        delete stringStorage[msg.sender][_key];
-        emit StringDeleted(msg.sender, _key);
-    }
-
-    function _getString(address _factProvider, bytes32 _key) internal view returns (bool success, string value) {
-        StringValue storage initValue = stringStorage[_factProvider][_key];
-        return (initValue.initialized, initValue.value);
-    }
-}
-
-// File: contracts/storage/BytesStorage.sol
-
-contract BytesStorage {
-    struct BytesValue {
-        bool initialized;
-        bytes value;
-    }
-
-    event BytesUpdated(address indexed factProvider, bytes32 indexed key);
-    event BytesDeleted(address indexed factProvider, bytes32 indexed key);
-
-    mapping(address => mapping(bytes32 => BytesValue)) private bytesStorage;
-
-    /// @param _key The key for the record
-    /// @param _value The value for the record
-    function setBytes(bytes32 _key, bytes _value) external {
-        _setBytes(_key, _value);
-    }
-
-    /// @param _key The key for the record
-    function deleteBytes(bytes32 _key) external {
-        _deleteBytes(_key);
-    }
-
-    /// @param _factProvider The fact provider
-    /// @param _key The key for the record
-    function getBytes(address _factProvider, bytes32 _key) external view returns (bool success, bytes value) {
-        return _getBytes(_factProvider, _key);
-    }
-
-    function _setBytes(bytes32 _key, bytes _value) internal {
-        bytesStorage[msg.sender][_key] = BytesValue({
-            initialized : true,
-            value : _value
-            });
-        emit BytesUpdated(msg.sender, _key);
-    }
-
-    function _deleteBytes(bytes32 _key) internal {
-        delete bytesStorage[msg.sender][_key];
-        emit BytesDeleted(msg.sender, _key);
-    }
-
-    function _getBytes(address _factProvider, bytes32 _key) internal view returns (bool success, bytes value) {
-        BytesValue storage initValue = bytesStorage[_factProvider][_key];
-        return (initValue.initialized, initValue.value);
-    }
-}
-
-// File: contracts/storage/TxDataStorage.sol
-
-/**
- * @title TxDataStorage
- * @dev This contract saves only the block number for the input data. The input data is not stored into
- * Ethereum storage, but it can be decoded from the transaction input data later.
- */
-contract TxDataStorage {
-    struct BlockNumberValue {
-        bool initialized;
-        uint blockNumber;
-    }
-
-    event TxDataUpdated(address indexed factProvider, bytes32 indexed key);
-    event TxDataDeleted(address indexed factProvider, bytes32 indexed key);
-
-    mapping(address => mapping(bytes32 => BlockNumberValue)) private txBytesStorage;
-
-    /// @param _key The key for the record
-    /// @param _data The data for the record. Ignore "unused function parameter" warning, it's not commented out so that
-    ///              it would remain in the ABI file.
-    function setTxDataBlockNumber(bytes32 _key, bytes _data) external {
-        txBytesStorage[msg.sender][_key] = BlockNumberValue({
-            initialized : true,
-            blockNumber : block.number
-            });
-        emit TxDataUpdated(msg.sender, _key);
-    }
-
-    /// @param _key The key for the record
-    function deleteTxDataBlockNumber(bytes32 _key) external {
-        delete txBytesStorage[msg.sender][_key];
-        emit TxDataDeleted(msg.sender, _key);
-    }
-
-    /// @param _factProvider The fact provider
-    /// @param _key The key for the record
-    function getTxDataBlockNumber(address _factProvider, bytes32 _key) external view returns (bool success, uint blockNumber) {
-        return _getTxDataBlockNumber(_factProvider, _key);
-    }
-
-    function _getTxDataBlockNumber(address _factProvider, bytes32 _key) private view returns (bool success, uint blockNumber) {
-        BlockNumberValue storage initValue = txBytesStorage[_factProvider][_key];
-        return (initValue.initialized, initValue.blockNumber);
-    }
-}
-
-// File: contracts/storage/PassportStorage.sol
-
-contract PassportStorage
-is AddressStorage
-, UintStorage
-, IntStorage
-, BoolStorage
-, StringStorage
-, BytesStorage
-, TxDataStorage
-{}
-
 // File: contracts/ownership/OwnableProxy.sol
 
 /**
@@ -614,10 +261,364 @@ interface IPassportLogic {
     function getTxDataBlockNumber(address _factProvider, bytes32 _key) external view returns (bool success, uint blockNumber);
 }
 
+// File: contracts/storage/Storage.sol
+
+// Storage contracts holds all state.
+// Do not change the order of the fields, аdd new fields to the end of the contract!
+contract Storage
+{
+    struct AddressValue {
+        bool initialized;
+        address value;
+    }
+
+    mapping(address => mapping(bytes32 => AddressValue)) internal addressStorage;
+
+    struct UintValue {
+        bool initialized;
+        uint value;
+    }
+
+    mapping(address => mapping(bytes32 => UintValue)) internal uintStorage;
+
+    struct IntValue {
+        bool initialized;
+        int value;
+    }
+
+    mapping(address => mapping(bytes32 => IntValue)) internal intStorage;
+
+    struct BoolValue {
+        bool initialized;
+        bool value;
+    }
+
+    mapping(address => mapping(bytes32 => BoolValue)) internal boolStorage;
+
+    struct StringValue {
+        bool initialized;
+        string value;
+    }
+
+    mapping(address => mapping(bytes32 => StringValue)) internal stringStorage;
+
+    struct BytesValue {
+        bool initialized;
+        bytes value;
+    }
+
+    mapping(address => mapping(bytes32 => BytesValue)) internal bytesStorage;
+
+    struct BlockNumberValue {
+        bool initialized;
+        uint blockNumber;
+    }
+
+    mapping(address => mapping(bytes32 => BlockNumberValue)) internal txBytesStorage;
+}
+
+// File: contracts/storage/AddressStorageLogic.sol
+
+contract AddressStorageLogic is Storage {
+    event AddressUpdated(address indexed factProvider, bytes32 indexed key);
+    event AddressDeleted(address indexed factProvider, bytes32 indexed key);
+
+    /// @param _key The key for the record
+    /// @param _value The value for the record
+    function setAddress(bytes32 _key, address _value) external {
+        _setAddress(_key, _value);
+    }
+
+    /// @param _key The key for the record
+    function deleteAddress(bytes32 _key) external {
+        _deleteAddress(_key);
+    }
+
+    /// @param _factProvider The fact provider
+    /// @param _key The key for the record
+    function getAddress(address _factProvider, bytes32 _key) external view returns (bool success, address value) {
+        return _getAddress(_factProvider, _key);
+    }
+
+    function _setAddress(bytes32 _key, address _value) internal {
+        addressStorage[msg.sender][_key] = AddressValue({
+            initialized : true,
+            value : _value
+            });
+        emit AddressUpdated(msg.sender, _key);
+    }
+
+    function _deleteAddress(bytes32 _key) internal {
+        delete addressStorage[msg.sender][_key];
+        emit AddressDeleted(msg.sender, _key);
+    }
+
+    function _getAddress(address _factProvider, bytes32 _key) internal view returns (bool success, address value) {
+        AddressValue storage initValue = addressStorage[_factProvider][_key];
+        return (initValue.initialized, initValue.value);
+    }
+}
+
+// File: contracts/storage/UintStorageLogic.sol
+
+contract UintStorageLogic is Storage {
+    event UintUpdated(address indexed factProvider, bytes32 indexed key);
+    event UintDeleted(address indexed factProvider, bytes32 indexed key);
+
+    /// @param _key The key for the record
+    /// @param _value The value for the record
+    function setUint(bytes32 _key, uint _value) external {
+        _setUint(_key, _value);
+    }
+
+    /// @param _key The key for the record
+    function deleteUint(bytes32 _key) external {
+        _deleteUint(_key);
+    }
+
+    /// @param _factProvider The fact provider
+    /// @param _key The key for the record
+    function getUint(address _factProvider, bytes32 _key) external view returns (bool success, uint value) {
+        return _getUint(_factProvider, _key);
+    }
+
+    function _setUint(bytes32 _key, uint _value) internal {
+        uintStorage[msg.sender][_key] = UintValue({
+            initialized : true,
+            value : _value
+            });
+        emit UintUpdated(msg.sender, _key);
+    }
+
+    function _deleteUint(bytes32 _key) internal {
+        delete uintStorage[msg.sender][_key];
+        emit UintDeleted(msg.sender, _key);
+    }
+
+    function _getUint(address _factProvider, bytes32 _key) internal view returns (bool success, uint value) {
+        UintValue storage initValue = uintStorage[_factProvider][_key];
+        return (initValue.initialized, initValue.value);
+    }
+}
+
+// File: contracts/storage/IntStorageLogic.sol
+
+contract IntStorageLogic is Storage {
+    event IntUpdated(address indexed factProvider, bytes32 indexed key);
+    event IntDeleted(address indexed factProvider, bytes32 indexed key);
+
+    /// @param _key The key for the record
+    /// @param _value The value for the record
+    function setInt(bytes32 _key, int _value) external {
+        _setInt(_key, _value);
+    }
+
+    /// @param _key The key for the record
+    function deleteInt(bytes32 _key) external {
+        _deleteInt(_key);
+    }
+
+    /// @param _factProvider The fact provider
+    /// @param _key The key for the record
+    function getInt(address _factProvider, bytes32 _key) external view returns (bool success, int value) {
+        return _getInt(_factProvider, _key);
+    }
+
+    function _setInt(bytes32 _key, int _value) internal {
+        intStorage[msg.sender][_key] = IntValue({
+            initialized : true,
+            value : _value
+            });
+        emit IntUpdated(msg.sender, _key);
+    }
+
+    function _deleteInt(bytes32 _key) internal {
+        delete intStorage[msg.sender][_key];
+        emit IntDeleted(msg.sender, _key);
+    }
+
+    function _getInt(address _factProvider, bytes32 _key) internal view returns (bool success, int value) {
+        IntValue storage initValue = intStorage[_factProvider][_key];
+        return (initValue.initialized, initValue.value);
+    }
+}
+
+// File: contracts/storage/BoolStorageLogic.sol
+
+contract BoolStorageLogic is Storage {
+    event BoolUpdated(address indexed factProvider, bytes32 indexed key);
+    event BoolDeleted(address indexed factProvider, bytes32 indexed key);
+
+    /// @param _key The key for the record
+    /// @param _value The value for the record
+    function setBool(bytes32 _key, bool _value) external {
+        _setBool(_key, _value);
+    }
+
+    /// @param _key The key for the record
+    function deleteBool(bytes32 _key) external {
+        _deleteBool(_key);
+    }
+
+    /// @param _factProvider The fact provider
+    /// @param _key The key for the record
+    function getBool(address _factProvider, bytes32 _key) external view returns (bool success, bool value) {
+        return _getBool(_factProvider, _key);
+    }
+
+    function _setBool(bytes32 _key, bool _value) internal {
+        boolStorage[msg.sender][_key] = BoolValue({
+            initialized : true,
+            value : _value
+            });
+        emit BoolUpdated(msg.sender, _key);
+    }
+
+    function _deleteBool(bytes32 _key) internal {
+        delete boolStorage[msg.sender][_key];
+        emit BoolDeleted(msg.sender, _key);
+    }
+
+    function _getBool(address _factProvider, bytes32 _key) internal view returns (bool success, bool value) {
+        BoolValue storage initValue = boolStorage[_factProvider][_key];
+        return (initValue.initialized, initValue.value);
+    }
+}
+
+// File: contracts/storage/StringStorageLogic.sol
+
+contract StringStorageLogic is Storage {
+    event StringUpdated(address indexed factProvider, bytes32 indexed key);
+    event StringDeleted(address indexed factProvider, bytes32 indexed key);
+
+    /// @param _key The key for the record
+    /// @param _value The value for the record
+    function setString(bytes32 _key, string _value) external {
+        _setString(_key, _value);
+    }
+
+    /// @param _key The key for the record
+    function deleteString(bytes32 _key) external {
+        _deleteString(_key);
+    }
+
+    /// @param _factProvider The fact provider
+    /// @param _key The key for the record
+    function getString(address _factProvider, bytes32 _key) external view returns (bool success, string value) {
+        return _getString(_factProvider, _key);
+    }
+
+    function _setString(bytes32 _key, string _value) internal {
+        stringStorage[msg.sender][_key] = StringValue({
+            initialized : true,
+            value : _value
+            });
+        emit StringUpdated(msg.sender, _key);
+    }
+
+    function _deleteString(bytes32 _key) internal {
+        delete stringStorage[msg.sender][_key];
+        emit StringDeleted(msg.sender, _key);
+    }
+
+    function _getString(address _factProvider, bytes32 _key) internal view returns (bool success, string value) {
+        StringValue storage initValue = stringStorage[_factProvider][_key];
+        return (initValue.initialized, initValue.value);
+    }
+}
+
+// File: contracts/storage/BytesStorageLogic.sol
+
+contract BytesStorageLogic is Storage {
+    event BytesUpdated(address indexed factProvider, bytes32 indexed key);
+    event BytesDeleted(address indexed factProvider, bytes32 indexed key);
+
+    /// @param _key The key for the record
+    /// @param _value The value for the record
+    function setBytes(bytes32 _key, bytes _value) external {
+        _setBytes(_key, _value);
+    }
+
+    /// @param _key The key for the record
+    function deleteBytes(bytes32 _key) external {
+        _deleteBytes(_key);
+    }
+
+    /// @param _factProvider The fact provider
+    /// @param _key The key for the record
+    function getBytes(address _factProvider, bytes32 _key) external view returns (bool success, bytes value) {
+        return _getBytes(_factProvider, _key);
+    }
+
+    function _setBytes(bytes32 _key, bytes _value) internal {
+        bytesStorage[msg.sender][_key] = BytesValue({
+            initialized : true,
+            value : _value
+            });
+        emit BytesUpdated(msg.sender, _key);
+    }
+
+    function _deleteBytes(bytes32 _key) internal {
+        delete bytesStorage[msg.sender][_key];
+        emit BytesDeleted(msg.sender, _key);
+    }
+
+    function _getBytes(address _factProvider, bytes32 _key) internal view returns (bool success, bytes value) {
+        BytesValue storage initValue = bytesStorage[_factProvider][_key];
+        return (initValue.initialized, initValue.value);
+    }
+}
+
+// File: contracts/storage/TxDataStorageLogic.sol
+
+/**
+ * @title TxDataStorage
+ * @dev This contract saves only the block number for the input data. The input data is not stored into
+ * Ethereum storage, but it can be decoded from the transaction input data later.
+ */
+contract TxDataStorageLogic is Storage {
+    event TxDataUpdated(address indexed factProvider, bytes32 indexed key);
+    event TxDataDeleted(address indexed factProvider, bytes32 indexed key);
+
+    /// @param _key The key for the record
+    /// @param _data The data for the record. Ignore "unused function parameter" warning, it's not commented out so that
+    ///              it would remain in the ABI file.
+    function setTxDataBlockNumber(bytes32 _key, bytes _data) external {
+        txBytesStorage[msg.sender][_key] = BlockNumberValue({
+            initialized : true,
+            blockNumber : block.number
+            });
+        emit TxDataUpdated(msg.sender, _key);
+    }
+
+    /// @param _key The key for the record
+    function deleteTxDataBlockNumber(bytes32 _key) external {
+        delete txBytesStorage[msg.sender][_key];
+        emit TxDataDeleted(msg.sender, _key);
+    }
+
+    /// @param _factProvider The fact provider
+    /// @param _key The key for the record
+    function getTxDataBlockNumber(address _factProvider, bytes32 _key) external view returns (bool success, uint blockNumber) {
+        return _getTxDataBlockNumber(_factProvider, _key);
+    }
+
+    function _getTxDataBlockNumber(address _factProvider, bytes32 _key) private view returns (bool success, uint blockNumber) {
+        BlockNumberValue storage initValue = txBytesStorage[_factProvider][_key];
+        return (initValue.initialized, initValue.blockNumber);
+    }
+}
+
 // File: contracts/PassportLogic.sol
 
 contract PassportLogic
 is IPassportLogic
 , ClaimableProxy
-, PassportStorage
+, AddressStorageLogic
+, UintStorageLogic
+, IntStorageLogic
+, BoolStorageLogic
+, StringStorageLogic
+, BytesStorageLogic
+, TxDataStorageLogic
 {}
