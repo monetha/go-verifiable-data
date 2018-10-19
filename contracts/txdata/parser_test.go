@@ -14,10 +14,7 @@ import (
 )
 
 func TestPassportLogicInputParser_ParseSetTxDataBlockNumberCallData(t *testing.T) {
-	parser, err := NewPassportLogicInputParser()
-	if err != nil {
-		panic(err)
-	}
+	parser := NewPassportLogicInputParser()
 
 	address := common.Address{}
 	transactor := &transactorMock{}
@@ -55,10 +52,7 @@ func TestPassportLogicInputParser_ParseSetTxDataBlockNumberCallData(t *testing.T
 }
 
 func TestPassportLogicInputParser_ParseSetBytesCallData(t *testing.T) {
-	parser, err := NewPassportLogicInputParser()
-	if err != nil {
-		panic(err)
-	}
+	parser := NewPassportLogicInputParser()
 
 	address := common.Address{}
 	transactor := &transactorMock{}
@@ -96,10 +90,7 @@ func TestPassportLogicInputParser_ParseSetBytesCallData(t *testing.T) {
 }
 
 func TestPassportLogicInputParser_ParseSetStringCallData(t *testing.T) {
-	parser, err := NewPassportLogicInputParser()
-	if err != nil {
-		panic(err)
-	}
+	parser := NewPassportLogicInputParser()
 
 	address := common.Address{}
 	transactor := &transactorMock{}
@@ -137,10 +128,7 @@ func TestPassportLogicInputParser_ParseSetStringCallData(t *testing.T) {
 }
 
 func TestPassportLogicInputParser_ParseSetAddressCallData(t *testing.T) {
-	parser, err := NewPassportLogicInputParser()
-	if err != nil {
-		panic(err)
-	}
+	parser := NewPassportLogicInputParser()
 
 	address := common.Address{}
 	transactor := &transactorMock{}
@@ -178,10 +166,7 @@ func TestPassportLogicInputParser_ParseSetAddressCallData(t *testing.T) {
 }
 
 func TestPassportLogicInputParser_ParseSetUintCallData(t *testing.T) {
-	parser, err := NewPassportLogicInputParser()
-	if err != nil {
-		panic(err)
-	}
+	parser := NewPassportLogicInputParser()
 
 	address := common.Address{}
 	transactor := &transactorMock{}
@@ -219,10 +204,7 @@ func TestPassportLogicInputParser_ParseSetUintCallData(t *testing.T) {
 }
 
 func TestPassportLogicInputParser_ParseSetIntCallData(t *testing.T) {
-	parser, err := NewPassportLogicInputParser()
-	if err != nil {
-		panic(err)
-	}
+	parser := NewPassportLogicInputParser()
 
 	address := common.Address{}
 	transactor := &transactorMock{}
@@ -261,10 +243,7 @@ func TestPassportLogicInputParser_ParseSetIntCallData(t *testing.T) {
 }
 
 func TestPassportLogicInputParser_ParseSetBoolCallData(t *testing.T) {
-	parser, err := NewPassportLogicInputParser()
-	if err != nil {
-		panic(err)
-	}
+	parser := NewPassportLogicInputParser()
 
 	address := common.Address{}
 	transactor := &transactorMock{}

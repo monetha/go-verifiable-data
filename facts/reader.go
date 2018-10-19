@@ -13,18 +13,6 @@ import (
 	"gitlab.com/monetha/protocol-go-sdk/eth"
 )
 
-var (
-	passportLogicInputParser *txdata.PassportLogicInputParser
-)
-
-func init() {
-	var err error
-	passportLogicInputParser, err = txdata.NewPassportLogicInputParser()
-	if err != nil {
-		panic("facts: initializing PassportLogicInputParser: " + err.Error())
-	}
-}
-
 // Reader reads the facts
 type Reader eth.Eth
 
@@ -104,7 +92,7 @@ func (r *Reader) ReadTxData(ctx context.Context, passport common.Address, factPr
 		return nil, fmt.Errorf("facts: TransactionByHash(%v): %v", txHash, err)
 	}
 
-	params, err := passportLogicInputParser.ParseSetTxDataBlockNumberCallData(tx.Data())
+	params, err := txdata.NewPassportLogicInputParser().ParseSetTxDataBlockNumberCallData(tx.Data())
 	if err != nil {
 		return nil, err
 	}

@@ -3,7 +3,6 @@ package txdata
 import (
 	"fmt"
 	"math/big"
-	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
@@ -16,12 +15,8 @@ type PassportLogicInputParser struct {
 }
 
 // NewPassportLogicInputParser creates an instance of PassportLogicInputParser
-func NewPassportLogicInputParser() (*PassportLogicInputParser, error) {
-	parsedABI, err := abi.JSON(strings.NewReader(contracts.PassportLogicContractABI))
-	if err != nil {
-		return nil, err
-	}
-	return &PassportLogicInputParser{parsedABI}, nil
+func NewPassportLogicInputParser() *PassportLogicInputParser {
+	return &PassportLogicInputParser{contracts.PassportLogicABI}
 }
 
 type (

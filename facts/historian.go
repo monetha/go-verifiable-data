@@ -4,30 +4,17 @@ import (
 	"context"
 	"fmt"
 	"math/big"
-	"strings"
 
 	"github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"gitlab.com/monetha/protocol-go-sdk/contracts"
+	"gitlab.com/monetha/protocol-go-sdk/contracts/txdata"
 	"gitlab.com/monetha/protocol-go-sdk/eth"
 	"gitlab.com/monetha/protocol-go-sdk/types/change"
 	"gitlab.com/monetha/protocol-go-sdk/types/data"
 )
-
-var (
-	passportLogicContractABI abi.ABI
-)
-
-func init() {
-	var err error
-	passportLogicContractABI, err = abi.JSON(strings.NewReader(contracts.PassportLogicContractABI))
-	if err != nil {
-		panic("facts: initializing PassportLogicContractABI: " + err.Error())
-	}
-}
 
 // Historian reads the fact history
 type Historian eth.Eth
@@ -265,7 +252,7 @@ func (h *Historian) FilterChanges(opts *ChangesFilterOpts, passportAddress commo
 				if dataTypes.IsEmpty() || dataTypes.Contains(dataType) {
 					eventNames = append(eventNames, eventName)
 
-					eventID := passportLogicContractABI.Events[eventName].Id()
+					eventID := contracts.PassportLogicABI.Events[eventName].Id()
 					eventMetaInfos[eventID] = eventMetaInfo{
 						EventName:  eventName,
 						ChangeType: changeType,
@@ -277,7 +264,7 @@ func (h *Historian) FilterChanges(opts *ChangesFilterOpts, passportAddress commo
 	}
 
 	// create log filterer
-	logFilterer := eth.NewContractLogFilterer(passportAddress, passportLogicContractABI, h.Backend)
+	logFilterer := eth.NewContractLogFilterer(passportAddress, contracts.PassportLogicABI, h.Backend)
 
 	var factProviderRule []interface{}
 	for _, factProviderItem := range opts.FactProvider {
@@ -299,7 +286,7 @@ func (h *Historian) FilterChanges(opts *ChangesFilterOpts, passportAddress commo
 		return nil, err
 	}
 
-	boundContract := bind.NewBoundContract(passportAddress, passportLogicContractABI, h.Backend, h.Backend, h.Backend)
+	boundContract := bind.NewBoundContract(passportAddress, contracts.PassportLogicABI, h.Backend, h.Backend, h.Backend)
 	return &ChangeIterator{logs: logs, sub: sub, contract: boundContract, eventMetaInfos: eventMetaInfos}, nil
 }
 
@@ -361,7 +348,7 @@ func (h *Historian) GetHistoryItemOfWriteTxData(ctx context.Context, passport co
 		return nil, err
 	}
 
-	params, err := passportLogicInputParser.ParseSetTxDataBlockNumberCallData(txData)
+	params, err := txdata.NewPassportLogicInputParser().ParseSetTxDataBlockNumberCallData(txData)
 	if err != nil {
 		return nil, err
 	}
@@ -380,7 +367,7 @@ func (h *Historian) GetHistoryItemOfWriteBytes(ctx context.Context, passport com
 		return nil, err
 	}
 
-	params, err := passportLogicInputParser.ParseSetBytesCallData(txData)
+	params, err := txdata.NewPassportLogicInputParser().ParseSetBytesCallData(txData)
 	if err != nil {
 		return nil, err
 	}
@@ -399,7 +386,7 @@ func (h *Historian) GetHistoryItemOfWriteString(ctx context.Context, passport co
 		return nil, err
 	}
 
-	params, err := passportLogicInputParser.ParseSetStringCallData(txData)
+	params, err := txdata.NewPassportLogicInputParser().ParseSetStringCallData(txData)
 	if err != nil {
 		return nil, err
 	}
@@ -418,7 +405,7 @@ func (h *Historian) GetHistoryItemOfWriteAddress(ctx context.Context, passport c
 		return nil, err
 	}
 
-	params, err := passportLogicInputParser.ParseSetAddressCallData(txData)
+	params, err := txdata.NewPassportLogicInputParser().ParseSetAddressCallData(txData)
 	if err != nil {
 		return nil, err
 	}
@@ -437,7 +424,7 @@ func (h *Historian) GetHistoryItemOfWriteUint(ctx context.Context, passport comm
 		return nil, err
 	}
 
-	params, err := passportLogicInputParser.ParseSetUintCallData(txData)
+	params, err := txdata.NewPassportLogicInputParser().ParseSetUintCallData(txData)
 	if err != nil {
 		return nil, err
 	}
@@ -456,7 +443,7 @@ func (h *Historian) GetHistoryItemOfWriteInt(ctx context.Context, passport commo
 		return nil, err
 	}
 
-	params, err := passportLogicInputParser.ParseSetIntCallData(txData)
+	params, err := txdata.NewPassportLogicInputParser().ParseSetIntCallData(txData)
 	if err != nil {
 		return nil, err
 	}
@@ -475,7 +462,7 @@ func (h *Historian) GetHistoryItemOfWriteBool(ctx context.Context, passport comm
 		return nil, err
 	}
 
-	params, err := passportLogicInputParser.ParseSetBoolCallData(txData)
+	params, err := txdata.NewPassportLogicInputParser().ParseSetBoolCallData(txData)
 	if err != nil {
 		return nil, err
 	}

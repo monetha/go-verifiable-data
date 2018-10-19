@@ -10,6 +10,19 @@ import (
 	methereum "github.com/monetha/go-ethereum"
 )
 
+var (
+	// PassportLogicABI is prepared(parsed) ABI specification of PassportLogic contract
+	PassportLogicABI abi.ABI
+)
+
+func init() {
+	var err error
+	PassportLogicABI, err = abi.JSON(strings.NewReader(PassportLogicContractABI))
+	if err != nil {
+		panic("contracts: initializing PassportLogicContractABI: " + err.Error())
+	}
+}
+
 // PassportFactoryLogFilterer filters PassportFactory event logs
 type PassportFactoryLogFilterer struct {
 	abi abi.ABI
