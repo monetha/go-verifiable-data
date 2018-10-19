@@ -23,6 +23,16 @@ func init() {
 	}
 }
 
+// InitPassportLogicContract creates a new instance of PassportLogicContract, bound to a specific deployed contract.
+// This method is faster than NewPassportLogicContract and doesn't return an error, because it reuses parsed PassportLogicContractABI.
+func InitPassportLogicContract(address common.Address, backend bind.ContractBackend) *PassportLogicContract {
+	contract := bind.NewBoundContract(address, PassportLogicABI, backend, backend, backend)
+	return &PassportLogicContract{
+		PassportLogicContractCaller:     PassportLogicContractCaller{contract: contract},
+		PassportLogicContractTransactor: PassportLogicContractTransactor{contract: contract},
+		PassportLogicContractFilterer:   PassportLogicContractFilterer{contract: contract}}
+}
+
 // PassportFactoryLogFilterer filters PassportFactory event logs
 type PassportFactoryLogFilterer struct {
 	abi abi.ABI

@@ -26,19 +26,14 @@ func NewReader(e *eth.Eth) *Reader {
 func (r *Reader) ReadTxData(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) ([]byte, error) {
 	backend := r.Backend
 
-	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
-	passportLogicContract, err := contracts.NewPassportLogicContract(passport, backend)
-	if err != nil {
-		return nil, fmt.Errorf("facts: NewPassportLogicContract: %v", err)
-	}
-
+	passportLogicContract := contracts.InitPassportLogicContract(passport, backend)
 	var bn struct {
 		Success     bool
 		BlockNumber *big.Int
 	}
 
 	(*eth.Eth)(r).Log("Getting block number for tx data", "fact_provider", factProvider, "key", key)
-	bn, err = passportLogicContract.GetTxDataBlockNumber(nil, factProvider, key)
+	bn, err := passportLogicContract.GetTxDataBlockNumber(nil, factProvider, key)
 	if err != nil {
 		return nil, fmt.Errorf("facts: GetTxDataBlockNumber: %v", err)
 	}
@@ -108,19 +103,13 @@ func (r *Reader) ReadTxData(ctx context.Context, passport common.Address, factPr
 func (r *Reader) ReadBytes(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) ([]byte, error) {
 	backend := r.Backend
 
-	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
-	passportLogicContract, err := contracts.NewPassportLogicContract(passport, backend)
-	if err != nil {
-		return nil, fmt.Errorf("facts: NewPassportLogicContract: %v", err)
-	}
-
 	var res struct {
 		Success bool
 		Value   []byte
 	}
 
 	(*eth.Eth)(r).Log("Getting bytes", "fact_provider", factProvider, "key", key)
-	res, err = passportLogicContract.GetBytes(nil, factProvider, key)
+	res, err := contracts.InitPassportLogicContract(passport, backend).GetBytes(nil, factProvider, key)
 	if err != nil {
 		return nil, fmt.Errorf("facts: GetBytes: %v", err)
 	}
@@ -138,19 +127,13 @@ func (r *Reader) ReadBytes(ctx context.Context, passport common.Address, factPro
 func (r *Reader) ReadString(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (string, error) {
 	backend := r.Backend
 
-	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
-	passportLogicContract, err := contracts.NewPassportLogicContract(passport, backend)
-	if err != nil {
-		return "", fmt.Errorf("facts: NewPassportLogicContract: %v", err)
-	}
-
 	var res struct {
 		Success bool
 		Value   string
 	}
 
 	(*eth.Eth)(r).Log("Getting string", "fact_provider", factProvider, "key", key)
-	res, err = passportLogicContract.GetString(nil, factProvider, key)
+	res, err := contracts.InitPassportLogicContract(passport, backend).GetString(nil, factProvider, key)
 	if err != nil {
 		return "", fmt.Errorf("facts: GetBytes: %v", err)
 	}
@@ -168,19 +151,13 @@ func (r *Reader) ReadString(ctx context.Context, passport common.Address, factPr
 func (r *Reader) ReadAddress(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (common.Address, error) {
 	backend := r.Backend
 
-	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
-	passportLogicContract, err := contracts.NewPassportLogicContract(passport, backend)
-	if err != nil {
-		return common.Address{}, fmt.Errorf("facts: NewPassportLogicContract: %v", err)
-	}
-
 	var res struct {
 		Success bool
 		Value   common.Address
 	}
 
 	(*eth.Eth)(r).Log("Getting address", "fact_provider", factProvider, "key", key)
-	res, err = passportLogicContract.GetAddress(nil, factProvider, key)
+	res, err := contracts.InitPassportLogicContract(passport, backend).GetAddress(nil, factProvider, key)
 	if err != nil {
 		return common.Address{}, fmt.Errorf("facts: GetAddress: %v", err)
 	}
@@ -198,19 +175,13 @@ func (r *Reader) ReadAddress(ctx context.Context, passport common.Address, factP
 func (r *Reader) ReadUint(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (*big.Int, error) {
 	backend := r.Backend
 
-	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
-	passportLogicContract, err := contracts.NewPassportLogicContract(passport, backend)
-	if err != nil {
-		return nil, fmt.Errorf("facts: NewPassportLogicContract: %v", err)
-	}
-
 	var res struct {
 		Success bool
 		Value   *big.Int
 	}
 
 	(*eth.Eth)(r).Log("Getting uint", "fact_provider", factProvider, "key", key)
-	res, err = passportLogicContract.GetUint(nil, factProvider, key)
+	res, err := contracts.InitPassportLogicContract(passport, backend).GetUint(nil, factProvider, key)
 	if err != nil {
 		return nil, fmt.Errorf("facts: GetUint: %v", err)
 	}
@@ -228,19 +199,13 @@ func (r *Reader) ReadUint(ctx context.Context, passport common.Address, factProv
 func (r *Reader) ReadInt(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (*big.Int, error) {
 	backend := r.Backend
 
-	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
-	passportLogicContract, err := contracts.NewPassportLogicContract(passport, backend)
-	if err != nil {
-		return nil, fmt.Errorf("facts: NewPassportLogicContract: %v", err)
-	}
-
 	var res struct {
 		Success bool
 		Value   *big.Int
 	}
 
 	(*eth.Eth)(r).Log("Getting int", "fact_provider", factProvider, "key", key)
-	res, err = passportLogicContract.GetInt(nil, factProvider, key)
+	res, err := contracts.InitPassportLogicContract(passport, backend).GetInt(nil, factProvider, key)
 	if err != nil {
 		return nil, fmt.Errorf("facts: GetUint: %v", err)
 	}
@@ -258,19 +223,13 @@ func (r *Reader) ReadInt(ctx context.Context, passport common.Address, factProvi
 func (r *Reader) ReadBool(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (bool, error) {
 	backend := r.Backend
 
-	(*eth.Eth)(r).Log("Initialising passport", "passport", passport)
-	passportLogicContract, err := contracts.NewPassportLogicContract(passport, backend)
-	if err != nil {
-		return false, fmt.Errorf("facts: NewPassportLogicContract: %v", err)
-	}
-
 	var res struct {
 		Success bool
 		Value   bool
 	}
 
 	(*eth.Eth)(r).Log("Getting bool", "fact_provider", factProvider, "key", key)
-	res, err = passportLogicContract.GetBool(nil, factProvider, key)
+	res, err := contracts.InitPassportLogicContract(passport, backend).GetBool(nil, factProvider, key)
 	if err != nil {
 		return false, fmt.Errorf("facts: GetBool: %v", err)
 	}
