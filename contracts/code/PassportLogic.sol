@@ -265,7 +265,7 @@ interface IPassportLogic {
 
 // Storage contracts holds all state.
 // Do not change the order of the fields, аdd new fields to the end of the contract!
-contract Storage
+contract Storage is ClaimableProxy
 {
     struct AddressValue {
         bool initialized;
@@ -315,6 +315,59 @@ contract Storage
     }
 
     mapping(address => mapping(bytes32 => BlockNumberValue)) internal txBytesStorage;
+
+    bool private onlyFactProviderFromWhitelistAllowed;
+    mapping(address => bool) private factProviderWhitelist;
+
+    event WhitelistOnlyPermissionSet(bool indexed onlyWhitelist);
+    event WhitelistFactProviderAdded(address indexed factProvider);
+    event WhitelistFactProviderRemoved(address indexed factProvider);
+
+    /**
+     *  Restrict methods in such way, that they can be invoked only by allowed fact provider.
+     */
+    modifier allowedFactProvider() {
+        require(!onlyFactProviderFromWhitelistAllowed || factProviderWhitelist[msg.sender] || msg.sender == _getOwner());
+        _;
+    }
+
+    /**
+     *  Returns true when a whitelist of fact providers is enabled.
+     */
+    function isWhitelistOnlyPermissionSet() external view returns (bool) {
+        return onlyFactProviderFromWhitelistAllowed;
+    }
+
+    /**
+     *  Enables or disables the use of a whitelist of fact providers.
+     */
+    function setWhitelistOnlyPermission(bool _onlyWhitelist) onlyOwner external {
+        onlyFactProviderFromWhitelistAllowed = _onlyWhitelist;
+        emit WhitelistOnlyPermissionSet(_onlyWhitelist);
+    }
+
+    /**
+     *  Returns true if fact provider is added to the whitelist.
+     */
+    function isFactProviderInWhitelist(address _address) external view returns (bool) {
+        return factProviderWhitelist[_address];
+    }
+
+    /**
+     *  Allows owner to add fact provider to whitelist.
+     */
+    function addFactProviderToWhitelist(address _address) onlyOwner external {
+        factProviderWhitelist[_address] = true;
+        emit WhitelistFactProviderAdded(_address);
+    }
+
+    /**
+     *  Allows owner to remove fact provider from whitelist.
+     */
+    function removeFactProviderFromWhitelist(address _address) onlyOwner external {
+        delete factProviderWhitelist[_address];
+        emit WhitelistFactProviderRemoved(_address);
+    }
 }
 
 // File: contracts/storage/AddressStorageLogic.sol
@@ -340,7 +393,7 @@ contract AddressStorageLogic is Storage {
         return _getAddress(_factProvider, _key);
     }
 
-    function _setAddress(bytes32 _key, address _value) internal {
+    function _setAddress(bytes32 _key, address _value) allowedFactProvider internal {
         addressStorage[msg.sender][_key] = AddressValue({
             initialized : true,
             value : _value
@@ -348,7 +401,7 @@ contract AddressStorageLogic is Storage {
         emit AddressUpdated(msg.sender, _key);
     }
 
-    function _deleteAddress(bytes32 _key) internal {
+    function _deleteAddress(bytes32 _key) allowedFactProvider internal {
         delete addressStorage[msg.sender][_key];
         emit AddressDeleted(msg.sender, _key);
     }
@@ -382,7 +435,7 @@ contract UintStorageLogic is Storage {
         return _getUint(_factProvider, _key);
     }
 
-    function _setUint(bytes32 _key, uint _value) internal {
+    function _setUint(bytes32 _key, uint _value) allowedFactProvider internal {
         uintStorage[msg.sender][_key] = UintValue({
             initialized : true,
             value : _value
@@ -390,7 +443,7 @@ contract UintStorageLogic is Storage {
         emit UintUpdated(msg.sender, _key);
     }
 
-    function _deleteUint(bytes32 _key) internal {
+    function _deleteUint(bytes32 _key) allowedFactProvider internal {
         delete uintStorage[msg.sender][_key];
         emit UintDeleted(msg.sender, _key);
     }
@@ -424,7 +477,7 @@ contract IntStorageLogic is Storage {
         return _getInt(_factProvider, _key);
     }
 
-    function _setInt(bytes32 _key, int _value) internal {
+    function _setInt(bytes32 _key, int _value) allowedFactProvider internal {
         intStorage[msg.sender][_key] = IntValue({
             initialized : true,
             value : _value
@@ -432,7 +485,7 @@ contract IntStorageLogic is Storage {
         emit IntUpdated(msg.sender, _key);
     }
 
-    function _deleteInt(bytes32 _key) internal {
+    function _deleteInt(bytes32 _key) allowedFactProvider internal {
         delete intStorage[msg.sender][_key];
         emit IntDeleted(msg.sender, _key);
     }
@@ -466,7 +519,7 @@ contract BoolStorageLogic is Storage {
         return _getBool(_factProvider, _key);
     }
 
-    function _setBool(bytes32 _key, bool _value) internal {
+    function _setBool(bytes32 _key, bool _value) allowedFactProvider internal {
         boolStorage[msg.sender][_key] = BoolValue({
             initialized : true,
             value : _value
@@ -474,7 +527,7 @@ contract BoolStorageLogic is Storage {
         emit BoolUpdated(msg.sender, _key);
     }
 
-    function _deleteBool(bytes32 _key) internal {
+    function _deleteBool(bytes32 _key) allowedFactProvider internal {
         delete boolStorage[msg.sender][_key];
         emit BoolDeleted(msg.sender, _key);
     }
@@ -508,7 +561,7 @@ contract StringStorageLogic is Storage {
         return _getString(_factProvider, _key);
     }
 
-    function _setString(bytes32 _key, string _value) internal {
+    function _setString(bytes32 _key, string _value) allowedFactProvider internal {
         stringStorage[msg.sender][_key] = StringValue({
             initialized : true,
             value : _value
@@ -516,7 +569,7 @@ contract StringStorageLogic is Storage {
         emit StringUpdated(msg.sender, _key);
     }
 
-    function _deleteString(bytes32 _key) internal {
+    function _deleteString(bytes32 _key) allowedFactProvider internal {
         delete stringStorage[msg.sender][_key];
         emit StringDeleted(msg.sender, _key);
     }
@@ -550,7 +603,7 @@ contract BytesStorageLogic is Storage {
         return _getBytes(_factProvider, _key);
     }
 
-    function _setBytes(bytes32 _key, bytes _value) internal {
+    function _setBytes(bytes32 _key, bytes _value) allowedFactProvider internal {
         bytesStorage[msg.sender][_key] = BytesValue({
             initialized : true,
             value : _value
@@ -558,7 +611,7 @@ contract BytesStorageLogic is Storage {
         emit BytesUpdated(msg.sender, _key);
     }
 
-    function _deleteBytes(bytes32 _key) internal {
+    function _deleteBytes(bytes32 _key) allowedFactProvider internal {
         delete bytesStorage[msg.sender][_key];
         emit BytesDeleted(msg.sender, _key);
     }
@@ -583,7 +636,7 @@ contract TxDataStorageLogic is Storage {
     /// @param _key The key for the record
     /// @param _data The data for the record. Ignore "unused function parameter" warning, it's not commented out so that
     ///              it would remain in the ABI file.
-    function setTxDataBlockNumber(bytes32 _key, bytes _data) external {
+    function setTxDataBlockNumber(bytes32 _key, bytes _data) allowedFactProvider external {
         txBytesStorage[msg.sender][_key] = BlockNumberValue({
             initialized : true,
             blockNumber : block.number
@@ -592,7 +645,7 @@ contract TxDataStorageLogic is Storage {
     }
 
     /// @param _key The key for the record
-    function deleteTxDataBlockNumber(bytes32 _key) external {
+    function deleteTxDataBlockNumber(bytes32 _key) allowedFactProvider external {
         delete txBytesStorage[msg.sender][_key];
         emit TxDataDeleted(msg.sender, _key);
     }

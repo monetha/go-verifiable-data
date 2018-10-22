@@ -28,10 +28,10 @@ var (
 )
 
 // PassportLogicContractABI is the input ABI used to generate the binding from.
-const PassportLogicContractABI = "[{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteAddress\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getTxDataBlockNumber\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"blockNumber\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteBool\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"bytes\"}],\"name\":\"setBytes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"int256\"}],\"name\":\"setInt\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"claimOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"setTxDataBlockNumber\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteBytes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getBytes\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"bytes\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"string\"}],\"name\":\"setString\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getUint\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getAddress\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteInt\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getInt\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getBool\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteTxDataBlockNumber\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"bool\"}],\"name\":\"setBool\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"address\"}],\"name\":\"setAddress\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"uint256\"}],\"name\":\"setUint\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteUint\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"pendingOwner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getString\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteString\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"TxDataUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"TxDataDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"BytesUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"BytesDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"StringUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"StringDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"BoolUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"BoolDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"IntUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"IntDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"UintUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"UintDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"AddressUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"AddressDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"}],\"name\":\"OwnershipRenounced\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"}]"
+const PassportLogicContractABI = "[{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteAddress\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getTxDataBlockNumber\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"blockNumber\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_onlyWhitelist\",\"type\":\"bool\"}],\"name\":\"setWhitelistOnlyPermission\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteBool\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"bytes\"}],\"name\":\"setBytes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"int256\"}],\"name\":\"setInt\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"claimOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"setTxDataBlockNumber\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteBytes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"isWhitelistOnlyPermissionSet\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getBytes\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"bytes\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"removeFactProviderFromWhitelist\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"string\"}],\"name\":\"setString\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getUint\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getAddress\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"isFactProviderInWhitelist\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteInt\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getInt\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getBool\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteTxDataBlockNumber\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"bool\"}],\"name\":\"setBool\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"addFactProviderToWhitelist\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"address\"}],\"name\":\"setAddress\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"uint256\"}],\"name\":\"setUint\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteUint\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"pendingOwner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getString\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteString\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"TxDataUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"TxDataDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"BytesUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"BytesDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"StringUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"StringDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"BoolUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"BoolDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"IntUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"IntDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"UintUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"UintDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"AddressUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"AddressDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"onlyWhitelist\",\"type\":\"bool\"}],\"name\":\"WhitelistOnlyPermissionSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"}],\"name\":\"WhitelistFactProviderAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"}],\"name\":\"WhitelistFactProviderRemoved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"}],\"name\":\"OwnershipRenounced\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"}]"
 
 // PassportLogicContractBin is the compiled bytecode used for deploying new contracts.
-const PassportLogicContractBin = `0x608060408190527f6f72672e6d6f6e657468612e70726f78792e6f776e6572000000000000000000905261003b3364010000000061009a810204565b604080517f6f72672e6d6f6e657468612e70726f78792e70656e64696e674f776e657200008152905190819003601e0190207fcfd0c6ea5352192d7d4c5d4e7a73c5da12c871730cb60ff57879cbe7b403bb521461009557fe5b6100be565b7f3ca57e4b51fc2e18497b219410298879868edada7e6fe5132c8feceb0a080d2255565b61118a806100cd6000396000f3006080604052600436106101535763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416630e14a3768114610158578063174a6277146101725780632c62ff2d146101b15780632e28d084146101c95780633e49bed0146101ed5780634e71e0c8146102085780635b2a372d1461021d578063616b59f6146102415780636556f767146102595780636e89955014610300578063715018a61461032457806371658552146103395780637ac4ed641461035d5780638c160095146103a45780638da5cb5b146103bc57806395ee8bae146103ed5780639d74b37d14610411578063a2b6cbe114610450578063abfdcced14610468578063ca446dd914610485578063e2a4853a146104a9578063e2b202bf146104c4578063e30c3978146104dc578063e318de73146104f1578063f2fde38b14610515578063f6bb3cc414610536575b600080fd5b34801561016457600080fd5b5061017060043561054e565b005b34801561017e57600080fd5b50610196600160a060020a036004351660243561055a565b60408051921515835260208301919091528051918290030190f35b3480156101bd57600080fd5b50610170600435610572565b3480156101d557600080fd5b5061017060048035906024803590810191013561057b565b3480156101f957600080fd5b506101706004356024356105ba565b34801561021457600080fd5b506101706105c8565b34801561022957600080fd5b5061017060048035906024803590810191013561064e565b34801561024d57600080fd5b506101706004356106bf565b34801561026557600080fd5b5061027d600160a060020a03600435166024356106c8565b604051808315151515815260200180602001828103825283818151815260200191508051906020019080838360005b838110156102c45781810151838201526020016102ac565b50505050905090810190601f1680156102f15780820380516001836020036101000a031916815260200191505b50935050505060405180910390f35b34801561030c57600080fd5b506101706004803590602480359081019101356106d6565b34801561033057600080fd5b50610170610710565b34801561034557600080fd5b50610196600160a060020a0360043516602435610773565b34801561036957600080fd5b50610381600160a060020a0360043516602435610780565b604080519215158352600160a060020a0390911660208301528051918290030190f35b3480156103b057600080fd5b5061017060043561078d565b3480156103c857600080fd5b506103d1610796565b60408051600160a060020a039092168252519081900360200190f35b3480156103f957600080fd5b50610196600160a060020a03600435166024356107a6565b34801561041d57600080fd5b50610435600160a060020a03600435166024356107b3565b60408051921515835290151560208301528051918290030190f35b34801561045c57600080fd5b506101706004356107c0565b34801561047457600080fd5b506101706004356024351515610813565b34801561049157600080fd5b50610170600435600160a060020a036024351661081d565b3480156104b557600080fd5b50610170600435602435610827565b3480156104d057600080fd5b50610170600435610831565b3480156104e857600080fd5b506103d161083a565b3480156104fd57600080fd5b5061027d600160a060020a0360043516602435610844565b34801561052157600080fd5b50610170600160a060020a0360043516610852565b34801561054257600080fd5b50610170600435610877565b61055781610880565b50565b60008061056784846108df565b915091509250929050565b61055781610913565b6105b58383838080601f01602080910402602001604051908101604052809392919081815260200183838082843750610961945050505050565b505050565b6105c482826109e7565b5050565b6105d0610a57565b600160a060020a031633146105e457600080fd5b6105ec610a57565b600160a060020a03166105fd610a7c565b600160a060020a03167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a361064261063d610a57565b610aa1565b61064c6000610ac5565b565b6040805180820182526001808252436020808401918252336000818152600683528681208a82529092528582209451855460ff191690151517855591519390920192909255915185927fcbde9cd310365ff3de3ad9cb44ed688d8880c7b1d15df733a73880fb84d032de91a3505050565b61055781610ae9565b600060606105678484610b4b565b6105b58383838080601f01602080910402602001604051908101604052809392919081815260200183838082843750610c15945050505050565b610718610a7c565b600160a060020a0316331461072c57600080fd5b610734610a7c565b600160a060020a03167ff8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c6482060405160405180910390a261064c6000610aa1565b6000806105678484610c9b565b6000806105678484610cce565b61055781610d01565b60006107a0610a7c565b90505b90565b6000806105678484610d54565b6000806105678484610d88565b336000818152600660209081526040808320858452909152808220805460ff19168155600101829055518392917f9b9532c8ba5879554dee7c3e9374bd26dbfb2f79cf7f247bcf90648fc81fc16491a350565b6105c48282610dbd565b6105c48282610e3c565b6105c48282610ed6565b61055781610f45565b60006107a0610a57565b600060606105678484610f98565b61085a610a7c565b600160a060020a0316331461086e57600080fd5b61055781610ac5565b61055781611024565b33600081815260208181526040808320858452909152808220805474ffffffffffffffffffffffffffffffffffffffffff19169055518392917fed9474c4702ee9da4d0d2085840fafed5912b8e13daf1d6ea341ebe98803aec291a350565b600160a060020a0391909116600090815260066020908152604080832093835292905220805460019091015460ff90911691565b336000818152600360209081526040808320858452909152808220805461ffff19169055518392917f191bd7fc1f22ce6b74b7d7e42126f0ed225b109728607c99971de9e78b0db6eb91a350565b60408051808201825260018082526020808301858152336000908152600583528581208882528352949094208351815460ff1916901515178155935180519394936109b3938501929190910190611086565b505060405183915033907fee56af66250a5cbba377132a356dc403d520776e30969594927024c44af8440b90600090a35050565b60408051808201825260018082526020808301858152336000818152600284528681208982529093528583209451855460ff19169015151785559051939092019290925591518492917fdb4ad6a3ed2bdacbae02da45a5bb54192cdb7d72648674d13e08d2fc4c45ac6691a35050565b7fcfd0c6ea5352192d7d4c5d4e7a73c5da12c871730cb60ff57879cbe7b403bb525490565b7f3ca57e4b51fc2e18497b219410298879868edada7e6fe5132c8feceb0a080d225490565b7f3ca57e4b51fc2e18497b219410298879868edada7e6fe5132c8feceb0a080d2255565b7fcfd0c6ea5352192d7d4c5d4e7a73c5da12c871730cb60ff57879cbe7b403bb5255565b3360009081526005602090815260408083208484529091528120805460ff1916815590610b196001830182611104565b5050604051819033907f0eaf95ab41777ff88e28181b1c43418524616bcef6d37c3b216015b5548cb10890600090a350565b600160a060020a038216600090815260056020908152604080832084845282528083208054600180830180548551601f600294831615610100026000190190921693909304908101879004870283018701909552848252606095939460ff9093169390928391830182828015610c025780601f10610bd757610100808354040283529160200191610c02565b820191906000526020600020905b815481529060010190602001808311610be557829003601f168201915b5050505050905092509250509250929050565b60408051808201825260018082526020808301858152336000908152600483528581208882528352949094208351815460ff191690151517815593518051939493610c67938501929190910190611086565b505060405183915033907f43e6b7e3323b4598401023341c086c07c3ff5577f594b5aab9c065f2c3c9d59090600090a35050565b600160a060020a03919091166000908152600160208181526040808420948452939052919020805491015460ff90911691565b600160a060020a03918216600090815260208181526040808320938352929052205460ff81169261010090910490911690565b336000818152600260209081526040808320858452909152808220805460ff19168155600101829055518392917f3c3ff48e02e407eb1e78310d11b5e3f9e735263a9cafc2bcf4aa981b8ecb32a591a350565b600160a060020a0391909116600090815260026020908152604080832093835292905220805460019091015460ff90911691565b600160a060020a03919091166000908152600360209081526040808320938352929052205460ff808216926101009092041690565b6040805180820182526001815282151560208083019182523360008181526003835285812088825290925284822093518454935115156101000261ff001991151560ff1990951694909417169290921790925591518492917f68cc3496efaac4c1f2c0cd52da916138f6c5fc541992f05d97423a89b6914ae591a35050565b60408051808201825260018152600160a060020a03838116602080840191825233600081815280835286812089825290925285822094518554935160ff199094169015151774ffffffffffffffffffffffffffffffffffffffff001916610100939094169290920292909217909255915184927f8e7e6ab6c4613205e833e1faf5415d78dd10130a8828f729c08036e2a7a6277091a35050565b604080518082018252600180825260208083018581523360008181528484528681208982529093528583209451855460ff19169015151785559051939092019290925591518492917fff76cb7634629f8d05011ab2a58380dfc0743157a70ba4173f866e113eca75c091a35050565b336000818152600160208181526040808420868552909152808320805460ff19168155909101829055518392917fd5f853f7aaba549b5a46be1de24cac4c20e716b4c603d24b2b0b7b5d97ca1c4d91a350565b600160a060020a038216600090815260046020908152604080832084845282528083208054600180830180548551601f600294831615610100026000190190921693909304908101879004870283018701909552848252606095939460ff9093169390928391830182828015610c025780601f10610bd757610100808354040283529160200191610c02565b3360009081526004602090815260408083208484529091528120805460ff19168155906110546001830182611104565b5050604051819033907f491a0e0281af9fc88ff024cffc24db22eddd4f826cb30d84936592967dc9237c90600090a350565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106110c757805160ff19168380011785556110f4565b828001600101855582156110f4579182015b828111156110f45782518255916020019190600101906110d9565b50611100929150611144565b5090565b50805460018160011615610100020316600290046000825580601f1061112a5750610557565b601f01602090049060005260206000209081019061055791905b6107a391905b80821115611100576000815560010161114a5600a165627a7a72305820865aa047ac52c12e61664912055d684693f5b1074089b4c8ec51808e6f9256860029`
+const PassportLogicContractBin = `0x608060408190527f6f72672e6d6f6e657468612e70726f78792e6f776e6572000000000000000000905261003b3364010000000061009a810204565b604080517f6f72672e6d6f6e657468612e70726f78792e70656e64696e674f776e657200008152905190819003601e0190207fcfd0c6ea5352192d7d4c5d4e7a73c5da12c871730cb60ff57879cbe7b403bb521461009557fe5b6100be565b7f3ca57e4b51fc2e18497b219410298879868edada7e6fe5132c8feceb0a080d2255565b611806806100cd6000396000f30060806040526004361061018a5763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416630e14a376811461018f578063174a6277146101a95780632b42a89a146101e85780632c62ff2d146102025780632e28d0841461021a5780633e49bed01461023e5780634e71e0c8146102595780635b2a372d1461026e578063616b59f61461029257806361a2d076146102aa5780636556f767146102d35780636d4e78021461037a5780636e8995501461039b578063715018a6146103bf57806371658552146103d45780637ac4ed64146103f85780638ae44a081461043f5780638c160095146104605780638da5cb5b1461047857806395ee8bae146104a95780639d74b37d146104cd578063a2b6cbe11461050c578063abfdcced14610524578063ac0aeb1a14610541578063ca446dd914610562578063e2a4853a14610586578063e2b202bf146105a1578063e30c3978146105b9578063e318de73146105ce578063f2fde38b146105f2578063f6bb3cc414610613575b600080fd5b34801561019b57600080fd5b506101a760043561062b565b005b3480156101b557600080fd5b506101cd600160a060020a0360043516602435610637565b60408051921515835260208301919091528051918290030190f35b3480156101f457600080fd5b506101a7600435151561064f565b34801561020e57600080fd5b506101a76004356106a8565b34801561022657600080fd5b506101a76004803590602480359081019101356106b1565b34801561024a57600080fd5b506101a76004356024356106f0565b34801561026557600080fd5b506101a76106fe565b34801561027a57600080fd5b506101a7600480359060248035908101910135610784565b34801561029e57600080fd5b506101a7600435610844565b3480156102b657600080fd5b506102bf61084d565b604080519115158252519081900360200190f35b3480156102df57600080fd5b506102f7600160a060020a0360043516602435610857565b604051808315151515815260200180602001828103825283818151815260200191508051906020019080838360005b8381101561033e578181015183820152602001610326565b50505050905090810190601f16801561036b5780820380516001836020036101000a031916815260200191505b50935050505060405180910390f35b34801561038657600080fd5b506101a7600160a060020a0360043516610865565b3480156103a757600080fd5b506101a76004803590602480359081019101356108ca565b3480156103cb57600080fd5b506101a7610904565b3480156103e057600080fd5b506101cd600160a060020a0360043516602435610967565b34801561040457600080fd5b5061041c600160a060020a0360043516602435610974565b604080519215158352600160a060020a0390911660208301528051918290030190f35b34801561044b57600080fd5b506102bf600160a060020a0360043516610981565b34801561046c57600080fd5b506101a760043561099f565b34801561048457600080fd5b5061048d6109a8565b60408051600160a060020a039092168252519081900360200190f35b3480156104b557600080fd5b506101cd600160a060020a03600435166024356109b7565b3480156104d957600080fd5b506104f1600160a060020a03600435166024356109c4565b60408051921515835290151560208301528051918290030190f35b34801561051857600080fd5b506101a76004356109d1565b34801561053057600080fd5b506101a76004356024351515610a73565b34801561054d57600080fd5b506101a7600160a060020a0360043516610a7d565b34801561056e57600080fd5b506101a7600435600160a060020a0360243516610ae5565b34801561059257600080fd5b506101a7600435602435610aef565b3480156105ad57600080fd5b506101a7600435610af9565b3480156105c557600080fd5b5061048d610b02565b3480156105da57600080fd5b506102f7600160a060020a0360043516602435610b0c565b3480156105fe57600080fd5b506101a7600160a060020a0360043516610b1a565b34801561061f57600080fd5b506101a7600435610b3f565b61063481610b48565b50565b6000806106448484610bf6565b915091509250929050565b610657610c2a565b600160a060020a0316331461066b57600080fd5b6007805460ff19168215159081179091556040517f6e1eb3fa845047cf9d5fd1deb1b7770b4e26163dd4d88cefb14fe7964a70059590600090a250565b61063481610c4f565b6106eb8383838080601f01602080910402602001604051908101604052809392919081815260200183838082843750610cec945050505050565b505050565b6106fa8282610dc1565b5050565b610706610e80565b600160a060020a0316331461071a57600080fd5b610722610e80565b600160a060020a0316610733610c2a565b600160a060020a03167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a3610778610773610e80565b610ea5565b6107826000610ec9565b565b60075460ff1615806107a557503360009081526008602052604090205460ff165b806107c857506107b3610c2a565b600160a060020a031633600160a060020a0316145b15156107d357600080fd5b6040805180820182526001808252436020808401918252336000818152600683528681208a82529092528582209451855460ff191690151517855591519390920192909255915185927fcbde9cd310365ff3de3ad9cb44ed688d8880c7b1d15df733a73880fb84d032de91a3505050565b61063481610eed565b60075460ff165b90565b600060606106448484610f9e565b61086d610c2a565b600160a060020a0316331461088157600080fd5b600160a060020a038116600081815260086020526040808220805460ff19169055517f5bf47f016603dfff957e6086bd9a350212686e8f1d9208b3db47c5a3107c78789190a250565b6106eb8383838080601f01602080910402602001604051908101604052809392919081815260200183838082843750611068945050505050565b61090c610c2a565b600160a060020a0316331461092057600080fd5b610928610c2a565b600160a060020a03167ff8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c6482060405160405180910390a26107826000610ea5565b600080610644848461113d565b6000806106448484611170565b600160a060020a031660009081526008602052604090205460ff1690565b610634816111a3565b60006109b2610c2a565b905090565b6000806106448484611245565b6000806106448484611279565b60075460ff1615806109f257503360009081526008602052604090205460ff165b80610a155750610a00610c2a565b600160a060020a031633600160a060020a0316145b1515610a2057600080fd5b336000818152600660209081526040808320858452909152808220805460ff19168155600101829055518392917f9b9532c8ba5879554dee7c3e9374bd26dbfb2f79cf7f247bcf90648fc81fc16491a350565b6106fa82826112ae565b610a85610c2a565b600160a060020a03163314610a9957600080fd5b600160a060020a038116600081815260086020526040808220805460ff19166001179055517fff8ac5f0e9cdc8f7ffbbc29ab1301ee649cf01cf7a6a9265a2d90587612c41759190a250565b6106fa828261137c565b6106fa8282611465565b61063481611523565b60006109b2610e80565b6000606061064484846115c5565b610b22610c2a565b600160a060020a03163314610b3657600080fd5b61063481610ec9565b61063481611651565b60075460ff161580610b6957503360009081526008602052604090205460ff165b80610b8c5750610b77610c2a565b600160a060020a031633600160a060020a0316145b1515610b9757600080fd5b33600081815260208181526040808320858452909152808220805474ffffffffffffffffffffffffffffffffffffffffff19169055518392917fed9474c4702ee9da4d0d2085840fafed5912b8e13daf1d6ea341ebe98803aec291a350565b600160a060020a0391909116600090815260066020908152604080832093835292905220805460019091015460ff90911691565b7f3ca57e4b51fc2e18497b219410298879868edada7e6fe5132c8feceb0a080d225490565b60075460ff161580610c7057503360009081526008602052604090205460ff165b80610c935750610c7e610c2a565b600160a060020a031633600160a060020a0316145b1515610c9e57600080fd5b336000818152600360209081526040808320858452909152808220805461ffff19169055518392917f191bd7fc1f22ce6b74b7d7e42126f0ed225b109728607c99971de9e78b0db6eb91a350565b60075460ff161580610d0d57503360009081526008602052604090205460ff165b80610d305750610d1b610c2a565b600160a060020a031633600160a060020a0316145b1515610d3b57600080fd5b60408051808201825260018082526020808301858152336000908152600583528581208882528352949094208351815460ff191690151517815593518051939493610d8d938501929190910190611702565b505060405183915033907fee56af66250a5cbba377132a356dc403d520776e30969594927024c44af8440b90600090a35050565b60075460ff161580610de257503360009081526008602052604090205460ff165b80610e055750610df0610c2a565b600160a060020a031633600160a060020a0316145b1515610e1057600080fd5b60408051808201825260018082526020808301858152336000818152600284528681208982529093528583209451855460ff19169015151785559051939092019290925591518492917fdb4ad6a3ed2bdacbae02da45a5bb54192cdb7d72648674d13e08d2fc4c45ac6691a35050565b7fcfd0c6ea5352192d7d4c5d4e7a73c5da12c871730cb60ff57879cbe7b403bb525490565b7f3ca57e4b51fc2e18497b219410298879868edada7e6fe5132c8feceb0a080d2255565b7fcfd0c6ea5352192d7d4c5d4e7a73c5da12c871730cb60ff57879cbe7b403bb5255565b60075460ff161580610f0e57503360009081526008602052604090205460ff165b80610f315750610f1c610c2a565b600160a060020a031633600160a060020a0316145b1515610f3c57600080fd5b3360009081526005602090815260408083208484529091528120805460ff1916815590610f6c6001830182611780565b5050604051819033907f0eaf95ab41777ff88e28181b1c43418524616bcef6d37c3b216015b5548cb10890600090a350565b600160a060020a038216600090815260056020908152604080832084845282528083208054600180830180548551601f600294831615610100026000190190921693909304908101879004870283018701909552848252606095939460ff90931693909283918301828280156110555780601f1061102a57610100808354040283529160200191611055565b820191906000526020600020905b81548152906001019060200180831161103857829003601f168201915b5050505050905092509250509250929050565b60075460ff16158061108957503360009081526008602052604090205460ff165b806110ac5750611097610c2a565b600160a060020a031633600160a060020a0316145b15156110b757600080fd5b60408051808201825260018082526020808301858152336000908152600483528581208882528352949094208351815460ff191690151517815593518051939493611109938501929190910190611702565b505060405183915033907f43e6b7e3323b4598401023341c086c07c3ff5577f594b5aab9c065f2c3c9d59090600090a35050565b600160a060020a03919091166000908152600160208181526040808420948452939052919020805491015460ff90911691565b600160a060020a03918216600090815260208181526040808320938352929052205460ff81169261010090910490911690565b60075460ff1615806111c457503360009081526008602052604090205460ff165b806111e757506111d2610c2a565b600160a060020a031633600160a060020a0316145b15156111f257600080fd5b336000818152600260209081526040808320858452909152808220805460ff19168155600101829055518392917f3c3ff48e02e407eb1e78310d11b5e3f9e735263a9cafc2bcf4aa981b8ecb32a591a350565b600160a060020a0391909116600090815260026020908152604080832093835292905220805460019091015460ff90911691565b600160a060020a03919091166000908152600360209081526040808320938352929052205460ff808216926101009092041690565b60075460ff1615806112cf57503360009081526008602052604090205460ff165b806112f257506112dd610c2a565b600160a060020a031633600160a060020a0316145b15156112fd57600080fd5b6040805180820182526001815282151560208083019182523360008181526003835285812088825290925284822093518454935115156101000261ff001991151560ff1990951694909417169290921790925591518492917f68cc3496efaac4c1f2c0cd52da916138f6c5fc541992f05d97423a89b6914ae591a35050565b60075460ff16158061139d57503360009081526008602052604090205460ff165b806113c057506113ab610c2a565b600160a060020a031633600160a060020a0316145b15156113cb57600080fd5b60408051808201825260018152600160a060020a03838116602080840191825233600081815280835286812089825290925285822094518554935160ff199094169015151774ffffffffffffffffffffffffffffffffffffffff001916610100939094169290920292909217909255915184927f8e7e6ab6c4613205e833e1faf5415d78dd10130a8828f729c08036e2a7a6277091a35050565b60075460ff16158061148657503360009081526008602052604090205460ff165b806114a95750611494610c2a565b600160a060020a031633600160a060020a0316145b15156114b457600080fd5b604080518082018252600180825260208083018581523360008181528484528681208982529093528583209451855460ff19169015151785559051939092019290925591518492917fff76cb7634629f8d05011ab2a58380dfc0743157a70ba4173f866e113eca75c091a35050565b60075460ff16158061154457503360009081526008602052604090205460ff165b806115675750611552610c2a565b600160a060020a031633600160a060020a0316145b151561157257600080fd5b336000818152600160208181526040808420868552909152808320805460ff19168155909101829055518392917fd5f853f7aaba549b5a46be1de24cac4c20e716b4c603d24b2b0b7b5d97ca1c4d91a350565b600160a060020a038216600090815260046020908152604080832084845282528083208054600180830180548551601f600294831615610100026000190190921693909304908101879004870283018701909552848252606095939460ff90931693909283918301828280156110555780601f1061102a57610100808354040283529160200191611055565b60075460ff16158061167257503360009081526008602052604090205460ff165b806116955750611680610c2a565b600160a060020a031633600160a060020a0316145b15156116a057600080fd5b3360009081526004602090815260408083208484529091528120805460ff19168155906116d06001830182611780565b5050604051819033907f491a0e0281af9fc88ff024cffc24db22eddd4f826cb30d84936592967dc9237c90600090a350565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061174357805160ff1916838001178555611770565b82800160010185558215611770579182015b82811115611770578251825591602001919060010190611755565b5061177c9291506117c0565b5090565b50805460018160011615610100020316600290046000825580601f106117a65750610634565b601f01602090049060005260206000209081019061063491905b61085491905b8082111561177c57600081556001016117c65600a165627a7a7230582013988a26164129b796cce62ff753ec46b8c5109302aceb7b7ef82be13d1004d10029`
 
 // DeployPassportLogicContract deploys a new Ethereum contract, binding an instance of PassportLogicContract to it.
 func DeployPassportLogicContract(auth *bind.TransactOpts, backend bind.ContractBackend) (common.Address, *types.Transaction, *PassportLogicContract, error) {
@@ -440,6 +440,58 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) GetUint(_factP
 	return _PassportLogicContract.Contract.GetUint(&_PassportLogicContract.CallOpts, _factProvider, _key)
 }
 
+// IsFactProviderInWhitelist is a free data retrieval call binding the contract method 0x8ae44a08.
+//
+// Solidity: function isFactProviderInWhitelist(_address address) constant returns(bool)
+func (_PassportLogicContract *PassportLogicContractCaller) IsFactProviderInWhitelist(opts *bind.CallOpts, _address common.Address) (bool, error) {
+	var (
+		ret0 = new(bool)
+	)
+	out := ret0
+	err := _PassportLogicContract.contract.Call(opts, out, "isFactProviderInWhitelist", _address)
+	return *ret0, err
+}
+
+// IsFactProviderInWhitelist is a free data retrieval call binding the contract method 0x8ae44a08.
+//
+// Solidity: function isFactProviderInWhitelist(_address address) constant returns(bool)
+func (_PassportLogicContract *PassportLogicContractSession) IsFactProviderInWhitelist(_address common.Address) (bool, error) {
+	return _PassportLogicContract.Contract.IsFactProviderInWhitelist(&_PassportLogicContract.CallOpts, _address)
+}
+
+// IsFactProviderInWhitelist is a free data retrieval call binding the contract method 0x8ae44a08.
+//
+// Solidity: function isFactProviderInWhitelist(_address address) constant returns(bool)
+func (_PassportLogicContract *PassportLogicContractCallerSession) IsFactProviderInWhitelist(_address common.Address) (bool, error) {
+	return _PassportLogicContract.Contract.IsFactProviderInWhitelist(&_PassportLogicContract.CallOpts, _address)
+}
+
+// IsWhitelistOnlyPermissionSet is a free data retrieval call binding the contract method 0x61a2d076.
+//
+// Solidity: function isWhitelistOnlyPermissionSet() constant returns(bool)
+func (_PassportLogicContract *PassportLogicContractCaller) IsWhitelistOnlyPermissionSet(opts *bind.CallOpts) (bool, error) {
+	var (
+		ret0 = new(bool)
+	)
+	out := ret0
+	err := _PassportLogicContract.contract.Call(opts, out, "isWhitelistOnlyPermissionSet")
+	return *ret0, err
+}
+
+// IsWhitelistOnlyPermissionSet is a free data retrieval call binding the contract method 0x61a2d076.
+//
+// Solidity: function isWhitelistOnlyPermissionSet() constant returns(bool)
+func (_PassportLogicContract *PassportLogicContractSession) IsWhitelistOnlyPermissionSet() (bool, error) {
+	return _PassportLogicContract.Contract.IsWhitelistOnlyPermissionSet(&_PassportLogicContract.CallOpts)
+}
+
+// IsWhitelistOnlyPermissionSet is a free data retrieval call binding the contract method 0x61a2d076.
+//
+// Solidity: function isWhitelistOnlyPermissionSet() constant returns(bool)
+func (_PassportLogicContract *PassportLogicContractCallerSession) IsWhitelistOnlyPermissionSet() (bool, error) {
+	return _PassportLogicContract.Contract.IsWhitelistOnlyPermissionSet(&_PassportLogicContract.CallOpts)
+}
+
 // Owner is a free data retrieval call binding the contract method 0x8da5cb5b.
 //
 // Solidity: function owner() constant returns(address)
@@ -490,6 +542,27 @@ func (_PassportLogicContract *PassportLogicContractSession) PendingOwner() (comm
 // Solidity: function pendingOwner() constant returns(address)
 func (_PassportLogicContract *PassportLogicContractCallerSession) PendingOwner() (common.Address, error) {
 	return _PassportLogicContract.Contract.PendingOwner(&_PassportLogicContract.CallOpts)
+}
+
+// AddFactProviderToWhitelist is a paid mutator transaction binding the contract method 0xac0aeb1a.
+//
+// Solidity: function addFactProviderToWhitelist(_address address) returns()
+func (_PassportLogicContract *PassportLogicContractTransactor) AddFactProviderToWhitelist(opts *bind.TransactOpts, _address common.Address) (*types.Transaction, error) {
+	return _PassportLogicContract.contract.Transact(opts, "addFactProviderToWhitelist", _address)
+}
+
+// AddFactProviderToWhitelist is a paid mutator transaction binding the contract method 0xac0aeb1a.
+//
+// Solidity: function addFactProviderToWhitelist(_address address) returns()
+func (_PassportLogicContract *PassportLogicContractSession) AddFactProviderToWhitelist(_address common.Address) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.AddFactProviderToWhitelist(&_PassportLogicContract.TransactOpts, _address)
+}
+
+// AddFactProviderToWhitelist is a paid mutator transaction binding the contract method 0xac0aeb1a.
+//
+// Solidity: function addFactProviderToWhitelist(_address address) returns()
+func (_PassportLogicContract *PassportLogicContractTransactorSession) AddFactProviderToWhitelist(_address common.Address) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.AddFactProviderToWhitelist(&_PassportLogicContract.TransactOpts, _address)
 }
 
 // ClaimOwnership is a paid mutator transaction binding the contract method 0x4e71e0c8.
@@ -660,6 +733,27 @@ func (_PassportLogicContract *PassportLogicContractTransactorSession) DeleteUint
 	return _PassportLogicContract.Contract.DeleteUint(&_PassportLogicContract.TransactOpts, _key)
 }
 
+// RemoveFactProviderFromWhitelist is a paid mutator transaction binding the contract method 0x6d4e7802.
+//
+// Solidity: function removeFactProviderFromWhitelist(_address address) returns()
+func (_PassportLogicContract *PassportLogicContractTransactor) RemoveFactProviderFromWhitelist(opts *bind.TransactOpts, _address common.Address) (*types.Transaction, error) {
+	return _PassportLogicContract.contract.Transact(opts, "removeFactProviderFromWhitelist", _address)
+}
+
+// RemoveFactProviderFromWhitelist is a paid mutator transaction binding the contract method 0x6d4e7802.
+//
+// Solidity: function removeFactProviderFromWhitelist(_address address) returns()
+func (_PassportLogicContract *PassportLogicContractSession) RemoveFactProviderFromWhitelist(_address common.Address) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.RemoveFactProviderFromWhitelist(&_PassportLogicContract.TransactOpts, _address)
+}
+
+// RemoveFactProviderFromWhitelist is a paid mutator transaction binding the contract method 0x6d4e7802.
+//
+// Solidity: function removeFactProviderFromWhitelist(_address address) returns()
+func (_PassportLogicContract *PassportLogicContractTransactorSession) RemoveFactProviderFromWhitelist(_address common.Address) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.RemoveFactProviderFromWhitelist(&_PassportLogicContract.TransactOpts, _address)
+}
+
 // RenounceOwnership is a paid mutator transaction binding the contract method 0x715018a6.
 //
 // Solidity: function renounceOwnership() returns()
@@ -826,6 +920,27 @@ func (_PassportLogicContract *PassportLogicContractSession) SetUint(_key [32]byt
 // Solidity: function setUint(_key bytes32, _value uint256) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetUint(_key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetUint(&_PassportLogicContract.TransactOpts, _key, _value)
+}
+
+// SetWhitelistOnlyPermission is a paid mutator transaction binding the contract method 0x2b42a89a.
+//
+// Solidity: function setWhitelistOnlyPermission(_onlyWhitelist bool) returns()
+func (_PassportLogicContract *PassportLogicContractTransactor) SetWhitelistOnlyPermission(opts *bind.TransactOpts, _onlyWhitelist bool) (*types.Transaction, error) {
+	return _PassportLogicContract.contract.Transact(opts, "setWhitelistOnlyPermission", _onlyWhitelist)
+}
+
+// SetWhitelistOnlyPermission is a paid mutator transaction binding the contract method 0x2b42a89a.
+//
+// Solidity: function setWhitelistOnlyPermission(_onlyWhitelist bool) returns()
+func (_PassportLogicContract *PassportLogicContractSession) SetWhitelistOnlyPermission(_onlyWhitelist bool) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.SetWhitelistOnlyPermission(&_PassportLogicContract.TransactOpts, _onlyWhitelist)
+}
+
+// SetWhitelistOnlyPermission is a paid mutator transaction binding the contract method 0x2b42a89a.
+//
+// Solidity: function setWhitelistOnlyPermission(_onlyWhitelist bool) returns()
+func (_PassportLogicContract *PassportLogicContractTransactorSession) SetWhitelistOnlyPermission(_onlyWhitelist bool) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.SetWhitelistOnlyPermission(&_PassportLogicContract.TransactOpts, _onlyWhitelist)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
@@ -3076,6 +3191,402 @@ func (_PassportLogicContract *PassportLogicContractFilterer) WatchUintUpdated(op
 				// New log arrived, parse the event and forward to the user
 				event := new(PassportLogicContractUintUpdated)
 				if err := _PassportLogicContract.contract.UnpackLog(event, "UintUpdated", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// PassportLogicContractWhitelistFactProviderAddedIterator is returned from FilterWhitelistFactProviderAdded and is used to iterate over the raw logs and unpacked data for WhitelistFactProviderAdded events raised by the PassportLogicContract contract.
+type PassportLogicContractWhitelistFactProviderAddedIterator struct {
+	Event *PassportLogicContractWhitelistFactProviderAdded // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *PassportLogicContractWhitelistFactProviderAddedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(PassportLogicContractWhitelistFactProviderAdded)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(PassportLogicContractWhitelistFactProviderAdded)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *PassportLogicContractWhitelistFactProviderAddedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *PassportLogicContractWhitelistFactProviderAddedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// PassportLogicContractWhitelistFactProviderAdded represents a WhitelistFactProviderAdded event raised by the PassportLogicContract contract.
+type PassportLogicContractWhitelistFactProviderAdded struct {
+	FactProvider common.Address
+	Raw          types.Log // Blockchain specific contextual infos
+}
+
+// FilterWhitelistFactProviderAdded is a free log retrieval operation binding the contract event 0xff8ac5f0e9cdc8f7ffbbc29ab1301ee649cf01cf7a6a9265a2d90587612c4175.
+//
+// Solidity: e WhitelistFactProviderAdded(factProvider indexed address)
+func (_PassportLogicContract *PassportLogicContractFilterer) FilterWhitelistFactProviderAdded(opts *bind.FilterOpts, factProvider []common.Address) (*PassportLogicContractWhitelistFactProviderAddedIterator, error) {
+
+	var factProviderRule []interface{}
+	for _, factProviderItem := range factProvider {
+		factProviderRule = append(factProviderRule, factProviderItem)
+	}
+
+	logs, sub, err := _PassportLogicContract.contract.FilterLogs(opts, "WhitelistFactProviderAdded", factProviderRule)
+	if err != nil {
+		return nil, err
+	}
+	return &PassportLogicContractWhitelistFactProviderAddedIterator{contract: _PassportLogicContract.contract, event: "WhitelistFactProviderAdded", logs: logs, sub: sub}, nil
+}
+
+// WatchWhitelistFactProviderAdded is a free log subscription operation binding the contract event 0xff8ac5f0e9cdc8f7ffbbc29ab1301ee649cf01cf7a6a9265a2d90587612c4175.
+//
+// Solidity: e WhitelistFactProviderAdded(factProvider indexed address)
+func (_PassportLogicContract *PassportLogicContractFilterer) WatchWhitelistFactProviderAdded(opts *bind.WatchOpts, sink chan<- *PassportLogicContractWhitelistFactProviderAdded, factProvider []common.Address) (event.Subscription, error) {
+
+	var factProviderRule []interface{}
+	for _, factProviderItem := range factProvider {
+		factProviderRule = append(factProviderRule, factProviderItem)
+	}
+
+	logs, sub, err := _PassportLogicContract.contract.WatchLogs(opts, "WhitelistFactProviderAdded", factProviderRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(PassportLogicContractWhitelistFactProviderAdded)
+				if err := _PassportLogicContract.contract.UnpackLog(event, "WhitelistFactProviderAdded", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// PassportLogicContractWhitelistFactProviderRemovedIterator is returned from FilterWhitelistFactProviderRemoved and is used to iterate over the raw logs and unpacked data for WhitelistFactProviderRemoved events raised by the PassportLogicContract contract.
+type PassportLogicContractWhitelistFactProviderRemovedIterator struct {
+	Event *PassportLogicContractWhitelistFactProviderRemoved // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *PassportLogicContractWhitelistFactProviderRemovedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(PassportLogicContractWhitelistFactProviderRemoved)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(PassportLogicContractWhitelistFactProviderRemoved)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *PassportLogicContractWhitelistFactProviderRemovedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *PassportLogicContractWhitelistFactProviderRemovedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// PassportLogicContractWhitelistFactProviderRemoved represents a WhitelistFactProviderRemoved event raised by the PassportLogicContract contract.
+type PassportLogicContractWhitelistFactProviderRemoved struct {
+	FactProvider common.Address
+	Raw          types.Log // Blockchain specific contextual infos
+}
+
+// FilterWhitelistFactProviderRemoved is a free log retrieval operation binding the contract event 0x5bf47f016603dfff957e6086bd9a350212686e8f1d9208b3db47c5a3107c7878.
+//
+// Solidity: e WhitelistFactProviderRemoved(factProvider indexed address)
+func (_PassportLogicContract *PassportLogicContractFilterer) FilterWhitelistFactProviderRemoved(opts *bind.FilterOpts, factProvider []common.Address) (*PassportLogicContractWhitelistFactProviderRemovedIterator, error) {
+
+	var factProviderRule []interface{}
+	for _, factProviderItem := range factProvider {
+		factProviderRule = append(factProviderRule, factProviderItem)
+	}
+
+	logs, sub, err := _PassportLogicContract.contract.FilterLogs(opts, "WhitelistFactProviderRemoved", factProviderRule)
+	if err != nil {
+		return nil, err
+	}
+	return &PassportLogicContractWhitelistFactProviderRemovedIterator{contract: _PassportLogicContract.contract, event: "WhitelistFactProviderRemoved", logs: logs, sub: sub}, nil
+}
+
+// WatchWhitelistFactProviderRemoved is a free log subscription operation binding the contract event 0x5bf47f016603dfff957e6086bd9a350212686e8f1d9208b3db47c5a3107c7878.
+//
+// Solidity: e WhitelistFactProviderRemoved(factProvider indexed address)
+func (_PassportLogicContract *PassportLogicContractFilterer) WatchWhitelistFactProviderRemoved(opts *bind.WatchOpts, sink chan<- *PassportLogicContractWhitelistFactProviderRemoved, factProvider []common.Address) (event.Subscription, error) {
+
+	var factProviderRule []interface{}
+	for _, factProviderItem := range factProvider {
+		factProviderRule = append(factProviderRule, factProviderItem)
+	}
+
+	logs, sub, err := _PassportLogicContract.contract.WatchLogs(opts, "WhitelistFactProviderRemoved", factProviderRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(PassportLogicContractWhitelistFactProviderRemoved)
+				if err := _PassportLogicContract.contract.UnpackLog(event, "WhitelistFactProviderRemoved", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// PassportLogicContractWhitelistOnlyPermissionSetIterator is returned from FilterWhitelistOnlyPermissionSet and is used to iterate over the raw logs and unpacked data for WhitelistOnlyPermissionSet events raised by the PassportLogicContract contract.
+type PassportLogicContractWhitelistOnlyPermissionSetIterator struct {
+	Event *PassportLogicContractWhitelistOnlyPermissionSet // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *PassportLogicContractWhitelistOnlyPermissionSetIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(PassportLogicContractWhitelistOnlyPermissionSet)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(PassportLogicContractWhitelistOnlyPermissionSet)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *PassportLogicContractWhitelistOnlyPermissionSetIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *PassportLogicContractWhitelistOnlyPermissionSetIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// PassportLogicContractWhitelistOnlyPermissionSet represents a WhitelistOnlyPermissionSet event raised by the PassportLogicContract contract.
+type PassportLogicContractWhitelistOnlyPermissionSet struct {
+	OnlyWhitelist bool
+	Raw           types.Log // Blockchain specific contextual infos
+}
+
+// FilterWhitelistOnlyPermissionSet is a free log retrieval operation binding the contract event 0x6e1eb3fa845047cf9d5fd1deb1b7770b4e26163dd4d88cefb14fe7964a700595.
+//
+// Solidity: e WhitelistOnlyPermissionSet(onlyWhitelist indexed bool)
+func (_PassportLogicContract *PassportLogicContractFilterer) FilterWhitelistOnlyPermissionSet(opts *bind.FilterOpts, onlyWhitelist []bool) (*PassportLogicContractWhitelistOnlyPermissionSetIterator, error) {
+
+	var onlyWhitelistRule []interface{}
+	for _, onlyWhitelistItem := range onlyWhitelist {
+		onlyWhitelistRule = append(onlyWhitelistRule, onlyWhitelistItem)
+	}
+
+	logs, sub, err := _PassportLogicContract.contract.FilterLogs(opts, "WhitelistOnlyPermissionSet", onlyWhitelistRule)
+	if err != nil {
+		return nil, err
+	}
+	return &PassportLogicContractWhitelistOnlyPermissionSetIterator{contract: _PassportLogicContract.contract, event: "WhitelistOnlyPermissionSet", logs: logs, sub: sub}, nil
+}
+
+// WatchWhitelistOnlyPermissionSet is a free log subscription operation binding the contract event 0x6e1eb3fa845047cf9d5fd1deb1b7770b4e26163dd4d88cefb14fe7964a700595.
+//
+// Solidity: e WhitelistOnlyPermissionSet(onlyWhitelist indexed bool)
+func (_PassportLogicContract *PassportLogicContractFilterer) WatchWhitelistOnlyPermissionSet(opts *bind.WatchOpts, sink chan<- *PassportLogicContractWhitelistOnlyPermissionSet, onlyWhitelist []bool) (event.Subscription, error) {
+
+	var onlyWhitelistRule []interface{}
+	for _, onlyWhitelistItem := range onlyWhitelist {
+		onlyWhitelistRule = append(onlyWhitelistRule, onlyWhitelistItem)
+	}
+
+	logs, sub, err := _PassportLogicContract.contract.WatchLogs(opts, "WhitelistOnlyPermissionSet", onlyWhitelistRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(PassportLogicContractWhitelistOnlyPermissionSet)
+				if err := _PassportLogicContract.contract.UnpackLog(event, "WhitelistOnlyPermissionSet", log); err != nil {
 					return err
 				}
 				event.Raw = log

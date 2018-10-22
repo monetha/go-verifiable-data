@@ -44,6 +44,20 @@
     "constant": false,
     "inputs": [
       {
+        "name": "_onlyWhitelist",
+        "type": "bool"
+      }
+    ],
+    "name": "setWhitelistOnlyPermission",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
         "name": "_key",
         "type": "bytes32"
       }
@@ -133,6 +147,20 @@
   },
   {
     "constant": true,
+    "inputs": [],
+    "name": "isWhitelistOnlyPermissionSet",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
     "inputs": [
       {
         "name": "_factProvider",
@@ -156,6 +184,20 @@
     ],
     "payable": false,
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "removeFactProviderFromWhitelist",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -233,6 +275,25 @@
       {
         "name": "value",
         "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "isFactProviderInWhitelist",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
       }
     ],
     "payable": false,
@@ -348,6 +409,20 @@
       }
     ],
     "name": "setBool",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "addFactProviderToWhitelist",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -708,6 +783,42 @@
       }
     ],
     "name": "AddressDeleted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "onlyWhitelist",
+        "type": "bool"
+      }
+    ],
+    "name": "WhitelistOnlyPermissionSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "factProvider",
+        "type": "address"
+      }
+    ],
+    "name": "WhitelistFactProviderAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "factProvider",
+        "type": "address"
+      }
+    ],
+    "name": "WhitelistFactProviderRemoved",
     "type": "event"
   },
   {
