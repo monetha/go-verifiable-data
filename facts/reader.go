@@ -33,7 +33,7 @@ func (r *Reader) ReadTxData(ctx context.Context, passport common.Address, factPr
 	}
 
 	(*eth.Eth)(r).Log("Getting block number for tx data", "fact_provider", factProvider, "key", key)
-	bn, err := passportLogicContract.GetTxDataBlockNumber(nil, factProvider, key)
+	bn, err := passportLogicContract.GetTxDataBlockNumber(&bind.CallOpts{Context: ctx}, factProvider, key)
 	if err != nil {
 		return nil, fmt.Errorf("facts: GetTxDataBlockNumber: %v", err)
 	}
@@ -109,7 +109,7 @@ func (r *Reader) ReadBytes(ctx context.Context, passport common.Address, factPro
 	}
 
 	(*eth.Eth)(r).Log("Getting bytes", "fact_provider", factProvider, "key", key)
-	res, err := contracts.InitPassportLogicContract(passport, backend).GetBytes(nil, factProvider, key)
+	res, err := contracts.InitPassportLogicContract(passport, backend).GetBytes(&bind.CallOpts{Context: ctx}, factProvider, key)
 	if err != nil {
 		return nil, fmt.Errorf("facts: GetBytes: %v", err)
 	}
@@ -133,7 +133,7 @@ func (r *Reader) ReadString(ctx context.Context, passport common.Address, factPr
 	}
 
 	(*eth.Eth)(r).Log("Getting string", "fact_provider", factProvider, "key", key)
-	res, err := contracts.InitPassportLogicContract(passport, backend).GetString(nil, factProvider, key)
+	res, err := contracts.InitPassportLogicContract(passport, backend).GetString(&bind.CallOpts{Context: ctx}, factProvider, key)
 	if err != nil {
 		return "", fmt.Errorf("facts: GetBytes: %v", err)
 	}
@@ -157,7 +157,7 @@ func (r *Reader) ReadAddress(ctx context.Context, passport common.Address, factP
 	}
 
 	(*eth.Eth)(r).Log("Getting address", "fact_provider", factProvider, "key", key)
-	res, err := contracts.InitPassportLogicContract(passport, backend).GetAddress(nil, factProvider, key)
+	res, err := contracts.InitPassportLogicContract(passport, backend).GetAddress(&bind.CallOpts{Context: ctx}, factProvider, key)
 	if err != nil {
 		return common.Address{}, fmt.Errorf("facts: GetAddress: %v", err)
 	}
@@ -181,7 +181,7 @@ func (r *Reader) ReadUint(ctx context.Context, passport common.Address, factProv
 	}
 
 	(*eth.Eth)(r).Log("Getting uint", "fact_provider", factProvider, "key", key)
-	res, err := contracts.InitPassportLogicContract(passport, backend).GetUint(nil, factProvider, key)
+	res, err := contracts.InitPassportLogicContract(passport, backend).GetUint(&bind.CallOpts{Context: ctx}, factProvider, key)
 	if err != nil {
 		return nil, fmt.Errorf("facts: GetUint: %v", err)
 	}
@@ -205,7 +205,7 @@ func (r *Reader) ReadInt(ctx context.Context, passport common.Address, factProvi
 	}
 
 	(*eth.Eth)(r).Log("Getting int", "fact_provider", factProvider, "key", key)
-	res, err := contracts.InitPassportLogicContract(passport, backend).GetInt(nil, factProvider, key)
+	res, err := contracts.InitPassportLogicContract(passport, backend).GetInt(&bind.CallOpts{Context: ctx}, factProvider, key)
 	if err != nil {
 		return nil, fmt.Errorf("facts: GetUint: %v", err)
 	}
@@ -229,7 +229,7 @@ func (r *Reader) ReadBool(ctx context.Context, passport common.Address, factProv
 	}
 
 	(*eth.Eth)(r).Log("Getting bool", "fact_provider", factProvider, "key", key)
-	res, err := contracts.InitPassportLogicContract(passport, backend).GetBool(nil, factProvider, key)
+	res, err := contracts.InitPassportLogicContract(passport, backend).GetBool(&bind.CallOpts{Context: ctx}, factProvider, key)
 	if err != nil {
 		return false, fmt.Errorf("facts: GetBool: %v", err)
 	}
