@@ -22,19 +22,19 @@ func neg(x *big.Int) *big.Int             { return new(big.Int).Neg(x) }
 func createPassportAndFactProviderSession(ctx context.Context, t *testing.T) (common.Address, *eth.Session) {
 	monethaKey, err := crypto.GenerateKey()
 	if err != nil {
-		t.Errorf("crypto.GenerateKey() error = %v", err)
+		t.Fatalf("crypto.GenerateKey() error = %v", err)
 	}
 	monethaAddress := bind.NewKeyedTransactor(monethaKey).From
 
 	passportOwnerKey, err := crypto.GenerateKey()
 	if err != nil {
-		t.Errorf("crypto.GenerateKey() error = %v", err)
+		t.Fatalf("crypto.GenerateKey() error = %v", err)
 	}
 	passportOwnerAddress := bind.NewKeyedTransactor(passportOwnerKey).From
 
 	factProviderKey, err := crypto.GenerateKey()
 	if err != nil {
-		t.Errorf("crypto.GenerateKey() error = %v", err)
+		t.Fatalf("crypto.GenerateKey() error = %v", err)
 	}
 	factProviderAddress := bind.NewKeyedTransactor(factProviderKey).From
 	alloc := core.GenesisAlloc{
@@ -46,20 +46,22 @@ func createPassportAndFactProviderSession(ctx context.Context, t *testing.T) (co
 	sim.Commit()
 
 	e := eth.New(sim, nil)
-	e.UpdateSuggestedGasPrice(ctx)
+	if err := e.UpdateSuggestedGasPrice(ctx); err != nil {
+		t.Fatalf("Eth.UpdateSuggestedGasPrice() error = %v", err)
+	}
 
 	monethaSession := e.NewSession(monethaKey)
 	// deploying passport factory with all dependencies: passport logic, passport logic registry
 	passportFactoryAddress, err := deployer.New(monethaSession).DeployPassportFactory(ctx)
 	if err != nil {
-		t.Errorf("Deploy.DeployPassportFactory() error = %v", err)
+		t.Fatalf("Deploy.DeployPassportFactory() error = %v", err)
 	}
 
 	passportOwnerSession := e.NewSession(passportOwnerKey)
 	// deploying passport
 	passportAddress, err := deployer.New(passportOwnerSession).DeployPassport(ctx, passportFactoryAddress)
 	if err != nil {
-		t.Errorf("Deploy.DeployPassport() error = %v", err)
+		t.Fatalf("Deploy.DeployPassport() error = %v", err)
 	}
 
 	factProviderSession := e.NewSession(factProviderKey)
