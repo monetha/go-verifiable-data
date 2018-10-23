@@ -98,7 +98,7 @@ type providerChanges struct {
 func (c *providerChanges) WriteTxData(ctx context.Context, passportAddress common.Address, key [32]byte, value []byte) {
 	txHash, err := c.p.WriteTxData(ctx, passportAddress, key, value)
 	if err != nil {
-		c.t.Errorf("Provider.WriteTxData() error = %v", err)
+		c.t.Fatalf("Provider.WriteTxData() error = %v", err)
 	}
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Updated, DataType: data.TxData, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
@@ -106,7 +106,7 @@ func (c *providerChanges) WriteTxData(ctx context.Context, passportAddress commo
 func (c *providerChanges) WriteBytes(ctx context.Context, passportAddress common.Address, key [32]byte, value []byte) {
 	txHash, err := c.p.WriteBytes(ctx, passportAddress, key, value)
 	if err != nil {
-		c.t.Errorf("Provider.WriteBytes() error = %v", err)
+		c.t.Fatalf("Provider.WriteBytes() error = %v", err)
 	}
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Updated, DataType: data.Bytes, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
@@ -114,7 +114,7 @@ func (c *providerChanges) WriteBytes(ctx context.Context, passportAddress common
 func (c *providerChanges) WriteString(ctx context.Context, passportAddress common.Address, key [32]byte, value string) {
 	txHash, err := c.p.WriteString(ctx, passportAddress, key, value)
 	if err != nil {
-		c.t.Errorf("Provider.WriteString() error = %v", err)
+		c.t.Fatalf("Provider.WriteString() error = %v", err)
 	}
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Updated, DataType: data.String, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
@@ -122,7 +122,7 @@ func (c *providerChanges) WriteString(ctx context.Context, passportAddress commo
 func (c *providerChanges) WriteAddress(ctx context.Context, passportAddress common.Address, key [32]byte, value common.Address) {
 	txHash, err := c.p.WriteAddress(ctx, passportAddress, key, value)
 	if err != nil {
-		c.t.Errorf("Provider.WriteAddress() error = %v", err)
+		c.t.Fatalf("Provider.WriteAddress() error = %v", err)
 	}
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Updated, DataType: data.Address, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
@@ -130,7 +130,7 @@ func (c *providerChanges) WriteAddress(ctx context.Context, passportAddress comm
 func (c *providerChanges) WriteUint(ctx context.Context, passportAddress common.Address, key [32]byte, value *big.Int) {
 	txHash, err := c.p.WriteUint(ctx, passportAddress, key, value)
 	if err != nil {
-		c.t.Errorf("Provider.WriteUint() error = %v", err)
+		c.t.Fatalf("Provider.WriteUint() error = %v", err)
 	}
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Updated, DataType: data.Uint, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
@@ -138,7 +138,7 @@ func (c *providerChanges) WriteUint(ctx context.Context, passportAddress common.
 func (c *providerChanges) WriteInt(ctx context.Context, passportAddress common.Address, key [32]byte, value *big.Int) {
 	txHash, err := c.p.WriteInt(ctx, passportAddress, key, value)
 	if err != nil {
-		c.t.Errorf("Provider.WriteInt() error = %v", err)
+		c.t.Fatalf("Provider.WriteInt() error = %v", err)
 	}
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Updated, DataType: data.Int, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
@@ -146,7 +146,7 @@ func (c *providerChanges) WriteInt(ctx context.Context, passportAddress common.A
 func (c *providerChanges) WriteBool(ctx context.Context, passportAddress common.Address, key [32]byte, value bool) {
 	txHash, err := c.p.WriteBool(ctx, passportAddress, key, value)
 	if err != nil {
-		c.t.Errorf("Provider.WriteBool() error = %v", err)
+		c.t.Fatalf("Provider.WriteBool() error = %v", err)
 	}
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Updated, DataType: data.Bool, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
@@ -154,7 +154,7 @@ func (c *providerChanges) WriteBool(ctx context.Context, passportAddress common.
 func (c *providerChanges) DeleteTxData(ctx context.Context, passportAddress common.Address, key [32]byte) {
 	txHash, err := c.p.DeleteTxData(ctx, passportAddress, key)
 	if err != nil {
-		c.t.Errorf("Provider.DeleteTxData() error = %v", err)
+		c.t.Fatalf("Provider.DeleteTxData() error = %v", err)
 	}
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Deleted, DataType: data.TxData, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
@@ -162,7 +162,7 @@ func (c *providerChanges) DeleteTxData(ctx context.Context, passportAddress comm
 func (c *providerChanges) DeleteBytes(ctx context.Context, passportAddress common.Address, key [32]byte) {
 	txHash, err := c.p.DeleteBytes(ctx, passportAddress, key)
 	if err != nil {
-		c.t.Errorf("Provider.DeleteBytes() error = %v", err)
+		c.t.Fatalf("Provider.DeleteBytes() error = %v", err)
 	}
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Deleted, DataType: data.Bytes, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
@@ -170,7 +170,7 @@ func (c *providerChanges) DeleteBytes(ctx context.Context, passportAddress commo
 func (c *providerChanges) DeleteString(ctx context.Context, passportAddress common.Address, key [32]byte) {
 	txHash, err := c.p.DeleteString(ctx, passportAddress, key)
 	if err != nil {
-		c.t.Errorf("Provider.DeleteString() error = %v", err)
+		c.t.Fatalf("Provider.DeleteString() error = %v", err)
 	}
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Deleted, DataType: data.String, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
@@ -178,7 +178,7 @@ func (c *providerChanges) DeleteString(ctx context.Context, passportAddress comm
 func (c *providerChanges) DeleteAddress(ctx context.Context, passportAddress common.Address, key [32]byte) {
 	txHash, err := c.p.DeleteAddress(ctx, passportAddress, key)
 	if err != nil {
-		c.t.Errorf("Provider.DeleteAddress() error = %v", err)
+		c.t.Fatalf("Provider.DeleteAddress() error = %v", err)
 	}
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Deleted, DataType: data.Address, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
@@ -186,7 +186,7 @@ func (c *providerChanges) DeleteAddress(ctx context.Context, passportAddress com
 func (c *providerChanges) DeleteUint(ctx context.Context, passportAddress common.Address, key [32]byte) {
 	txHash, err := c.p.DeleteUint(ctx, passportAddress, key)
 	if err != nil {
-		c.t.Errorf("Provider.DeleteUint() error = %v", err)
+		c.t.Fatalf("Provider.DeleteUint() error = %v", err)
 	}
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Deleted, DataType: data.Uint, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
@@ -194,7 +194,7 @@ func (c *providerChanges) DeleteUint(ctx context.Context, passportAddress common
 func (c *providerChanges) DeleteInt(ctx context.Context, passportAddress common.Address, key [32]byte) {
 	txHash, err := c.p.DeleteInt(ctx, passportAddress, key)
 	if err != nil {
-		c.t.Errorf("Provider.DeleteInt() error = %v", err)
+		c.t.Fatalf("Provider.DeleteInt() error = %v", err)
 	}
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Deleted, DataType: data.Int, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
@@ -202,7 +202,7 @@ func (c *providerChanges) DeleteInt(ctx context.Context, passportAddress common.
 func (c *providerChanges) DeleteBool(ctx context.Context, passportAddress common.Address, key [32]byte) {
 	txHash, err := c.p.DeleteBool(ctx, passportAddress, key)
 	if err != nil {
-		c.t.Errorf("Provider.DeleteBool() error = %v", err)
+		c.t.Fatalf("Provider.DeleteBool() error = %v", err)
 	}
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Deleted, DataType: data.Bool, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
