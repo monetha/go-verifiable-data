@@ -121,7 +121,7 @@ func (d *Deploy) DeployPassport(ctx context.Context, passportFactoryAddress comm
 		return common.Address{}, fmt.Errorf("initializing PassportFactoryLogFilterer: %v", err)
 	}
 
-	evs, err := lf.FilterPassportCreated(txr.Logs, nil, []common.Address{ownerAuth.From})
+	evs, err := lf.FilterPassportCreated(ctx, txr.Logs, nil, []common.Address{ownerAuth.From})
 	if err != nil {
 		return common.Address{}, fmt.Errorf("filtering PassportCreated events: %v", err)
 	}

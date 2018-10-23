@@ -1,6 +1,7 @@
 package contracts
 
 import (
+	"context"
 	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -48,13 +49,13 @@ func NewPassportFactoryLogFilterer() (*PassportFactoryLogFilterer, error) {
 }
 
 // FilterPassportCreated parses event logs and returns PassportCreated events if any found.
-func (f *PassportFactoryLogFilterer) FilterPassportCreated(logs []*types.Log, passport []common.Address, owner []common.Address) (events []PassportFactoryContractPassportCreated, err error) {
+func (f *PassportFactoryLogFilterer) FilterPassportCreated(ctx context.Context, logs []*types.Log, passport []common.Address, owner []common.Address) (events []PassportFactoryContractPassportCreated, err error) {
 	cf := &PassportFactoryContractFilterer{
 		contract: bind.NewBoundContract(common.Address{}, f.abi, nil, nil, methereum.SliceLogFilterer(logs)),
 	}
 
 	var it *PassportFactoryContractPassportCreatedIterator
-	it, err = cf.FilterPassportCreated(nil, passport, owner)
+	it, err = cf.FilterPassportCreated(&bind.FilterOpts{Context: ctx}, passport, owner)
 	if err != nil {
 		return
 	}
