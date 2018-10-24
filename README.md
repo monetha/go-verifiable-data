@@ -140,6 +140,7 @@ In the output you can find the addresses of all the deployed contracts.
 ### Deploying passport
 
 Before creating a passport for a specific Ethereum address, store the private key of this Ethereum address in the file `pass_owner.key`.
+Make sure that the passport owner has enough money to create a passport contract. Usually passport contract deployment takes `425478` gas.
 
 To create a passport contract you need to know address of the `PassportFactory` contract. Let's try to create a passport in Ropsten
 using the `PassportFactory` contract deployed by Monetha ([`0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2`](https://ropsten.etherscan.io/address/0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2)):
@@ -195,7 +196,7 @@ passport_address,first_owner,block_number,tx_hash
 WARN [10-24|16:30:45.000] Done.
 ```
 
-The output can be saved to a file and converted to the table:
+The output can be saved to a file and converted to the table. Currently three passports are deployed:
 
 |passport_address|first_owner|block_number|tx_hash|
 |----------------|-----------|------------|-------|
@@ -205,18 +206,61 @@ The output can be saved to a file and converted to the table:
 
 The block number and transaction hash indicate the transaction in which the passport was created.
 
+All passports use the same passport logic contract. Once a new passport logic is added to the passport logic registry and is
+activated, it will be immediately used by all passports created by this factory. How cool is that!
+
 ### Writing facts
 
-TODO...
+After the passport is created, any fact provider can start writing data to the passport.
+
+Before we start writing facts to a passport, let's store the private key of the fact provider to the file `fact_provider.key`.
+Make sure that the fact provider has enough funds to write the facts. Check [gas usage table](cmd/write-fact#gas-usage) to estimate the required amount of funds.
+
+You can write up to 100KB of data in passport under one key when `txdata` data type is used. Supported data types that 
+can be written to the passport: `string`, `bytes`, `address`, `uint`, `int`, `bool`, `txdata`. All types except `txdata` 
+use Ethereum storage to store the data. `txdata` uses Ethereum storage only to save the block number, the data itself 
+remains in the transaction input data and can be read later using the SDK. Therefore, if you need to save a large amount 
+of data, it is better to use `txdata` type of data. The disadvantage of the `txdata` type of data is the data can only be read 
+using the SDK, within the contracts this data is not available.
+
+Let's try to store image from the file `~/Downloads/monetha.jpg` under the key `monetha.jpg` as `txdata` in passport
+`0x9CfabB3172DFd5ED740c3b8A327BF573226c5064`:
+
+```bash
+./bin/write-fact -ownerkey fact_provider.key \
+  -fkey monetha.jpg \
+  -ftype txdata \
+  -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -backendurl https://ropsten.infura.io < ~/Downloads/monetha.jpg
+```
 
 ### Reading facts
 
-TODO...
+After the fact provider has written the public data to the passport, the data can be read by anyone.
+To read the data you need to know: the address of the passport, the address of the fact provider who stored the data, 
+the key under which the data was stored and the type of data.
+
+Let's try to retrieve image from passport `0x9CfabB3172DFd5ED740c3b8A327BF573226c5064` that was stored by the fact provider
+`0x5b2ae3b3a801469886bb8f5349fc3744caa6348d` under the key `monetha.jpg` as `txdata` data type and write it to the file 
+`./fact_image.jpg`:
+
+```bash
+./bin/read-fact -out ./fact_image.jpg \
+  -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -factprovideraddr 0x5b2ae3b3a801469886bb8f5349fc3744caa6348d \
+  -fkey monetha.jpg \
+  -ftype txdata \
+  -backendurl https://ropsten.infura.io
+```
+
+After the data has been read from the Ethereum blockchain and written to the file `./fact_image.jpg`, try to open the image..
 
 ### Changing passport permissions
 
 TODO...
 
 ### Reading facts history
+
+The SDK allows you to see the history of absolutely all changes of facts in the passport.
 
 TODO...
