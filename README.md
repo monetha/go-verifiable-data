@@ -9,6 +9,13 @@
     * [Contracts update](#contracts-update)
     * [Formatting source code](#formatting-source-code)
 * [Usage](#usage)
+    * [Bootstrap](#bootstrap)
+    * [Deploying passport](#deploying-passport)
+    * [Passport list](#passport-list)
+    * [Writing facts](#writing-facts)
+    * [Reading facts](#reading-facts)
+    * [Changing passport permissions](#changing-passport-permissions)
+    * [Reading facts history](#reading-facts-history)
 
 ## Building the source
 
@@ -77,3 +84,76 @@ After Ethereum contracts code is updated and artifacts are created:
 `make fmt` command automatically formats Go source code of the entire project.
 
 ## Usage
+
+In order to create a passport and start using it, you need to have auxiliary contracts deployed: [PassportLogic](contracts/code/PassportLogic.sol), [PassportLogicRegistry](contracts/code/PassportLogicRegistry.sol), [PassportFactory](contracts/code/PassportFactory.sol).
+Once the auxiliary contracts are deployed, you can start to create passports and use them.
+
+Monetha has already deployed this set of auxiliary contracts on Ropsten test network. The contract addresses deployed on Ropsten:
+
+| Contract      | Address                                      |
+|---------------|----------------------------------------------|
+| `PassportLogic` | [`0x4FBF5019E0B7B2470810e67E10aAA75A57319a9b`](https://ropsten.etherscan.io/address/0x4FBF5019E0B7B2470810e67E10aAA75A57319a9b) |
+| `PassportLogicRegistry`  | [`0xabA015Fc83E9B88e8334bD9b536257db75e05295`](https://ropsten.etherscan.io/address/0xabA015Fc83E9B88e8334bD9b536257db75e05295) |
+| `PassportFactory` | [`0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2`](https://ropsten.etherscan.io/address/0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2) |
+
+You can use these contracts or deploy your own contracts.
+
+If you are going to deploy your contracts, then you will have to support them yourself.
+This means that if the logic of the passport is updated, you'll need to deploy a new `PassportLogic` contract, register it 
+in an existing `PassportLogicRegistry` contract (by calling `addPassportLogic` method) and finally make it active (by calling `setCurrentPassportLogic`).
+
+If you use a set of Monetha deployed contracts, then the passport logic will always be up-to-date.
+
+### Bootstrap
+
+Consider the process of deploying your own set of auxiliary contracts.
+
+Prepare in advance the address that will be the owner of the deployed contracts. Make sure that it has enough funds to deploy contracts (1 ETH should be enough).
+Store the private key of this address in the file named `./owner.key`.
+
+To deploy all contracts in Rospten network using Ethereum private key stored in file `./owner.key`, run the command:
+
+    ./bin/deploy-bootstrap -ownerkey ./owner.key -backendurl https://ropsten.infura.io
+    
+After running the command, you should see something like the following output:
+
+```
+WARN [09-19|14:52:47.640] Loaded configuration                     owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55 backend_url=https://ropsten.infura.io
+WARN [09-19|14:52:47.640] Checking balance                         address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55
+WARN [09-19|14:52:48.675] Deploying PassportLogic                  owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55
+WARN [09-19|14:52:49.426] Waiting for transaction                  hash=0x5a6e6c4110852149113619905ac8752b9120072082f525c8ad84b81c99d53ccb
+WARN [09-19|14:53:06.042] PassportLogic deployed                   contract_address=0x977De088AD659D37c064DB4dc2738ACf3aE09dd8
+WARN [09-19|14:53:06.042] Deploying PassportLogicRegistry          owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55 impl_version=0.1 impl_address=0x977De088AD659D37c064DB4dc2738ACf3aE09dd8
+WARN [09-19|14:53:06.819] Waiting for transaction                  hash=0x984c87fb83607c2b1e8bb008e5d6ab07429149c817f2ce368901136b0a786902
+WARN [09-19|14:53:10.965] PassportLogicRegistry deployed           contract_address=0xabA015Fc83E9B88e8334bD9b536257db75e05295
+WARN [09-19|14:53:10.965] Deploying PassportFactory                owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55 registry=0xabA015Fc83E9B88e8334bD9b536257db75e05295
+WARN [09-19|14:53:11.585] Waiting for transaction                  hash=0x2467e6fa520fbc09aab94758a766a891aa3222d56ab56c28783a3c93e29a892e
+WARN [09-19|14:53:15.726] PassportFactory deployed                 contract_address=0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2
+WARN [09-19|14:53:15.726] Done.
+```
+
+In the output you can find the addresses of all the deployed contracts.
+
+### Deploying passport
+
+TODO...
+
+### Passport list
+
+TODO...
+
+### Writing facts
+
+TODO...
+
+### Reading facts
+
+TODO...
+
+### Changing passport permissions
+
+TODO...
+
+### Reading facts history
+
+TODO...
