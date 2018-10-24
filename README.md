@@ -257,7 +257,35 @@ After the data has been read from the Ethereum blockchain and written to the fil
 
 ### Changing passport permissions
 
-TODO...
+By default any fact provider can write to a passport, but a passport owner can change permissions that allow only
+fact providers from the whitelist to write to a passport. To do this, the passport owner must add the authorized fact providers 
+to the whitelist and then allow to store the facts only to fact providers from the whitelist.
+
+Consider an example of how owner of a passport `0x9CfabB3172DFd5ED740c3b8A327BF573226c5064` adds fact provider 
+`0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d` to the whitelist in Ropsten network:
+
+```bash
+./bin/passport-permission -ownerkey pass_owner.key \
+  -passaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -add 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d \
+  -backendurl https://ropsten.infura.io
+```
+
+Please note that the passport owner’s private key is stored in the file `pass_owner.key`.
+
+After executing the command, any fact provider is still allowed to store the facts in the passport. Let's fix it!
+
+Owner of a passport `0x9CfabB3172DFd5ED740c3b8A327BF573226c5064` may allow to store the facts only to fact providers 
+from the whitelist by running the command:
+
+```bash
+./bin/passport-permission -ownerkey pass_owner.key \
+  -passaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -onlywhitelist true \
+  -backendurl https://ropsten.infura.io
+```
+
+More examples can be found [here](cmd/passport-permission#examples).
 
 ### Reading facts history
 
