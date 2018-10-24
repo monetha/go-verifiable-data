@@ -27,7 +27,10 @@ func (w *PermissionWriter) SetWhitelistOnlyPermission(ctx context.Context, onlyW
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("pass: SetWhitelistOnlyPermission: %v", err)
 	}
-	return tx.Hash(), nil
+	txHash := tx.Hash()
+	_, err = w.WaitForTxReceipt(ctx, txHash)
+
+	return txHash, err
 }
 
 // AddFactProviderToWhitelist allows owner to add fact provider to the whitelist.
@@ -36,7 +39,10 @@ func (w *PermissionWriter) AddFactProviderToWhitelist(ctx context.Context, factP
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("pass: AddFactProviderToWhitelist: %v", err)
 	}
-	return tx.Hash(), nil
+	txHash := tx.Hash()
+	_, err = w.WaitForTxReceipt(ctx, txHash)
+
+	return txHash, err
 }
 
 // RemoveFactProviderFromWhitelist allows owner to remove fact provider from the whitelist.
@@ -45,7 +51,10 @@ func (w *PermissionWriter) RemoveFactProviderFromWhitelist(ctx context.Context, 
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("pass: AddFactProviderToWhitelist: %v", err)
 	}
-	return tx.Hash(), nil
+	txHash := tx.Hash()
+	_, err = w.WaitForTxReceipt(ctx, txHash)
+
+	return txHash, err
 }
 
 func (w *PermissionWriter) transactOpts(ctx context.Context) *bind.TransactOpts {
