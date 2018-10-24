@@ -56,3 +56,8 @@ cover:
 fmt:
 	@echo "Formatting files..."
 	@gofiles=$$(go list -f {{.Dir}} $(PKGS) | grep -v mock) && [ -z "$$gofiles" ] || for d in $$gofiles; do goimports -l -w $$d/*.go; done
+
+.PHONY: cmd
+CMDS ?= $(shell ls cmd | grep -v internal)
+cmd:
+	$(foreach cmd,$(CMDS),go build -o ./bin/$(cmd) ./cmd/$(cmd);)

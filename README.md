@@ -32,9 +32,21 @@ After Ethereum contracts code is updated and artifacts are created:
 1. Run `go generate` command in [`contracts`](contracts) folder to convert Ethereum contracts into Go package.
 1. Commit new/updated files.
 
+### Formatting source code
+
+`make fmt` command automatically formats Go source code of the entire project.
+
 ### Executables
 
 The protocol-go-sdk project comes with several executables found in the [`cmd`](cmd) directory.
+
+To build all executables, run the command (make sure that you've installed all the dependencies by running the command `make dependencies` before running the following command):
+
+```bash
+make cmd
+```
+
+After the executable files are built, they can be found in the directory `./bin/`.
 
 | Command    | Description |
 |:----------:|-------------|
