@@ -6,22 +6,24 @@
 
 Install dependencies:
 
-```bash
-make dependencies
-```
+    make dependencies
 
-Make sure that the tests and the linters pass:
+Once the dependencies are installed, run 
 
-```bash
-make lint
-make test
-```
+    make cmd
+
+to build the full suite of utilities. After the executable files are built, they can be found in the directory `./bin/`.
+
+### Making changes
+
+Make your changes, then ensure that the tests and the linters pass:
+
+    make lint
+    make test
 
 To get the test coverage report for all packages, run the command:
 
-```bash
-make cover
-```
+    make cover
 
 Тest coverage results (`cover.out`, `cover.html`) will be put in `./.cover` directory.
 
@@ -39,14 +41,6 @@ After Ethereum contracts code is updated and artifacts are created:
 ### Executables
 
 The protocol-go-sdk project comes with several executables found in the [`cmd`](cmd) directory.
-
-To build all executables, run the command (make sure that you've installed all the dependencies by running the command `make dependencies` before running the following command):
-
-```bash
-make cmd
-```
-
-After the executable files are built, they can be found in the directory `./bin/`.
 
 | Command    | Description |
 |:----------:|-------------|
