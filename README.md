@@ -1,5 +1,15 @@
 # protocol-go-sdk
 
+* [Building the source](#building-the-source)
+    * [Prerequisites](#prerequisites)
+    * [Build](#build)
+    * [Executables](#executables)
+* [Contributing](#contributing)
+    * [Making changes](#making-changes)
+    * [Contracts update](#contracts-update)
+    * [Formatting source code](#formatting-source-code)
+* [Usage](#usage)
+
 ## Building the source
 
 ### Prerequisites
@@ -65,3 +75,5 @@ After Ethereum contracts code is updated and artifacts are created:
 ### Formatting source code
 
 `make fmt` command automatically formats Go source code of the entire project.
+
+## Usage
