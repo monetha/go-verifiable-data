@@ -113,7 +113,10 @@ Store the private key of this address in the file named `./owner.key`.
 
 To deploy all contracts in Rospten network using Ethereum private key stored in file `./owner.key`, run the command:
 
-    ./bin/deploy-bootstrap -ownerkey ./owner.key -backendurl https://ropsten.infura.io
+```bash
+./bin/deploy-bootstrap -ownerkey ./owner.key \
+  -backendurl https://ropsten.infura.io
+```
     
 After running the command, you should see something like the following output:
 
@@ -136,7 +139,35 @@ In the output you can find the addresses of all the deployed contracts.
 
 ### Deploying passport
 
-TODO...
+Before creating a passport for a specific Ethereum address, store the private key of this Ethereum address in the file `pass_owner.key`.
+
+To create a passport contract you need to know address of the `PassportFactory` contract. Let's try to create a passport in Ropsten
+using the `PassportFactory` contracts deployed by Monetha ([`0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2`](https://ropsten.etherscan.io/address/0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2)):
+
+```bash
+./bin/deploy-passport -ownerkey ./pass_owner.key \
+  -factoryaddr 0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2 \
+  -backendurl https://ropsten.infura.io
+```
+
+Below you can see the output of the command to create a passport for the address `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d`.
+
+```
+WARN [10-24|16:19:32.928] Loaded configuration                     owner_address=0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d backend_url=https://ropsten.infura.io factory=0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2
+WARN [10-24|16:19:33.971] Getting balance                          address=0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d
+WARN [10-24|16:19:34.138] Initializing PassportFactory contract    factory=0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2
+WARN [10-24|16:19:34.139] Deploying Passport contract              owner_address=0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d
+WARN [10-24|16:19:34.823] Waiting for transaction                  hash=0x96f4c583994c2d1c033a0722f7cbe8d85c636b62d1f5fcd8bb0b32346c61c4a9
+WARN [10-24|16:19:47.364] Transaction successfully mined           tx_hash=0x96f4c583994c2d1c033a0722f7cbe8d85c636b62d1f5fcd8bb0b32346c61c4a9 cumulative_gas_used=1445116
+WARN [10-24|16:19:47.365] Passport deployed                        contract_address=0x86eEb0D360D286BcF9211780878fe0D0c0e3fF00
+WARN [10-24|16:19:47.365] Initializing Passport contract           passport=0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2
+WARN [10-24|16:19:47.365] Claiming ownership                       owner_address=0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d
+WARN [10-24|16:19:48.141] Waiting for transaction                  hash=0x1aa26e7416e97747f0da7103cfc1dd3662bd3bbee3dee4680f378e13057a09b7
+WARN [10-24|16:20:04.819] Transaction successfully mined           tx_hash=0x1aa26e7416e97747f0da7103cfc1dd3662bd3bbee3dee4680f378e13057a09b7 cumulative_gas_used=1930990
+WARN [10-24|16:20:04.825] Done.
+```
+
+As you can see in the line `Passport deployed`, a passport contract was created at address [`0x86eEb0D360D286BcF9211780878fe0D0c0e3fF00`](https://ropsten.etherscan.io/address/0x86eEb0D360D286BcF9211780878fe0D0c0e3fF00).
 
 ### Passport list
 
