@@ -142,7 +142,7 @@ In the output you can find the addresses of all the deployed contracts.
 Before creating a passport for a specific Ethereum address, store the private key of this Ethereum address in the file `pass_owner.key`.
 
 To create a passport contract you need to know address of the `PassportFactory` contract. Let's try to create a passport in Ropsten
-using the `PassportFactory` contracts deployed by Monetha ([`0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2`](https://ropsten.etherscan.io/address/0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2)):
+using the `PassportFactory` contract deployed by Monetha ([`0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2`](https://ropsten.etherscan.io/address/0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2)):
 
 ```bash
 ./bin/deploy-passport -ownerkey ./pass_owner.key \
@@ -171,7 +171,39 @@ As you can see in the line `Passport deployed`, a passport contract was created 
 
 ### Passport list
 
-TODO...
+The passport factory allows you to get a list of all the passports that have been created.
+
+Let's try to get a list of all passports using the address of `PassportFactory` contract deployed by Monetha ([`0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2`](https://ropsten.etherscan.io/address/0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2))
+in Ropsten network:
+
+```bash
+./bin/passport-list -out /dev/stdout \
+  -backendurl https://ropsten.infura.io \
+  -factoryaddr 0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2
+```
+
+You should see something like this:
+
+```
+WARN [10-24|16:30:43.549] Loaded configuration                     factory_provider=0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2 backend_url=https://ropsten.infura.io
+WARN [10-24|16:30:44.670] Initialising passport factory contract   passport_factory=0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2
+WARN [10-24|16:30:45.000] Writing collected passports to file
+passport_address,first_owner,block_number,tx_hash
+0x9CfabB3172DFd5ED740c3b8A327BF573226c5064,0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55,4105235,0x5a26791f5404f7d26c9c75e4fa006d851162f4bbaacc49372ce45d89db8fd967
+0x2ff877C92458F995332bc189F258eF8fB8458050,0xA12eB9Cde44664B6513D66f1fc4d43c951d4594e,4276542,0x639262c4abf2868e376e6b08baa5663a2449b18fc668836b5451d07f24c04db5
+0x86eEb0D360D286BcF9211780878fe0D0c0e3fF00,0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d,4292633,0x96f4c583994c2d1c033a0722f7cbe8d85c636b62d1f5fcd8bb0b32346c61c4a9
+WARN [10-24|16:30:45.000] Done.
+```
+
+The output can be saved to a file and converted to the table:
+
+|passport_address|first_owner|block_number|tx_hash|
+|----------------|-----------|------------|-------|
+|0x9CfabB3172DFd5ED740c3b8A327BF573226c5064|0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55|4105235|0x5a26791f5404f7d26c9c75e4fa006d851162f4bbaacc49372ce45d89db8fd967|
+|0x2ff877C92458F995332bc189F258eF8fB8458050|0xA12eB9Cde44664B6513D66f1fc4d43c951d4594e|4276542|0x639262c4abf2868e376e6b08baa5663a2449b18fc668836b5451d07f24c04db5|
+|0x86eEb0D360D286BcF9211780878fe0D0c0e3fF00|0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d|4292633|0x96f4c583994c2d1c033a0722f7cbe8d85c636b62d1f5fcd8bb0b32346c61c4a9|
+
+The block number and transaction hash indicate the transaction in which the passport was created.
 
 ### Writing facts
 
