@@ -43,4 +43,4 @@ The protocol-go-sdk project comes with several executables found in the [`cmd`](
 | [`write-fact`](cmd/write-fact) | Utility tool to write facts to passport. |
 | [`read-fact`](cmd/read-fact) | Utility tool to read facts from passport. |
 | [`passport-list`](cmd/passport-list) | Utility tool for getting a list of passports created using specific [PassportFactory](../../contracts/code/PassportFactory.sol) contract. |
-| [`passport-permission`](cmd/passport-permission) | A utility tool that allows a passport holder to allow or deny a fact provider to write/delete facts to/from a passport. |
+| [`passport-permission`](cmd/passport-permission) | Utility tool that allows a passport holder to allow or deny a fact provider to write/delete facts to/from a passport. By default any fact provider can write to a passport, but a passport holder can change permissions that allow only fact providers from the whitelist to write to a passport. |
