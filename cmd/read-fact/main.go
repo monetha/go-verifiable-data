@@ -21,29 +21,18 @@ import (
 	"gitlab.com/monetha/protocol-go-sdk/eth"
 	"gitlab.com/monetha/protocol-go-sdk/eth/backend"
 	"gitlab.com/monetha/protocol-go-sdk/facts"
-)
-
-type factType int
-
-const (
-	ftTxData  factType = iota
-	ftString  factType = iota
-	ftBytes   factType = iota
-	ftAddress factType = iota
-	ftUint    factType = iota
-	ftInt     factType = iota
-	ftBool    factType = iota
+	"gitlab.com/monetha/protocol-go-sdk/types/data"
 )
 
 var (
-	factTypes = map[string]factType{
-		"txdata":  ftTxData,
-		"string":  ftString,
-		"bytes":   ftBytes,
-		"address": ftAddress,
-		"uint":    ftUint,
-		"int":     ftInt,
-		"bool":    ftBool,
+	factTypes = map[string]data.Type{
+		"txdata":  data.TxData,
+		"string":  data.String,
+		"bytes":   data.Bytes,
+		"address": data.Address,
+		"uint":    data.Uint,
+		"int":     data.Int,
+		"bool":    data.Bool,
 	}
 
 	factSetStr string
@@ -70,7 +59,7 @@ func main() {
 		vmodule          = flag.String("vmodule", "", "log verbosity pattern")
 
 		factKey       [32]byte
-		factType      factType
+		factType      data.Type
 		knownFactType bool
 		err           error
 	)
@@ -188,31 +177,31 @@ func main() {
 	buf := new(bytes.Buffer)
 
 	switch factType {
-	case ftTxData:
+	case data.TxData:
 		data, err := factReader.ReadTxData(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadTxData")
 		buf.Write(data)
-	case ftString:
+	case data.String:
 		data, err := factReader.ReadString(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadString")
 		buf.WriteString(data)
-	case ftBytes:
+	case data.Bytes:
 		data, err := factReader.ReadBytes(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadBytes")
 		buf.Write(data)
-	case ftAddress:
+	case data.Address:
 		data, err := factReader.ReadAddress(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadAddress")
 		buf.WriteString(data.String())
-	case ftUint:
+	case data.Uint:
 		data, err := factReader.ReadUint(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadUint")
 		buf.WriteString(data.String())
-	case ftInt:
+	case data.Int:
 		data, err := factReader.ReadInt(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadInt")
 		buf.WriteString(data.String())
-	case ftBool:
+	case data.Bool:
 		data, err := factReader.ReadBool(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadBool")
 		buf.WriteString(strconv.FormatBool(data))

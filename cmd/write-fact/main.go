@@ -24,29 +24,18 @@ import (
 	"gitlab.com/monetha/protocol-go-sdk/eth"
 	"gitlab.com/monetha/protocol-go-sdk/eth/backend"
 	"gitlab.com/monetha/protocol-go-sdk/facts"
-)
-
-type factType int
-
-const (
-	ftTxData  factType = iota
-	ftString  factType = iota
-	ftBytes   factType = iota
-	ftAddress factType = iota
-	ftUint    factType = iota
-	ftInt     factType = iota
-	ftBool    factType = iota
+	"gitlab.com/monetha/protocol-go-sdk/types/data"
 )
 
 var (
-	factTypes = map[string]factType{
-		"txdata":  ftTxData,
-		"string":  ftString,
-		"bytes":   ftBytes,
-		"address": ftAddress,
-		"uint":    ftUint,
-		"int":     ftInt,
-		"bool":    ftBool,
+	factTypes = map[string]data.Type{
+		"txdata":  data.TxData,
+		"string":  data.String,
+		"bytes":   data.Bytes,
+		"address": data.Address,
+		"uint":    data.Uint,
+		"int":     data.Int,
+		"bool":    data.Bool,
 	}
 
 	factSetStr string
@@ -75,7 +64,7 @@ func main() {
 		factProviderKey *ecdsa.PrivateKey
 		factKey         [32]byte
 		knownFactType   bool
-		factType        factType
+		factType        data.Type
 		factBytes       []byte
 		factString      string
 		factAddress     common.Address
@@ -123,24 +112,24 @@ func main() {
 
 	// parse fact data
 	switch {
-	case factType == ftTxData || factType == ftBytes:
+	case factType == data.TxData || factType == data.Bytes:
 		if factBytes, err = ioutil.ReadAll(os.Stdin); err != nil {
 			utils.Fatalf("failed to read fact bytes: %v", err)
 		}
-	case factType == ftString:
+	case factType == data.String:
 		if factString, err = copyToString(os.Stdin); err != nil {
 			utils.Fatalf("failed to read fact string: %v", err)
 		}
-	case factType == ftAddress:
+	case factType == data.Address:
 		factAddress = parseAddress(os.Stdin)
-	case factType == ftUint:
+	case factType == data.Uint:
 		factInt = parseBigInt(os.Stdin)
 		if factInt.Cmp(new(big.Int)) == -1 {
 			utils.Fatalf("expected non-negative number, but got %v", factInt)
 		}
-	case factType == ftInt:
+	case factType == data.Int:
 		factInt = parseBigInt(os.Stdin)
-	case factType == ftBool:
+	case factType == data.Bool:
 		var boolStr string
 		if boolStr, err = readLine(os.Stdin); err != nil {
 			utils.Fatalf("failed to read fact bool: %v", err)
@@ -209,19 +198,19 @@ func main() {
 	provider := facts.NewProvider(factProviderSession)
 
 	switch factType {
-	case ftTxData:
+	case data.TxData:
 		cmdutils.CheckErr(ignoreHash(provider.WriteTxData(ctx, passportAddress, factKey, factBytes)), "WriteTxData")
-	case ftString:
+	case data.String:
 		cmdutils.CheckErr(ignoreHash(provider.WriteString(ctx, passportAddress, factKey, factString)), "WriteString")
-	case ftBytes:
+	case data.Bytes:
 		cmdutils.CheckErr(ignoreHash(provider.WriteBytes(ctx, passportAddress, factKey, factBytes)), "WriteBytes")
-	case ftAddress:
+	case data.Address:
 		cmdutils.CheckErr(ignoreHash(provider.WriteAddress(ctx, passportAddress, factKey, factAddress)), "WriteAddress")
-	case ftUint:
+	case data.Uint:
 		cmdutils.CheckErr(ignoreHash(provider.WriteUint(ctx, passportAddress, factKey, factInt)), "WriteUint")
-	case ftInt:
+	case data.Int:
 		cmdutils.CheckErr(ignoreHash(provider.WriteInt(ctx, passportAddress, factKey, factInt)), "WriteInt")
-	case ftBool:
+	case data.Bool:
 		cmdutils.CheckErr(ignoreHash(provider.WriteBool(ctx, passportAddress, factKey, factBool)), "WriteBool")
 	}
 
