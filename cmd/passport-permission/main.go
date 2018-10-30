@@ -23,7 +23,7 @@ import (
 func main() {
 	var (
 		backendURL         = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
-		passAddr           = flag.String("passaddr", "", "Ethereum address of passport contract")
+		passAddr           = cmdutils.AddressVar("passaddr", common.Address{}, "Ethereum address of passport contract")
 		ownerKeyFile       = flag.String("ownerkey", "", "owner private key filename")
 		ownerKeyHex        = flag.String("ownerkeyhex", "", "private key as hex (for testing)")
 		addFactProvider    = cmdutils.AddressVar("add", common.Address{}, "add fact provider to the whitelist")
@@ -43,7 +43,7 @@ func main() {
 	log.Root().SetHandler(glogger)
 
 	switch {
-	case *passAddr == "" && *backendURL != "":
+	case !passAddr.IsSet() && *backendURL != "":
 		utils.Fatalf("Use -passaddr to specify an address of passport contract")
 	case *ownerKeyFile == "" && *ownerKeyHex == "":
 		utils.Fatalf("Use -ownerkey or -ownerkeyhex to specify a private key")
@@ -65,7 +65,7 @@ func main() {
 		}
 	}
 
-	passportAddress := common.HexToAddress(*passAddr)
+	passportAddress := passAddr.GetValue()
 	ownerAddress := bind.NewKeyedTransactor(ownerKey).From
 	log.Warn("Loaded configuration", "owner_address", ownerAddress.Hex(), "backend_url", *backendURL, "passport", passportAddress.Hex())
 
