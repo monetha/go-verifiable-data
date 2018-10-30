@@ -61,8 +61,8 @@ func init() {
 func main() {
 	var (
 		backendURL       = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
-		passportAddr     = flag.String("passportaddr", "", "Ethereum address of passport contract")
-		factProviderAddr = flag.String("factprovideraddr", "", "Ethereum address of fact provider")
+		passportAddr     = cmdutils.AddressVar("passportaddr", common.Address{}, "Ethereum address of passport contract")
+		factProviderAddr = cmdutils.AddressVar("factprovideraddr", common.Address{}, "Ethereum address of fact provider")
 		factKeyStr       = flag.String("fkey", "", "the key of the fact (max. 32 bytes)")
 		factTypeStr      = flag.String("ftype", "", fmt.Sprintf("the data type of fact (%v)", factSetStr))
 		fileName         = flag.String("out", "", "save retrieved data to the specified file")
@@ -84,9 +84,9 @@ func main() {
 	factType, knownFactType = factTypes[*factTypeStr]
 
 	switch {
-	case *passportAddr == "" && *backendURL != "":
+	case !passportAddr.IsSet() && *backendURL != "":
 		utils.Fatalf("Use -passportaddr to specify an address of passport contract")
-	case *factProviderAddr == "" && *backendURL != "":
+	case !factProviderAddr.IsSet() && *backendURL != "":
 		utils.Fatalf("Use -factprovideraddr to specify fact provider address")
 	case *fileName == "":
 		utils.Fatalf("Use -out to save retrieved data to the specified file")
@@ -104,8 +104,8 @@ func main() {
 		utils.Fatalf("The key string should fit into 32 bytes")
 	}
 
-	passportAddress := common.HexToAddress(*passportAddr)
-	factProviderAddress := common.HexToAddress(*factProviderAddr)
+	passportAddress := passportAddr.GetValue()
+	factProviderAddress := factProviderAddr.GetValue()
 	log.Warn("Loaded configuration", "fact_provider", factProviderAddress.Hex(), "fact_key", factKey,
 		"backend_url", *backendURL, "passport", passportAddress.Hex())
 
