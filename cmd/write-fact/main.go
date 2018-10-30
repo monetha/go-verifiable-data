@@ -28,23 +28,17 @@ import (
 )
 
 var (
-	factTypes = map[string]data.Type{
-		"txdata":  data.TxData,
-		"string":  data.String,
-		"bytes":   data.Bytes,
-		"address": data.Address,
-		"uint":    data.Uint,
-		"int":     data.Int,
-		"bool":    data.Bool,
-	}
-
+	factTypes  = make(map[string]data.Type)
 	factSetStr string
 )
 
 func init() {
-	keys := make([]string, 0, len(factTypes))
-	for key := range factTypes {
-		keys = append(keys, key)
+	keys := make([]string, 0, len(data.TypeValues()))
+
+	for _, key := range data.TypeValues() {
+		keyStr := strings.ToLower(key.String())
+		factTypes[keyStr] = key
+		keys = append(keys, keyStr)
 	}
 
 	factSetStr = strings.Join(keys, ", ")
@@ -212,6 +206,8 @@ func main() {
 		cmdutils.CheckErr(ignoreHash(provider.WriteInt(ctx, passportAddress, factKey, factInt)), "WriteInt")
 	case data.Bool:
 		cmdutils.CheckErr(ignoreHash(provider.WriteBool(ctx, passportAddress, factKey, factBool)), "WriteBool")
+	default:
+		cmdutils.CheckErr(fmt.Errorf("unsupported fact type: %v", factType.String()), "writing by type")
 	}
 
 	log.Warn("Done.")
