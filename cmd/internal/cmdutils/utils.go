@@ -48,48 +48,56 @@ func CheckBalance(ctx context.Context, session *eth.Session, gasLimit int64) {
 	}
 }
 
-type boolFlag struct {
+// BoolFlag holds flag value and indicator if it was set from command line
+type BoolFlag struct {
 	set   bool
 	value bool
 }
 
-func (f *boolFlag) String() string {
+// String returns string representation of the value
+func (f *BoolFlag) String() string {
 	return strconv.FormatBool(f.value)
 }
 
-func (f *boolFlag) Set(s string) error {
+// Set sets value from string representation
+func (f *BoolFlag) Set(s string) error {
 	v, err := strconv.ParseBool(s)
 	f.value = v
 	f.set = true
 	return err
 }
 
-func (f *boolFlag) IsSet() bool {
+// IsSet returns true if value was set from command line
+func (f *BoolFlag) IsSet() bool {
 	return f.set
 }
 
-func (f *boolFlag) GetValue() bool {
+// GetValue retruns flag value
+func (f *BoolFlag) GetValue() bool {
 	return f.value
 }
 
 // BoolVar defines a bool flag with specified name, default value, and usage string.
 // The argument value is the default value of the flag.
-func BoolVar(name string, value bool, usage string) *boolFlag {
-	v := &boolFlag{value: value}
+func BoolVar(name string, value bool, usage string) *BoolFlag {
+	v := &BoolFlag{value: value}
 	flag.Var(v, name, usage)
 	return v
 }
 
-type addressFlag struct {
+// AddressFlag holds flag value and indicator if it was set from command line
+type AddressFlag struct {
 	set   bool
 	value common.Address
 }
 
-func (f *addressFlag) String() string {
+// String returns string representation of the value
+func (f *AddressFlag) String() string {
 	return f.value.Hex()
 }
 
-func (f *addressFlag) Set(s string) error {
+// Set sets value from string representation
+func (f *AddressFlag) Set(s string) error {
 	if !common.IsHexAddress(s) {
 		return fmt.Errorf("invalid Ethereum address: %v", s)
 	}
@@ -98,18 +106,20 @@ func (f *addressFlag) Set(s string) error {
 	return nil
 }
 
-func (f *addressFlag) IsSet() bool {
+// IsSet returns true if value was set from command line
+func (f *AddressFlag) IsSet() bool {
 	return f.set
 }
 
-func (f *addressFlag) GetValue() common.Address {
+// GetValue retruns flag value
+func (f *AddressFlag) GetValue() common.Address {
 	return f.value
 }
 
 // AddressVar defines a bool flag with specified name, default value, and usage string.
 // The argument value is the default value of the flag.
-func AddressVar(name string, value common.Address, usage string) *addressFlag {
-	v := &addressFlag{value: value}
+func AddressVar(name string, value common.Address, usage string) *AddressFlag {
+	v := &AddressFlag{value: value}
 	flag.Var(v, name, usage)
 	return v
 }

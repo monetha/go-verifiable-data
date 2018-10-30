@@ -59,7 +59,7 @@ func init() {
 func main() {
 	var (
 		backendURL   = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
-		passportAddr = flag.String("passportaddr", "", "Ethereum address of passport contract")
+		passportAddr = cmdutils.AddressVar("passportaddr", common.Address{}, "Ethereum address of passport contract")
 		fileName     = flag.String("out", "", "save retrieved data to the specified file")
 		verbosity    = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
 		vmodule      = flag.String("vmodule", "", "log verbosity pattern")
@@ -74,13 +74,13 @@ func main() {
 	log.Root().SetHandler(glogger)
 
 	switch {
-	case *passportAddr == "" && *backendURL != "":
+	case !passportAddr.IsSet() && *backendURL != "":
 		utils.Fatalf("Use -passportaddr to specify an address of passport contract")
 	case *fileName == "":
 		utils.Fatalf("Use -out to save retrieved data to the specified file")
 	}
 
-	passportAddress := common.HexToAddress(*passportAddr)
+	passportAddress := passportAddr.GetValue()
 	log.Warn("Loaded configuration", "backend_url", *backendURL, "passport", passportAddress.Hex())
 
 	ctx := cmdutils.CreateCtrlCContext()
