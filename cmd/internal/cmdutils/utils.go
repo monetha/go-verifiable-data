@@ -123,3 +123,39 @@ func AddressVar(name string, value common.Address, usage string) *AddressFlag {
 	flag.Var(v, name, usage)
 	return v
 }
+
+// HashFlag holds flag value and indicator if it was set from command line
+type HashFlag struct {
+	set   bool
+	value common.Hash
+}
+
+// String returns string representation of the value
+func (f *HashFlag) String() string {
+	return f.value.Hex()
+}
+
+// Set sets value from string representation
+func (f *HashFlag) Set(s string) error {
+	f.value = common.HexToHash(s)
+	f.set = true
+	return nil
+}
+
+// IsSet returns true if value was set from command line
+func (f *HashFlag) IsSet() bool {
+	return f.set
+}
+
+// GetValue retruns flag value
+func (f *HashFlag) GetValue() common.Hash {
+	return f.value
+}
+
+// HashVar defines a bool flag with specified name, default value, and usage string.
+// The argument value is the default value of the flag.
+func HashVar(name string, value common.Hash, usage string) *HashFlag {
+	v := &HashFlag{value: value}
+	flag.Var(v, name, usage)
+	return v
+}
