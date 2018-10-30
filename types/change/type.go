@@ -1,5 +1,5 @@
-//go:generate go get golang.org/x/tools/cmd/stringer
-//go:generate stringer -type=Type
+//go:generate go get github.com/alvaroloes/enumer
+//go:generate enumer -type=Type
 
 package change
 
