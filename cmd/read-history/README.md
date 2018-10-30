@@ -1,6 +1,6 @@
 # read-history
 
-Utility tool to read the history facts from passport.
+Utility tool for reading the history of passport changes.
 
 ## Usage
 
