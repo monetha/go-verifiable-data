@@ -53,7 +53,7 @@ func init() {
 func main() {
 	var (
 		backendURL   = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
-		passportAddr = flag.String("passportaddr", "", "Ethereum address of passport contract")
+		passportAddr = cmdutils.AddressVar("passportaddr", common.Address{}, "Ethereum address of passport contract")
 		factKeyStr   = flag.String("fkey", "", "the key of the fact (max. 32 bytes)")
 		factTypeStr  = flag.String("ftype", "", fmt.Sprintf("the data type of fact (%v)", factSetStr))
 		ownerKeyFile = flag.String("ownerkey", "", "fact provider private key filename")
@@ -82,7 +82,7 @@ func main() {
 	factType, knownFactType = factTypes[*factTypeStr]
 
 	switch {
-	case *passportAddr == "" && *backendURL != "":
+	case !passportAddr.IsSet() && *backendURL != "":
 		utils.Fatalf("Use -passportaddr to specify an address of passport contract")
 	case *factKeyStr == "":
 		utils.Fatalf("Use -fkey to specify the key of the fact")
@@ -139,7 +139,7 @@ func main() {
 		}
 	}
 
-	passportAddress := common.HexToAddress(*passportAddr)
+	passportAddress := passportAddr.GetValue()
 	factProviderAddress := bind.NewKeyedTransactor(factProviderKey).From
 	log.Warn("Loaded configuration", "fact_provider", factProviderAddress.Hex(), "backend_url", *backendURL, "passport", passportAddress.Hex())
 
