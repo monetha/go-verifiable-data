@@ -2,10 +2,14 @@ package cmdutils
 
 import (
 	"context"
+	"flag"
+	"fmt"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/log"
 	"gitlab.com/monetha/protocol-go-sdk/eth"
 )
@@ -42,4 +46,70 @@ func CheckBalance(ctx context.Context, session *eth.Session, gasLimit int64) {
 		log.Warn("not enough funds", "min_balance_required", minBalance.String())
 		os.Exit(1)
 	}
+}
+
+type boolFlag struct {
+	set   bool
+	value bool
+}
+
+func (f *boolFlag) String() string {
+	return strconv.FormatBool(f.value)
+}
+
+func (f *boolFlag) Set(s string) error {
+	v, err := strconv.ParseBool(s)
+	f.value = v
+	f.set = true
+	return err
+}
+
+func (f *boolFlag) IsSet() bool {
+	return f.set
+}
+
+func (f *boolFlag) GetValue() bool {
+	return f.value
+}
+
+// BoolVar defines a bool flag with specified name, default value, and usage string.
+// The argument value is the default value of the flag.
+func BoolVar(name string, value bool, usage string) *boolFlag {
+	v := &boolFlag{value: value}
+	flag.Var(v, name, usage)
+	return v
+}
+
+type addressFlag struct {
+	set   bool
+	value common.Address
+}
+
+func (f *addressFlag) String() string {
+	return f.value.Hex()
+}
+
+func (f *addressFlag) Set(s string) error {
+	if !common.IsHexAddress(s) {
+		return fmt.Errorf("invalid Ethereum address: %v", s)
+	}
+	f.value = common.HexToAddress(s)
+	f.set = true
+	return nil
+}
+
+func (f *addressFlag) IsSet() bool {
+	return f.set
+}
+
+func (f *addressFlag) GetValue() common.Address {
+	return f.value
+}
+
+// AddressVar defines a bool flag with specified name, default value, and usage string.
+// The argument value is the default value of the flag.
+func AddressVar(name string, value common.Address, usage string) *addressFlag {
+	v := &addressFlag{value: value}
+	flag.Var(v, name, usage)
+	return v
 }
