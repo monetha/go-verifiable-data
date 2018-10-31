@@ -290,4 +290,54 @@ More examples can be found [here](cmd/passport-permission#examples).
 
 The SDK allows you to see the history of absolutely all changes of facts in the passport.
 
-TODO...
+Let's try to retrieve the entire change history for the passport [`0x9CfabB3172DFd5ED740c3b8A327BF573226c5064`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+in `Ropsten` block-chain and write it to the file `/dev/stdout` (outputs to the screen, but you can change this to the file name to write to the file):
+
+```bash
+./bin/read-history -out /dev/stdout \
+  -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -backendurl https://ropsten.infura.io
+```
+
+After running the command you should see something like this:
+
+```
+WARN [10-31|11:03:53.291] Loaded configuration                     backend_url=https://ropsten.infura.io passport=0x9CfabB3172DFd5ED740c3b8A327BF573226c5064
+fact_provider,key,data_type,change_type,block_number,tx_hash
+0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d,monetha.jpg,TxData,Updated,4177015,0x627913f620990ec12360a6f1fda4887ea837b41e2f6cbae90e24322dc8cf8b1a
+0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d,monetha.jpg,TxData,Updated,4337297,0x31e06af4e04450333d468835c995fc02622c1b07ae0feeb4c7afe73c5a2e3ed8
+WARN [10-31|11:03:54.643] Done.
+```
+
+The CSV output can be saved to a file and converted to the table:
+
+| fact_provider | key | data_type | change_type | block_number | tx_hash |
+|---------------|-----|-----------|-------------|--------------|---------|
+| 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d | monetha.jpg | TxData | Updated | 4177015 | 0x627913f620990ec12360a6f1fda4887ea837b41e2f6cbae90e24322dc8cf8b1a |
+| 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d | monetha.jpg | TxData | Updated | 4337297 | 0x31e06af4e04450333d468835c995fc02622c1b07ae0feeb4c7afe73c5a2e3ed8 |
+
+As we can see, there were only two fact updates of type `TxData` (under the same key `monetha.jpg`) by the same data provider `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d`.
+The `block_number` and `tx_hash` columns allow us to understand in which block and in which transaction the changes were made.
+The `change_type` column may contain either `Updated` or `Deleted` values. Even if the value of a fact has been deleted, we can read its value as it was before the deletion.
+
+Let's read what the value of the fact was during the first update. To do this, we need to specify the transaction hash `0x627913f620990ec12360a6f1fda4887ea837b41e2f6cbae90e24322dc8cf8b1a` and the type of data `txdata`:
+
+```bash
+./bin/read-history -out monetha1.jpg \
+  -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -ftype txdata \
+  -txhash 0x627913f620990ec12360a6f1fda4887ea837b41e2f6cbae90e24322dc8cf8b1a \
+  -backendurl https://ropsten.infura.io
+```
+
+Similarly, we can read what fact value was written in the second transaction `0x31e06af4e04450333d468835c995fc02622c1b07ae0feeb4c7afe73c5a2e3ed8`:
+
+```bash
+./bin/read-history -out monetha2.jpg \
+  -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -ftype txdata \
+  -txhash 0x31e06af4e04450333d468835c995fc02622c1b07ae0feeb4c7afe73c5a2e3ed8 \
+  -backendurl https://ropsten.infura.io
+```
+
+Now you can compare pictures `monetha1.jpg` and `monetha2.jpg` to see what changes have been made.
