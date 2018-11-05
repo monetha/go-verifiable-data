@@ -8,8 +8,8 @@
     * [Making changes](#making-changes)
     * [Contracts update](#contracts-update)
     * [Formatting source code](#formatting-source-code)
+* [Bootstrap reputation protocol](#bootstrap-reputation-protocol)
 * [Usage](#usage)
-    * [Bootstrap reputation protocol](#bootstrap-reputation-protocol)
     * [Deploying passport](#deploying-passport)
     * [Passport list](#passport-list)
     * [Writing facts](#writing-facts)
@@ -84,10 +84,7 @@ After Ethereum contracts code is updated and artifacts are created:
 
 `make fmt` command automatically formats Go source code of the entire project.
 
-## Usage
-
-In order to create a passport and start using it, you need to have auxiliary reputation protocol contracts deployed: [PassportLogic](contracts/code/PassportLogic.sol), [PassportLogicRegistry](contracts/code/PassportLogicRegistry.sol), [PassportFactory](contracts/code/PassportFactory.sol).
-Once the auxiliary contracts are deployed, you can start to create passports and use them.
+## Bootstrap reputation protocol
 
 Monetha has already deployed this set of auxiliary reputation protocol contracts on Ropsten test network. The contract addresses deployed on Ropsten:
 
@@ -97,15 +94,12 @@ Monetha has already deployed this set of auxiliary reputation protocol contracts
 | `PassportLogicRegistry`  | [`0xabA015Fc83E9B88e8334bD9b536257db75e05295`](https://ropsten.etherscan.io/address/0xabA015Fc83E9B88e8334bD9b536257db75e05295) |
 | `PassportFactory` | [`0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2`](https://ropsten.etherscan.io/address/0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2) |
 
-If you are going to deploy your contracts, then you will have to support them yourself.
+Consider the process of deploying your own set of auxiliary repoutation protocol contracts to experiment with our implementation. If you are going to deploy your contracts, then you will have to support them yourself.
+
 This means that if the reputation protocol logic of the passport is updated by Monetha developers, you'll need to deploy a new `PassportLogic` contract, register it 
 in an existing `PassportLogicRegistry` contract (by calling `addPassportLogic` method) and finally make it active (by calling `setCurrentPassportLogic`).
 
 If you use a set of Monetha deployed reputation protocol contracts, then the reputation passport logic is always up-to-date with latest fixes and features.
-
-### Bootstrap reputation protocol
-
-Consider the process of deploying your own set of auxiliary repoutation protocol contracts to experiment with our implementation.
 
 Prepare in advance the address that will be the owner of the deployed contracts. Make sure that it has enough funds to deploy contracts (1 ETH should be enough).
 Store the private key of this address in the file named `./owner.key`.
@@ -135,6 +129,11 @@ WARN [09-19|14:53:15.726] Done.
 ```
 
 In the output you can find the addresses of all the deployed contracts.
+
+
+## Usage
+
+In order to create a passport and start using it, you need to use auxiliary reputation protocol contracts: [PassportLogic](contracts/code/PassportLogic.sol), [PassportLogicRegistry](contracts/code/PassportLogicRegistry.sol), [PassportFactory](contracts/code/PassportFactory.sol).
 
 ### Deploying passport
 
