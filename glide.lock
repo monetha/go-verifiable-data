@@ -22,7 +22,7 @@ imports:
   subpackages:
   - sys/windows
 - name: github.com/ethereum/go-ethereum
-  version: 8bbe72075e4e16442c4e28d999edee12e294329e
+  version: baee850471603d7fbf37eed0074c9de01df92ee7
   subpackages:
   - accounts
   - accounts/abi
