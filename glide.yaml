@@ -34,3 +34,4 @@ import:
   version: 10aee181995363b41f712a55844a0dd52ea04646
 - package: github.com/go-test/deep
 - package: github.com/shurcooL/vfsgen
+- package: github.com/shurcooL/httpgzip
