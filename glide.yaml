@@ -31,3 +31,4 @@ import:
   subpackages:
   - cpu
 - package: github.com/go-test/deep
+- package: github.com/shurcooL/vfsgen

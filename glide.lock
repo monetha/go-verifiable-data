@@ -1,5 +1,5 @@
-hash: e2748e981eaf19b33c86e4193cc4376f8e7cf3e7781c46edc2bb67fdbedc92f5
-updated: 2018-10-17T10:30:46.134146+03:00
+hash: ede9de7602eaad40c4b4371d3df329c692be4446ca7f7d745abf981e537bbcd3
+updated: 2018-11-06T15:23:36.286751+02:00
 imports:
 - name: github.com/aristanetworks/goarista
   version: ff33da284e760fcdb03c33d37a719e5ed30ba844
@@ -163,6 +163,12 @@ imports:
   version: 0f065fa99b48b842c3fd3e2c8b194c6f2b69f6b8
 - name: github.com/rs/cors
   version: 15587285ef6b6e7a3f657e2e00f9f271883bcf22
+- name: github.com/shurcooL/httpfs
+  version: 809beceb23714880abc4a382a00c05f89d13b1cc
+  subpackages:
+  - vfsutil
+- name: github.com/shurcooL/vfsgen
+  version: a97a25d856cadfe6481325baeb35a70d6723ca0c
 - name: github.com/StackExchange/wmi
   version: b12b22c5341f0c26d88c4d66176330500e84db68
 - name: github.com/syndtr/goleveldb
