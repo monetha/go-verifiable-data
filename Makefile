@@ -60,4 +60,5 @@ fmt:
 .PHONY: cmd
 CMDS ?= $(shell ls cmd | grep -v internal)
 cmd:
+	go generate ./cmd/...
 	$(foreach cmd,$(CMDS),go build -o ./bin/$(cmd) ./cmd/$(cmd);)
