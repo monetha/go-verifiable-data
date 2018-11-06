@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/shurcooL/httpgzip"
 )
 
 var (
@@ -15,7 +17,13 @@ func main() {
 	flag.Parse()
 	log.Printf("listening on %q...", *listen)
 
-	fileServer := http.FileServer(Assets)
+	fileServer := httpgzip.FileServer(
+		Assets,
+		httpgzip.FileServerOptions{
+			IndexHTML: true,
+		},
+	)
+
 	err := http.ListenAndServe(*listen, http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 		if strings.HasSuffix(req.URL.Path, ".wasm") {
 			resp.Header().Set("content-type", "application/wasm")
