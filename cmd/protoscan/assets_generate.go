@@ -4,14 +4,15 @@ package main
 
 import (
 	"log"
-	"net/http"
 
 	"github.com/shurcooL/vfsgen"
+	data "gitlab.com/monetha/protocol-go-sdk/cmd/protoscan"
 )
 
 func main() {
-	err := vfsgen.Generate(http.Dir("assets"), vfsgen.Options{
+	err := vfsgen.Generate(data.Assets, vfsgen.Options{
 		PackageName:  "main",
+		BuildTags:    "!dev",
 		VariableName: "Assets",
 	})
 	if err != nil {

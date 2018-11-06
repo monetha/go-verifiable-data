@@ -38,7 +38,7 @@ lint:
 
 .PHONY: test
 test:
-	go test -timeout 40s -race -v $(PKGS)
+	go test -tags=dev -timeout 40s -race -v $(PKGS)
 
 .PHONY: bench
 BENCH ?= .
