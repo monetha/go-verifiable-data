@@ -30,5 +30,7 @@ import:
   version: 904bdc257025c7b3f43c19360ad3ab85783fad78
   subpackages:
   - cpu
+- package: golang.org/x/net
+  version: 10aee181995363b41f712a55844a0dd52ea04646
 - package: github.com/go-test/deep
 - package: github.com/shurcooL/vfsgen
