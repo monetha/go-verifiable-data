@@ -3,9 +3,10 @@
 package main
 
 import (
-	"syscall/js"
+	"gitlab.com/monetha/protocol-go-sdk/cmd/protoscan/web/app"
+	"gitlab.com/monetha/protocol-go-sdk/cmd/protoscan/web/logging"
 )
 
 func main() {
-	js.Global().Get("console").Call("log", "Hello world Go/wasm!")
+	app.Run("box", logging.Fun)
 }
