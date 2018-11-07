@@ -1,5 +1,5 @@
-hash: 71bb1cfa6e57c29ac58a76eed26e65ef4c0cd66bac6a96978b91d6a01a2d8e18
-updated: 2018-11-06T17:45:11.390933+02:00
+hash: 41bdee1deb0a52eed4bcd645b74fa73ac6c924de8b5c607f1abbed932bb3f738
+updated: 2018-11-07T10:49:57.91573+02:00
 imports:
 - name: github.com/aristanetworks/goarista
   version: 5bb443fba8e05f4a819301a63af91fe3cbadcc17
@@ -15,6 +15,8 @@ imports:
   - spew
 - name: github.com/deckarep/golang-set
   version: 699df6a3acf6867538e50931511e9dc403da108a
+- name: github.com/dennwc/dom
+  version: 02cd18081e98b86cc2c48fa271aac677276e36af
 - name: github.com/edsrzf/mmap-go
   version: 0bce6a6887123b67a60366d2c9fe2dfb74289d2e
 - name: github.com/elastic/gosigar
@@ -127,13 +129,13 @@ imports:
   - soap
   - ssdp
 - name: github.com/influxdata/influxdb
-  version: 3599bdb38240fdb465adc25e1b95fea3ca5dafa8
+  version: 2e7d8d753fd70e7378c537dfe82b64fd2786b1cb
   subpackages:
   - client
   - models
   - pkg/escape
 - name: github.com/influxdata/platform
-  version: 4b1d32231096a6aac405d6cdcd07927da8d02c10
+  version: 9b529771ebb35c920689a621cac0917440e464b9
   subpackages:
   - models
   - pkg/escape
@@ -189,7 +191,7 @@ imports:
   - leveldb/table
   - leveldb/util
 - name: golang.org/x/crypto
-  version: bfa7d42eb568d3c454e1853744768cc80718040d
+  version: e4dc69e5b2fd71dcaf8bd5d054eb936deb78d1fa
   subpackages:
   - pbkdf2
   - ripemd160
@@ -241,7 +243,7 @@ imports:
   - unicode/bidi
   - unicode/norm
 - name: golang.org/x/tools
-  version: 78dc5bac0cacea7969e98b79c3b86597e0aa4e25
+  version: e21233ffa6c386fc230b4328493f77af54ff9372
   subpackages:
   - cmd/goimports
 - name: gopkg.in/natefinch/npipe.v2
