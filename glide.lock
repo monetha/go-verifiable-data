@@ -1,5 +1,5 @@
-hash: 41bdee1deb0a52eed4bcd645b74fa73ac6c924de8b5c607f1abbed932bb3f738
-updated: 2018-11-07T10:49:57.91573+02:00
+hash: 71bb1cfa6e57c29ac58a76eed26e65ef4c0cd66bac6a96978b91d6a01a2d8e18
+updated: 2018-11-08T14:51:50.666069+02:00
 imports:
 - name: github.com/aristanetworks/goarista
   version: 5bb443fba8e05f4a819301a63af91fe3cbadcc17
@@ -15,8 +15,6 @@ imports:
   - spew
 - name: github.com/deckarep/golang-set
   version: 699df6a3acf6867538e50931511e9dc403da108a
-- name: github.com/dennwc/dom
-  version: 02cd18081e98b86cc2c48fa271aac677276e36af
 - name: github.com/edsrzf/mmap-go
   version: 0bce6a6887123b67a60366d2c9fe2dfb74289d2e
 - name: github.com/elastic/gosigar
@@ -112,7 +110,7 @@ imports:
   - proto
   - protoc-gen-go/descriptor
 - name: github.com/golang/snappy
-  version: 2e65f85255dbc3072edf28d6b5b8efc472979f5a
+  version: d9eb7a3d35ec988b8585d4a0068e462c27d28380
 - name: github.com/google/uuid
   version: 9b3b1e0f5f99ae461456d768e7d301a7acdaa2d8
 - name: github.com/hashicorp/golang-lru
