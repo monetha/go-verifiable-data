@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"io"
 	"strconv"
+	"syscall/js"
 
-	"github.com/dennwc/dom"
-	"github.com/dennwc/dom/js"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"gitlab.com/monetha/protocol-go-sdk/cmd/protoscan/web/dom"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/protoscan/web/logging"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/protoscan/web/rx"
 	"gitlab.com/monetha/protocol-go-sdk/eth"
@@ -23,96 +23,45 @@ func main() {
 	run("box", logging.Fun)
 }
 
-type box dom.Element
-
-func (b *box) appendInput(label string, typ string, value string) *dom.Input {
-	inp := dom.Doc.NewInput("text")
-	inp.JSRef().Set("placeholder", label)
-	inp.SetValue(value)
-	b.AppendChild(inp)
-
-	return inp
-}
-
-func (b *box) appendButton(s string) *dom.Button {
-	bt := dom.Doc.NewButton(s)
-	b.AppendChild(bt)
-	return bt
-}
-
-func (b *box) appendDiv() *box {
-	d := dom.Doc.CreateElement("div")
-	b.AppendChild(d)
-	return (*box)(d)
-}
-
-func (b *box) appendTable() *table {
-	t := dom.Doc.CreateElement("table")
-	b.AppendChild(t)
-	return (*table)(t)
-}
-
-func (b *box) appendTextNode(s string) *dom.Element {
-	n := createTextNode(s)
-	b.AppendChild(n)
-	return n
-}
-
-type table dom.Element
-
-func (t *table) appendHeader(els ...*dom.Element) {
-	header := t.JSRef().Call("createTHead")
-	newRow := header.Call("insertRow", -1)
-	for _, el := range els {
-		newCell := dom.AsElement(js.ValueOf(newRow.Call("insertCell", -1)))
-		newCell.AppendChild(el)
-	}
-}
-
-func (t *table) appendRow(els ...*dom.Element) {
-	newRow := t.JSRef().Call("insertRow", -1)
-	for _, el := range els {
-		newCell := dom.AsElement(js.ValueOf(newRow.Call("insertCell", -1)))
-		newCell.AppendChild(el)
-	}
-}
-
-func createTextNode(s string) *dom.Element {
-	return dom.AsElement(js.ValueOf(dom.Doc.JSRef().Call("createTextNode", s)))
-}
-
 func run(elementId string, lf log.Fun) {
 	lf("Initializing protocol scanner...")
 
 	done := make(chan struct{})
 
-	box := (*box)(dom.Doc.GetElementById(elementId))
+	backendURLInput := dom.TextInput().WithPlaceholder("Backend URL").WithValue("https://ropsten.infura.io")
+	passFactoryAddressInput := dom.TextInput().WithPlaceholder("Passport factory address").WithValue("0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2")
+	getPassportListButton := dom.Button("Get passport list")
+	resultDiv := dom.Div()
 
-	backendURLInput := box.appendInput("Backend URL", "text", "https://ropsten.infura.io")
-	passFactoryAddressInput := box.appendInput("Passport factory address", "text", "0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2")
+	dom.Document.
+		GetElementById(elementId).
+		WithChildren(
+			backendURLInput,
+			passFactoryAddressInput,
+			getPassportListButton,
+			resultDiv,
+		)
 
-	passFactoryAddressInput.AddEventListener("keyup", dom.EventHandler(func(e dom.Event) {
-		lf("Factory address changed", "passport_factory_address", e.Target().JSRef().Get("value"))
-	}))
-
-	getPassportListButton := box.appendButton("Get passport list")
-	resultDiv := box.appendDiv()
-
-	getPassportListButton.OnClick(dom.EventHandler(func(e dom.Event) {
+	getPassportCallback := getPassportListButton.OnClick(func(args []js.Value) {
 		passportFactoryAddressStr := passFactoryAddressInput.Value()
 		passportFactoryAddress := common.HexToAddress(passportFactoryAddressStr)
 
 		backendURL := backendURLInput.Value()
 
-		resultDiv.Remove()
-		resultDiv = box.appendDiv()
-		resultStatus := resultDiv.appendTextNode("Filtering passports...")
-		resultTable := resultDiv.appendTable()
-		resultTable.appendHeader(
-			createTextNode("Passport address"),
-			createTextNode("First owner address"),
-			createTextNode("Block number"),
-			createTextNode("Transaction hash"),
+		resultDiv.RemoveAllChildren()
+
+		resultStatus := dom.Text("Filtering passports...")
+		resultTable := dom.Table().
+			WithHeader(
+				dom.Text("Passport address"),
+				dom.Text("First owner address"),
+				dom.Text("Block number"),
+				dom.Text("Transaction hash"),
+			)
+
+		resultDiv.WithChildren(
+			resultStatus,
+			resultTable,
 		)
 
 		lf("Getting passport list from passport factory...", "backend_url", backendURL, "passport_factory_address", passportFactoryAddress.Hex())
@@ -127,19 +76,20 @@ func run(elementId string, lf log.Fun) {
 			},
 			OnCompletedFun: func() {
 				lf("passport filtering completed")
-				resultStatus.Remove()
+				resultDiv.RemoveChild(resultStatus)
 			},
 			OnNextFun: func(p *passfactory.Passport) {
 				lf("next passport", "contract_address", p.ContractAddress.Hex(), "first_owner_address", p.FirstOwner.Hex(), "block_number", p.Raw.BlockNumber, "tx_hash", p.Raw.TxHash.Hex())
-				resultTable.appendRow(
-					createTextNode(p.ContractAddress.Hex()),
-					createTextNode(p.FirstOwner.Hex()),
-					createTextNode(strconv.FormatUint(p.Raw.BlockNumber, 10)),
-					createTextNode(p.Raw.TxHash.Hex()),
+				resultTable.AppendRow(
+					dom.Text(p.ContractAddress.Hex()),
+					dom.Text(p.FirstOwner.Hex()),
+					dom.Text(strconv.FormatUint(p.Raw.BlockNumber, 10)),
+					dom.Text(p.Raw.TxHash.Hex()),
 				)
 			},
 		})
-	}))
+	})
+	defer getPassportCallback.Release()
 
 	lf("Protocol scanner is initialized.")
 
