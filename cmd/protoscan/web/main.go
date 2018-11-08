@@ -55,13 +55,18 @@ func run(elementId string, lf log.Fun) {
 				),
 			))
 
+	var prevGetPassporAsyncCloser io.Closer
 	getPassportCallback := getPassportListButton.OnClick(js.PreventDefault, func(args js.Value) {
+		if prevGetPassporAsyncCloser != nil {
+			_ = prevGetPassporAsyncCloser.Close() // cancel previous request
+		}
+
 		passportFactoryAddressStr := passFactoryAddressInput.Value()
 		passportFactoryAddress := common.HexToAddress(passportFactoryAddressStr)
 
 		backendURL := backendURLInput.Value()
 
-		resultStatus := dom.Text("Filtering passports...")
+		resultStatus := dom.Div().WithChildren(dom.Text("Filtering passports..."))
 		resultTable := dom.Table().
 			WithClass("table table-hover").
 			WithHeader(
@@ -80,13 +85,14 @@ func run(elementId string, lf log.Fun) {
 
 		lf("Getting passport list from passport factory...", "backend_url", backendURL, "passport_factory_address", passportFactoryAddress.Hex())
 
-		(&passportFilterer{
+		prevGetPassporAsyncCloser = (&passportFilterer{
 			Log:        lf,
 			BackendURL: backendURL,
 		}).FilterAsync(passportFactoryAddress, &passportObserverFun{
 			OnErrorFun: func(err error) {
 				lf("passport filtering error", "error", err.Error())
-				resultStatus.SetInnerHTML(err.Error())
+				resultStatus.RemoveAllChildren()
+				resultStatus.AppendChild(dom.Text(err.Error()))
 			},
 			OnCompletedFun: func() {
 				lf("passport filtering completed")
