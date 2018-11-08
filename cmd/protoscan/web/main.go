@@ -28,8 +28,8 @@ func run(elementId string, lf log.Fun) {
 
 	done := make(chan struct{})
 
-	backendURLInput := dom.TextInput().WithClass("form-control" ).WithPlaceholder("Backend URL").WithValue("https://ropsten.infura.io")
-	passFactoryAddressInput := dom.TextInput().WithClass("form-control" ).WithPlaceholder("Passport factory address").WithValue("0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2")
+	backendURLInput := dom.TextInput().WithClass("form-control").WithPlaceholder("Backend URL").WithValue("https://ropsten.infura.io")
+	passFactoryAddressInput := dom.TextInput().WithClass("form-control").WithPlaceholder("Passport factory address").WithValue("0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2")
 	getPassportListButton := dom.Button("Get passport list").WithClass("btn btn-primary btn-block")
 	passportListOutputDiv := dom.Div()
 
@@ -58,7 +58,8 @@ func run(elementId string, lf log.Fun) {
 	var prevGetPassporAsyncCloser io.Closer
 	getPassportCallback := getPassportListButton.OnClick(js.PreventDefault, func(args js.Value) {
 		if prevGetPassporAsyncCloser != nil {
-			_ = prevGetPassporAsyncCloser.Close() // cancel previous request
+			// cancel previous request
+			_ = prevGetPassporAsyncCloser.Close()
 		}
 
 		passportFactoryAddressStr := passFactoryAddressInput.Value()
