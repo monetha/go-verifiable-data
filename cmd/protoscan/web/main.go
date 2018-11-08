@@ -28,21 +28,34 @@ func run(elementId string, lf log.Fun) {
 
 	done := make(chan struct{})
 
-	backendURLInput := dom.TextInput().WithPlaceholder("Backend URL").WithValue("https://ropsten.infura.io")
-	passFactoryAddressInput := dom.TextInput().WithPlaceholder("Passport factory address").WithValue("0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2")
-	getPassportListButton := dom.Button("Get passport list")
+	backendURLInput := dom.TextInput().WithClass("form-control" ).WithPlaceholder("Backend URL").WithValue("https://ropsten.infura.io")
+	passFactoryAddressInput := dom.TextInput().WithClass("form-control" ).WithPlaceholder("Passport factory address").WithValue("0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2")
+	getPassportListButton := dom.Button("Get passport list").WithClass("btn btn-primary btn-block")
 	resultDiv := dom.Div()
 
 	dom.Document.
 		GetElementById(elementId).
-		WithChildren(
-			backendURLInput,
-			passFactoryAddressInput,
-			getPassportListButton,
-			resultDiv,
-		)
+		AppendChild(
+			dom.Div().WithClass("row").WithChildren(
+				dom.Div().WithClass("col-3").WithChildren(
+					dom.Form().WithChildren(
+						dom.Div().WithClass("form-group").WithChildren(
+							dom.Label("Backend URL"),
+							backendURLInput,
+						),
+						dom.Div().WithClass("form-group").WithChildren(
+							dom.Label("Passport factory address"),
+							passFactoryAddressInput,
+						),
+						getPassportListButton,
+					),
+				),
+				dom.Div().WithClass("col-9").WithChildren(
+					resultDiv,
+				),
+			))
 
-	getPassportCallback := getPassportListButton.OnClick(func(args []js.Value) {
+	getPassportCallback := getPassportListButton.OnClick(js.PreventDefault, func(args js.Value) {
 		passportFactoryAddressStr := passFactoryAddressInput.Value()
 		passportFactoryAddress := common.HexToAddress(passportFactoryAddressStr)
 
@@ -52,6 +65,7 @@ func run(elementId string, lf log.Fun) {
 
 		resultStatus := dom.Text("Filtering passports...")
 		resultTable := dom.Table().
+			WithClass("table table-hover").
 			WithHeader(
 				dom.Text("Passport address"),
 				dom.Text("First owner address"),
