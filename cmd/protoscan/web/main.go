@@ -28,8 +28,13 @@ func run(elementId string, lf log.Fun) {
 
 	done := make(chan struct{})
 
-	backendURLInput := dom.TextInput().WithClass("form-control").WithPlaceholder("Backend URL").WithValue("https://ropsten.infura.io")
-	passFactoryAddressInput := dom.TextInput().WithClass("form-control").WithPlaceholder("Passport factory address").WithValue("0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2")
+	const (
+		backendURLStr             = "Backend URL"
+		passportFactoryAddressStr = "Passport factory address"
+	)
+
+	backendURLInput := dom.TextInput().WithClass("form-control").WithPlaceholder(backendURLStr).WithValue("https://ropsten.infura.io")
+	passFactoryAddressInput := dom.TextInput().WithClass("form-control").WithPlaceholder(passportFactoryAddressStr).WithValue("0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2")
 	getPassportListButton := dom.Button("Get passport list").WithClass("btn btn-primary btn-block")
 	passportListOutputDiv := dom.Div()
 
@@ -40,18 +45,20 @@ func run(elementId string, lf log.Fun) {
 				dom.Div().WithClass("col-3").WithChildren(
 					dom.Form().WithChildren(
 						dom.Div().WithClass("form-group").WithChildren(
-							dom.Label("Backend URL"),
+							dom.Label(backendURLStr),
 							backendURLInput,
 						),
 						dom.Div().WithClass("form-group").WithChildren(
-							dom.Label("Passport factory address"),
+							dom.Label(passportFactoryAddressStr),
 							passFactoryAddressInput,
 						),
 						getPassportListButton,
 					),
 				),
 				dom.Div().WithClass("col-9").WithChildren(
-					passportListOutputDiv,
+					dom.Div().WithClass("row").WithChildren(
+						passportListOutputDiv.WithClass("col-12"),
+					),
 				),
 			))
 
@@ -67,7 +74,7 @@ func run(elementId string, lf log.Fun) {
 
 		backendURL := backendURLInput.Value()
 
-		resultStatus := dom.Div().WithChildren(dom.Text("Filtering passports..."))
+		resultStatusDiv := dom.Div().WithChildren(dom.Text("Filtering passports..."))
 		resultTable := dom.Table().
 			WithClass("table table-hover").
 			WithHeader(
@@ -77,8 +84,12 @@ func run(elementId string, lf log.Fun) {
 				dom.Text("Transaction hash"),
 			)
 		resultDiv := dom.Div().WithChildren(
-			resultStatus,
-			resultTable,
+			dom.Div().WithClass("row").WithChildren(
+				resultStatusDiv.WithClass("col-12"),
+			),
+			dom.Div().WithClass("row").WithChildren(
+				dom.Div().WithClass("col-12").WithChildren(resultTable),
+			),
 		)
 
 		passportListOutputDiv.RemoveAllChildren()
@@ -92,12 +103,12 @@ func run(elementId string, lf log.Fun) {
 		}).FilterAsync(passportFactoryAddress, &passportObserverFun{
 			OnErrorFun: func(err error) {
 				lf("passport filtering error", "error", err.Error())
-				resultStatus.RemoveAllChildren()
-				resultStatus.AppendChild(dom.Text(err.Error()))
+				resultStatusDiv.RemoveAllChildren()
+				resultStatusDiv.AppendChild(dom.Text(err.Error()))
 			},
 			OnCompletedFun: func() {
 				lf("passport filtering completed")
-				resultDiv.RemoveChild(resultStatus)
+				resultStatusDiv.Remove()
 			},
 			OnNextFun: func(p *passfactory.Passport) {
 				lf("next passport", "contract_address", p.ContractAddress.Hex(), "first_owner_address", p.FirstOwner.Hex(), "block_number", p.Raw.BlockNumber, "tx_hash", p.Raw.TxHash.Hex())

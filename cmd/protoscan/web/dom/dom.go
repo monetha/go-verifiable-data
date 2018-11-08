@@ -38,6 +38,8 @@ func (n NodeBase) RemoveAllChildren() {
 		n.RemoveChild(c)
 	}
 }
+func (n NodeBase) ParentNode() Node { return NodeBase{n.Get("parentNode")} }
+func (n NodeBase) Remove()          { n.ParentNode().RemoveChild(n) }
 
 func validJSValue(v js.Value) bool {
 	return v != js.Value{} && v != null && v != undefined
@@ -172,7 +174,9 @@ func (i Inp) Value() string { return i.Get("value").String() }
 
 func TextInput() Inp { return Input("text") }
 
-func (i Inp) OnKeyUp(flags js.EventCallbackFlag, fn func(js.Value)) js.Callback { return i.AddEventListener(flags, "keyup", fn) }
+func (i Inp) OnKeyUp(flags js.EventCallbackFlag, fn func(js.Value)) js.Callback {
+	return i.AddEventListener(flags, "keyup", fn)
+}
 
 type Btn struct{ Elt }
 
@@ -187,4 +191,6 @@ func (b Btn) WithClass(c string) Btn {
 	return b
 }
 
-func (b Btn) OnClick(flags js.EventCallbackFlag, fn func(js.Value)) js.Callback { return b.AddEventListener(flags, "click", fn) }
+func (b Btn) OnClick(flags js.EventCallbackFlag, fn func(js.Value)) js.Callback {
+	return b.AddEventListener(flags, "click", fn)
+}
