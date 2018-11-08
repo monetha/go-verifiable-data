@@ -31,7 +31,7 @@ func run(elementId string, lf log.Fun) {
 	backendURLInput := dom.TextInput().WithClass("form-control" ).WithPlaceholder("Backend URL").WithValue("https://ropsten.infura.io")
 	passFactoryAddressInput := dom.TextInput().WithClass("form-control" ).WithPlaceholder("Passport factory address").WithValue("0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2")
 	getPassportListButton := dom.Button("Get passport list").WithClass("btn btn-primary btn-block")
-	resultDiv := dom.Div()
+	passportListOutputDiv := dom.Div()
 
 	dom.Document.
 		GetElementById(elementId).
@@ -51,7 +51,7 @@ func run(elementId string, lf log.Fun) {
 					),
 				),
 				dom.Div().WithClass("col-9").WithChildren(
-					resultDiv,
+					passportListOutputDiv,
 				),
 			))
 
@@ -60,8 +60,6 @@ func run(elementId string, lf log.Fun) {
 		passportFactoryAddress := common.HexToAddress(passportFactoryAddressStr)
 
 		backendURL := backendURLInput.Value()
-
-		resultDiv.RemoveAllChildren()
 
 		resultStatus := dom.Text("Filtering passports...")
 		resultTable := dom.Table().
@@ -72,11 +70,13 @@ func run(elementId string, lf log.Fun) {
 				dom.Text("Block number"),
 				dom.Text("Transaction hash"),
 			)
-
-		resultDiv.WithChildren(
+		resultDiv := dom.Div().WithChildren(
 			resultStatus,
 			resultTable,
 		)
+
+		passportListOutputDiv.RemoveAllChildren()
+		passportListOutputDiv.AppendChild(resultDiv)
 
 		lf("Getting passport list from passport factory...", "backend_url", backendURL, "passport_factory_address", passportFactoryAddress.Hex())
 

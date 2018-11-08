@@ -7,6 +7,9 @@ import (
 )
 
 var (
+	null      = js.Null()
+	undefined = js.Undefined()
+
 	Document Doc
 	Body     js.Value
 )
@@ -31,9 +34,13 @@ func (n NodeBase) AppendChild(c Node)      { n.Call("appendChild", c.JSValue()) 
 func (n NodeBase) RemoveChild(c Node) Node { return NodeBase{n.Call("removeChild", c.JSValue())} }
 func (n NodeBase) FirstChild() Node        { return NodeBase{n.Get("firstChild")} }
 func (n NodeBase) RemoveAllChildren() {
-	for c := n.FirstChild(); c.JSValue() != js.Null(); c = n.FirstChild() {
+	for c := n.FirstChild(); validJSValue(c.JSValue()); c = n.FirstChild() {
 		n.RemoveChild(c)
 	}
+}
+
+func validJSValue(v js.Value) bool {
+	return v != js.Value{} && v != null && v != undefined
 }
 
 func (n NodeBase) AddEventListener(flags js.EventCallbackFlag, typ string, fn func(js.Value)) js.Callback {
