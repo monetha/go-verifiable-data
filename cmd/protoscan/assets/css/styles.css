@@ -4,6 +4,8 @@ body {
     padding-top: 4.5rem;
 }
 
+#navBarBackendURLForm input[type=text]{width:250px !important;}
+
 #box:empty:after {
     content: "app is loading...";
 }

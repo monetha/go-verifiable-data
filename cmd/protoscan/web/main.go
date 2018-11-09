@@ -13,47 +13,53 @@ import (
 
 var htmlMarkupTmpl = template.Must(template.New("htmlMarkup").Parse(
 	`<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="#">Monetha</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Passport list</a>
-                </li>
-            </ul>
-            <form class="form-inline mt-3 mt-md-0">
-                <input class="form-control mr-sm-3" type="text" placeholder="Backend URL" aria-label="Backend URL"
+    <a class="navbar-brand" href="#">Monetha</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Passport list</a>
+            </li>
+        </ul>
+        <form class="form-inline mt-3 mt-md-0" id="navBarBackendURLForm">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Backend URL</span>
+                </div>
+                <input class="form-control mr-sm-3" type="text" placeholder="Backend URL"
+                       aria-label="Backend URL"
                        value="{{.BackendURL}}" id="backendURLInp">
+            </div>
+        </form>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-auto"><h1>Passport list</h1></div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <form>
+                <div class="form-group">
+                    <label for="passportFactoryAddressInp">Passport factory address</label>
+                    <input type="text" class="form-control" placeholder="Passport factory address"
+                           value="{{.PassportFactoryAddress}}" id="passportFactoryAddressInp">
+                </div>
+                <button class="btn btn-primary btn-block" id="getPassportListBtn">Get passport list &raquo;</button>
             </form>
         </div>
-    </nav>
-
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-auto"><h1>Passport list</h1></div>
-        </div>
-        <div class="row">
-            <div class="col-3">
-                <form>
-                    <div class="form-group">
-                        <label>Passport factory address</label>
-                        <input type="text" class="form-control" placeholder="Passport factory address"
-                               value="{{.PassportFactoryAddress}}" id="passportFactoryAddressInp">
-                    </div>
-                    <button class="btn btn-primary btn-block" id="getPassportListBtn">Get passport list &raquo;</button>
-                </form>
-            </div>
-            <div class="col-9">
-                <div class="row">
-                    <div class="col-12" id="passportListOutput">
-                    </div>
+        <div class="col-9">
+            <div class="row">
+                <div class="col-12" id="passportListOutput">
                 </div>
             </div>
         </div>
-    </div>`))
+    </div>
+</div>`))
 
 func main() {
 	log := logging.Fun
