@@ -2,9 +2,19 @@
 body {
     min-height: 75rem;
     padding-top: 4.5rem;
+    position: relative;
 }
 
-#navBarBackendURLForm input[type=text]{width:250px !important;}
+#navBarBackendURLForm input[type=text] {
+    width: 250px !important;
+}
+
+.content-section {
+    padding-top: 4.5rem;
+    margin-top: -4.5rem;
+    min-height: 100vh;
+    overflow: auto;
+}
 
 #box:empty:after {
     content: "app is loading...";

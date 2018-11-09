@@ -5,6 +5,7 @@ package main
 import (
 	"html/template"
 	"strings"
+	"syscall/js"
 
 	"gitlab.com/monetha/protocol-go-sdk/cmd/protoscan/web/app"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/protoscan/web/dom"
@@ -12,7 +13,7 @@ import (
 )
 
 var htmlMarkupTmpl = template.Must(template.New("htmlMarkup").Parse(
-	`<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+	`<nav id="main-nav" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <a class="navbar-brand" href="#">Monetha</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
             aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,8 +21,11 @@ var htmlMarkupTmpl = template.Must(template.New("htmlMarkup").Parse(
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Passport list</a>
+            <li class="nav-item">
+                <a class="nav-link" href="#passport-list">Passport list</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#passport-updates">Passport updates</a>
             </li>
         </ul>
         <form class="form-inline mt-3 mt-md-0" id="navBarBackendURLForm">
@@ -37,7 +41,7 @@ var htmlMarkupTmpl = template.Must(template.New("htmlMarkup").Parse(
     </div>
 </nav>
 
-<div class="container-fluid">
+<div id="passport-list" class="container-fluid content-section">
     <div class="row justify-content-center">
         <div class="col-auto"><h1>Passport list</h1></div>
     </div>
@@ -58,6 +62,12 @@ var htmlMarkupTmpl = template.Must(template.New("htmlMarkup").Parse(
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<div id="passport-updates" class="container-fluid content-section">
+    <div class="row justify-content-center">
+        <div class="col-auto"><h1>Passport updates</h1></div>
     </div>
 </div>`))
 
@@ -81,6 +91,13 @@ func main() {
 	dom.Document.
 		GetElementById("box").
 		SetInnerHTML(sb.String())
+
+	// $('body').scrollspy({ target: '#main-nav' })
+	opts := js.Global().Get("Object").Invoke() // New JS Object
+	opts.Set("target", "#main-nav")
+	js.Global().
+		Get("$").Invoke("body").
+		Call("scrollspy", opts)
 
 	a := (&app.App{
 		Log:                     log,
