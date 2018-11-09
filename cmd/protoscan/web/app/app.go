@@ -68,7 +68,7 @@ func (a *App) SetupOnClickGetPassportList() *App {
 		a.getPassportListRequestCloser = (&passportFilterer{
 			Log:        a.Log,
 			BackendURL: backendURL,
-		}).FilterAsync(passportFactoryAddress, &passportObserverFun{
+		}).GetPassportListAsync(passportFactoryAddress, &passportObserverFun{
 			OnErrorFun: func(err error) {
 				a.Log("passport filtering error", "error", err.Error())
 				resultStatusDiv.RemoveAllChildren()
@@ -128,7 +128,7 @@ type passportFilterer struct {
 	BackendURL string
 }
 
-func (f *passportFilterer) FilterAsync(passportFactoryAddress common.Address, o passportObserver) io.Closer {
+func (f *passportFilterer) GetPassportListAsync(passportFactoryAddress common.Address, o passportObserver) io.Closer {
 	backendURL := f.BackendURL
 	lf := f.Log
 	onNext := o.OnNext
