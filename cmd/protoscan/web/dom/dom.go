@@ -70,6 +70,8 @@ func (e Elt) SetAttribute(k, v string) { e.Call("setAttribute", k, v) }
 
 func (e Elt) SetClass(c string) { e.SetAttribute("class", c) }
 
+func (e Elt) SetRole(r string) { e.SetAttribute("role", r) }
+
 func (e Elt) WithAttribute(k, v string) Elt {
 	e.SetAttribute(k, v)
 	return e
@@ -77,6 +79,11 @@ func (e Elt) WithAttribute(k, v string) Elt {
 
 func (e Elt) WithClass(c string) Elt {
 	e.SetClass(c)
+	return e
+}
+
+func (e Elt) WithRole(r string) Elt {
+	e.SetRole(r)
 	return e
 }
 

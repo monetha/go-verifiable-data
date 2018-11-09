@@ -34,7 +34,11 @@ func (a *App) SetupOnClickGetPassportList() *App {
 
 		backendURL := a.BackendURLInput.Value()
 
-		resultStatusDiv := dom.Div().WithChildren(dom.Text("Filtering passports..."))
+		resultStatusDiv := dom.Div().
+			WithClass("col-12 alert alert-primary").
+			WithRole("alert").
+			WithChildren(dom.Text("Getting passport list..."))
+
 		resultTable := dom.Table().
 			WithClass("table table-hover table-striped").
 			WithHeader(
@@ -44,9 +48,10 @@ func (a *App) SetupOnClickGetPassportList() *App {
 				dom.Text("Transaction hash"),
 			).
 			WithHeaderClass("thead-light")
+
 		resultDiv := dom.Div().WithChildren(
 			dom.Div().WithClass("row").WithChildren(
-				resultStatusDiv.WithClass("col-12"),
+				resultStatusDiv,
 			),
 			dom.Div().WithClass("row").WithChildren(
 				dom.Div().WithClass("col-12 table-responsive").WithChildren(resultTable),
@@ -65,7 +70,9 @@ func (a *App) SetupOnClickGetPassportList() *App {
 			OnErrorFun: func(err error) {
 				a.Log("passport filtering error", "error", err.Error())
 				resultStatusDiv.RemoveAllChildren()
-				resultStatusDiv.AppendChild(dom.Text(err.Error()))
+				resultStatusDiv.
+					WithClass("col-12 alert alert-danger").
+					AppendChild(dom.Text(err.Error()))
 			},
 			OnCompletedFun: func() {
 				a.Log("passport filtering completed")
