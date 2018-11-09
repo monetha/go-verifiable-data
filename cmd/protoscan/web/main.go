@@ -3,71 +3,94 @@
 package main
 
 import (
+	"html/template"
+	"strings"
+
 	"gitlab.com/monetha/protocol-go-sdk/cmd/protoscan/web/app"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/protoscan/web/dom"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/protoscan/web/logging"
-	"gitlab.com/monetha/protocol-go-sdk/log"
 )
 
-func main() {
-	run("box", logging.Fun)
-}
+var htmlMarkupTmpl = template.Must(template.New("htmlMarkup").Parse(
+	`<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#">Monetha</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Passport list</a>
+                </li>
+            </ul>
+            <form class="form-inline mt-3 mt-md-0">
+                <input class="form-control mr-sm-3" type="text" placeholder="Backend URL" aria-label="Backend URL"
+                       value="{{.BackendURL}}" id="backendURLInp">
+            </form>
+        </div>
+    </nav>
 
-func run(elementId string, lf log.Fun) {
-	lf("Initializing protocol scanner...")
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-auto"><h1>Passport list</h1></div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <form>
+                    <div class="form-group">
+                        <label>Passport factory address</label>
+                        <input type="text" class="form-control" placeholder="Passport factory address"
+                               value="{{.PassportFactoryAddress}}" id="passportFactoryAddressInp">
+                    </div>
+                    <button class="btn btn-primary btn-block" id="getPassportListBtn">Get passport list &raquo;</button>
+                </form>
+            </div>
+            <div class="col-9">
+                <div class="row">
+                    <div class="col-12" id="passportListOutput">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>`))
+
+func main() {
+	log := logging.Fun
+	log("Initializing protocol scanner...")
 
 	done := make(chan struct{})
 
-	const (
-		backendURLStr             = "Backend URL"
-		passportFactoryAddressStr = "Passport factory address"
-	)
-
-	backendURLInput := dom.TextInput().WithClass("form-control").WithPlaceholder(backendURLStr).WithValue("https://ropsten.infura.io")
-	passFactoryAddressInput := dom.TextInput().WithClass("form-control").WithPlaceholder(passportFactoryAddressStr).WithValue("0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2")
-	getPassportListButton := dom.Button("Get passport list").WithClass("btn btn-primary btn-block")
-	passportListOutputDiv := dom.Div()
+	var sb strings.Builder
+	if err := htmlMarkupTmpl.Execute(&sb, struct {
+		BackendURL             string
+		PassportFactoryAddress string
+	}{
+		BackendURL:             "https://ropsten.infura.io",
+		PassportFactoryAddress: "0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2",
+	}); err != nil {
+		panic(err)
+	}
 
 	dom.Document.
-		GetElementById(elementId).
-		AppendChild(
-			dom.Div().WithClass("row").WithChildren(
-				dom.Div().WithClass("col-3").WithChildren(
-					dom.Form().WithChildren(
-						dom.Div().WithClass("form-group").WithChildren(
-							dom.Label(backendURLStr),
-							backendURLInput,
-						),
-						dom.Div().WithClass("form-group").WithChildren(
-							dom.Label(passportFactoryAddressStr),
-							passFactoryAddressInput,
-						),
-						getPassportListButton,
-					),
-				),
-				dom.Div().WithClass("col-9").WithChildren(
-					dom.Div().WithClass("row").WithChildren(
-						passportListOutputDiv.WithClass("col-12"),
-					),
-				),
-			),
-		)
+		GetElementById("box").
+		SetInnerHTML(sb.String())
 
 	a := (&app.App{
-		Log:                     lf,
-		BackendURLInput:         backendURLInput,
-		PassFactoryAddressInput: passFactoryAddressInput,
-		GetPassportListButton:   getPassportListButton,
-		PassportListOutputDiv:   passportListOutputDiv,
+		Log:                     log,
+		BackendURLInput:         dom.Document.GetElementById("backendURLInp").AsInput(),
+		PassFactoryAddressInput: dom.Document.GetElementById("passportFactoryAddressInp").AsInput(),
+		GetPassportListButton:   dom.Document.GetElementById("getPassportListBtn").AsButton(),
+		PassportListOutputDiv:   dom.Document.GetElementById("passportListOutput"),
 	}).
 		SetupOnClickGetPassportList()
 
-	lf("Protocol scanner is initialized.")
+	log("Protocol scanner is initialized.")
 
 	<-done
-	lf("Shutting down protocol scanner...")
+	log("Shutting down protocol scanner...")
 
 	_ = a.Close()
 
-	lf("Protocol scanner is shut down.")
+	log("Protocol scanner is shut down.")
 }

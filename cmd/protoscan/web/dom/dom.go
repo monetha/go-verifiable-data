@@ -101,6 +101,14 @@ func (e Elt) WithChildren(ns ...Node) Elt {
 	return e
 }
 
+func (e Elt) AsInput() Inp {
+	return Inp{e}
+}
+
+func (e Elt) AsButton() Btn {
+	return Btn{e}
+}
+
 func Text(s string) Elt { return Elt{NodeBase{Document.Call("createTextNode", s)}} }
 
 func Label(s string) Elt {
