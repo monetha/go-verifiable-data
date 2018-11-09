@@ -50,7 +50,8 @@ func run(elementId string, lf log.Fun) {
 						passportListOutputDiv.WithClass("col-12"),
 					),
 				),
-			))
+			),
+		)
 
 	a := (&app.App{
 		Log:                     lf,
