@@ -86,9 +86,9 @@ func (a *App) SetupOnClickGetPassportList() *App {
 }
 
 func (a *App) cancelGetPassportListRequest() {
-	if prevGetPassporAsyncCloser := a.getPassportListRequestCloser; prevGetPassporAsyncCloser != nil {
+	if prevGetPassportAsyncCloser := a.getPassportListRequestCloser; prevGetPassportAsyncCloser != nil {
 		// cancel previous request
-		_ = prevGetPassporAsyncCloser.Close()
+		_ = prevGetPassportAsyncCloser.Close()
 	}
 }
 
