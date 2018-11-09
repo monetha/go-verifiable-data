@@ -60,7 +60,7 @@ func (a *App) SetupOnClickGetPassportList() *App {
 		a.getPassportListRequestCloser = (&passportListGetter{
 			Log:        a.Log,
 			BackendURL: backendURL,
-		}).GetPassportListAsync(passportFactoryAddress, &passportListObserverFun{
+		}).GetPassportListAsync(passportFactoryAddress, &passportListObserver{
 			OnErrorFun: func(err error) {
 				a.Log("passport filtering error", "error", err.Error())
 				resultStatusDiv.RemoveAllChildren()

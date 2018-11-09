@@ -13,27 +13,22 @@ import (
 	"gitlab.com/monetha/protocol-go-sdk/passfactory"
 )
 
-type passportListObserverFun struct {
+type passportListObserver struct {
 	OnErrorFun     func(err error)
 	OnCompletedFun func()
 	OnNextFun      func(passport *passfactory.Passport)
 }
 
-func (o *passportListObserverFun) OnError(err error) {
+func (o *passportListObserver) OnError(err error) {
 	o.OnErrorFun(err)
 }
 
-func (o *passportListObserverFun) OnCompleted() {
+func (o *passportListObserver) OnCompleted() {
 	o.OnCompletedFun()
 }
 
-func (o *passportListObserverFun) OnNext(passport *passfactory.Passport) {
+func (o *passportListObserver) OnNext(passport *passfactory.Passport) {
 	o.OnNextFun(passport)
-}
-
-type passportListObserver interface {
-	rx.Observer
-	OnNext(passport *passfactory.Passport)
 }
 
 type passportListGetter struct {
@@ -42,7 +37,7 @@ type passportListGetter struct {
 	BackendURL string
 }
 
-func (f *passportListGetter) GetPassportListAsync(passportFactoryAddress common.Address, o passportListObserver) io.Closer {
+func (f *passportListGetter) GetPassportListAsync(passportFactoryAddress common.Address, o *passportListObserver) io.Closer {
 	backendURL := f.BackendURL
 	lf := f.Log
 	onNext := o.OnNext
