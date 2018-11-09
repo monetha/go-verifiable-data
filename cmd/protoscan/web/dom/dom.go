@@ -141,6 +141,11 @@ func (t Tbl) WithHeader(ns ...Node) Tbl {
 	return t
 }
 
+func (t Tbl) WithHeaderClass(class string) Tbl {
+	t.thead.SetClass(class)
+	return t
+}
+
 func (t Tbl) AppendRow(ns ...Node) Elt {
 	newRow := NodeBase{t.tbody.Call("insertRow", -1)}
 	for _, n := range ns {

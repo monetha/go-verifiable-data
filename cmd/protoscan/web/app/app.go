@@ -36,19 +36,20 @@ func (a *App) SetupOnClickGetPassportList() *App {
 
 		resultStatusDiv := dom.Div().WithChildren(dom.Text("Filtering passports..."))
 		resultTable := dom.Table().
-			WithClass("table table-hover").
+			WithClass("table table-hover table-striped").
 			WithHeader(
 				dom.Text("Passport address"),
 				dom.Text("First owner address"),
 				dom.Text("Block number"),
 				dom.Text("Transaction hash"),
-			)
+			).
+			WithHeaderClass("thead-light")
 		resultDiv := dom.Div().WithChildren(
 			dom.Div().WithClass("row").WithChildren(
 				resultStatusDiv.WithClass("col-12"),
 			),
 			dom.Div().WithClass("row").WithChildren(
-				dom.Div().WithClass("col-12").WithChildren(resultTable),
+				dom.Div().WithClass("col-12 table-responsive").WithChildren(resultTable),
 			),
 		)
 
