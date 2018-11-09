@@ -3,17 +3,12 @@
 package app
 
 import (
-	"context"
-	"fmt"
 	"io"
 	"strconv"
 	"syscall/js"
 
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/ethclient"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/protoscan/web/dom"
-	"gitlab.com/monetha/protocol-go-sdk/cmd/protoscan/web/rx"
-	"gitlab.com/monetha/protocol-go-sdk/eth"
 	"gitlab.com/monetha/protocol-go-sdk/log"
 	"gitlab.com/monetha/protocol-go-sdk/passfactory"
 )
@@ -32,10 +27,7 @@ type App struct {
 
 func (a *App) SetupOnClickGetPassportList() *App {
 	a.onGetPassportListClickCb = a.GetPassportListButton.OnClick(js.PreventDefault, func(args js.Value) {
-		if prevGetPassporAsyncCloser := a.getPassportListRequestCloser; prevGetPassporAsyncCloser != nil {
-			// cancel previous request
-			_ = prevGetPassporAsyncCloser.Close()
-		}
+		a.cancelGetPassportListRequest()
 
 		passportFactoryAddressStr := a.PassFactoryAddressInput.Value()
 		passportFactoryAddress := common.HexToAddress(passportFactoryAddressStr)
@@ -65,10 +57,10 @@ func (a *App) SetupOnClickGetPassportList() *App {
 
 		a.Log("Getting passport list from passport factory...", "backend_url", backendURL, "passport_factory_address", passportFactoryAddress.Hex())
 
-		a.getPassportListRequestCloser = (&passportFilterer{
+		a.getPassportListRequestCloser = (&passportListGetter{
 			Log:        a.Log,
 			BackendURL: backendURL,
-		}).GetPassportListAsync(passportFactoryAddress, &passportObserverFun{
+		}).GetPassportListAsync(passportFactoryAddress, &passportListObserverFun{
 			OnErrorFun: func(err error) {
 				a.Log("passport filtering error", "error", err.Error())
 				resultStatusDiv.RemoveAllChildren()
@@ -93,81 +85,16 @@ func (a *App) SetupOnClickGetPassportList() *App {
 	return a
 }
 
+func (a *App) cancelGetPassportListRequest() {
+	if prevGetPassporAsyncCloser := a.getPassportListRequestCloser; prevGetPassporAsyncCloser != nil {
+		// cancel previous request
+		_ = prevGetPassporAsyncCloser.Close()
+	}
+}
+
 func (a *App) Close() error {
+	a.cancelGetPassportListRequest()
 	a.onGetPassportListClickCb.Release()
 
 	return nil
-}
-
-type passportObserverFun struct {
-	OnErrorFun     func(err error)
-	OnCompletedFun func()
-	OnNextFun      func(passport *passfactory.Passport)
-}
-
-func (o *passportObserverFun) OnError(err error) {
-	o.OnErrorFun(err)
-}
-
-func (o *passportObserverFun) OnCompleted() {
-	o.OnCompletedFun()
-}
-
-func (o *passportObserverFun) OnNext(passport *passfactory.Passport) {
-	o.OnNextFun(passport)
-}
-
-type passportObserver interface {
-	rx.Observer
-	OnNext(passport *passfactory.Passport)
-}
-
-type passportFilterer struct {
-	Context    context.Context
-	Log        log.Fun
-	BackendURL string
-}
-
-func (f *passportFilterer) GetPassportListAsync(passportFactoryAddress common.Address, o passportObserver) io.Closer {
-	backendURL := f.BackendURL
-	lf := f.Log
-	onNext := o.OnNext
-
-	return rx.RunAsyncObserver(f.Context, o, func(ctx context.Context) (err error) {
-		client, err := ethclient.Dial(backendURL)
-		if err != nil {
-			return fmt.Errorf("ethclient.Dial: %v", err)
-		}
-		defer client.Close()
-
-		e := eth.New(client, lf)
-
-		pfr := passfactory.NewReader(e)
-		filterOpts := &passfactory.PassportFilterOpts{
-			Context: ctx,
-		}
-
-		var it *passfactory.PassportIterator
-		it, err = pfr.FilterPassports(filterOpts, passportFactoryAddress)
-		if err != nil {
-			err = fmt.Errorf("Reader.FilterPassports: %v", err)
-			return
-		}
-		defer func() {
-			if cErr := it.Close(); err == nil && cErr != nil {
-				err = cErr
-			}
-		}()
-
-		for it.Next() {
-			if err = it.Error(); err != nil {
-				err = fmt.Errorf("PassportIterator.Next: %v", err)
-				return
-			}
-
-			onNext(it.Passport)
-		}
-
-		return nil
-	})
 }
