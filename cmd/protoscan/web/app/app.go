@@ -9,6 +9,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"gitlab.com/monetha/protocol-go-sdk/cmd/protoscan/web/dom"
+	"gitlab.com/monetha/protocol-go-sdk/facts"
 	"gitlab.com/monetha/protocol-go-sdk/log"
 	"gitlab.com/monetha/protocol-go-sdk/passfactory"
 )
@@ -16,13 +17,19 @@ import (
 type App struct {
 	Log log.Fun
 
-	BackendURLInput         dom.Inp
-	PassFactoryAddressInput dom.Inp
-	GetPassportListButton   dom.Btn
-	PassportListOutputDiv   dom.Elt
+	BackendURLInput dom.Inp
 
+	PassFactoryAddressInput      dom.Inp
+	GetPassportListButton        dom.Btn
+	PassportListOutputDiv        dom.Elt
 	getPassportListRequestCloser io.Closer
 	onGetPassportListClickCb     js.Callback
+
+	PassAddressInput                dom.Inp
+	GetPassportChangesButton        dom.Btn
+	PassportChangesOutputDiv        dom.Elt
+	getPassportChangesRequestCloser io.Closer
+	onGetPassportChangesClickCb     js.Callback
 }
 
 func (a *App) SetupOnClickGetPassportList() *App {
@@ -93,16 +100,103 @@ func (a *App) SetupOnClickGetPassportList() *App {
 	return a
 }
 
+func (a *App) SetupOnClickGetPassportChanges() *App {
+	a.onGetPassportChangesClickCb = a.GetPassportChangesButton.OnClick(js.PreventDefault, func(args js.Value) {
+		a.cancelGetPassportChangesRequest()
+
+		passportAddressStr := a.PassAddressInput.Value()
+		passportAddress := common.HexToAddress(passportAddressStr)
+
+		backendURL := a.BackendURLInput.Value()
+
+		resultStatusDiv := dom.Div().
+			WithClass("col-12 alert alert-primary").
+			WithRole("alert").
+			WithChildren(dom.Text("Getting passport changes..."))
+
+		resultTable := dom.Table().
+			WithClass("table table-hover table-striped").
+			WithHeader(
+				dom.Text("Fact provider address"),
+				dom.Text("Key"),
+				dom.Text("Data type"),
+				dom.Text("Change type"),
+				dom.Text("Block number"),
+				dom.Text("Transaction hash"),
+			).
+			WithHeaderClass("thead-light")
+
+		resultDiv := dom.Div().WithChildren(
+			dom.Div().WithClass("row").WithChildren(
+				resultStatusDiv,
+			),
+			dom.Div().WithClass("row").WithChildren(
+				dom.Div().WithClass("col-12 table-responsive").WithChildren(resultTable),
+			),
+		)
+
+		a.PassportChangesOutputDiv.RemoveAllChildren()
+		a.PassportChangesOutputDiv.AppendChild(resultDiv)
+
+		a.Log("Getting passport changes...", "backend_url", backendURL, "passport_address", passportAddress.Hex())
+
+		a.getPassportChangesRequestCloser = (&passportChangesGetter{
+			Log:        a.Log,
+			BackendURL: backendURL,
+		}).GetPassportChangesAsync(passportAddress, &passportChangesObserver{
+			OnErrorFun: func(err error) {
+				a.Log("passport changes error", "error", err.Error())
+				resultStatusDiv.RemoveAllChildren()
+				resultStatusDiv.
+					WithClass("col-12 alert alert-danger").
+					AppendChild(dom.Text(err.Error()))
+			},
+			OnCompletedFun: func() {
+				a.Log("passport changes completed")
+				resultStatusDiv.Remove()
+			},
+			OnNextFun: func(ch *facts.Change) {
+				a.Log("next change",
+					"fact_provider", ch.FactProvider.Hex(),
+					"key", string(ch.Key[:]),
+					"data_type", ch.DataType,
+					"change_type", ch.ChangeType,
+					"block_number", ch.Raw.BlockNumber, "tx_hash", ch.Raw.TxHash.Hex())
+				resultTable.AppendRow(
+					dom.Text(ch.FactProvider.Hex()),
+					dom.Text(string(ch.Key[:])),
+					dom.Text(ch.DataType.String()),
+					dom.Text(ch.ChangeType.String()),
+					dom.Text(strconv.FormatUint(ch.Raw.BlockNumber, 10)),
+					dom.Text(ch.Raw.TxHash.Hex()),
+				)
+			},
+		})
+	})
+
+	return a
+}
+
 func (a *App) cancelGetPassportListRequest() {
-	if prevGetPassportAsyncCloser := a.getPassportListRequestCloser; prevGetPassportAsyncCloser != nil {
+	if c := a.getPassportListRequestCloser; c != nil {
 		// cancel previous request
-		_ = prevGetPassportAsyncCloser.Close()
+		_ = c.Close()
+	}
+}
+
+func (a *App) cancelGetPassportChangesRequest() {
+	if c := a.getPassportChangesRequestCloser; c != nil {
+		// cancel previous request
+		_ = c.Close()
 	}
 }
 
 func (a *App) Close() error {
 	a.cancelGetPassportListRequest()
 	a.onGetPassportListClickCb.Release()
+
+	a.cancelGetPassportChangesRequest()
+	a.onGetPassportChangesClickCb.Release()
 
 	return nil
 }

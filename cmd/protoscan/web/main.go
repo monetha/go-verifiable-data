@@ -25,7 +25,7 @@ var htmlMarkupTmpl = template.Must(template.New("htmlMarkup").Parse(
                 <a class="nav-link" href="#passport-list">Passport list</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#passport-updates">Passport updates</a>
+                <a class="nav-link" href="#passport-changes">Passport changes</a>
             </li>
         </ul>
         <form class="form-inline mt-3 mt-md-0" id="navBarBackendURLForm">
@@ -65,9 +65,27 @@ var htmlMarkupTmpl = template.Must(template.New("htmlMarkup").Parse(
     </div>
 </div>
 
-<div id="passport-updates" class="container-fluid content-section">
+<div id="passport-changes" class="container-fluid content-section">
     <div class="row justify-content-center">
-        <div class="col-auto"><h1>Passport updates</h1></div>
+        <div class="col-auto"><h1>Passport changes</h1></div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <form>
+                <div class="form-group">
+                    <label for="passportAddressInp">Passport address</label>
+                    <input type="text" class="form-control" placeholder="Passport address"
+                           id="passportAddressInp">
+                </div>
+                <button class="btn btn-primary btn-block" id="getPassportChangesBtn">Get passport changes &raquo;</button>
+            </form>
+        </div>
+        <div class="col-9">
+            <div class="row">
+                <div class="col-12" id="passportChangesOutput">
+                </div>
+            </div>
+        </div>
     </div>
 </div>`))
 
@@ -100,13 +118,19 @@ func main() {
 		Call("scrollspy", opts)
 
 	a := (&app.App{
-		Log:                     log,
-		BackendURLInput:         dom.Document.GetElementById("backendURLInp").AsInput(),
+		Log:             log,
+		BackendURLInput: dom.Document.GetElementById("backendURLInp").AsInput(),
+
 		PassFactoryAddressInput: dom.Document.GetElementById("passportFactoryAddressInp").AsInput(),
 		GetPassportListButton:   dom.Document.GetElementById("getPassportListBtn").AsButton(),
 		PassportListOutputDiv:   dom.Document.GetElementById("passportListOutput"),
+
+		PassAddressInput:         dom.Document.GetElementById("passportAddressInp").AsInput(),
+		GetPassportChangesButton: dom.Document.GetElementById("getPassportChangesBtn").AsButton(),
+		PassportChangesOutputDiv: dom.Document.GetElementById("passportChangesOutput"),
 	}).
-		SetupOnClickGetPassportList()
+		SetupOnClickGetPassportList().
+		SetupOnClickGetPassportChanges()
 
 	log("Protocol scanner is initialized.")
 
