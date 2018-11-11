@@ -49,9 +49,9 @@ var htmlMarkupTmpl = template.Must(template.New("htmlMarkup").Parse(
         <div class="col-3">
             <form>
                 <div class="form-group">
-                    <label for="passportFactoryAddressInp">Passport factory address</label>
+                    <label for="passListPassportFactoryAddressInp">Passport factory address</label>
                     <input type="text" class="form-control" placeholder="Passport factory address"
-                           value="{{.PassportFactoryAddress}}" id="passportFactoryAddressInp">
+                           value="{{.PassportFactoryAddress}}" id="passListPassportFactoryAddressInp">
                 </div>
                 <button class="btn btn-primary btn-block" id="getPassportListBtn">Get passport list &raquo;</button>
             </form>
@@ -73,9 +73,9 @@ var htmlMarkupTmpl = template.Must(template.New("htmlMarkup").Parse(
         <div class="col-3">
             <form>
                 <div class="form-group">
-                    <label for="passportAddressInp">Passport address</label>
+                    <label for="passChangesPassportAddressInp">Passport address</label>
                     <input type="text" class="form-control" placeholder="Passport address"
-                           id="passportAddressInp">
+                           id="passChangesPassportAddressInp">
                 </div>
                 <button class="btn btn-primary btn-block" id="getPassportChangesBtn">Get passport changes &raquo;</button>
             </form>
@@ -121,13 +121,13 @@ func main() {
 		Log:             log,
 		BackendURLInput: dom.Document.GetElementById("backendURLInp").AsInput(),
 
-		PassFactoryAddressInput: dom.Document.GetElementById("passportFactoryAddressInp").AsInput(),
-		GetPassportListButton:   dom.Document.GetElementById("getPassportListBtn").AsButton(),
-		PassportListOutputDiv:   dom.Document.GetElementById("passportListOutput"),
+		PassListPassFactoryAddressInput: dom.Document.GetElementById("passListPassportFactoryAddressInp").AsInput(),
+		GetPassportListButton:           dom.Document.GetElementById("getPassportListBtn").AsButton(),
+		PassportListOutputDiv:           dom.Document.GetElementById("passportListOutput"),
 
-		PassAddressInput:         dom.Document.GetElementById("passportAddressInp").AsInput(),
-		GetPassportChangesButton: dom.Document.GetElementById("getPassportChangesBtn").AsButton(),
-		PassportChangesOutputDiv: dom.Document.GetElementById("passportChangesOutput"),
+		PassChangesPassAddressInput: dom.Document.GetElementById("passChangesPassportAddressInp").AsInput(),
+		GetPassportChangesButton:    dom.Document.GetElementById("getPassportChangesBtn").AsButton(),
+		PassportChangesOutputDiv:    dom.Document.GetElementById("passportChangesOutput"),
 	}).
 		SetupOnClickGetPassportList().
 		SetupOnClickGetPassportChanges()

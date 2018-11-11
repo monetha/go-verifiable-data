@@ -19,13 +19,13 @@ type App struct {
 
 	BackendURLInput dom.Inp
 
-	PassFactoryAddressInput      dom.Inp
-	GetPassportListButton        dom.Btn
-	PassportListOutputDiv        dom.Elt
-	getPassportListRequestCloser io.Closer
-	onGetPassportListClickCb     js.Callback
+	PassListPassFactoryAddressInput dom.Inp
+	GetPassportListButton           dom.Btn
+	PassportListOutputDiv           dom.Elt
+	getPassportListRequestCloser    io.Closer
+	onGetPassportListClickCb        js.Callback
 
-	PassAddressInput                dom.Inp
+	PassChangesPassAddressInput     dom.Inp
 	GetPassportChangesButton        dom.Btn
 	PassportChangesOutputDiv        dom.Elt
 	getPassportChangesRequestCloser io.Closer
@@ -36,7 +36,7 @@ func (a *App) SetupOnClickGetPassportList() *App {
 	a.onGetPassportListClickCb = a.GetPassportListButton.OnClick(js.PreventDefault, func(args js.Value) {
 		a.cancelGetPassportListRequest()
 
-		passportFactoryAddressStr := a.PassFactoryAddressInput.Value()
+		passportFactoryAddressStr := a.PassListPassFactoryAddressInput.Value()
 		passportFactoryAddress := common.HexToAddress(passportFactoryAddressStr)
 
 		backendURL := a.BackendURLInput.Value()
@@ -104,7 +104,7 @@ func (a *App) SetupOnClickGetPassportChanges() *App {
 	a.onGetPassportChangesClickCb = a.GetPassportChangesButton.OnClick(js.PreventDefault, func(args js.Value) {
 		a.cancelGetPassportChangesRequest()
 
-		passportAddressStr := a.PassAddressInput.Value()
+		passportAddressStr := a.PassChangesPassAddressInput.Value()
 		passportAddress := common.HexToAddress(passportAddressStr)
 
 		backendURL := a.BackendURLInput.Value()
