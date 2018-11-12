@@ -129,8 +129,7 @@ func main() {
 		GetPassportChangesButton:    dom.Document.GetElementById("getPassportChangesBtn").AsButton(),
 		PassportChangesOutputDiv:    dom.Document.GetElementById("passportChangesOutput"),
 	}).
-		SetupOnClickGetPassportList().
-		SetupOnClickGetPassportChanges()
+		RegisterCallBacks()
 
 	log("Protocol scanner is initialized.")
 

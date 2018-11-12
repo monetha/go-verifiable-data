@@ -3,6 +3,10 @@
 package app
 
 import (
+	"bytes"
+	"encoding/base64"
+	"fmt"
+	"html"
 	"io"
 	"strconv"
 	"syscall/js"
@@ -12,6 +16,8 @@ import (
 	"gitlab.com/monetha/protocol-go-sdk/facts"
 	"gitlab.com/monetha/protocol-go-sdk/log"
 	"gitlab.com/monetha/protocol-go-sdk/passfactory"
+	"gitlab.com/monetha/protocol-go-sdk/types/change"
+	"gitlab.com/monetha/protocol-go-sdk/types/data"
 )
 
 type App struct {
@@ -30,9 +36,19 @@ type App struct {
 	PassportChangesOutputDiv        dom.Elt
 	getPassportChangesRequestCloser io.Closer
 	onGetPassportChangesClickCb     js.Callback
+
+	readHistoryValueCb js.Callback
 }
 
-func (a *App) SetupOnClickGetPassportList() *App {
+func (a *App) RegisterCallBacks() *App {
+	a.setupOnClickGetPassportList()
+	a.setupOnClickGetPassportChanges()
+	a.setupOnReadHistoryValue()
+
+	return a
+}
+
+func (a *App) setupOnClickGetPassportList() *App {
 	a.onGetPassportListClickCb = a.GetPassportListButton.OnClick(js.PreventDefault, func(args js.Value) {
 		a.cancelGetPassportListRequest()
 
@@ -100,7 +116,7 @@ func (a *App) SetupOnClickGetPassportList() *App {
 	return a
 }
 
-func (a *App) SetupOnClickGetPassportChanges() *App {
+func (a *App) setupOnClickGetPassportChanges() *App {
 	a.onGetPassportChangesClickCb = a.GetPassportChangesButton.OnClick(js.PreventDefault, func(args js.Value) {
 		a.cancelGetPassportChangesRequest()
 
@@ -121,6 +137,7 @@ func (a *App) SetupOnClickGetPassportChanges() *App {
 				dom.Text("Key"),
 				dom.Text("Data type"),
 				dom.Text("Change type"),
+				dom.Text("Value"),
 				dom.Text("Block number"),
 				dom.Text("Transaction hash"),
 			).
@@ -156,25 +173,112 @@ func (a *App) SetupOnClickGetPassportChanges() *App {
 				resultStatusDiv.Remove()
 			},
 			OnNextFun: func(ch *facts.Change) {
+				factProviderAddress := ch.FactProvider.Hex()
+				key := keyToString(ch.Key)
+				dataType := ch.DataType.String()
+				changeType := ch.ChangeType.String()
+				blockNumber := strconv.FormatUint(ch.Raw.BlockNumber, 10)
+				txHash := ch.Raw.TxHash.Hex()
+
 				a.Log("next change",
-					"fact_provider", ch.FactProvider.Hex(),
-					"key", string(ch.Key[:]),
-					"data_type", ch.DataType,
-					"change_type", ch.ChangeType,
-					"block_number", ch.Raw.BlockNumber, "tx_hash", ch.Raw.TxHash.Hex())
+					"fact_provider", factProviderAddress,
+					"key", key,
+					"data_type", dataType,
+					"change_type", changeType,
+					"block_number", blockNumber, "tx_hash", txHash)
+
+				var valueElt dom.Node
+				if ch.ChangeType == change.Updated {
+					valueElt = dom.Anchor("Download").
+						WithClass("btn btn-secondary").
+						WithRole("button").
+						WithAttribute("href", "#").
+						WithAttribute("onClick", getReadHistoryValueCallbackText(backendURL, passportAddressStr, ch.DataType, txHash))
+				} else {
+					valueElt = dom.Text("–")
+				}
+
 				resultTable.AppendRow(
-					dom.Text(ch.FactProvider.Hex()),
-					dom.Text(string(ch.Key[:])),
-					dom.Text(ch.DataType.String()),
-					dom.Text(ch.ChangeType.String()),
-					dom.Text(strconv.FormatUint(ch.Raw.BlockNumber, 10)),
-					dom.Text(ch.Raw.TxHash.Hex()),
+					dom.Text(factProviderAddress),
+					dom.Text(key),
+					dom.Text(dataType),
+					dom.Text(changeType),
+					valueElt,
+					dom.Text(blockNumber),
+					dom.Text(txHash),
 				)
 			},
 		})
 	})
 
 	return a
+}
+
+func getReadHistoryValueCallbackText(backendURL string, passportAddress string, dt data.Type, txHash string) string {
+	return fmt.Sprintf("readHistoryValue(this, '%v', '%v', %d, '%v'); return false;", html.EscapeString(backendURL), passportAddress, dt, txHash)
+}
+
+func getDownloadValueCallbackText(filename string, content []byte) string {
+	return fmt.Sprintf("return Export.createDownloadLink(this, '%v', '%v');", html.EscapeString(filename), base64.StdEncoding.EncodeToString(content))
+}
+
+func keyToString(key [32]byte) string {
+	return string(bytes.Trim(key[:], "\x00"))
+}
+
+func (a *App) setupOnReadHistoryValue() {
+	a.readHistoryValueCb = js.NewCallback(func(args []js.Value) {
+		if len(args) != 5 {
+			a.Log("readHistoryValue: unexpected arguments count", "args", args)
+			return
+		}
+
+		btn := dom.NodeBase{Value: args[0]}.AsElement().WithClassAdded("disabled").AsAnchor()
+		backendURL := args[1].String()
+		passportAddress := common.HexToAddress(args[2].String())
+		dataType := data.Type(args[3].Int())
+		txHash := common.HexToHash(args[4].String())
+
+		a.Log("reading history value...", "backend_url", backendURL, "passport_addres", passportAddress.Hex(), "data_type", dataType.String(), "tx_hash", txHash.Hex())
+		(&passportChangesGetter{
+			Log:        a.Log,
+			BackendURL: backendURL,
+		}).GetHistoryItemAsync(passportAddress, dataType, txHash, &historyItemObserver{
+			OnErrorFun: func(err error) {
+				a.Log("reading history error",
+					"backend_url", backendURL,
+					"passport_address", passportAddress.Hex(),
+					"data_type", dataType.String(),
+					"tx_hash", txHash.Hex(),
+					"error", err)
+
+				// TODO
+			},
+			OnCompletedFun: func() {
+				a.Log("reading history completed.",
+					"backend_url", backendURL,
+					"passport_address", passportAddress.Hex(),
+					"data_type", dataType.String(),
+					"tx_hash", txHash.Hex())
+			},
+			OnNextFun: func(hi *historyItem) {
+				a.Log("reading history value",
+					"backend_url", backendURL,
+					"passport_address", passportAddress.Hex(),
+					"data_type", dataType.String(),
+					"tx_hash", txHash.Hex(),
+					"fact_provider", hi.FactProvider.Hex(),
+					"key", string(hi.Key[:]))
+
+				filename := txHash.Hex() + "_" + keyToString(hi.Key)
+				btn.WithClass("btn btn-success").
+					WithAttribute("download", filename).
+					WithAttribute("onClick", getDownloadValueCallbackText(filename, hi.Value))
+				btn.Call("click")
+			},
+		})
+	})
+	js.Global().Set("readHistoryValue", a.readHistoryValueCb)
 }
 
 func (a *App) cancelGetPassportListRequest() {
@@ -197,6 +301,8 @@ func (a *App) Close() error {
 
 	a.cancelGetPassportChangesRequest()
 	a.onGetPassportChangesClickCb.Release()
+
+	a.readHistoryValueCb.Release()
 
 	return nil
 }

@@ -3,6 +3,7 @@
 package dom
 
 import (
+	"regexp"
 	"syscall/js"
 )
 
@@ -40,6 +41,7 @@ func (n NodeBase) RemoveAllChildren() {
 }
 func (n NodeBase) ParentNode() Node { return NodeBase{n.Get("parentNode")} }
 func (n NodeBase) Remove()          { n.ParentNode().RemoveChild(n) }
+func (n NodeBase) AsElement() Elt   { return Elt{n} }
 
 func validJSValue(v js.Value) bool {
 	return v != js.Value{} && v != null && v != undefined
@@ -70,6 +72,45 @@ func (e Elt) SetAttribute(k, v string) { e.Call("setAttribute", k, v) }
 
 func (e Elt) SetClass(c string) { e.SetAttribute("class", c) }
 
+func (e Elt) GetClass() *string {
+	if ca := e.Call("getAttribute", "class"); validJSValue(ca) {
+		s := ca.String()
+		return &s
+	}
+	return nil
+}
+
+func hasClass(className, classes string) bool {
+	m, _ := regexp.MatchString("(\\s|^)"+className+"(\\s|$)", classes)
+	return m
+}
+
+func removeClass(className, classes string) string {
+	r, err := regexp.Compile("(\\s|^)" + className + "(\\s|$)")
+	if err != nil {
+		return classes
+	}
+	return r.ReplaceAllString(classes, "")
+}
+
+func (e Elt) AddClass(c string) {
+	if cl := e.GetClass(); cl != nil {
+		if !hasClass(c, *cl) {
+			e.SetClass(*cl + " " + c)
+		}
+	} else {
+		e.SetClass(c)
+	}
+}
+
+func (e Elt) RemoveClass(c string) {
+	if cl := e.GetClass(); cl != nil {
+		if hasClass(c, *cl) {
+			e.SetClass(removeClass(c, *cl))
+		}
+	}
+}
+
 func (e Elt) SetRole(r string) { e.SetAttribute("role", r) }
 
 func (e Elt) WithAttribute(k, v string) Elt {
@@ -79,6 +120,16 @@ func (e Elt) WithAttribute(k, v string) Elt {
 
 func (e Elt) WithClass(c string) Elt {
 	e.SetClass(c)
+	return e
+}
+
+func (e Elt) WithClassAdded(c string) Elt {
+	e.AddClass(c)
+	return e
+}
+
+func (e Elt) WithClassRemoved(c string) Elt {
+	e.RemoveClass(c)
 	return e
 }
 
@@ -109,6 +160,10 @@ func (e Elt) AsButton() Btn {
 	return Btn{e}
 }
 
+func (e Elt) AsAnchor() A {
+	return A{e}
+}
+
 func Text(s string) Elt { return Elt{NodeBase{Document.Call("createTextNode", s)}} }
 
 func Label(s string) Elt {
@@ -118,6 +173,19 @@ func Label(s string) Elt {
 }
 
 func Div() Elt { return Element("div") }
+
+type A struct{ Elt }
+
+func Anchor(s string) A {
+	a := Element("a")
+	a.SetInnerHTML(s)
+	return A{a}
+}
+
+func (a A) WithText(s string) A {
+	a.SetInnerHTML(s)
+	return a
+}
 
 func Form() Elt { return Element("form") }
 
