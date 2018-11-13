@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/shurcooL/vfsgen"
-	data "gitlab.com/monetha/protocol-go-sdk/cmd/protoscan"
+	data "gitlab.com/monetha/protocol-go-sdk/cmd/protocol-scanner"
 )
 
 func main() {

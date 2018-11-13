@@ -7,7 +7,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"gitlab.com/monetha/protocol-go-sdk/cmd/protoscan/web/rx"
+	"gitlab.com/monetha/protocol-go-sdk/cmd/protocol-scanner/web/rx"
 	"gitlab.com/monetha/protocol-go-sdk/eth"
 	"gitlab.com/monetha/protocol-go-sdk/log"
 	"gitlab.com/monetha/protocol-go-sdk/passfactory"

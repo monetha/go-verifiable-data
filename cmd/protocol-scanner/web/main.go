@@ -7,9 +7,9 @@ import (
 	"strings"
 	"syscall/js"
 
-	"gitlab.com/monetha/protocol-go-sdk/cmd/protoscan/web/app"
-	"gitlab.com/monetha/protocol-go-sdk/cmd/protoscan/web/dom"
-	"gitlab.com/monetha/protocol-go-sdk/cmd/protoscan/web/logging"
+	"gitlab.com/monetha/protocol-go-sdk/cmd/protocol-scanner/web/app"
+	"gitlab.com/monetha/protocol-go-sdk/cmd/protocol-scanner/web/dom"
+	"gitlab.com/monetha/protocol-go-sdk/cmd/protocol-scanner/web/logging"
 )
 
 var htmlMarkupTmpl = template.Must(template.New("htmlMarkup").Parse(
