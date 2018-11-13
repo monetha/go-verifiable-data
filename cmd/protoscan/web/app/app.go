@@ -251,8 +251,8 @@ func (a *App) setupOnReadHistoryValue() {
 					"data_type", dataType.String(),
 					"tx_hash", txHash.Hex(),
 					"error", err)
-
-				// TODO
+				dom.Alert(err.Error())
+				btn.WithClassRemoved("disabled")
 			},
 			OnCompletedFun: func() {
 				a.Log("reading history completed.",
@@ -260,6 +260,7 @@ func (a *App) setupOnReadHistoryValue() {
 					"passport_address", passportAddress.Hex(),
 					"data_type", dataType.String(),
 					"tx_hash", txHash.Hex())
+				btn.WithClassRemoved("disabled")
 			},
 			OnNextFun: func(hi *historyItem) {
 				a.Log("reading history value",

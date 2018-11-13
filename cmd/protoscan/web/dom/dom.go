@@ -13,11 +13,17 @@ var (
 
 	Document Doc
 	Body     js.Value
+	alert    js.Value
 )
 
 func init() {
 	Document = Doc{NodeBase{js.Global().Get("document")}}
 	Body = Document.Get("body")
+	alert = js.Global().Get("alert")
+}
+
+func Alert(s string) {
+	alert.Invoke(s)
 }
 
 type Node interface {
