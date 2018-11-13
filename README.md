@@ -58,7 +58,7 @@ The protocol-go-sdk project comes with several executables found in the [`cmd`](
 | [`passport-list`](cmd/passport-list) | Utility tool for getting a list of passports created using specific [PassportFactory](../../contracts/code/PassportFactory.sol) contract. |
 | [`passport-permission`](cmd/passport-permission) | Utility tool that allows a passport holder to allow or deny a fact provider to write/delete facts to/from a passport. By default any fact provider can write to a passport, but a passport holder can change permissions that allow only fact providers from the whitelist to write to a passport. |
 | [`read-history`](cmd/read-history) | Utility tool for reading the history of passport changes. |
-| [`protocol-scanner`](cmd/protocol-scanner) | Web application (WebAssembly module) to get the list of deployed passports and the history of passport changes in a browser. |
+| [`protocol-scanner`](cmd/protocol-scanner) | Web application (WebAssembly module) to get the list of deployed passports and the history of passport changes in a web browser. |
 
 ## Contributing
 
@@ -349,7 +349,7 @@ After the [go-ethereum](https://github.com/ethereum/go-ethereum) community recen
 it became possible to compile Go SDK of reputation protocol into WebAssembly module and run it in a browser. 
 We have prepared a sample web application that has the same functionality as [`passport-list`](cmd/passport-list) and 
 [`read-history`](cmd/read-history) utilities provide, i.e. it allows you to get the list of deployed passports and 
-the history of passport changes directly from your browser.
+the history of passport changes directly in your web browser.
 
 To play with the web application, run the command
 
