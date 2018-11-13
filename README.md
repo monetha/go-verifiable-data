@@ -16,6 +16,7 @@
     * [Reading facts](#reading-facts)
     * [Changing passport permissions](#changing-passport-permissions)
     * [Reading facts history](#reading-facts-history)
+    * [Protocol scanner](#protocol-scanner) (sample web application)
 
 ## Building the source
 
@@ -57,6 +58,7 @@ The protocol-go-sdk project comes with several executables found in the [`cmd`](
 | [`passport-list`](cmd/passport-list) | Utility tool for getting a list of passports created using specific [PassportFactory](../../contracts/code/PassportFactory.sol) contract. |
 | [`passport-permission`](cmd/passport-permission) | Utility tool that allows a passport holder to allow or deny a fact provider to write/delete facts to/from a passport. By default any fact provider can write to a passport, but a passport holder can change permissions that allow only fact providers from the whitelist to write to a passport. |
 | [`read-history`](cmd/read-history) | Utility tool for reading the history of passport changes. |
+| [`protocol-scanner`](cmd/protocol-scanner) | Web application (WebAssembly module) to get the list of deployed passports and the history of passport changes in a browser. |
 
 ## Contributing
 
@@ -340,3 +342,23 @@ Similarly, we can read what fact value was written in the second transaction `0x
 ```
 
 Now you can compare pictures `monetha1.jpg` and `monetha2.jpg` to see what changes have been made.
+
+### Protocol scanner
+
+After the [go-ethereum](https://github.com/ethereum/go-ethereum) community recently accepted [our changes](https://github.com/ethereum/go-ethereum/pull/17709), 
+it became possible to compile Go SDK of reputation protocol into WebAssembly module and run it in a browser. 
+We have prepared a sample web application that has the same functionality as [`passport-list`](cmd/passport-list) and 
+[`read-history`](cmd/read-history) utilities provide, i.e. it allows you to get the list of deployed passports and 
+the history of passport changes directly from your browser.
+
+To play with the web application, run the command
+
+```bash
+./bin/protocol-scanner
+```
+
+and open [http://localhost:8080](http://localhost:8080) in your browser.
+
+More details can be found [here](cmd/protocol-scanner).
+
+Happy scanning!
