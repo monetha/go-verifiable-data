@@ -1,4 +1,5 @@
-# protocol-go-sdk
+# Monetha: Decentralized Reputation Platform
+# go-sdk
 
 * [Building the source](#building-the-source)
     * [Prerequisites](#prerequisites)
