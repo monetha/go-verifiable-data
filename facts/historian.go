@@ -481,7 +481,7 @@ func (h *Historian) getTransactionSenderData(ctx context.Context, txHash common.
 		return common.Address{}, nil, fmt.Errorf("facts: TransactionByHash(%v): %v", txHash, err)
 	}
 
-	from, err := types.Sender(types.HomesteadSigner{}, tx)
+	from, err := types.Sender(types.NewEIP155Signer(tx.ChainId()), tx)
 	if err != nil {
 		return common.Address{}, nil, fmt.Errorf("facts: types.Sender(): %v", err)
 	}

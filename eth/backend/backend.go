@@ -112,7 +112,7 @@ func (b *HandleNonceBackend) SendTransaction(ctx context.Context, tx *types.Tran
 }
 
 func (b *HandleNonceBackend) incrementNonce(tx *types.Transaction) {
-	from, err := types.Sender(types.HomesteadSigner{}, tx)
+	from, err := types.Sender(types.NewEIP155Signer(tx.ChainId()), tx)
 	if err != nil {
 		return // invalid sender
 	}
