@@ -93,7 +93,7 @@ Monetha has already deployed this set of auxiliary reputation protocol contracts
 
 | Contract      | Address                                      |
 |---------------|----------------------------------------------|
-| `PassportLogic` | [`0x4FBF5019E0B7B2470810e67E10aAA75A57319a9b`](https://ropsten.etherscan.io/address/0x4FBF5019E0B7B2470810e67E10aAA75A57319a9b) |
+| `PassportLogic` | [`0x0361a024040E7020251fF0756Bb40B8e136B9c9f`](https://ropsten.etherscan.io/address/0x0361a024040E7020251fF0756Bb40B8e136B9c9f) |
 | `PassportLogicRegistry`  | [`0xabA015Fc83E9B88e8334bD9b536257db75e05295`](https://ropsten.etherscan.io/address/0xabA015Fc83E9B88e8334bD9b536257db75e05295) |
 | `PassportFactory` | [`0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2`](https://ropsten.etherscan.io/address/0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2) |
 
