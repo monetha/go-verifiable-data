@@ -1,5 +1,5 @@
-hash: f5c72dd9b52c89a82f1220e13863d5da8f7f32dbf694e2bf457fe306703737e7
-updated: 2018-11-19T15:13:12.258672+02:00
+hash: c83b1228ea20da2e47a50a60b1878a61b18c22429978c517ac1e80d3d54dbef2
+updated: 2018-11-19T16:39:49.349414+02:00
 imports:
 - name: github.com/aristanetworks/goarista
   version: 5faa74ffbed7096292069fdcd0eae96146a3158a
@@ -9,6 +9,8 @@ imports:
   version: 67e573d211ace594f1366b4ce9d39726c4b19bd0
   subpackages:
   - btcec
+- name: github.com/cheekybits/is
+  version: 68e9c0620927fb5427fda3708222d0edee89eae9
 - name: github.com/davecgh/go-spew
   version: d8f796af33cc11cb798c1aaeb27a4ebc5099927d
   subpackages:

@@ -35,3 +35,4 @@ import:
 - package: github.com/go-test/deep
 - package: github.com/shurcooL/vfsgen
 - package: github.com/shurcooL/httpgzip
+- package: github.com/cheekybits/is
