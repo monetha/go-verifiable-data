@@ -1,8 +1,8 @@
-hash: 71bb1cfa6e57c29ac58a76eed26e65ef4c0cd66bac6a96978b91d6a01a2d8e18
-updated: 2018-11-08T14:51:50.666069+02:00
+hash: f5c72dd9b52c89a82f1220e13863d5da8f7f32dbf694e2bf457fe306703737e7
+updated: 2018-11-19T15:13:12.258672+02:00
 imports:
 - name: github.com/aristanetworks/goarista
-  version: 5bb443fba8e05f4a819301a63af91fe3cbadcc17
+  version: 5faa74ffbed7096292069fdcd0eae96146a3158a
   subpackages:
   - monotime
 - name: github.com/btcsuite/btcd
@@ -18,11 +18,11 @@ imports:
 - name: github.com/edsrzf/mmap-go
   version: 0bce6a6887123b67a60366d2c9fe2dfb74289d2e
 - name: github.com/elastic/gosigar
-  version: 56cb7e1f604b2748b231d8e0236e1e4782a20ad3
+  version: f498c67133bcded80f5966ee63acfe68cff4e6bf
   subpackages:
   - sys/windows
 - name: github.com/ethereum/go-ethereum
-  version: baee850471603d7fbf37eed0074c9de01df92ee7
+  version: 58632d44021bf095b43a1bb2443e6e3690a94739
   subpackages:
   - accounts
   - accounts/abi
@@ -103,7 +103,7 @@ imports:
 - name: github.com/go-stack/stack
   version: 2fee6af1a9795aafbe0253a0cfbdf668e1fb8a9a
 - name: github.com/go-test/deep
-  version: 57af0be209c537ba1d9c2a4b285ab7aea0897e51
+  version: 042da051cf3189d80f667339b822c7effac29cd6
 - name: github.com/golang/protobuf
   version: b4deda0973fb4c70b50d226b1af49f3da59f5265
   subpackages:
@@ -127,13 +127,13 @@ imports:
   - soap
   - ssdp
 - name: github.com/influxdata/influxdb
-  version: 2e7d8d753fd70e7378c537dfe82b64fd2786b1cb
+  version: c3d7f3de2b876b0b542df4e8be5775954acb531c
   subpackages:
   - client
   - models
   - pkg/escape
 - name: github.com/influxdata/platform
-  version: 9b529771ebb35c920689a621cac0917440e464b9
+  version: 4a16cd77cfdd42387cb9137e9f33c4afd6a2d420
   subpackages:
   - models
   - pkg/escape
@@ -189,7 +189,7 @@ imports:
   - leveldb/table
   - leveldb/util
 - name: golang.org/x/crypto
-  version: e4dc69e5b2fd71dcaf8bd5d054eb936deb78d1fa
+  version: 3d3f9f413869b949e48070b5bc593aa22cc2b8f2
   subpackages:
   - pbkdf2
   - ripemd160
@@ -210,7 +210,7 @@ imports:
   - idna
   - websocket
 - name: golang.org/x/sync
-  version: 1d60e4601c6fd243af51cc01ddf169918a5407ca
+  version: 42b317875d0fa942474b76e1b46a6060d720ae6e
   subpackages:
   - syncmap
 - name: golang.org/x/sys
@@ -241,7 +241,7 @@ imports:
   - unicode/bidi
   - unicode/norm
 - name: golang.org/x/tools
-  version: e21233ffa6c386fc230b4328493f77af54ff9372
+  version: 139d099f662071f73eab0df7b7fdf9682c8f9e91
   subpackages:
   - cmd/goimports
 - name: gopkg.in/natefinch/npipe.v2

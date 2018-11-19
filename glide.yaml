@@ -1,7 +1,7 @@
 package: gitlab.com/monetha/protocol-go-sdk
 import:
 - package: github.com/ethereum/go-ethereum
-  version: ^1.8.16
+  version: ^1.8.18
   subpackages:
   - common
   - contracts/chequebook
