@@ -28,7 +28,7 @@ var (
 )
 
 // IPassportLogicContractABI is the input ABI used to generate the binding from.
-const IPassportLogicContractABI = "[{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"address\"}],\"name\":\"setAddress\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"uint256\"}],\"name\":\"setUint\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"int256\"}],\"name\":\"setInt\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"bool\"}],\"name\":\"setBool\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"string\"}],\"name\":\"setString\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"bytes\"}],\"name\":\"setBytes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"setTxDataBlockNumber\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteAddress\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteUint\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteInt\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteBool\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteString\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteBytes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteTxDataBlockNumber\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getAddress\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getUint\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getInt\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getBool\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getString\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getBytes\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"bytes\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getTxDataBlockNumber\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"blockNumber\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}]"
+const IPassportLogicContractABI = "[{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"address\"}],\"name\":\"setAddress\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"uint256\"}],\"name\":\"setUint\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"int256\"}],\"name\":\"setInt\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"bool\"}],\"name\":\"setBool\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"string\"}],\"name\":\"setString\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"bytes\"}],\"name\":\"setBytes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"setTxDataBlockNumber\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"string\"}],\"name\":\"setIPFSHash\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteAddress\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteUint\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteInt\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteBool\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteString\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteBytes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteTxDataBlockNumber\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteIPFSHash\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getAddress\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getUint\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getInt\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getBool\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getString\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getBytes\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"bytes\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getTxDataBlockNumber\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"blockNumber\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getIPFSHash\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}]"
 
 // IPassportLogicContract is an auto generated Go binding around an Ethereum contract.
 type IPassportLogicContract struct {
@@ -280,6 +280,42 @@ func (_IPassportLogicContract *IPassportLogicContractCallerSession) GetBytes(_fa
 	return _IPassportLogicContract.Contract.GetBytes(&_IPassportLogicContract.CallOpts, _factProvider, _key)
 }
 
+// GetIPFSHash is a free data retrieval call binding the contract method 0x22b96b63.
+//
+// Solidity: function getIPFSHash(_factProvider address, _key bytes32) constant returns(success bool, value string)
+func (_IPassportLogicContract *IPassportLogicContractCaller) GetIPFSHash(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
+	Success bool
+	Value   string
+}, error) {
+	ret := new(struct {
+		Success bool
+		Value   string
+	})
+	out := ret
+	err := _IPassportLogicContract.contract.Call(opts, out, "getIPFSHash", _factProvider, _key)
+	return *ret, err
+}
+
+// GetIPFSHash is a free data retrieval call binding the contract method 0x22b96b63.
+//
+// Solidity: function getIPFSHash(_factProvider address, _key bytes32) constant returns(success bool, value string)
+func (_IPassportLogicContract *IPassportLogicContractSession) GetIPFSHash(_factProvider common.Address, _key [32]byte) (struct {
+	Success bool
+	Value   string
+}, error) {
+	return _IPassportLogicContract.Contract.GetIPFSHash(&_IPassportLogicContract.CallOpts, _factProvider, _key)
+}
+
+// GetIPFSHash is a free data retrieval call binding the contract method 0x22b96b63.
+//
+// Solidity: function getIPFSHash(_factProvider address, _key bytes32) constant returns(success bool, value string)
+func (_IPassportLogicContract *IPassportLogicContractCallerSession) GetIPFSHash(_factProvider common.Address, _key [32]byte) (struct {
+	Success bool
+	Value   string
+}, error) {
+	return _IPassportLogicContract.Contract.GetIPFSHash(&_IPassportLogicContract.CallOpts, _factProvider, _key)
+}
+
 // GetInt is a free data retrieval call binding the contract method 0x95ee8bae.
 //
 // Solidity: function getInt(_factProvider address, _key bytes32) constant returns(success bool, value int256)
@@ -513,6 +549,27 @@ func (_IPassportLogicContract *IPassportLogicContractTransactorSession) DeleteBy
 	return _IPassportLogicContract.Contract.DeleteBytes(&_IPassportLogicContract.TransactOpts, _key)
 }
 
+// DeleteIPFSHash is a paid mutator transaction binding the contract method 0x257781e7.
+//
+// Solidity: function deleteIPFSHash(_key bytes32) returns()
+func (_IPassportLogicContract *IPassportLogicContractTransactor) DeleteIPFSHash(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
+	return _IPassportLogicContract.contract.Transact(opts, "deleteIPFSHash", _key)
+}
+
+// DeleteIPFSHash is a paid mutator transaction binding the contract method 0x257781e7.
+//
+// Solidity: function deleteIPFSHash(_key bytes32) returns()
+func (_IPassportLogicContract *IPassportLogicContractSession) DeleteIPFSHash(_key [32]byte) (*types.Transaction, error) {
+	return _IPassportLogicContract.Contract.DeleteIPFSHash(&_IPassportLogicContract.TransactOpts, _key)
+}
+
+// DeleteIPFSHash is a paid mutator transaction binding the contract method 0x257781e7.
+//
+// Solidity: function deleteIPFSHash(_key bytes32) returns()
+func (_IPassportLogicContract *IPassportLogicContractTransactorSession) DeleteIPFSHash(_key [32]byte) (*types.Transaction, error) {
+	return _IPassportLogicContract.Contract.DeleteIPFSHash(&_IPassportLogicContract.TransactOpts, _key)
+}
+
 // DeleteInt is a paid mutator transaction binding the contract method 0x8c160095.
 //
 // Solidity: function deleteInt(_key bytes32) returns()
@@ -658,6 +715,27 @@ func (_IPassportLogicContract *IPassportLogicContractSession) SetBytes(_key [32]
 // Solidity: function setBytes(_key bytes32, _value bytes) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactorSession) SetBytes(_key [32]byte, _value []byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.SetBytes(&_IPassportLogicContract.TransactOpts, _key, _value)
+}
+
+// SetIPFSHash is a paid mutator transaction binding the contract method 0x6bfc8bb5.
+//
+// Solidity: function setIPFSHash(_key bytes32, _value string) returns()
+func (_IPassportLogicContract *IPassportLogicContractTransactor) SetIPFSHash(opts *bind.TransactOpts, _key [32]byte, _value string) (*types.Transaction, error) {
+	return _IPassportLogicContract.contract.Transact(opts, "setIPFSHash", _key, _value)
+}
+
+// SetIPFSHash is a paid mutator transaction binding the contract method 0x6bfc8bb5.
+//
+// Solidity: function setIPFSHash(_key bytes32, _value string) returns()
+func (_IPassportLogicContract *IPassportLogicContractSession) SetIPFSHash(_key [32]byte, _value string) (*types.Transaction, error) {
+	return _IPassportLogicContract.Contract.SetIPFSHash(&_IPassportLogicContract.TransactOpts, _key, _value)
+}
+
+// SetIPFSHash is a paid mutator transaction binding the contract method 0x6bfc8bb5.
+//
+// Solidity: function setIPFSHash(_key bytes32, _value string) returns()
+func (_IPassportLogicContract *IPassportLogicContractTransactorSession) SetIPFSHash(_key [32]byte, _value string) (*types.Transaction, error) {
+	return _IPassportLogicContract.Contract.SetIPFSHash(&_IPassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetInt is a paid mutator transaction binding the contract method 0x3e49bed0.

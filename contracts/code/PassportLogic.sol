@@ -207,6 +207,10 @@ interface IPassportLogic {
     /// @param _key The key for the record
     function setTxDataBlockNumber(bytes32 _key, bytes _data) external;
 
+    /// @param _key The key for the record
+    /// @param _value The value for the record
+    function setIPFSHash(bytes32 _key, string _value) external;
+
     /**** Storage Delete Methods ***********/
 
     /// @param _key The key for the record
@@ -229,6 +233,9 @@ interface IPassportLogic {
 
     /// @param _key The key for the record
     function deleteTxDataBlockNumber(bytes32 _key) external;
+
+    /// @param _key The key for the record
+    function deleteIPFSHash(bytes32 _key) external;
 
     /**** Storage Get Methods ***********/
 
@@ -259,6 +266,10 @@ interface IPassportLogic {
     /// @param _factProvider The fact provider
     /// @param _key The key for the record
     function getTxDataBlockNumber(address _factProvider, bytes32 _key) external view returns (bool success, uint blockNumber);
+
+    /// @param _factProvider The fact provider
+    /// @param _key The key for the record
+    function getIPFSHash(address _factProvider, bytes32 _key) external view returns (bool success, string value);
 }
 
 // File: contracts/storage/Storage.sol
@@ -267,6 +278,10 @@ interface IPassportLogic {
 // Do not change the order of the fields, аdd new fields to the end of the contract!
 contract Storage is ClaimableProxy
 {
+    /***************************************************************************
+     *** STORAGE VARIABLES. DO NOT REORDER!!! ADD NEW VARIABLE TO THE END!!! ***
+     ***************************************************************************/
+
     struct AddressValue {
         bool initialized;
         address value;
@@ -318,6 +333,17 @@ contract Storage is ClaimableProxy
 
     bool private onlyFactProviderFromWhitelistAllowed;
     mapping(address => bool) private factProviderWhitelist;
+
+    struct IPFSHashValue {
+        bool initialized;
+        string value;
+    }
+
+    mapping(address => mapping(bytes32 => IPFSHashValue)) internal ipfsHashStorage;
+
+    /***************************************************************************
+     *** END OF SECTION OF STORAGE VARIABLES                                 ***
+     ***************************************************************************/
 
     event WhitelistOnlyPermissionSet(bool indexed onlyWhitelist);
     event WhitelistFactProviderAdded(address indexed factProvider);
@@ -669,6 +695,48 @@ contract TxDataStorageLogic is Storage {
     }
 }
 
+// File: contracts/storage/IPFSStorageLogic.sol
+
+contract IPFSStorageLogic is Storage {
+    event IPFSHashUpdated(address indexed factProvider, bytes32 indexed key);
+    event IPFSHashDeleted(address indexed factProvider, bytes32 indexed key);
+
+    /// @param _key The key for the record
+    /// @param _value The value for the record
+    function setIPFSHash(bytes32 _key, string _value) external {
+        _setIPFSHash(_key, _value);
+    }
+
+    /// @param _key The key for the record
+    function deleteIPFSHash(bytes32 _key) external {
+        _deleteIPFSHash(_key);
+    }
+
+    /// @param _factProvider The fact provider
+    /// @param _key The key for the record
+    function getIPFSHash(address _factProvider, bytes32 _key) external view returns (bool success, string value) {
+        return _getIPFSHash(_factProvider, _key);
+    }
+
+    function _setIPFSHash(bytes32 _key, string _value) allowedFactProvider internal {
+        ipfsHashStorage[msg.sender][_key] = IPFSHashValue({
+            initialized : true,
+            value : _value
+            });
+        emit IPFSHashUpdated(msg.sender, _key);
+    }
+
+    function _deleteIPFSHash(bytes32 _key) allowedFactProvider internal {
+        delete ipfsHashStorage[msg.sender][_key];
+        emit IPFSHashDeleted(msg.sender, _key);
+    }
+
+    function _getIPFSHash(address _factProvider, bytes32 _key) internal view returns (bool success, string value) {
+        IPFSHashValue storage initValue = ipfsHashStorage[_factProvider][_key];
+        return (initValue.initialized, initValue.value);
+    }
+}
+
 // File: contracts/PassportLogic.sol
 
 contract PassportLogic
@@ -681,4 +749,5 @@ is IPassportLogic
 , StringStorageLogic
 , BytesStorageLogic
 , TxDataStorageLogic
+, IPFSStorageLogic
 {}
