@@ -1,9 +1,9 @@
 package main
 
 import (
-	"bytes"
 	"flag"
 	"fmt"
+	"io"
 	"math/big"
 	"os"
 	"strconv"
@@ -21,6 +21,7 @@ import (
 	"gitlab.com/monetha/protocol-go-sdk/eth"
 	"gitlab.com/monetha/protocol-go-sdk/eth/backend"
 	"gitlab.com/monetha/protocol-go-sdk/facts"
+	"gitlab.com/monetha/protocol-go-sdk/ipfs"
 	"gitlab.com/monetha/protocol-go-sdk/types/data"
 )
 
@@ -48,6 +49,7 @@ func main() {
 		txHash       = cmdutils.HashVar("txhash", common.Hash{}, "the transaction hash to read history value from")
 		factTypeStr  = flag.String("ftype", "", fmt.Sprintf("the data type of fact (%v)", factSetStr))
 		fileName     = flag.String("out", "", "save retrieved data to the specified file")
+		ipfsURL      = flag.String("ipfsurl", "https://ipfs.infura.io:5001", "IPFS node address")
 		verbosity    = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
 		vmodule      = flag.String("vmodule", "", "log verbosity pattern")
 
@@ -84,15 +86,15 @@ func main() {
 		e *eth.Eth
 	)
 	if *backendURL == "" {
-		monethaKey, err := crypto.GenerateKey()
+		monethaKey, err := crypto.HexToECDSA("289c2857d4598e37fb9647507e47a309d6133539bf21a8b9cb6df88fd5232030")
 		cmdutils.CheckErr(err, "generating key")
 		monethaAddress := bind.NewKeyedTransactor(monethaKey).From
 
-		passportOwnerKey, err := crypto.GenerateKey()
+		passportOwnerKey, err := crypto.HexToECDSA("289c2857d4598e37fb9647507e47a309d6133539bf21a8b9cb6df88fd5232031")
 		cmdutils.CheckErr(err, "generating key")
 		passportOwnerAddress := bind.NewKeyedTransactor(passportOwnerKey).From
 
-		factProviderKey, err := crypto.GenerateKey()
+		factProviderKey, err := crypto.HexToECDSA("289c2857d4598e37fb9647507e47a309d6133539bf21a8b9cb6df88fd5232032")
 		cmdutils.CheckErr(err, "generating key")
 		factProviderAddress := bind.NewKeyedTransactor(factProviderKey).From
 
@@ -136,6 +138,7 @@ func main() {
 		cmdutils.CheckErr(ignoreHash(factProvider.WriteUint(ctx, passportAddress, factKey, big.NewInt(123456789))), "WriteUint")
 		cmdutils.CheckErr(ignoreHash(factProvider.WriteInt(ctx, passportAddress, factKey, big.NewInt(-987654321))), "WriteInt")
 		cmdutils.CheckErr(ignoreHash(factProvider.WriteBool(ctx, passportAddress, factKey, true)), "WriteBool")
+		cmdutils.CheckErr(ignoreHash(factProvider.WriteIPFSHash(ctx, passportAddress, factKey, "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j")), "WriteIPFSHash")
 
 		// some deletes
 		cmdutils.CheckErr(ignoreHash(factProvider.DeleteTxData(ctx, passportAddress, factKey)), "DeleteTxData")
@@ -145,6 +148,7 @@ func main() {
 		cmdutils.CheckErr(ignoreHash(factProvider.DeleteUint(ctx, passportAddress, factKey)), "DeleteUint")
 		cmdutils.CheckErr(ignoreHash(factProvider.DeleteInt(ctx, passportAddress, factKey)), "DeleteInt")
 		cmdutils.CheckErr(ignoreHash(factProvider.DeleteBool(ctx, passportAddress, factKey)), "DeleteBool")
+		cmdutils.CheckErr(ignoreHash(factProvider.DeleteIPFSHash(ctx, passportAddress, factKey)), "DeleteIPFSHash")
 	} else {
 		client, err := ethclient.Dial(*backendURL)
 		cmdutils.CheckErr(err, "ethclient.Dial")
@@ -164,43 +168,50 @@ func main() {
 
 	if txHash.IsSet() {
 		// read history value from transaction
-		buf := new(bytes.Buffer)
+		var fileOp fileOperation
 
 		switch factType {
 		case data.TxData:
 			hi, err := historian.GetHistoryItemOfWriteTxData(ctx, passportAddress, txHash.GetValue())
 			cmdutils.CheckErr(err, "GetHistoryItemOfWriteTxData")
-			buf.Write(hi.Data)
+			fileOp = writeBytes(hi.Data)
 		case data.String:
 			hi, err := historian.GetHistoryItemOfWriteString(ctx, passportAddress, txHash.GetValue())
 			cmdutils.CheckErr(err, "GetHistoryItemOfWriteString")
-			buf.WriteString(hi.Data)
+			fileOp = writeString(hi.Data)
 		case data.Bytes:
 			hi, err := historian.GetHistoryItemOfWriteBytes(ctx, passportAddress, txHash.GetValue())
 			cmdutils.CheckErr(err, "GetHistoryItemOfWriteBytes")
-			buf.Write(hi.Data)
+			fileOp = writeBytes(hi.Data)
 		case data.Address:
 			hi, err := historian.GetHistoryItemOfWriteAddress(ctx, passportAddress, txHash.GetValue())
 			cmdutils.CheckErr(err, "GetHistoryItemOfWriteAddress")
-			buf.WriteString(hi.Data.String())
+			fileOp = writeString(hi.Data.String())
 		case data.Uint:
 			hi, err := historian.GetHistoryItemOfWriteUint(ctx, passportAddress, txHash.GetValue())
 			cmdutils.CheckErr(err, "GetHistoryItemOfWriteUint")
-			buf.WriteString(hi.Data.String())
+			fileOp = writeString(hi.Data.String())
 		case data.Int:
 			hi, err := historian.GetHistoryItemOfWriteInt(ctx, passportAddress, txHash.GetValue())
 			cmdutils.CheckErr(err, "GetHistoryItemOfWriteInt")
-			buf.WriteString(hi.Data.String())
+			fileOp = writeString(hi.Data.String())
 		case data.Bool:
 			hi, err := historian.GetHistoryItemOfWriteBool(ctx, passportAddress, txHash.GetValue())
 			cmdutils.CheckErr(err, "GetHistoryItemOfWriteBool")
-			buf.WriteString(strconv.FormatBool(hi.Data))
+			fileOp = writeString(strconv.FormatBool(hi.Data))
+		case data.IPFS:
+			hi, err := historian.GetHistoryItemOfWriteIPFSHash(ctx, passportAddress, txHash.GetValue())
+			cmdutils.CheckErr(err, "GetHistoryItemOfWriteIPFSHash")
+			rc, err := ipfs.
+				New(*ipfsURL).
+				Cat(ctx, hi.Hash)
+			cmdutils.CheckErr(err, "IPFS.Cat")
+			fileOp = writeReader(rc)
 		default:
 			cmdutils.CheckErr(fmt.Errorf("unsupported fact type: %v", factType.String()), "reading by type")
 		}
 
-		_, err = buf.WriteTo(f)
-		cmdutils.CheckErr(err, "Write to file")
+		cmdutils.CheckErr(fileOp(f), "Write to file")
 	} else {
 		// read the whole history
 		_, err = f.WriteString("fact_provider,key,data_type,change_type,block_number,tx_hash\n")
@@ -219,4 +230,30 @@ func main() {
 
 func ignoreHash(_ common.Hash, err error) error {
 	return err
+}
+
+type fileOperation func(f *os.File) error
+
+func writeBytes(b []byte) fileOperation {
+	return func(f *os.File) error {
+		_, err := f.Write(b)
+		return err
+	}
+}
+
+func writeString(s string) fileOperation {
+	return func(f *os.File) error {
+		_, err := f.WriteString(s)
+		return err
+	}
+}
+
+func writeReader(r io.Reader) fileOperation {
+	return func(f *os.File) error {
+		_, err := io.Copy(f, r)
+		if rc, ok := r.(io.Closer); ok {
+			_ = rc.Close()
+		}
+		return err
+	}
 }
