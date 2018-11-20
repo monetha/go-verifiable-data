@@ -76,6 +76,8 @@ func (e Elt) SetInnerHTML(s string) { e.Set("innerHTML", s) }
 
 func (e Elt) SetAttribute(k, v string) { e.Call("setAttribute", k, v) }
 
+func (e Elt) RemoveAttribute(k string) { e.Call("removeAttribute", k) }
+
 func (e Elt) SetClass(c string) { e.SetAttribute("class", c) }
 
 func (e Elt) GetClass() *string {
@@ -121,6 +123,11 @@ func (e Elt) SetRole(r string) { e.SetAttribute("role", r) }
 
 func (e Elt) WithAttribute(k, v string) Elt {
 	e.SetAttribute(k, v)
+	return e
+}
+
+func (e Elt) WithAttributeRemoved(k string) Elt {
+	e.RemoveAttribute(k)
 	return e
 }
 

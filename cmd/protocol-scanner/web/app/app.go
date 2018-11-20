@@ -226,6 +226,10 @@ func keyToString(key [32]byte) string {
 	return string(bytes.Trim(key[:], "\x00"))
 }
 
+func ipfsHashToUrl(hash string) string {
+	return fmt.Sprintf("https://ipfs.io/ipfs/%s", html.EscapeString(hash))
+}
+
 func (a *App) setupOnReadHistoryValue() {
 	a.readHistoryValueCb = js.NewCallback(func(args []js.Value) {
 		if len(args) != 5 {
@@ -271,10 +275,19 @@ func (a *App) setupOnReadHistoryValue() {
 					"fact_provider", hi.FactProvider.Hex(),
 					"key", string(hi.Key[:]))
 
-				filename := txHash.Hex() + "_" + keyToString(hi.Key)
-				btn.WithClass("btn btn-success").
-					WithAttribute("download", filename).
-					WithAttribute("onClick", getDownloadValueCallbackText(filename, hi.Value))
+				switch dataType {
+				case data.IPFS:
+					hash := string(hi.Value)
+					btn.WithClass("btn btn-success").
+						WithAttribute("href", ipfsHashToUrl(hash)).
+						WithAttribute("target", "_blank").
+						WithAttributeRemoved("onClick")
+				default:
+					filename := txHash.Hex() + "_" + keyToString(hi.Key)
+					btn.WithClass("btn btn-success").
+						WithAttribute("download", filename).
+						WithAttribute("onClick", getDownloadValueCallbackText(filename, hi.Value))
+				}
 				btn.Call("click")
 			},
 		})

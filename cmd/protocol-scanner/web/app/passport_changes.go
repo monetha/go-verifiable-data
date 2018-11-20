@@ -211,6 +211,18 @@ func (f *passportChangesGetter) GetHistoryItemAsync(passportAddress common.Addre
 				Value:        buf.Bytes(),
 			})
 
+		case data.IPFS:
+			hi, err := historian.GetHistoryItemOfWriteIPFSHash(ctx, passportAddress, txHash)
+			if err != nil {
+				return fmt.Errorf("Historian.GetHistoryItemOfWriteIPFSHash(): %v", err)
+			}
+			buf.WriteString(hi.Hash)
+			onNext(&historyItem{
+				FactProvider: hi.FactProvider,
+				Key:          hi.Key,
+				Value:        buf.Bytes(),
+			})
+
 		default:
 			return fmt.Errorf("unsupported fact type: %v", factType.String())
 		}
