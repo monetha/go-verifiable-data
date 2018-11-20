@@ -19,6 +19,8 @@ func TestIPFS_Cat(t *testing.T) {
 
 	fs := ipfs.NewWithClient("https://ipfs.infura.io:5001",
 		newTestClient(func(req *http.Request) *http.Response {
+			defer cleanUpRequest(req)
+
 			if req.Method != "POST" {
 				return httpResponse(http.StatusMethodNotAllowed, `method not allowed`)
 			}
@@ -51,6 +53,15 @@ func TestIPFS_Cat(t *testing.T) {
 	}
 
 	is.Equal(expectedStr, actualStr)
+}
+
+func cleanUpRequest(req *http.Request) {
+	if req != nil {
+		if rb := req.Body; rb != nil {
+			_, _ = io.Copy(ioutil.Discard, rb)
+			_ = rb.Close()
+		}
+	}
 }
 
 func copyToString(r io.Reader) (res string, err error) {

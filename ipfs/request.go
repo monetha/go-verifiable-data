@@ -49,7 +49,7 @@ type response struct {
 func (r *response) Close() error {
 	if r.Output != nil {
 		// always drain output (response body)
-		ioutil.ReadAll(r.Output)
+		io.Copy(ioutil.Discard, r.Output)
 		return r.Output.Close()
 	}
 	return nil
@@ -141,7 +141,7 @@ func (r *request) Send(ctx context.Context, c *http.Client) (*response, error) {
 		nresp.Output = nil
 
 		// drain body and close
-		ioutil.ReadAll(resp.Body)
+		io.Copy(ioutil.Discard, resp.Body)
 		resp.Body.Close()
 	}
 
