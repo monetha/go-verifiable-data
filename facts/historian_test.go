@@ -31,6 +31,7 @@ func TestHistorian_FilterChanges(t *testing.T) {
 	provider.WriteInt(ctx, passportAddress, key, big.NewInt(-123456))
 	provider.WriteUint(ctx, passportAddress, key, big.NewInt(123456))
 	provider.WriteBool(ctx, passportAddress, key, true)
+	provider.WriteIPFSHash(ctx, passportAddress, key, "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j")
 
 	// make some deletes
 	provider.DeleteTxData(ctx, passportAddress, key)
@@ -40,6 +41,7 @@ func TestHistorian_FilterChanges(t *testing.T) {
 	provider.DeleteInt(ctx, passportAddress, key)
 	provider.DeleteUint(ctx, passportAddress, key)
 	provider.DeleteBool(ctx, passportAddress, key)
+	provider.DeleteIPFSHash(ctx, passportAddress, key)
 
 	eth := factProviderSession.Eth
 	hist := facts.NewHistorian(eth)
@@ -55,12 +57,14 @@ func TestHistorian_FilterChanges(t *testing.T) {
 		{"filter address update", change.Updated, data.Address},
 		{"filter int update", change.Updated, data.Int},
 		{"filter bool update", change.Updated, data.Bool},
+		{"filter ipfs hash update", change.Updated, data.IPFS},
 		{"filter txdata delete", change.Updated, data.TxData},
 		{"filter bytes delete", change.Deleted, data.Bytes},
 		{"filter string delete", change.Deleted, data.String},
 		{"filter address delete", change.Deleted, data.Address},
 		{"filter int delete", change.Deleted, data.Int},
 		{"filter bool delete", change.Deleted, data.Bool},
+		{"filter ipfs hash delete", change.Deleted, data.IPFS},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -151,6 +155,14 @@ func (c *providerChanges) WriteBool(ctx context.Context, passportAddress common.
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Updated, DataType: data.Bool, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
 
+func (c *providerChanges) WriteIPFSHash(ctx context.Context, passportAddress common.Address, key [32]byte, value string) {
+	txHash, err := c.p.WriteIPFSHash(ctx, passportAddress, key, value)
+	if err != nil {
+		c.t.Fatalf("Provider.WriteIPFSHash() error = %v", err)
+	}
+	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Updated, DataType: data.IPFS, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
+}
+
 func (c *providerChanges) DeleteTxData(ctx context.Context, passportAddress common.Address, key [32]byte) {
 	txHash, err := c.p.DeleteTxData(ctx, passportAddress, key)
 	if err != nil {
@@ -205,6 +217,14 @@ func (c *providerChanges) DeleteBool(ctx context.Context, passportAddress common
 		c.t.Fatalf("Provider.DeleteBool() error = %v", err)
 	}
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Deleted, DataType: data.Bool, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
+}
+
+func (c *providerChanges) DeleteIPFSHash(ctx context.Context, passportAddress common.Address, key [32]byte) {
+	txHash, err := c.p.DeleteIPFSHash(ctx, passportAddress, key)
+	if err != nil {
+		c.t.Fatalf("Provider.DeleteIPFSHash() error = %v", err)
+	}
+	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Deleted, DataType: data.IPFS, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
 
 func testFilterChangesExactOne(t *testing.T, hist *facts.Historian, changeType change.Type, dataType data.Type, passportAddress common.Address, factProviderAddress common.Address, key [32]byte, allChanges []changeDetails) {
@@ -502,6 +522,30 @@ func TestHistorian_GetHistoryItemOfWriteBool(t *testing.T) {
 	}
 
 	hi, err := facts.NewHistorian(factProviderSession.Eth).GetHistoryItemOfWriteBool(ctx, passportAddress, txHash)
+
+	if diff := deep.Equal(ehi, hi); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestHistorian_GetHistoryItemOfWriteIPFSHash(t *testing.T) {
+	ctx := context.Background()
+
+	passportAddress, factProviderSession := createPassportAndFactProviderSession(ctx, t)
+	ehi := &facts.WriteIPFSHashHistoryItem{
+		FactProvider: factProviderSession.TransactOpts.From,
+		Key:          [32]byte{1, 2, 3, 4, 5, 6, 7, 8, 9},
+		Hash:         "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j",
+	}
+
+	provider := facts.NewProvider(factProviderSession)
+
+	txHash, err := provider.WriteIPFSHash(ctx, passportAddress, ehi.Key, ehi.Hash)
+	if err != nil {
+		t.Errorf("Provider.WriteIPFSHash() errro = %v", err)
+	}
+
+	hi, err := facts.NewHistorian(factProviderSession.Eth).GetHistoryItemOfWriteIPFSHash(ctx, passportAddress, txHash)
 
 	if diff := deep.Equal(ehi, hi); diff != nil {
 		t.Error(diff)

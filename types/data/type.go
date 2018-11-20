@@ -21,4 +21,6 @@ const (
 	Int Type = iota
 	// Bool stored in Ethereum storage
 	Bool Type = iota
+	// IPFS hash stored in Ethereum storage, data stored in IPFS
+	IPFS Type = iota
 )

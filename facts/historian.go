@@ -168,6 +168,7 @@ var (
 			data.String:  "StringDeleted",
 			data.TxData:  "TxDataDeleted",
 			data.Uint:    "UintDeleted",
+			data.IPFS:    "IPFSHashDeleted",
 		},
 		change.Updated: {
 			data.Address: "AddressUpdated",
@@ -177,6 +178,7 @@ var (
 			data.String:  "StringUpdated",
 			data.TxData:  "TxDataUpdated",
 			data.Uint:    "UintUpdated",
+			data.IPFS:    "IPFSHashUpdated",
 		},
 	}
 )
@@ -339,6 +341,13 @@ type (
 		Key          [32]byte
 		Data         bool
 	}
+
+	// WriteIPFSHashHistoryItem holds parameters of WriteIPFSHash call
+	WriteIPFSHashHistoryItem struct {
+		FactProvider common.Address
+		Key          [32]byte
+		Hash         string
+	}
 )
 
 // GetHistoryItemOfWriteTxData returns the data value that was set in the given transaction.
@@ -471,6 +480,25 @@ func (h *Historian) GetHistoryItemOfWriteBool(ctx context.Context, passport comm
 		FactProvider: from,
 		Key:          params.Key,
 		Data:         params.Data,
+	}, nil
+}
+
+// GetHistoryItemOfWriteIPFSHash returns the IPFS hash value that was set in the given transaction.
+func (h *Historian) GetHistoryItemOfWriteIPFSHash(ctx context.Context, passport common.Address, txHash common.Hash) (*WriteIPFSHashHistoryItem, error) {
+	from, txData, err := h.getTransactionSenderData(ctx, txHash)
+	if err != nil {
+		return nil, err
+	}
+
+	params, err := txdata.ParseSetIPFSHashCallData(txData)
+	if err != nil {
+		return nil, err
+	}
+
+	return &WriteIPFSHashHistoryItem{
+		FactProvider: from,
+		Key:          params.Key,
+		Hash:         params.Hash,
 	}, nil
 }
 
