@@ -1,5 +1,6 @@
-# Monetha: Decentralized Reputation Platform
-# go-sdk
+# Monetha: Decentralized Reputation Framework
+
+# Reputation Layer: go-sdk
 
 * [Building the source](#building-the-source)
     * [Prerequisites](#prerequisites)
