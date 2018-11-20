@@ -58,7 +58,7 @@ func (f *IPFS) Add(ctx context.Context, r io.Reader) (string, error) {
 		Option("progress", false).
 		Option("pin", true).
 		Body(fileReader).
-		Exec(context.Background(), &out)
+		Exec(ctx, &out)
 }
 
 // Cat the content at the given path. Callers need to drain and close the returned reader after usage.
