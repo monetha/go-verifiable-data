@@ -53,7 +53,7 @@ func main() {
 		factTypeStr  = flag.String("ftype", "", fmt.Sprintf("the data type of fact (%v)", factSetStr))
 		ownerKeyFile = flag.String("ownerkey", "", "fact provider private key filename")
 		ownerKeyHex  = flag.String("ownerkeyhex", "", "fact provider private key as hex (for testing)")
-		ipfsUrl      = flag.String("ipfsurl", "https://ipfs.infura.io:5001", "IPFS node address")
+		ipfsURL      = flag.String("ipfsurl", "https://ipfs.infura.io:5001", "IPFS node address")
 		verbosity    = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
 		vmodule      = flag.String("vmodule", "", "log verbosity pattern")
 
@@ -209,7 +209,7 @@ func main() {
 		cmdutils.CheckErr(ignoreHash(provider.WriteBool(ctx, passportAddress, factKey, factBool)), "WriteBool")
 	case data.IPFS:
 		hash, err := ipfs.
-			New(*ipfsUrl).
+			New(*ipfsURL).
 			Add(ctx, os.Stdin)
 		cmdutils.CheckErr(err, "IPFS add")
 		cmdutils.CheckErr(ignoreHash(provider.WriteIPFSHash(ctx, passportAddress, factKey, hash)), "WriteIPFSHash")

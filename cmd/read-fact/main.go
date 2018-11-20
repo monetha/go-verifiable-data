@@ -50,7 +50,7 @@ func main() {
 		factKeyStr       = flag.String("fkey", "", "the key of the fact (max. 32 bytes)")
 		factTypeStr      = flag.String("ftype", "", fmt.Sprintf("the data type of fact (%v)", factSetStr))
 		fileName         = flag.String("out", "", "save retrieved data to the specified file")
-		ipfsUrl          = flag.String("ipfsurl", "https://ipfs.infura.io:5001", "IPFS node address")
+		ipfsURL          = flag.String("ipfsurl", "https://ipfs.infura.io:5001", "IPFS node address")
 		verbosity        = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
 		vmodule          = flag.String("vmodule", "", "log verbosity pattern")
 
@@ -208,7 +208,7 @@ func main() {
 		hash, err := factReader.ReadIPFSHash(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadIPFSHash")
 		rc, err := ipfs.
-			New(*ipfsUrl).
+			New(*ipfsURL).
 			Cat(ctx, hash)
 		cmdutils.CheckErr(err, "IPFS.Cat")
 		fileOp = writeReader(rc)
