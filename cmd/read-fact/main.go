@@ -1,9 +1,9 @@
 package main
 
 import (
-	"bytes"
 	"flag"
 	"fmt"
+	"io"
 	"math/big"
 	"os"
 	"strconv"
@@ -21,6 +21,7 @@ import (
 	"gitlab.com/monetha/protocol-go-sdk/eth"
 	"gitlab.com/monetha/protocol-go-sdk/eth/backend"
 	"gitlab.com/monetha/protocol-go-sdk/facts"
+	"gitlab.com/monetha/protocol-go-sdk/ipfs"
 	"gitlab.com/monetha/protocol-go-sdk/types/data"
 )
 
@@ -49,6 +50,7 @@ func main() {
 		factKeyStr       = flag.String("fkey", "", "the key of the fact (max. 32 bytes)")
 		factTypeStr      = flag.String("ftype", "", fmt.Sprintf("the data type of fact (%v)", factSetStr))
 		fileName         = flag.String("out", "", "save retrieved data to the specified file")
+		ipfsUrl          = flag.String("ipfsurl", "https://ipfs.infura.io:5001", "IPFS node address")
 		verbosity        = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
 		vmodule          = flag.String("vmodule", "", "log verbosity pattern")
 
@@ -159,6 +161,9 @@ func main() {
 
 		_, err = factProvider.WriteBool(ctx, passportAddress, factKey, true)
 		cmdutils.CheckErr(err, "WriteBool")
+
+		_, err = factProvider.WriteIPFSHash(ctx, passportAddress, factKey, "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j")
+		cmdutils.CheckErr(err, "WriteIPFSHash")
 	} else {
 		client, err := ethclient.Dial(*backendURL)
 		cmdutils.CheckErr(err, "ethclient.Dial")
@@ -168,37 +173,45 @@ func main() {
 	}
 
 	factReader := facts.NewReader(e)
-	buf := new(bytes.Buffer)
+	var fileOp fileOperation
 
 	switch factType {
 	case data.TxData:
 		data, err := factReader.ReadTxData(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadTxData")
-		buf.Write(data)
+		fileOp = writeBytes(data)
 	case data.String:
 		data, err := factReader.ReadString(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadString")
-		buf.WriteString(data)
+		fileOp = writeString(data)
 	case data.Bytes:
 		data, err := factReader.ReadBytes(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadBytes")
-		buf.Write(data)
+		fileOp = writeBytes(data)
 	case data.Address:
 		data, err := factReader.ReadAddress(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadAddress")
-		buf.WriteString(data.String())
+		fileOp = writeString(data.String())
 	case data.Uint:
 		data, err := factReader.ReadUint(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadUint")
-		buf.WriteString(data.String())
+		fileOp = writeString(data.String())
 	case data.Int:
 		data, err := factReader.ReadInt(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadInt")
-		buf.WriteString(data.String())
+		fileOp = writeString(data.String())
 	case data.Bool:
 		data, err := factReader.ReadBool(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadBool")
-		buf.WriteString(strconv.FormatBool(data))
+		fileOp = writeString(strconv.FormatBool(data))
+	case data.IPFS:
+		hash, err := factReader.ReadIPFSHash(ctx, passportAddress, factProviderAddress, factKey)
+		cmdutils.CheckErr(err, "ReadIPFSHash")
+		rc, err := ipfs.
+			New(*ipfsUrl).
+			Cat(ctx, hash)
+		cmdutils.CheckErr(err, "IPFS.Cat")
+		fileOp = writeReader(rc)
 	default:
 		cmdutils.CheckErr(fmt.Errorf("unsupported fact type: %v", factType.String()), "reading by type")
 	}
@@ -209,8 +222,33 @@ func main() {
 	cmdutils.CheckErr(err, "Create file")
 	defer f.Close()
 
-	_, err = buf.WriteTo(f)
-	cmdutils.CheckErr(err, "Write to file")
+	cmdutils.CheckErr(fileOp(f), "Write to file")
 
 	log.Warn("Done.")
+}
+
+type fileOperation func(f *os.File) error
+
+func writeBytes(b []byte) fileOperation {
+	return func(f *os.File) error {
+		_, err := f.Write(b)
+		return err
+	}
+}
+
+func writeString(s string) fileOperation {
+	return func(f *os.File) error {
+		_, err := f.WriteString(s)
+		return err
+	}
+}
+
+func writeReader(r io.Reader) fileOperation {
+	return func(f *os.File) error {
+		_, err := io.Copy(f, r)
+		if rc, ok := r.(io.Closer); ok {
+			_ = rc.Close()
+		}
+		return err
+	}
 }

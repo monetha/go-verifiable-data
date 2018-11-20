@@ -24,6 +24,7 @@ import (
 	"gitlab.com/monetha/protocol-go-sdk/eth"
 	"gitlab.com/monetha/protocol-go-sdk/eth/backend"
 	"gitlab.com/monetha/protocol-go-sdk/facts"
+	"gitlab.com/monetha/protocol-go-sdk/ipfs"
 	"gitlab.com/monetha/protocol-go-sdk/types/data"
 )
 
@@ -52,6 +53,7 @@ func main() {
 		factTypeStr  = flag.String("ftype", "", fmt.Sprintf("the data type of fact (%v)", factSetStr))
 		ownerKeyFile = flag.String("ownerkey", "", "fact provider private key filename")
 		ownerKeyHex  = flag.String("ownerkeyhex", "", "fact provider private key as hex (for testing)")
+		ipfsUrl      = flag.String("ipfsurl", "https://ipfs.infura.io:5001", "IPFS node address")
 		verbosity    = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
 		vmodule      = flag.String("vmodule", "", "log verbosity pattern")
 
@@ -190,7 +192,6 @@ func main() {
 	// TODO: check balance
 
 	provider := facts.NewProvider(factProviderSession)
-
 	switch factType {
 	case data.TxData:
 		cmdutils.CheckErr(ignoreHash(provider.WriteTxData(ctx, passportAddress, factKey, factBytes)), "WriteTxData")
@@ -206,6 +207,12 @@ func main() {
 		cmdutils.CheckErr(ignoreHash(provider.WriteInt(ctx, passportAddress, factKey, factInt)), "WriteInt")
 	case data.Bool:
 		cmdutils.CheckErr(ignoreHash(provider.WriteBool(ctx, passportAddress, factKey, factBool)), "WriteBool")
+	case data.IPFS:
+		hash, err := ipfs.
+			New(*ipfsUrl).
+			Add(ctx, os.Stdin)
+		cmdutils.CheckErr(err, "IPFS add")
+		cmdutils.CheckErr(ignoreHash(provider.WriteIPFSHash(ctx, passportAddress, factKey, hash)), "WriteIPFSHash")
 	default:
 		cmdutils.CheckErr(fmt.Errorf("unsupported fact type: %v", factType.String()), "writing by type")
 	}
