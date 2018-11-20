@@ -384,3 +384,54 @@ func TestFactReader_ReadBool(t *testing.T) {
 		}
 	})
 }
+
+func TestReader_ReadIPFSHash(t *testing.T) {
+	tests := []struct {
+		name string
+		key  [32]byte
+		data string
+	}{
+		{"test 1", [32]byte{}, "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j"},
+		{"test 2", [32]byte{9, 8, 7, 6}, "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ctx := context.Background()
+
+			passportAddress, factProviderSession := createPassportAndFactProviderSession(ctx, t)
+
+			e := factProviderSession.Eth
+			factProviderAddress := factProviderSession.TransactOpts.From
+
+			_, err := facts.NewProvider(factProviderSession).WriteIPFSHash(ctx, passportAddress, tt.key, tt.data)
+			if err != nil {
+				t.Errorf("Provider.WriteIPFSHash() error = %v", err)
+			}
+
+			readData, err := facts.NewReader(e).ReadIPFSHash(ctx, passportAddress, factProviderAddress, tt.key)
+			if err != nil {
+				t.Errorf("Reader.ReadIPFSHash() error = %v", err)
+			}
+
+			if tt.data != readData {
+				t.Errorf("Expected data = %v, read data = %v", tt.data, readData)
+			}
+		})
+	}
+
+	t.Run("reading non existing key value", func(t *testing.T) {
+		ctx := context.Background()
+
+		passportAddress, factProviderSession := createPassportAndFactProviderSession(ctx, t)
+
+		e := factProviderSession.Eth
+		factProviderAddress := factProviderSession.TransactOpts.From
+
+		key := [32]byte{1, 2, 3}
+
+		_, err := facts.NewReader(e).ReadIPFSHash(ctx, passportAddress, factProviderAddress, key)
+		if err != ethereum.NotFound {
+			t.Errorf("Reader.ReadIPFSHash() expecting error = %v, got error = %v", ethereum.NotFound, err)
+		}
+	})
+}

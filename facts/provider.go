@@ -207,6 +207,26 @@ func (p *Provider) WriteBool(ctx context.Context, passportAddress common.Address
 	return txHash, err
 }
 
+// WriteIPFSHash writes IPFS hash for specific key (uses Ethereum storage to store the hash)
+func (p *Provider) WriteIPFSHash(ctx context.Context, passportAddress common.Address, key [32]byte, hash string) (common.Hash, error) {
+	factProviderAuth := &p.TransactOpts
+
+	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	if err != nil {
+		return common.Hash{}, err
+	}
+
+	p.Log("Writing IPFS hash to passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	tx, err := c.SetIPFSHash(factProviderAuth, key, hash)
+	if err != nil {
+		return common.Hash{}, fmt.Errorf("facts: SetIPFSHash: %v", err)
+	}
+	txHash := tx.Hash()
+	_, err = p.WaitForTxReceipt(ctx, txHash)
+
+	return txHash, err
+}
+
 // DeleteTxData deletes tx data for the specific key
 func (p *Provider) DeleteTxData(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
@@ -340,6 +360,26 @@ func (p *Provider) DeleteBool(ctx context.Context, passportAddress common.Addres
 	tx, err := c.DeleteBool(factProviderAuth, key)
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: DeleteBool: %v", err)
+	}
+	txHash := tx.Hash()
+	_, err = p.WaitForTxReceipt(ctx, txHash)
+
+	return txHash, err
+}
+
+// DeleteIPFSHash deletes IPFS hash for the specific key
+func (p *Provider) DeleteIPFSHash(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
+	factProviderAuth := &p.TransactOpts
+
+	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	if err != nil {
+		return common.Hash{}, err
+	}
+
+	p.Log("Deleting IPFS hash from passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	tx, err := c.DeleteIPFSHash(factProviderAuth, key)
+	if err != nil {
+		return common.Hash{}, fmt.Errorf("facts: DeleteIPFSHash: %v", err)
 	}
 	txHash := tx.Hash()
 	_, err = p.WaitForTxReceipt(ctx, txHash)

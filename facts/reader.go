@@ -241,3 +241,27 @@ func (r *Reader) ReadBool(ctx context.Context, passport common.Address, factProv
 
 	return res.Value, nil
 }
+
+// ReadIPFSHash reads the IPFS hash from the specific key of the given data provider.
+// `ethereum.NotFound` error returned in case no value exists for the given key.
+func (r *Reader) ReadIPFSHash(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (string, error) {
+	backend := r.Backend
+
+	var res struct {
+		Success bool
+		Value   string
+	}
+
+	(*eth.Eth)(r).Log("Getting IPFS hash", "fact_provider", factProvider, "key", key)
+	res, err := contracts.InitPassportLogicContract(passport, backend).GetIPFSHash(&bind.CallOpts{Context: ctx}, factProvider, key)
+	if err != nil {
+		return "", fmt.Errorf("facts: GetBool: %v", err)
+	}
+	// check if block number exists for the key
+	if !res.Success {
+		// no data
+		return "", ethereum.NotFound
+	}
+
+	return res.Value, nil
+}
