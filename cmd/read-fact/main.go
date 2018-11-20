@@ -206,6 +206,8 @@ func main() {
 		fileOp = writeString(strconv.FormatBool(data))
 	case data.IPFS:
 		hash, err := factReader.ReadIPFSHash(ctx, passportAddress, factProviderAddress, factKey)
+
+		log.Warn("Reading from IPFS...", "hash", hash)
 		cmdutils.CheckErr(err, "ReadIPFSHash")
 		rc, err := ipfs.
 			New(*ipfsURL).

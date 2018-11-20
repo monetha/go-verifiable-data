@@ -202,6 +202,8 @@ func main() {
 		case data.IPFS:
 			hi, err := historian.GetHistoryItemOfWriteIPFSHash(ctx, passportAddress, txHash.GetValue())
 			cmdutils.CheckErr(err, "GetHistoryItemOfWriteIPFSHash")
+
+			log.Warn("Reading from IPFS...", "hash", hi.Hash)
 			rc, err := ipfs.
 				New(*ipfsURL).
 				Cat(ctx, hi.Hash)
