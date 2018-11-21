@@ -179,6 +179,12 @@ func (e Elt) AsAnchor() A {
 
 func Text(s string) Elt { return Elt{NodeBase{Document.Call("createTextNode", s)}} }
 
+func Span(s string) Elt {
+	sp := Element("span")
+	sp.SetInnerHTML(s)
+	return sp
+}
+
 func Label(s string) Elt {
 	l := Element("label")
 	l.SetInnerHTML(s)

@@ -104,10 +104,10 @@ func (a *App) setupOnClickGetPassportList() *App {
 			OnNextFun: func(p *passfactory.Passport) {
 				a.Log("next passport", "contract_address", p.ContractAddress.Hex(), "first_owner_address", p.FirstOwner.Hex(), "block_number", p.Raw.BlockNumber, "tx_hash", p.Raw.TxHash.Hex())
 				resultTable.AppendRow(
-					dom.Text(p.ContractAddress.Hex()),
-					dom.Text(p.FirstOwner.Hex()),
-					dom.Text(strconv.FormatUint(p.Raw.BlockNumber, 10)),
-					dom.Text(p.Raw.TxHash.Hex()),
+					dom.Span(p.ContractAddress.Hex()).WithClass("text-monospace"),
+					dom.Span(p.FirstOwner.Hex()).WithClass("text-monospace"),
+					dom.Span(strconv.FormatUint(p.Raw.BlockNumber, 10)).WithClass("text-monospace"),
+					dom.Span(p.Raw.TxHash.Hex()).WithClass("text-monospace"),
 				)
 			},
 		})
@@ -199,13 +199,13 @@ func (a *App) setupOnClickGetPassportChanges() *App {
 				}
 
 				resultTable.AppendRow(
-					dom.Text(factProviderAddress),
+					dom.Span(factProviderAddress).WithClass("text-monospace"),
 					dom.Text(key),
 					dom.Text(dataType),
 					dom.Text(changeType),
 					valueElt,
-					dom.Text(blockNumber),
-					dom.Text(txHash),
+					dom.Span(blockNumber).WithClass("text-monospace"),
+					dom.Span(txHash).WithClass("text-monospace"),
 				)
 			},
 		})
