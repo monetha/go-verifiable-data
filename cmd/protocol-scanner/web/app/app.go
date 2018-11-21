@@ -9,6 +9,7 @@ import (
 	"html"
 	"io"
 	"strconv"
+	"strings"
 	"syscall/js"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -56,6 +57,7 @@ func (a *App) setupOnClickGetPassportList() *App {
 		passportFactoryAddress := common.HexToAddress(passportFactoryAddressStr)
 
 		backendURL := a.BackendURLInput.Value()
+		networkType := getNetworkType(backendURL)
 
 		resultStatusDiv := dom.Div().
 			WithClass("col-12 alert alert-primary").
@@ -102,12 +104,17 @@ func (a *App) setupOnClickGetPassportList() *App {
 				resultStatusDiv.Remove()
 			},
 			OnNextFun: func(p *passfactory.Passport) {
-				a.Log("next passport", "contract_address", p.ContractAddress.Hex(), "first_owner_address", p.FirstOwner.Hex(), "block_number", p.Raw.BlockNumber, "tx_hash", p.Raw.TxHash.Hex())
+				contractAddress := p.ContractAddress.Hex()
+				firstOwnerAddress := p.FirstOwner.Hex()
+				blockNumber := strconv.FormatUint(p.Raw.BlockNumber, 10)
+				txHash := p.Raw.TxHash.Hex()
+
+				a.Log("next passport", "contract_address", contractAddress, "first_owner_address", firstOwnerAddress, "block_number", blockNumber, "tx_hash", txHash)
 				resultTable.AppendRow(
-					dom.Span(p.ContractAddress.Hex()).WithClass("text-monospace"),
-					dom.Span(p.FirstOwner.Hex()).WithClass("text-monospace"),
-					dom.Span(strconv.FormatUint(p.Raw.BlockNumber, 10)).WithClass("text-monospace"),
-					dom.Span(p.Raw.TxHash.Hex()).WithClass("text-monospace"),
+					networkType.CreateAddressLink(contractAddress),
+					networkType.CreateAddressLink(firstOwnerAddress),
+					networkType.CreateBlockLink(blockNumber),
+					networkType.CreateTxLink(txHash),
 				)
 			},
 		})
@@ -124,6 +131,7 @@ func (a *App) setupOnClickGetPassportChanges() *App {
 		passportAddress := common.HexToAddress(passportAddressStr)
 
 		backendURL := a.BackendURLInput.Value()
+		networkType := getNetworkType(backendURL)
 
 		resultStatusDiv := dom.Div().
 			WithClass("col-12 alert alert-primary").
@@ -199,13 +207,13 @@ func (a *App) setupOnClickGetPassportChanges() *App {
 				}
 
 				resultTable.AppendRow(
-					dom.Span(factProviderAddress).WithClass("text-monospace"),
+					networkType.CreateAddressLink(factProviderAddress),
 					dom.Text(key),
 					dom.Text(dataType),
 					dom.Text(changeType),
 					valueElt,
-					dom.Span(blockNumber).WithClass("text-monospace"),
-					dom.Span(txHash).WithClass("text-monospace"),
+					networkType.CreateBlockLink(blockNumber),
+					networkType.CreateTxLink(txHash),
 				)
 			},
 		})
@@ -319,4 +327,68 @@ func (a *App) Close() error {
 	a.readHistoryValueCb.Release()
 
 	return nil
+}
+
+type network interface {
+	CreateAddressLink(address string) dom.Elt
+	CreateBlockLink(block string) dom.Elt
+	CreateTxLink(txHash string) dom.Elt
+}
+
+type unknownNetwork struct{}
+
+func (unknownNetwork) CreateAddressLink(address string) dom.Elt { return monospaceText(address) }
+
+func (unknownNetwork) CreateBlockLink(block string) dom.Elt { return monospaceText(block) }
+
+func (unknownNetwork) CreateTxLink(txHash string) dom.Elt { return monospaceText(txHash) }
+
+type ropstenNetwork struct{}
+
+func (ropstenNetwork) CreateAddressLink(address string) dom.Elt {
+	return monoAnchor("https://ropsten.etherscan.io/address/%v", address)
+}
+
+func (ropstenNetwork) CreateBlockLink(block string) dom.Elt {
+	return monoAnchor("https://ropsten.etherscan.io/block/%v", block)
+}
+
+func (ropstenNetwork) CreateTxLink(txHash string) dom.Elt {
+	return monoAnchor("https://ropsten.etherscan.io/tx/%v", txHash)
+}
+
+type mainNetwork struct{}
+
+func (mainNetwork) CreateAddressLink(address string) dom.Elt {
+	return monoAnchor("https://etherscan.io/address/%v", address)
+}
+
+func (mainNetwork) CreateBlockLink(block string) dom.Elt {
+	return monoAnchor("https://etherscan.io/block/%v", block)
+}
+
+func (mainNetwork) CreateTxLink(txHash string) dom.Elt {
+	return monoAnchor("https://etherscan.io/tx/%v", txHash)
+}
+
+func monospaceText(txt string) dom.Elt {
+	return dom.Span(txt).WithClass("text-monospace")
+}
+
+func monoAnchor(urlFormat, arg string) dom.Elt {
+	return dom.
+		Anchor("").
+		WithAttribute("href", fmt.Sprintf(urlFormat, arg)).
+		WithAttribute("target", "_blank").
+		WithChildren(monospaceText(arg))
+}
+
+func getNetworkType(url string) network {
+	if strings.Contains(url, "ropsten") {
+		return ropstenNetwork{}
+	}
+	if strings.Contains(url, "mainnet") {
+		return mainNetwork{}
+	}
+	return unknownNetwork{}
 }
