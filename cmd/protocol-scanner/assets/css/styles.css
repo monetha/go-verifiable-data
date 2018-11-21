@@ -19,3 +19,5 @@ body {
 #box:empty:after {
     content: "app is loading...";
 }
+
+.top-buffer { margin-top:15px; }

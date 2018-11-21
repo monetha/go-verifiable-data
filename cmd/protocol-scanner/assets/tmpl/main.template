@@ -27,49 +27,45 @@
 </nav>
 
 <div id="passport-list" class="container-fluid content-section">
-<div class="row justify-content-center">
-    <div class="col-auto"><h1>Passport list</h1></div>
-</div>
-<div class="row">
-    <div class="col-3">
-        <form>
-            <div class="form-group">
-                <label for="passListPassportFactoryAddressInp">Passport factory address</label>
-                <input type="text" class="form-control" placeholder="Passport factory address"
-                       value="{{.PassportFactoryAddress}}" id="passListPassportFactoryAddressInp">
-            </div>
-            <button class="btn btn-primary btn-block" id="getPassportListBtn">Get passport list &raquo;</button>
-        </form>
+    <div class="row justify-content-center">
+        <div class="col-auto"><h1>Passport list</h1></div>
     </div>
-    <div class="col-9">
-        <div class="row">
-            <div class="col-12" id="passportListOutput">
-            </div>
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+            <form>
+                <div class="form-group">
+                    <label for="passListPassportFactoryAddressInp">Passport factory address</label>
+                    <input type="text" class="form-control" placeholder="Passport factory address"
+                           value="{{.PassportFactoryAddress}}" id="passListPassportFactoryAddressInp">
+                </div>
+                <button class="btn btn-primary btn-block" id="getPassportListBtn">Get passport list</button>
+            </form>
         </div>
     </div>
-</div>
+    <div class="row justify-content-center top-buffer">
+        <div class="col-12" id="passportListOutput">
+        </div>
+    </div>
 </div>
 
 <div id="passport-changes" class="container-fluid content-section">
-<div class="row justify-content-center">
-    <div class="col-auto"><h1>Passport changes</h1></div>
-</div>
-<div class="row">
-    <div class="col-3">
-        <form>
-            <div class="form-group">
-                <label for="passChangesPassportAddressInp">Passport address</label>
-                <input type="text" class="form-control" placeholder="Passport address"
-                       id="passChangesPassportAddressInp">
-            </div>
-            <button class="btn btn-primary btn-block" id="getPassportChangesBtn">Get passport changes &raquo;</button>
-        </form>
+    <div class="row justify-content-center">
+        <div class="col-auto"><h1>Passport changes</h1></div>
     </div>
-    <div class="col-9">
-        <div class="row">
-            <div class="col-12" id="passportChangesOutput">
-            </div>
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+            <form>
+                <div class="form-group">
+                    <label for="passChangesPassportAddressInp">Passport address</label>
+                    <input type="text" class="form-control" placeholder="Passport address"
+                           id="passChangesPassportAddressInp">
+                </div>
+                <button class="btn btn-primary btn-block" id="getPassportChangesBtn">Get passport changes</button>
+            </form>
         </div>
     </div>
-</div>
+    <div class="row justify-content-center top-buffer">
+        <div class="col-12" id="passportChangesOutput">
+        </div>
+    </div>
 </div>
