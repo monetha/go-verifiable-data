@@ -236,6 +236,17 @@ Let's try to store image from the file `~/Downloads/monetha.jpg` under the key `
   -backendurl https://ropsten.infura.io < ~/Downloads/monetha.jpg
 ```
 
+Similarly, you can store the same image from the file `~/Downloads/monetha.jpg` under the key `monetha.jpg` as `ipfs` in the same passport.
+Keep in mind, the data will be stored in IPFS, only IPFS hash will be stored in the Ethereum storage:
+
+```bash
+./bin/write-fact -ownerkey fact_provider.key \
+  -fkey monetha.jpg \
+  -ftype ipfs \
+  -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -backendurl https://ropsten.infura.io < ~/Downloads/monetha.jpg
+```
+
 ### Reading facts
 
 After the fact provider has written the public data to the passport, the data can be read by anyone.
@@ -255,7 +266,20 @@ Let's try to retrieve image from passport `0x9CfabB3172DFd5ED740c3b8A327BF573226
   -backendurl https://ropsten.infura.io
 ```
 
-After the data has been read from the Ethereum blockchain and written to the file `./fact_image.jpg`, try to open the image..
+After the data has been read from the Ethereum blockchain and written to the file `./fact_image.jpg`, try to open the image.
+
+To get the same file that was previously saved in IPFS, just change the parameter `-ftype` to `ipfs`:
+
+```bash
+./bin/read-fact -out ./ipfs_fact_image.jpg \
+  -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -factprovideraddr 0x5b2ae3b3a801469886bb8f5349fc3744caa6348d \
+  -fkey monetha.jpg \
+  -ftype ipfs \
+  -backendurl https://ropsten.infura.io
+```
+
+Тhe data will be written to the file `./ipfs_fact_image.jpg`.
 
 ### Changing passport permissions
 
@@ -305,11 +329,12 @@ in `Ropsten` block-chain and write it to the file `/dev/stdout` (outputs to the 
 After running the command you should see something like this:
 
 ```
-WARN [10-31|11:03:53.291] Loaded configuration                     backend_url=https://ropsten.infura.io passport=0x9CfabB3172DFd5ED740c3b8A327BF573226c5064
+WARN [11-21|17:49:37.251] Loaded configuration                     backend_url=https://ropsten.infura.io passport=0x9CfabB3172DFd5ED740c3b8A327BF573226c5064
 fact_provider,key,data_type,change_type,block_number,tx_hash
 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d,monetha.jpg,TxData,Updated,4177015,0x627913f620990ec12360a6f1fda4887ea837b41e2f6cbae90e24322dc8cf8b1a
 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d,monetha.jpg,TxData,Updated,4337297,0x31e06af4e04450333d468835c995fc02622c1b07ae0feeb4c7afe73c5a2e3ed8
-WARN [10-31|11:03:54.643] Done.
+0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d,Monetha_WP.pdf,IPFS,Updated,4468222,0x91c5d11c7f220660fb2c98273627e9c2f01b59e32163c760a4a9a836f7758f7f
+WARN [11-21|17:49:38.709] Done.
 ```
 
 The CSV output can be saved to a file and converted to the table:
@@ -318,8 +343,10 @@ The CSV output can be saved to a file and converted to the table:
 |---------------|-----|-----------|-------------|--------------|---------|
 | 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d | monetha.jpg | TxData | Updated | 4177015 | 0x627913f620990ec12360a6f1fda4887ea837b41e2f6cbae90e24322dc8cf8b1a |
 | 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d | monetha.jpg | TxData | Updated | 4337297 | 0x31e06af4e04450333d468835c995fc02622c1b07ae0feeb4c7afe73c5a2e3ed8 |
+| 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d | Monetha_WP.pdf | IPFS | Updated | 4468222 | 0x91c5d11c7f220660fb2c98273627e9c2f01b59e32163c760a4a9a836f7758f7f |
 
-As we can see, there were only two fact updates of type `TxData` (under the same key `monetha.jpg`) by the same data provider `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d`.
+As we can see, there were two fact updates of type `TxData` (under the same key `monetha.jpg`) by the same data provider `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d`, 
+and one update of type `IPFS` by the same data provider.
 The `block_number` and `tx_hash` columns allow us to understand in which block and in which transaction the changes were made.
 The `change_type` column may contain either `Updated` or `Deleted` values. Even if the value of a fact has been deleted, we can read its value as it was before the deletion.
 
@@ -344,6 +371,19 @@ Similarly, we can read what fact value was written in the second transaction `0x
 ```
 
 Now you can compare pictures `monetha1.jpg` and `monetha2.jpg` to see what changes have been made.
+
+To read fact value of type `TxData` in the third transaction parameter `-ftype` should be changed to `ipfs` and `-txhash` 
+to `0x91c5d11c7f220660fb2c98273627e9c2f01b59e32163c760a4a9a836f7758f7f`:
+
+```bash
+./bin/read-history -out Monetha_WP.pdf \
+  -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -ftype ipfs \
+  -txhash 0x91c5d11c7f220660fb2c98273627e9c2f01b59e32163c760a4a9a836f7758f7f \
+  -backendurl https://ropsten.infura.io
+```
+
+Тhe value will be written to the file `Monetha_WP.pdf`.
 
 ### Protocol scanner
 
