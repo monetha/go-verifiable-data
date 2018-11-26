@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/cheekybits/is"
-	"gitlab.com/monetha/protocol-go-sdk/ipfs"
+	"gitlab.com/monetha/reputation-go-sdk/ipfs"
 )
 
 func TestIPFS_Cat(t *testing.T) {

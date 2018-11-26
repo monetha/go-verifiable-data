@@ -1,4 +1,4 @@
-# protocol-scanner
+# passport-scanner
 
 This application serves static content of a WebAssembly module which works completely in a browser and uses publicly available Ethereum block-chain 
 nodes to provide the following data:
@@ -13,7 +13,7 @@ and also by [our changes](https://github.com/ethereum/go-ethereum/pull/17709) th
 
 ## Usage
 
-Usage of `./protocol-scanner`:
+Usage of `./passport-scanner`:
 ```
   -listen string
     	listen address (default ":8080")
@@ -22,7 +22,7 @@ Usage of `./protocol-scanner`:
 By default, the application serves content on port `8080`, but the port can be changed by specifying the `-listen` parameter.
 For example, you can change the port to `8081` using the command:
 
-    ./protocol-scanner -listen :8081
+    ./passport-scanner -listen :8081
 
 If you run the program with the default settings, then after launch you just need to open the following link in the browser:
 [http://localhost:8080](http://localhost:8080)

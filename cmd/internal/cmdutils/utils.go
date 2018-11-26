@@ -11,7 +11,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/log"
-	"gitlab.com/monetha/protocol-go-sdk/eth"
+	"gitlab.com/monetha/reputation-go-sdk/eth"
 )
 
 // CheckErr prints error if it's not nil and causes the current program to exit with the status code equal to 1.

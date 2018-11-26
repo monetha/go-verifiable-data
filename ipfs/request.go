@@ -11,7 +11,7 @@ import (
 	"os"
 	"strings"
 
-	"gitlab.com/monetha/protocol-go-sdk/ipfs/files"
+	"gitlab.com/monetha/reputation-go-sdk/ipfs/files"
 )
 
 type request struct {

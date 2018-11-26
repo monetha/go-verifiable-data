@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"time"
 
-	sdk_log "gitlab.com/monetha/protocol-go-sdk/log"
+	sdk_log "gitlab.com/monetha/reputation-go-sdk/log"
 )
 
 const (

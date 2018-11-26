@@ -4,7 +4,7 @@ services:
 - docker:dind
 
 variables:
-  PACKAGE_NAME: gitlab.com/monetha/protocol-go-sdk
+  PACKAGE_NAME: gitlab.com/monetha/reputation-go-sdk
 
 build and test:
   script:

@@ -18,7 +18,7 @@
     * [Reading facts](#reading-facts)
     * [Changing passport permissions](#changing-passport-permissions)
     * [Reading facts history](#reading-facts-history)
-    * [Protocol scanner](#protocol-scanner) (sample web application)
+    * [Passport scanner](#passport-scanner) (sample web application)
 
 ## Building the source
 
@@ -31,8 +31,8 @@
     ```bash
     mkdir -p $GOPATH/src/gitlab.com/monetha
     cd $GOPATH/src/gitlab.com/monetha
-    git clone git@gitlab.com:monetha/protocol-go-sdk.git
-    cd protocol-go-sdk
+    git clone git@gitlab.com:monetha/reputation-go-sdk.git
+    cd reputation-go-sdk
     ```
 
 ### Build
@@ -49,7 +49,7 @@ to build the full suite of utilities. After the executable files are built, they
 
 ### Executables
 
-The protocol-go-sdk project comes with several executables found in the [`cmd`](cmd) directory.
+The reputation-go-sdk project comes with several executables found in the [`cmd`](cmd) directory.
 
 | Command    | Description |
 |:----------:|-------------|
@@ -60,7 +60,7 @@ The protocol-go-sdk project comes with several executables found in the [`cmd`](
 | [`passport-list`](cmd/passport-list) | Utility tool for getting a list of passports created using specific [PassportFactory](../../contracts/code/PassportFactory.sol) contract. |
 | [`passport-permission`](cmd/passport-permission) | Utility tool that allows a passport holder to allow or deny a fact provider to write/delete facts to/from a passport. By default any fact provider can write to a passport, but a passport holder can change permissions that allow only fact providers from the whitelist to write to a passport. |
 | [`read-history`](cmd/read-history) | Utility tool for reading the history of passport changes. |
-| [`protocol-scanner`](cmd/protocol-scanner) | Web application (WebAssembly module) to get the list of deployed passports and the history of passport changes in a web browser. |
+| [`passport-scanner`](cmd/passport-scanner) | Web application (WebAssembly module) to get the list of deployed passports and the history of passport changes in a web browser. |
 
 ## Contributing
 
@@ -385,7 +385,7 @@ to `0x91c5d11c7f220660fb2c98273627e9c2f01b59e32163c760a4a9a836f7758f7f`:
 
 Тhe value will be written to the file `Monetha_WP.pdf`.
 
-### Protocol scanner
+### Passport scanner
 
 After the [go-ethereum](https://github.com/ethereum/go-ethereum) community recently accepted [our changes](https://github.com/ethereum/go-ethereum/pull/17709), 
 it became possible to compile Go SDK of reputation protocol into WebAssembly module and run it in a browser. 
@@ -396,11 +396,11 @@ the history of passport changes directly in your web browser.
 To play with the web application, run the command
 
 ```bash
-./bin/protocol-scanner
+./bin/passport-scanner
 ```
 
 and open [http://localhost:8080](http://localhost:8080) in your browser.
 
-More details can be found [here](cmd/protocol-scanner).
+More details can be found [here](cmd/passport-scanner).
 
 Happy scanning!

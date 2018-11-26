@@ -7,8 +7,8 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
-	"gitlab.com/monetha/protocol-go-sdk/contracts"
-	"gitlab.com/monetha/protocol-go-sdk/eth"
+	"gitlab.com/monetha/reputation-go-sdk/contracts"
+	"gitlab.com/monetha/reputation-go-sdk/eth"
 )
 
 // Reader retrieves data from passport factory

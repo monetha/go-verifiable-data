@@ -1,4 +1,4 @@
-hash: c83b1228ea20da2e47a50a60b1878a61b18c22429978c517ac1e80d3d54dbef2
+hash: d0d52fd3373b81d76a62be7a142f7812421aab43a83d12613f5b9841e6111641
 updated: 2018-11-19T16:39:49.349414+02:00
 imports:
 - name: github.com/aristanetworks/goarista

@@ -8,8 +8,8 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
-	"gitlab.com/monetha/protocol-go-sdk/contracts"
-	"gitlab.com/monetha/protocol-go-sdk/eth"
+	"gitlab.com/monetha/reputation-go-sdk/contracts"
+	"gitlab.com/monetha/reputation-go-sdk/eth"
 )
 
 var (

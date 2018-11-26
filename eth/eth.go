@@ -11,8 +11,8 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
-	"gitlab.com/monetha/protocol-go-sdk/eth/backend"
-	"gitlab.com/monetha/protocol-go-sdk/log"
+	"gitlab.com/monetha/reputation-go-sdk/eth/backend"
+	"gitlab.com/monetha/reputation-go-sdk/log"
 )
 
 // Eth simplifies some operations with the Ethereum network

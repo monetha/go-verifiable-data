@@ -9,14 +9,14 @@ import (
 	"strings"
 	"syscall/js"
 
-	"gitlab.com/monetha/protocol-go-sdk/cmd/protocol-scanner/web/app"
-	"gitlab.com/monetha/protocol-go-sdk/cmd/protocol-scanner/web/dom"
-	"gitlab.com/monetha/protocol-go-sdk/cmd/protocol-scanner/web/logging"
+	"gitlab.com/monetha/reputation-go-sdk/cmd/passport-scanner/web/app"
+	"gitlab.com/monetha/reputation-go-sdk/cmd/passport-scanner/web/dom"
+	"gitlab.com/monetha/reputation-go-sdk/cmd/passport-scanner/web/logging"
 )
 
 func main() {
 	log := logging.Fun
-	log("Initializing protocol scanner...")
+	log("Initializing passport scanner...")
 
 	htmlMarkupTemplate := getTMPL("main.template")
 
@@ -61,7 +61,7 @@ func main() {
 	log("Protocol scanner is initialized.")
 
 	<-done
-	log("Shutting down protocol scanner...")
+	log("Shutting down passport scanner...")
 
 	_ = a.Close()
 

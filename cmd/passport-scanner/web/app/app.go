@@ -13,12 +13,12 @@ import (
 	"syscall/js"
 
 	"github.com/ethereum/go-ethereum/common"
-	"gitlab.com/monetha/protocol-go-sdk/cmd/protocol-scanner/web/dom"
-	"gitlab.com/monetha/protocol-go-sdk/facts"
-	"gitlab.com/monetha/protocol-go-sdk/log"
-	"gitlab.com/monetha/protocol-go-sdk/passfactory"
-	"gitlab.com/monetha/protocol-go-sdk/types/change"
-	"gitlab.com/monetha/protocol-go-sdk/types/data"
+	"gitlab.com/monetha/reputation-go-sdk/cmd/passport-scanner/web/dom"
+	"gitlab.com/monetha/reputation-go-sdk/facts"
+	"gitlab.com/monetha/reputation-go-sdk/log"
+	"gitlab.com/monetha/reputation-go-sdk/passfactory"
+	"gitlab.com/monetha/reputation-go-sdk/types/change"
+	"gitlab.com/monetha/reputation-go-sdk/types/data"
 )
 
 type App struct {

@@ -5,7 +5,7 @@ import (
 	"math/big"
 	"testing"
 
-	"gitlab.com/monetha/protocol-go-sdk/facts"
+	"gitlab.com/monetha/reputation-go-sdk/facts"
 )
 
 func TestFactProvider_WriteUint(t *testing.T) {

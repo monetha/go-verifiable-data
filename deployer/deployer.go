@@ -6,8 +6,8 @@ import (
 	"fmt"
 
 	"github.com/ethereum/go-ethereum/common"
-	"gitlab.com/monetha/protocol-go-sdk/contracts"
-	"gitlab.com/monetha/protocol-go-sdk/eth"
+	"gitlab.com/monetha/reputation-go-sdk/contracts"
+	"gitlab.com/monetha/reputation-go-sdk/eth"
 )
 
 const (

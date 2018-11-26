@@ -9,10 +9,10 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/crypto"
-	"gitlab.com/monetha/protocol-go-sdk/deployer"
-	"gitlab.com/monetha/protocol-go-sdk/eth"
-	"gitlab.com/monetha/protocol-go-sdk/eth/backend"
-	"gitlab.com/monetha/protocol-go-sdk/passfactory"
+	"gitlab.com/monetha/reputation-go-sdk/deployer"
+	"gitlab.com/monetha/reputation-go-sdk/eth"
+	"gitlab.com/monetha/reputation-go-sdk/eth/backend"
+	"gitlab.com/monetha/reputation-go-sdk/passfactory"
 )
 
 func TestReader_FilterPassports(t *testing.T) {

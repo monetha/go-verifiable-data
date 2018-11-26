@@ -7,10 +7,10 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"gitlab.com/monetha/protocol-go-sdk/cmd/protocol-scanner/web/rx"
-	"gitlab.com/monetha/protocol-go-sdk/eth"
-	"gitlab.com/monetha/protocol-go-sdk/log"
-	"gitlab.com/monetha/protocol-go-sdk/passfactory"
+	"gitlab.com/monetha/reputation-go-sdk/cmd/passport-scanner/web/rx"
+	"gitlab.com/monetha/reputation-go-sdk/eth"
+	"gitlab.com/monetha/reputation-go-sdk/log"
+	"gitlab.com/monetha/reputation-go-sdk/passfactory"
 )
 
 type passportListObserver struct {

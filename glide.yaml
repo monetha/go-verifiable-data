@@ -1,4 +1,4 @@
-package: gitlab.com/monetha/protocol-go-sdk
+package: gitlab.com/monetha/reputation-go-sdk
 import:
 - package: github.com/ethereum/go-ethereum
   version: ^1.8.18

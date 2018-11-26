@@ -9,11 +9,11 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"gitlab.com/monetha/protocol-go-sdk/cmd/protocol-scanner/web/rx"
-	"gitlab.com/monetha/protocol-go-sdk/eth"
-	"gitlab.com/monetha/protocol-go-sdk/facts"
-	"gitlab.com/monetha/protocol-go-sdk/log"
-	"gitlab.com/monetha/protocol-go-sdk/types/data"
+	"gitlab.com/monetha/reputation-go-sdk/cmd/passport-scanner/web/rx"
+	"gitlab.com/monetha/reputation-go-sdk/eth"
+	"gitlab.com/monetha/reputation-go-sdk/facts"
+	"gitlab.com/monetha/reputation-go-sdk/log"
+	"gitlab.com/monetha/reputation-go-sdk/types/data"
 )
 
 type passportChangesObserver struct {
