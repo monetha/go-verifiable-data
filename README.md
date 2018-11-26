@@ -35,6 +35,16 @@
     cd reputation-go-sdk
     ```
 
+**Note**: You can skip steps 2-3 on Linux and use the official docker image for Go after step 4 to build the project:
+
+```bash
+docker run -it --rm \
+  -v "$PWD":/go/src/gitlab.com/monetha/reputation-go-sdk \
+  -w /go/src/gitlab.com/monetha/reputation-go-sdk \
+  golang:1.11 \
+  /bin/bash
+```
+
 ### Build
 
 Install dependencies:
