@@ -10,7 +10,7 @@
     * [Making changes](#making-changes)
     * [Contracts update](#contracts-update)
     * [Formatting source code](#formatting-source-code)
-* [Bootstrap reputation protocol](#bootstrap-reputation-protocol)
+* [Bootstrap reputation layer](#bootstrap-reputation-layer)
 * [Usage](#usage)
     * [Deploying passport](#deploying-passport)
     * [Passport list](#passport-list)
@@ -98,9 +98,9 @@ After Ethereum contracts code is updated and artifacts are created:
 
 `make fmt` command automatically formats Go source code of the entire project.
 
-## Bootstrap reputation protocol
+## Bootstrap reputation layer
 
-Monetha has already deployed this set of auxiliary reputation protocol contracts on Ropsten test network. The contract addresses deployed on Ropsten:
+Monetha has already deployed this set of auxiliary reputation layer contracts on Ropsten test network. The contract addresses deployed on Ropsten:
 
 | Contract      | Address                                      |
 |---------------|----------------------------------------------|
@@ -108,12 +108,12 @@ Monetha has already deployed this set of auxiliary reputation protocol contracts
 | `PassportLogicRegistry`  | [`0xabA015Fc83E9B88e8334bD9b536257db75e05295`](https://ropsten.etherscan.io/address/0xabA015Fc83E9B88e8334bD9b536257db75e05295) |
 | `PassportFactory` | [`0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2`](https://ropsten.etherscan.io/address/0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2) |
 
-Consider the process of deploying your own set of auxiliary repoutation protocol contracts to experiment with our implementation. If you are going to deploy your contracts, then you will have to support them yourself.
+Consider the process of deploying your own set of auxiliary repoutation layer contracts to experiment with our implementation. If you are going to deploy your contracts, then you will have to support them yourself.
 
-This means that if the reputation protocol logic of the passport is updated by Monetha developers, you'll need to deploy a new `PassportLogic` contract, register it 
+This means that if the reputation layer logic of the passport is updated by Monetha developers, you'll need to deploy a new `PassportLogic` contract, register it 
 in an existing `PassportLogicRegistry` contract (by calling `addPassportLogic` method) and finally make it active (by calling `setCurrentPassportLogic`).
 
-If you use a set of Monetha deployed reputation protocol contracts, then the reputation passport logic is always up-to-date with latest fixes and features.
+If you use a set of Monetha deployed reputation layer contracts, then the reputation passport logic is always up-to-date with latest fixes and features.
 
 Prepare in advance the address that will be the owner of the deployed contracts. Make sure that it has enough funds to deploy contracts (1 ETH should be enough).
 Store the private key of this address in the file named `./owner.key`.
@@ -147,7 +147,7 @@ In the output you can find the addresses of all the deployed contracts.
 
 ## Usage
 
-In order to create a passport and start using it, you need to use auxiliary reputation protocol contracts: [PassportLogic](contracts/code/PassportLogic.sol), [PassportLogicRegistry](contracts/code/PassportLogicRegistry.sol), [PassportFactory](contracts/code/PassportFactory.sol).
+In order to create a passport and start using it, you need to use auxiliary reputation layer contracts: [PassportLogic](contracts/code/PassportLogic.sol), [PassportLogicRegistry](contracts/code/PassportLogicRegistry.sol), [PassportFactory](contracts/code/PassportFactory.sol).
 
 ### Deploying passport
 
@@ -398,7 +398,7 @@ to `0x91c5d11c7f220660fb2c98273627e9c2f01b59e32163c760a4a9a836f7758f7f`:
 ### Passport scanner
 
 After the [go-ethereum](https://github.com/ethereum/go-ethereum) community recently accepted [our changes](https://github.com/ethereum/go-ethereum/pull/17709), 
-it became possible to compile Go SDK of reputation protocol into WebAssembly module and run it in a browser. 
+it became possible to compile Go SDK of reputation layer into WebAssembly module and run it in a browser. 
 We have prepared a sample web application that has the same functionality as [`passport-list`](cmd/passport-list) and 
 [`read-history`](cmd/read-history) utilities provide, i.e. it allows you to get the list of deployed passports and 
 the history of passport changes directly in your web browser.

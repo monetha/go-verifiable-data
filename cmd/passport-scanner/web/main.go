@@ -58,14 +58,14 @@ func main() {
 	}).
 		RegisterCallBacks()
 
-	log("Protocol scanner is initialized.")
+	log("Passport scanner is initialized.")
 
 	<-done
 	log("Shutting down passport scanner...")
 
 	_ = a.Close()
 
-	log("Protocol scanner is shut down.")
+	log("Passport scanner is shut down.")
 }
 
 // getTMPL parses template from assets/tmpl folder
