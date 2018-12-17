@@ -5,8 +5,8 @@ package main
 import (
 	"log"
 
-	"github.com/shurcooL/vfsgen"
 	data "github.com/monetha/reputation-go-sdk/cmd/passport-scanner"
+	"github.com/shurcooL/vfsgen"
 )
 
 func main() {
