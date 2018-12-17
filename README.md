@@ -1,4 +1,7 @@
-# Monetha: Decentralized Reputation Framework
+# Monetha: Decentralized Reputation Framework [![GoDoc][1]][2]
+
+[1]: https://godoc.org/github.com/monetha/reputation-go-sdk?status.svg
+[2]: https://godoc.org/github.com/monetha/reputation-go-sdk
 
 # Reputation Layer: go-sdk
 
