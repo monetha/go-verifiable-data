@@ -19,13 +19,13 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/log"
-	"gitlab.com/monetha/reputation-go-sdk/cmd/internal/cmdutils"
-	"gitlab.com/monetha/reputation-go-sdk/deployer"
-	"gitlab.com/monetha/reputation-go-sdk/eth"
-	"gitlab.com/monetha/reputation-go-sdk/eth/backend"
-	"gitlab.com/monetha/reputation-go-sdk/facts"
-	"gitlab.com/monetha/reputation-go-sdk/ipfs"
-	"gitlab.com/monetha/reputation-go-sdk/types/data"
+	"github.com/monetha/reputation-go-sdk/cmd/internal/cmdutils"
+	"github.com/monetha/reputation-go-sdk/deployer"
+	"github.com/monetha/reputation-go-sdk/eth"
+	"github.com/monetha/reputation-go-sdk/eth/backend"
+	"github.com/monetha/reputation-go-sdk/facts"
+	"github.com/monetha/reputation-go-sdk/ipfs"
+	"github.com/monetha/reputation-go-sdk/types/data"
 )
 
 var (

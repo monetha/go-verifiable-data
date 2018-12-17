@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/shurcooL/vfsgen"
-	data "gitlab.com/monetha/reputation-go-sdk/cmd/passport-scanner"
+	data "github.com/monetha/reputation-go-sdk/cmd/passport-scanner"
 )
 
 func main() {

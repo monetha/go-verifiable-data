@@ -10,7 +10,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/go-test/deep"
-	"gitlab.com/monetha/reputation-go-sdk/contracts"
+	"github.com/monetha/reputation-go-sdk/contracts"
 )
 
 func TestParseSetTxDataBlockNumberCallData(t *testing.T) {

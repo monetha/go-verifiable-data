@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"gitlab.com/monetha/reputation-go-sdk/ipfs/files"
+	"github.com/monetha/reputation-go-sdk/ipfs/files"
 )
 
 // IPFS provides limited functionality to interact with the IPFS (https://ipfs.io)

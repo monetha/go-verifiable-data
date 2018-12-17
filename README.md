@@ -29,9 +29,9 @@
 1. Setup `$GOPATH` environment variable as described [here](https://github.com/golang/go/wiki/SettingGOPATH).
 1. Clone the repository:
     ```bash
-    mkdir -p $GOPATH/src/gitlab.com/monetha
-    cd $GOPATH/src/gitlab.com/monetha
-    git clone git@gitlab.com:monetha/reputation-go-sdk.git
+    mkdir -p $GOPATH/src/github.com/monetha
+    cd $GOPATH/src/github.com/monetha
+    git clone git@github.com:monetha/reputation-go-sdk.git
     cd reputation-go-sdk
     ```
 
@@ -39,8 +39,8 @@
 
 ```bash
 docker run -it --rm \
-  -v "$PWD":/go/src/gitlab.com/monetha/reputation-go-sdk \
-  -w /go/src/gitlab.com/monetha/reputation-go-sdk \
+  -v "$PWD":/go/src/github.com/monetha/reputation-go-sdk \
+  -w /go/src/github.com/monetha/reputation-go-sdk \
   golang:1.11 \
   /bin/bash
 ```

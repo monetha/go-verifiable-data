@@ -7,9 +7,9 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/go-test/deep"
-	"gitlab.com/monetha/reputation-go-sdk/facts"
-	"gitlab.com/monetha/reputation-go-sdk/types/change"
-	"gitlab.com/monetha/reputation-go-sdk/types/data"
+	"github.com/monetha/reputation-go-sdk/facts"
+	"github.com/monetha/reputation-go-sdk/types/change"
+	"github.com/monetha/reputation-go-sdk/types/data"
 )
 
 func TestHistorian_FilterChanges(t *testing.T) {

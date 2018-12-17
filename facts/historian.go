@@ -9,11 +9,11 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
-	"gitlab.com/monetha/reputation-go-sdk/contracts"
-	"gitlab.com/monetha/reputation-go-sdk/contracts/txdata"
-	"gitlab.com/monetha/reputation-go-sdk/eth"
-	"gitlab.com/monetha/reputation-go-sdk/types/change"
-	"gitlab.com/monetha/reputation-go-sdk/types/data"
+	"github.com/monetha/reputation-go-sdk/contracts"
+	"github.com/monetha/reputation-go-sdk/contracts/txdata"
+	"github.com/monetha/reputation-go-sdk/eth"
+	"github.com/monetha/reputation-go-sdk/types/change"
+	"github.com/monetha/reputation-go-sdk/types/data"
 )
 
 // Historian reads the fact history
