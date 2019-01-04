@@ -1,3 +1,4 @@
+SHELL := bash
 PACKAGE_NAME := github.com/monetha/reputation-go-sdk
 ARTIFACTS_DIR := $(if $(ARTIFACTS_DIR),$(ARTIFACTS_DIR),bin)
 
