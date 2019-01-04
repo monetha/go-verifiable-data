@@ -1,4 +1,5 @@
 PACKAGE_NAME := github.com/monetha/reputation-go-sdk
+ARTIFACTS_DIR := $(if $(ARTIFACTS_DIR),$(ARTIFACTS_DIR),bin)
 
 PKGS ?= $(shell glide novendor)
 PKGS_NO_CMDS ?= $(shell glide novendor | grep -v ./cmd/)
@@ -67,6 +68,37 @@ fmt:
 
 .PHONY: cmd
 CMDS ?= $(shell ls -d ./cmd/*/ | xargs -L1 basename | grep -v internal)
-cmd:
+cmd: cmd-gen cmd-clean
+	$(foreach cmd,$(CMDS),go build --ldflags=$(CMD_GO_LDFLAGS) -o $(ARTIFACTS_DIR)/$(cmd) ./cmd/$(cmd);)
+
+.PHONY: cmdx
+CMDX_PLATFORMS = "windows/amd64" "darwin/amd64" "linux/amd64"
+CMDX_CMDS = "passport-scanner"
+cmdx: cmd-gen cmd-clean
+	for platform in $(CMDX_PLATFORMS); do \
+		platform_split=($${platform//\// }); \
+		GOOS=$${platform_split[0]}; \
+		GOARCH=$${platform_split[1]}; \
+		echo Building: $${GOOS} $${GOARCH}; \
+		for cmd in $(CMDX_CMDS); do \
+			output_name=$(ARTIFACTS_DIR)/$${cmd}; \
+			if [ "$$GOOS" = "windows" ]; then \
+				output_name+='.exe'; \
+			fi; \
+			env GOOS=$$GOOS GOARCH=$$GOARCH go build --ldflags=$(CMD_GO_LDFLAGS) -o $${output_name} ./cmd/$${cmd}; \
+			if [ "$$GOOS" = "windows" ]; then \
+				pushd ${ARTIFACTS_DIR}; zip $${cmd}-$${GOOS}-$${GOARCH}.zip $${cmd}.exe; popd; \
+			else \
+				pushd ${ARTIFACTS_DIR}; tar cvzf $${cmd}-$${GOOS}-$${GOARCH}.tgz $${cmd}; popd; \
+			fi; \
+			rm $${output_name}; \
+		done; \
+	done
+
+.PHONY: cmd-gen
+cmd-gen:
 	go generate ./cmd/...
-	$(foreach cmd,$(CMDS),go build --ldflags=$(CMD_GO_LDFLAGS) -o ./bin/$(cmd) ./cmd/$(cmd);)
+
+.PHONY: cmd-clean
+cmd-clean:
+	rm -rf $(ARTIFACTS_DIR)
