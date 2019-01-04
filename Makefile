@@ -57,10 +57,10 @@ bench:
 
 .PHONY: cover
 cover:
-	mkdir -p ./.cover
-	go test -race -coverprofile=./.cover/cover.out -covermode=atomic -coverpkg=./... $(PKGS_NO_CMDS)
-	go tool cover -func=./.cover/cover.out
-	go tool cover -html=./.cover/cover.out -o ./.cover/cover.html
+	mkdir -p ./${ARTIFACTS_DIR}/.cover
+	go test -race -coverprofile=./${ARTIFACTS_DIR}/.cover/cover.out -covermode=atomic -coverpkg=./... $(PKGS_NO_CMDS)
+	go tool cover -func=./${ARTIFACTS_DIR}/.cover/cover.out
+	go tool cover -html=./${ARTIFACTS_DIR}/.cover/cover.out -o ./${ARTIFACTS_DIR}/cover.html
 
 .PHONY: fmt
 fmt:
