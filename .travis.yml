@@ -12,10 +12,6 @@ env:
   global:
     - ARTIFACTS_DIR=artifacts
 
-before_install:
-  - sudo apt-get update -y
-  - sudo apt-get install -y zip
-
 install:
   - make dependencies
 
@@ -37,3 +33,7 @@ addons:
       - $(ls ${ARTIFACTS_DIR}/*.{zip,tgz} | tr "\n" ":")
     target_paths:
       - /${TRAVIS_REPO_SLUG}/${TRAVIS_COMMIT}
+  apt:
+    update: true
+    packages:
+      - zip
