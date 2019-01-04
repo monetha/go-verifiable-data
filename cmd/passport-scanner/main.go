@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/monetha/reputation-go-sdk/cmd"
 	"github.com/shurcooL/httpgzip"
 )
 
@@ -15,6 +16,10 @@ var (
 
 func main() {
 	flag.Parse()
+	if cmd.PrintVersion() {
+		return
+	}
+
 	log.Printf("listening on %q...", *listen)
 
 	fileServer := httpgzip.FileServer(

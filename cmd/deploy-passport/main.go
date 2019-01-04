@@ -13,6 +13,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/log"
+	"github.com/monetha/reputation-go-sdk/cmd"
 	"github.com/monetha/reputation-go-sdk/cmd/internal/cmdutils"
 	"github.com/monetha/reputation-go-sdk/deployer"
 	"github.com/monetha/reputation-go-sdk/eth"
@@ -32,6 +33,10 @@ func main() {
 		err      error
 	)
 	flag.Parse()
+
+	if cmd.PrintVersion() {
+		return
+	}
 
 	glogger := log.NewGlogHandler(log.StreamHandler(os.Stderr, log.TerminalFormat(false)))
 	glogger.Verbosity(log.Lvl(*verbosity))

@@ -1,6 +1,14 @@
+PACKAGE_NAME := github.com/monetha/reputation-go-sdk
+
 PKGS ?= $(shell glide novendor)
 PKGS_NO_CMDS ?= $(shell glide novendor | grep -v ./cmd/)
 BENCH_FLAGS ?= -benchmem
+
+VERSION := $(if $(TRAVIS_TAG),$(TRAVIS_TAG),$(if $(TRAVIS_BRANCH),$(TRAVIS_BRANCH),development in $(shell git rev-parse --abbrev-ref HEAD)))
+COMMIT := $(if $(TRAVIS_COMMIT),$(TRAVIS_COMMIT),$(shell git rev-parse HEAD))
+BUILD_TIME := $(shell TZ=UTC date -u '+%Y-%m-%dT%H:%M:%SZ')
+
+CMD_GO_LDFLAGS := '-X "$(PACKAGE_NAME)/cmd.Version=$(VERSION)" -X "$(PACKAGE_NAME)/cmd.BuildTime=$(BUILD_TIME)" -X "$(PACKAGE_NAME)/cmd.GitHash=$(COMMIT)"'
 
 .PHONY: all
 all: lint test
@@ -58,7 +66,7 @@ fmt:
 	@gofiles=$$(go list -f {{.Dir}} $(PKGS) | grep -v mock) && [ -z "$$gofiles" ] || for d in $$gofiles; do goimports -l -w $$d/*.go; done
 
 .PHONY: cmd
-CMDS ?= $(shell ls cmd | grep -v internal)
+CMDS ?= $(shell ls -d ./cmd/*/ | xargs -L1 basename | grep -v internal)
 cmd:
 	go generate ./cmd/...
-	$(foreach cmd,$(CMDS),go build -o ./bin/$(cmd) ./cmd/$(cmd);)
+	$(foreach cmd,$(CMDS),go build --ldflags=$(CMD_GO_LDFLAGS) -o ./bin/$(cmd) ./cmd/$(cmd);)
