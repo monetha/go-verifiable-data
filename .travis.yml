@@ -31,7 +31,7 @@ addons:
     working_dir: ${ARTIFACTS_DIR}
     paths:
       - $(ls ${ARTIFACTS_DIR}/*.{zip,tgz} | tr "\n" ":")
-      - ${ARTIFACTS_DIR}/cover.html
+      - cover.html
     target_paths:
       - /${TRAVIS_REPO_SLUG}/${TRAVIS_COMMIT}
   apt:
