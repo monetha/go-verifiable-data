@@ -22,11 +22,11 @@ install:
 script:
   - make lint
   - make test
-  - make cmdx
 
 after_success:
   - make cover
   - bash <(curl -s https://codecov.io/bash) -s ./.cover
+  - make cmdx
 
 addons:
   artifacts:
