@@ -5,7 +5,7 @@ PKGS ?= $(shell glide novendor)
 PKGS_NO_CMDS ?= $(shell glide novendor | grep -v ./cmd/)
 BENCH_FLAGS ?= -benchmem
 
-VERSION := $(if $(TRAVIS_TAG),$(TRAVIS_TAG),$(if $(TRAVIS_BRANCH),$(TRAVIS_BRANCH),development in $(shell git rev-parse --abbrev-ref HEAD)))
+VERSION := $(if $(TRAVIS_TAG),$(TRAVIS_TAG),$(if $(TRAVIS_BRANCH),$(TRAVIS_BRANCH),development_in_$(shell git rev-parse --abbrev-ref HEAD)))
 COMMIT := $(if $(TRAVIS_COMMIT),$(TRAVIS_COMMIT),$(shell git rev-parse HEAD))
 BUILD_TIME := $(shell TZ=UTC date -u '+%Y-%m-%dT%H:%M:%SZ')
 
@@ -90,9 +90,9 @@ cmdx: cmd-gen cmd-clean
 			fi; \
 			env GOOS=$$GOOS GOARCH=$$GOARCH go build --ldflags=$(CMD_GO_LDFLAGS) -o $${output_name} ./cmd/$${cmd}; \
 			if [ "$$GOOS" = "windows" ]; then \
-				pushd ${ARTIFACTS_DIR}; zip $${cmd}-$${HUMAN_OS}-$${GOARCH}.zip $${cmd}.exe; popd; \
+				pushd ${ARTIFACTS_DIR}; zip $${cmd}-$${HUMAN_OS}-$${GOARCH}-$(VERSION).zip $${cmd}.exe; popd; \
 			else \
-				pushd ${ARTIFACTS_DIR}; tar cvzf $${cmd}-$${HUMAN_OS}-$${GOARCH}.tgz $${cmd}; popd; \
+				pushd ${ARTIFACTS_DIR}; tar cvzf $${cmd}-$${HUMAN_OS}-$${GOARCH}-$(VERSION).tgz $${cmd}; popd; \
 			fi; \
 			rm $${output_name}; \
 		done; \
