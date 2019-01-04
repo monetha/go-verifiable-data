@@ -79,7 +79,10 @@ cmdx: cmd-gen cmd-clean
 		platform_split=($${platform//\// }); \
 		GOOS=$${platform_split[0]}; \
 		GOARCH=$${platform_split[1]}; \
-		echo Building: $${GOOS} $${GOARCH}; \
+		HUMAN_OS=$${GOOS}; \
+		if [ "$$HUMAN_OS" = "darwin" ]; then \
+			HUMAN_OS='macos'; \
+		fi; \
 		for cmd in $(CMDX_CMDS); do \
 			output_name=$(ARTIFACTS_DIR)/$${cmd}; \
 			if [ "$$GOOS" = "windows" ]; then \
@@ -87,9 +90,9 @@ cmdx: cmd-gen cmd-clean
 			fi; \
 			env GOOS=$$GOOS GOARCH=$$GOARCH go build --ldflags=$(CMD_GO_LDFLAGS) -o $${output_name} ./cmd/$${cmd}; \
 			if [ "$$GOOS" = "windows" ]; then \
-				pushd ${ARTIFACTS_DIR}; zip $${cmd}-$${GOOS}-$${GOARCH}.zip $${cmd}.exe; popd; \
+				pushd ${ARTIFACTS_DIR}; zip $${cmd}-$${HUMAN_OS}-$${GOARCH}.zip $${cmd}.exe; popd; \
 			else \
-				pushd ${ARTIFACTS_DIR}; tar cvzf $${cmd}-$${GOOS}-$${GOARCH}.tgz $${cmd}; popd; \
+				pushd ${ARTIFACTS_DIR}; tar cvzf $${cmd}-$${HUMAN_OS}-$${GOARCH}.tgz $${cmd}; popd; \
 			fi; \
 			rm $${output_name}; \
 		done; \
