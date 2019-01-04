@@ -13,8 +13,8 @@ env:
     - ARTIFACTS_DIR=artifacts
 
 before_install:
-  - apt-get update -y
-  - apt-get install -y zip
+  - sudo apt-get update -y
+  - sudo apt-get install -y zip
 
 install:
   - make dependencies
