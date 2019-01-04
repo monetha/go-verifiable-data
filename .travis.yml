@@ -30,7 +30,8 @@ addons:
     s3_region: ${ARTIFACTS_S3_REGION}
     working_dir: ${ARTIFACTS_DIR}
     paths:
-      - $(ls ${ARTIFACTS_DIR}/*.{zip,tgz,html} | tr "\n" ":")
+      - $(ls ${ARTIFACTS_DIR}/*.{zip,tgz} | tr "\n" ":")
+      - ${ARTIFACTS_DIR}/cover.html
     target_paths:
       - /${TRAVIS_REPO_SLUG}/${TRAVIS_COMMIT}
   apt:
