@@ -69,13 +69,13 @@ fmt:
 
 .PHONY: cmd
 CMDS ?= $(shell ls -d ./cmd/*/ | xargs -L1 basename | grep -v internal)
-cmd: cmd-gen cmd-clean
+cmd: cmd-gen
 	$(foreach cmd,$(CMDS),go build --ldflags=$(CMD_GO_LDFLAGS) -o $(ARTIFACTS_DIR)/$(cmd) ./cmd/$(cmd);)
 
 .PHONY: cmdx
 CMDX_PLATFORMS = "windows/amd64" "darwin/amd64" "linux/amd64"
 CMDX_CMDS = "passport-scanner"
-cmdx: cmd-gen cmd-clean
+cmdx: cmd-gen
 	for platform in $(CMDX_PLATFORMS); do \
 		platform_split=($${platform//\// }); \
 		GOOS=$${platform_split[0]}; \
@@ -102,7 +102,3 @@ cmdx: cmd-gen cmd-clean
 .PHONY: cmd-gen
 cmd-gen:
 	go generate ./cmd/...
-
-.PHONY: cmd-clean
-cmd-clean:
-	rm -rf $(ARTIFACTS_DIR)
