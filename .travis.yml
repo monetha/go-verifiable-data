@@ -37,3 +37,16 @@ addons:
     update: true
     packages:
       - zip
+
+deploy:
+  provider: releases
+  api_key:
+    secure: Drdb+sgHgFVLHwEUhuaJf5UFxKxMGcr1kvq/dyKt8MzFD0YHoxoRqoq7u78X/FG1ZG9C6D+vJwhyIElKQ8F86UEz9rFQxU3WaY3X5QHUmsyzDgj0usnJBeBWkiZw+zLD75Ef/N3YTOpd4i2swqNElwl/dyt+A2dC2jAZVf9D8KWe8SEWr+PQex74UsXFPkMQ+DVhUshp4ngD2MxM9llb+hD5rkq3zHiGo575Cb+hVABteJUPBTPm+QF6WHkHcsxe/cZa4KITjbn8k68Y5TT/wHMUi+nXbu0Bv87x4c0gYlY/QXgOhJJxSRH2m6V7gn5Dpmube+U7scivtQmw2LVBHUhfLtQXpholqk3DTdH8fY43p7EOF5u2g32uehoWK2oDQZupPrkzsydH5zLZLi7TC7RLX3qOY7WUoa1+xg2aFMIM0OESX6U8bIuyGQn8gQzSFMnnVfDlM093E0wfjToFPxh0betnTSkydjP3lCPdnf/Rn15PR7J/NCGEkTkSzLXfOovzKnDROLay9hVrdD5TY2ac90NdKG4WiQHUIcQhzWPv6CAfDGBXop88t7sx8fF2+QqlvsyEpn88nA0oZWWIapkm+AavTK+UczeXg2gRhsGk65kz3CH+T60VNZMajLb65mmptTHcb0M7um/0YLVlEI7pyqlrwepQDpx8WaKzmCM=
+  file: ${ARTIFACTS_DIR}/*.{zip,tgz}
+  file_glob: true
+  skip_cleanup: true
+  overwrite: true
+  draft: true
+  on:
+    repo: ${TRAVIS_REPO_SLUG}
+    tags: true
