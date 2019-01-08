@@ -27,7 +27,9 @@ func PrintVersion() bool {
 		flag.Parse()
 	}
 
-	fmt.Printf("Version: %s\nBuildTime: %v\nGitHash: %s\n", Version, BuildTime, GitHash)
+	if printVersion {
+		fmt.Printf("Version: %s\nBuildTime: %v\nGitHash: %s\n", Version, BuildTime, GitHash)
+	}
 
 	return printVersion
 }
