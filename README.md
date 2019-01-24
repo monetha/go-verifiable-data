@@ -28,6 +28,8 @@
     * [Changing passport permissions](#changing-passport-permissions)
     * [Reading facts history](#reading-facts-history)
     * [Passport scanner](#passport-scanner) (sample web application)
+* [Permissioned blockchains support](#permissioned-blockchains-support)
+    * [Quorum](#quorum)
 
 ## Building the source
 
@@ -433,3 +435,96 @@ and open [http://localhost:8080](http://localhost:8080) in your browser.
 More details can be found [here](cmd/passport-scanner).
 
 Happy scanning!
+
+## Permissioned blockchains support
+
+### Quorum
+
+[Quorum](https://www.jpmorgan.com/global/Quorum)™ is an enterprise-focused version of [Ethereum](https://ethereum.org/). 
+It's ideal for any application requiring high speed and high throughput processing of private transactions within a 
+permissioned group of known participants.
+
+In order to play with our SDK on Quorum network, you need to run Quorum network somewhere. The easiest way to run Quorum 
+network of 7 nodes locally is by running a preconfigured Vagrant environment. Follow the 
+instructions below to do this:
+ 
+1. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+
+1. Install [Vagrant](https://www.vagrantup.com/downloads.html)
+
+1. Download and start the Vagrant instance (note: running `vagrant up` takes approx 5 mins):
+   ```
+   $ git clone https://github.com/jpmorganchase/quorum-examples
+   $ cd quorum-examples
+   $ vagrant up
+   $ vagrant ssh
+   ```
+   After executing these commands, you will be inside a virtual machine with all the tools to start the Quorum network.
+   
+   ***NOTE***: To shutdown the Vagrant instance later, run `vagrant suspend`. To delete it, run `vagrant destroy`. 
+   To start from scratch, run `vagrant up` after destroying the instance. (you should run all `vagrant` commands from 
+   the host machine, not from the virtual machine)
+   
+1. Once inside the virtual machine, run the blockchain nodes using Raft consensus:
+   ```
+   $ cd quorum-examples/7nodes/
+   $ ./raft-init.sh
+   $ ./raft-start.sh
+   ```
+   Make sure 7 processes of `geth` are up and running by executing `ps aux | grep geth` command.
+   
+   Genesis block contains 5 addresses, each of which has 1000000000 ETH:
+   
+   | Address                                    | Private key                                                      |
+   |--------------------------------------------|------------------------------------------------------------------|
+   | 0xed9d02e382b34818e88B88a309c7fe71E65f419d | e6181caaffff94a09d7e332fc8da9884d99902c7874eb74354bdcadf411929f1 |
+   | 0xcA843569e3427144cEad5e4d5999a3D0cCF92B8e | 4762e04d10832808a0aebdaa79c12de54afbe006bfffd228b3abcc494fe986f9 |
+   | 0x0fBDc686b912d7722dc86510934589E0AAf3b55A | 61dced5af778942996880120b303fc11ee28cc8e5036d2fdff619b5675ded3f0 |
+   | 0x9186eb3d20Cbd1F5f992a950d808C4495153ABd5 | 794392ba288a24092030badaadfee71e3fa55ccef1d70c708baf55c07ed538a8 |
+   | 0x0638E1574728b6D862dd5d3A3E0942c3be47D996 | 30bee17b2b8b1e774115f785e92474027d45d900a12a9d5d99af637c2d1a61bd |
+   
+1. When all nodes are up and running it's safe to exit from virtual machine and start reputation layer bootstrap. Run `exit`, to leave Vagrant environment:
+
+   ```
+   $ exit
+   ```
+   
+   Now you're on the host machine.
+   Vagrant environment exposes ports 22000-22007, on which Ethereum JSON RPC is available.
+   You can check it's working by running command:
+   
+   ```
+   $ curl -H "Content-Type: application/json" \
+     -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
+     http://localhost:22000
+   ```
+   
+   You should see the output:
+   
+   ```
+   {"jsonrpc":"2.0","id":1,"result":"0x0"}
+   ```
+
+1. Now follow [Building the source](#building-the-source) steps to build the full suite of reputation SDK utilities, 
+   if you haven't done it yet. Use private keys from the table above and specify one of the Quorum node (like `http://localhost:22000`) 
+   as `-backendurl` parameter to make transactions.
+   
+   For example:
+   ```
+   $ echo e6181caaffff94a09d7e332fc8da9884d99902c7874eb74354bdcadf411929f1 > bootstrap_owner.key
+   $ echo 4762e04d10832808a0aebdaa79c12de54afbe006bfffd228b3abcc494fe986f9 > passport_owner.key
+   $ echo 61dced5af778942996880120b303fc11ee28cc8e5036d2fdff619b5675ded3f0 > data_provider.key
+   $ ./bin/deploy-bootstrap -ownerkey ./bootstrap_owner.key -backendurl http://localhost:22000
+   $ ./bin/deploy-passport -ownerkey ./passport_owner.key \
+        -factoryaddr 0x9d13C6D3aFE1721BEef56B55D303B09E021E27ab \
+        -backendurl http://localhost:22000
+   $ echo Johny | ./bin/write-fact -fkey name -ftype string \
+        -ownerkey ./data_provider.key \
+        -passportaddr 0x4AEb3678b689DbB3F502D927580f9829001C4BB6 \
+        -backendurl http://localhost:22000
+   $ ./bin/read-fact -out /dev/stdout -fkey name -ftype string \
+        -factprovideraddr 0x0fBDc686b912d7722dc86510934589E0AAf3b55A \
+        -passportaddr 0x4AEb3678b689DbB3F502D927580f9829001C4BB6 \
+        -backendurl http://localhost:22000
+   ...
+   ```
