@@ -109,6 +109,7 @@ func (r *Reader) FilterPassports(opts *PassportFilterOpts, passportFactoryAddres
 		return nil, fmt.Errorf("passfactory: NewPassportFactoryContract: %v", err)
 	}
 
+	(*eth.Eth)(r).Log("FilterPassportCreated", "start_block", opts.Start)
 	filterOpts := &bind.FilterOpts{
 		Start:   opts.Start,
 		End:     opts.End,

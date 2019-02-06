@@ -27,12 +27,14 @@ type App struct {
 	BackendURLInput dom.Inp
 
 	PassListPassFactoryAddressInput dom.Inp
+	PassListStartFromBlockInp       dom.Inp
 	GetPassportListButton           dom.Btn
 	PassportListOutputDiv           dom.Elt
 	getPassportListRequestCloser    io.Closer
 	onGetPassportListClickCb        js.Callback
 
 	PassChangesPassAddressInput     dom.Inp
+	PassChangesStartFromBlockInp    dom.Inp
 	GetPassportChangesButton        dom.Btn
 	PassportChangesOutputDiv        dom.Elt
 	getPassportChangesRequestCloser io.Closer
@@ -55,6 +57,9 @@ func (a *App) setupOnClickGetPassportList() *App {
 
 		passportFactoryAddressStr := a.PassListPassFactoryAddressInput.Value()
 		passportFactoryAddress := common.HexToAddress(passportFactoryAddressStr)
+
+		passListStartFromBlockStr := a.PassListStartFromBlockInp.Value()
+		passListStartFromBlock, _ := strconv.ParseUint(passListStartFromBlockStr, 10, 64)
 
 		backendURL := a.BackendURLInput.Value()
 		networkType := getNetworkType(backendURL)
@@ -91,7 +96,7 @@ func (a *App) setupOnClickGetPassportList() *App {
 		a.getPassportListRequestCloser = (&passportListGetter{
 			Log:        a.Log,
 			BackendURL: backendURL,
-		}).GetPassportListAsync(passportFactoryAddress, &passportListObserver{
+		}).GetPassportListAsync(passportFactoryAddress, passListStartFromBlock, &passportListObserver{
 			OnErrorFun: func(err error) {
 				a.Log("passport filtering error", "error", err.Error())
 				resultStatusDiv.RemoveAllChildren()
@@ -129,6 +134,9 @@ func (a *App) setupOnClickGetPassportChanges() *App {
 
 		passportAddressStr := a.PassChangesPassAddressInput.Value()
 		passportAddress := common.HexToAddress(passportAddressStr)
+
+		passChangesStartFromBlockStr := a.PassChangesStartFromBlockInp.Value()
+		passChangesStartFromBlock, _ := strconv.ParseUint(passChangesStartFromBlockStr, 10, 64)
 
 		backendURL := a.BackendURLInput.Value()
 		networkType := getNetworkType(backendURL)
@@ -168,7 +176,7 @@ func (a *App) setupOnClickGetPassportChanges() *App {
 		a.getPassportChangesRequestCloser = (&passportChangesGetter{
 			Log:        a.Log,
 			BackendURL: backendURL,
-		}).GetPassportChangesAsync(passportAddress, &passportChangesObserver{
+		}).GetPassportChangesAsync(passportAddress, passChangesStartFromBlock, &passportChangesObserver{
 			OnErrorFun: func(err error) {
 				a.Log("passport changes error", "error", err.Error())
 				resultStatusDiv.RemoveAllChildren()
