@@ -17,6 +17,8 @@ Usage of `./passport-scanner`:
 ```
   -listen string
     	listen address (default ":8080")
+  -nocache
+    	prevent browser caching (default true)    	
 ```
 
 By default, the application serves content on port `8080`, but the port can be changed by specifying the `-listen` parameter.

@@ -7,11 +7,13 @@ import (
 	"strings"
 
 	"github.com/monetha/reputation-go-sdk/cmd"
+	"github.com/monetha/reputation-go-sdk/cmd/passport-scanner/middleware"
 	"github.com/shurcooL/httpgzip"
 )
 
 var (
-	listen = flag.String("listen", ":8080", "listen address")
+	listen  = flag.String("listen", ":8080", "listen address")
+	noCache = flag.Bool("nocache", true, "prevent browser caching")
 )
 
 func main() {
@@ -28,6 +30,10 @@ func main() {
 			IndexHTML: true,
 		},
 	)
+
+	if *noCache {
+		fileServer = middleware.NoCache(fileServer)
+	}
 
 	err := http.ListenAndServe(*listen, http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 		if strings.HasSuffix(req.URL.Path, ".wasm") {
