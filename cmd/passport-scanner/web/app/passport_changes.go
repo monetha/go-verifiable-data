@@ -40,7 +40,7 @@ type passportChangesGetter struct {
 	BackendURL string
 }
 
-func (f *passportChangesGetter) GetPassportChangesAsync(passportAddress common.Address, o *passportChangesObserver) io.Closer {
+func (f *passportChangesGetter) GetPassportChangesAsync(passportAddress common.Address, startFromBlock uint64, o *passportChangesObserver) io.Closer {
 	backendURL := f.BackendURL
 	lf := f.Log
 	onNext := o.OnNext
@@ -55,7 +55,10 @@ func (f *passportChangesGetter) GetPassportChangesAsync(passportAddress common.A
 		e := eth.New(client, lf)
 
 		historian := facts.NewHistorian(e)
-		filterOpts := &facts.ChangesFilterOpts{Context: ctx}
+		filterOpts := &facts.ChangesFilterOpts{
+			Context: ctx,
+			Start:   startFromBlock,
+		}
 
 		var it *facts.ChangeIterator
 		it, err = historian.FilterChanges(filterOpts, passportAddress)

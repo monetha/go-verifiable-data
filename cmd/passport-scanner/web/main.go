@@ -26,9 +26,11 @@ func main() {
 	if err := htmlMarkupTemplate.Execute(&sb, struct {
 		BackendURL             string
 		PassportFactoryAddress string
+		StartFromBlock         int
 	}{
 		BackendURL:             "https://ropsten.infura.io",
 		PassportFactoryAddress: "0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2",
+		StartFromBlock:         4100000,
 	}); err != nil {
 		panic(err)
 	}
@@ -49,10 +51,12 @@ func main() {
 		BackendURLInput: dom.Document.GetElementById("backendURLInp").AsInput(),
 
 		PassListPassFactoryAddressInput: dom.Document.GetElementById("passListPassportFactoryAddressInp").AsInput(),
+		PassListStartFromBlockInp:       dom.Document.GetElementById("passListStartFromBlockInp").AsInput(),
 		GetPassportListButton:           dom.Document.GetElementById("getPassportListBtn").AsButton(),
 		PassportListOutputDiv:           dom.Document.GetElementById("passportListOutput"),
 
 		PassChangesPassAddressInput: dom.Document.GetElementById("passChangesPassportAddressInp").AsInput(),
+		PassChangesStartFromBlockInp: dom.Document.GetElementById("passChangesStartFromBlockInp").AsInput(),
 		GetPassportChangesButton:    dom.Document.GetElementById("getPassportChangesBtn").AsButton(),
 		PassportChangesOutputDiv:    dom.Document.GetElementById("passportChangesOutput"),
 	}).

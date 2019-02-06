@@ -37,7 +37,7 @@ type passportListGetter struct {
 	BackendURL string
 }
 
-func (f *passportListGetter) GetPassportListAsync(passportFactoryAddress common.Address, o *passportListObserver) io.Closer {
+func (f *passportListGetter) GetPassportListAsync(passportFactoryAddress common.Address, startFromBlock uint64, o *passportListObserver) io.Closer {
 	backendURL := f.BackendURL
 	lf := f.Log
 	onNext := o.OnNext
@@ -54,6 +54,7 @@ func (f *passportListGetter) GetPassportListAsync(passportFactoryAddress common.
 		pfr := passfactory.NewReader(e)
 		filterOpts := &passfactory.PassportFilterOpts{
 			Context: ctx,
+			Start:   startFromBlock,
 		}
 
 		var it *passfactory.PassportIterator
