@@ -2,6 +2,8 @@ package facts
 
 import (
 	"context"
+	"crypto/ecdsa"
+	"errors"
 	"fmt"
 	"math/big"
 
@@ -11,6 +13,12 @@ import (
 	"github.com/monetha/reputation-go-sdk/contracts"
 	"github.com/monetha/reputation-go-sdk/contracts/txdata"
 	"github.com/monetha/reputation-go-sdk/eth"
+)
+
+var (
+	// ErrOwnerMustClaimOwnership error returned when the owner hasn't claimed ownership of a passport, but an attempt is
+	// made to retrieve the public address of the owner
+	ErrOwnerMustClaimOwnership = errors.New("facts: owner must claim ownership of the passport")
 )
 
 // Reader reads the facts
@@ -264,4 +272,62 @@ func (r *Reader) ReadIPFSHash(ctx context.Context, passport common.Address, fact
 	}
 
 	return res.Value, nil
+}
+
+// ReadOwnerPublicKey reads the Ethereum public key of the passport owner. Owner must claim ownership of the passport,
+// before this method can be invoked.
+func (r *Reader) ReadOwnerPublicKey(ctx context.Context, passport common.Address) (pk *ecdsa.PublicKey, err error) {
+	backend := r.Backend
+
+	plc := contracts.InitPassportLogicContract(passport, backend)
+
+	newOwner, err := plc.Owner(nil)
+	if err != nil {
+		err = fmt.Errorf("facts: getting Owner: %v", err)
+		return
+	}
+
+	(*eth.Eth)(r).Log("Filtering OwnershipTransferred", "newOwner", newOwner)
+	ownershipTransferredEvent, err := (*extPassportLogicContract)(plc).GetFirstOwnershipTransferredEvent(ctx, newOwner)
+	if err != nil {
+		err = fmt.Errorf("facts: FilterOwnershipTransferred: %v", err)
+	}
+
+	txHash := ownershipTransferredEvent.Raw.TxHash
+	(*eth.Eth)(r).Log("Getting transaction by hash", "tx_hash", txHash.Hex())
+	tx, _, err := backend.TransactionByHash(ctx, txHash)
+	if err != nil {
+		err = fmt.Errorf("facts: TransactionByHash(%v): %v", txHash, err)
+		return
+	}
+
+	return (*eth.Transaction)(tx).GetSenderPublicKey()
+}
+
+type extPassportLogicContract contracts.PassportLogicContract
+
+func (c *extPassportLogicContract) GetFirstOwnershipTransferredEvent(ctx context.Context, newOwner common.Address) (ev *contracts.PassportLogicContractOwnershipTransferred, err error) {
+	filterOpts := &bind.FilterOpts{
+		Context: ctx,
+	}
+	it, err := c.FilterOwnershipTransferred(filterOpts, nil, []common.Address{newOwner})
+	if err != nil {
+		return
+	}
+	defer it.Close()
+
+	for it.Next() {
+		if err = it.Error(); err != nil {
+			return
+		}
+
+		ev := it.Event
+		if ev == nil || ev.Raw.Removed {
+			continue
+		}
+
+		return ev, nil
+	}
+
+	return nil, ErrOwnerMustClaimOwnership
 }

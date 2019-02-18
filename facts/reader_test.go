@@ -8,6 +8,8 @@ import (
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/monetha/reputation-go-sdk/contracts"
 	"github.com/monetha/reputation-go-sdk/facts"
 )
 
@@ -434,4 +436,28 @@ func TestReader_ReadIPFSHash(t *testing.T) {
 			t.Errorf("Reader.ReadIPFSHash() expecting error = %v, got error = %v", ethereum.NotFound, err)
 		}
 	})
+}
+
+func TestReader_ReadOwnerPublicKey(t *testing.T) {
+	ctx := context.Background()
+
+	passportAddress, factProviderSession := createPassportAndFactProviderSession(ctx, t)
+	e := factProviderSession.Eth
+
+	pubKey, err := facts.NewReader(e).ReadOwnerPublicKey(ctx, passportAddress)
+	if err != nil {
+		t.Fatalf("ReadOwnerPublicKey() error = %v", err)
+	}
+
+	pubKeyAddress := crypto.PubkeyToAddress(*pubKey)
+
+	passportLogicContract := contracts.InitPassportLogicContract(passportAddress, e.Backend)
+	passportOwnerAddress, err := passportLogicContract.Owner(nil)
+	if err != nil {
+		t.Fatalf("Owner() error = %v", err)
+	}
+
+	if pubKeyAddress != passportOwnerAddress {
+		t.Errorf("public key address %v not equal to owner address %v", pubKeyAddress.String(), passportOwnerAddress.String())
+	}
 }
