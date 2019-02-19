@@ -41,6 +41,7 @@ import (
 	"math/big"
 )
 
+// Errors returned by the package
 var (
 	ErrImport                     = fmt.Errorf("ecies: failed to import key")
 	ErrInvalidCurve               = fmt.Errorf("ecies: invalid elliptic curve")
@@ -48,6 +49,10 @@ var (
 	ErrInvalidPublicKey           = fmt.Errorf("ecies: invalid public key")
 	ErrSharedKeyIsPointAtInfinity = fmt.Errorf("ecies: shared key is point at infinity")
 	ErrSharedKeyTooBig            = fmt.Errorf("ecies: shared key params are too big")
+	ErrKeyDataTooLong             = fmt.Errorf("ecies: can't supply requested key data")
+	ErrSharedTooLong              = fmt.Errorf("ecies: shared secret is too long")
+	ErrInvalidMessage             = fmt.Errorf("ecies: invalid message")
+	ErrUnsupportedECIESParameters = fmt.Errorf("ecies: unsupported ECIES parameters")
 )
 
 // PublicKey is a representation of an elliptic curve public key.
@@ -55,15 +60,15 @@ type PublicKey struct {
 	X *big.Int
 	Y *big.Int
 	elliptic.Curve
-	Params *ECIESParams
+	Params *Params
 }
 
-// Export an ECIES public key as an ECDSA public key.
+// ExportECDSA exports an ECIES public key as an ECDSA public key.
 func (pub *PublicKey) ExportECDSA() *ecdsa.PublicKey {
 	return &ecdsa.PublicKey{Curve: pub.Curve, X: pub.X, Y: pub.Y}
 }
 
-// Import an ECDSA public key as an ECIES public key.
+// ImportECDSAPublic imports an ECDSA public key as an ECIES public key.
 func ImportECDSAPublic(pub *ecdsa.PublicKey) *PublicKey {
 	return &PublicKey{
 		X:      pub.X,
@@ -79,22 +84,22 @@ type PrivateKey struct {
 	D *big.Int
 }
 
-// Export an ECIES private key as an ECDSA private key.
+// ExportECDSA exports an ECIES private key as an ECDSA private key.
 func (prv *PrivateKey) ExportECDSA() *ecdsa.PrivateKey {
 	pub := &prv.PublicKey
 	pubECDSA := pub.ExportECDSA()
 	return &ecdsa.PrivateKey{PublicKey: *pubECDSA, D: prv.D}
 }
 
-// Import an ECDSA private key as an ECIES private key.
+// ImportECDSA imports an ECDSA private key as an ECIES private key.
 func ImportECDSA(prv *ecdsa.PrivateKey) *PrivateKey {
 	pub := ImportECDSAPublic(&prv.PublicKey)
 	return &PrivateKey{*pub, prv.D}
 }
 
-// Generate an elliptic curve public / private keypair. If params is nil,
+// GenerateKey generates an elliptic curve public / private keypair. If params is nil,
 // the recommended default parameters for the key will be chosen.
-func GenerateKey(rand io.Reader, curve elliptic.Curve, params *ECIESParams) (prv *PrivateKey, err error) {
+func GenerateKey(rand io.Reader, curve elliptic.Curve, params *Params) (prv *PrivateKey, err error) {
 	pb, x, y, err := elliptic.GenerateKey(curve, rand)
 	if err != nil {
 		return
@@ -117,7 +122,7 @@ func MaxSharedKeyLength(pub *PublicKey) int {
 	return (pub.Curve.Params().BitSize + 7) / 8
 }
 
-// ECDH key agreement method used to establish secret keys for encryption.
+// GenerateShared generates shared secret keys for encryption using ECDH key agreement protocol.
 func (prv *PrivateKey) GenerateShared(pub *PublicKey, skLen, macLen int) (sk []byte, err error) {
 	if prv.PublicKey.Curve != pub.Curve {
 		return nil, ErrInvalidCurve
@@ -136,12 +141,6 @@ func (prv *PrivateKey) GenerateShared(pub *PublicKey, skLen, macLen int) (sk []b
 	copy(sk[len(sk)-len(skBytes):], skBytes)
 	return sk, nil
 }
-
-var (
-	ErrKeyDataTooLong = fmt.Errorf("ecies: can't supply requested key data")
-	ErrSharedTooLong  = fmt.Errorf("ecies: shared secret is too long")
-	ErrInvalidMessage = fmt.Errorf("ecies: invalid message")
-)
 
 var (
 	big2To32   = new(big.Int).Exp(big.NewInt(2), big.NewInt(32), nil)
@@ -202,7 +201,7 @@ func messageTag(hash func() hash.Hash, km, msg, shared []byte) []byte {
 }
 
 // Generate an initialisation vector for CTR mode.
-func generateIV(params *ECIESParams, rand io.Reader) (iv []byte, err error) {
+func generateIV(params *Params, rand io.Reader) (iv []byte, err error) {
 	iv = make([]byte, params.BlockSize)
 	_, err = io.ReadFull(rand, iv)
 	return
@@ -210,7 +209,7 @@ func generateIV(params *ECIESParams, rand io.Reader) (iv []byte, err error) {
 
 // symEncrypt carries out CTR encryption using the block cipher specified in the
 // parameters.
-func symEncrypt(rand io.Reader, params *ECIESParams, key, m []byte) (ct []byte, err error) {
+func symEncrypt(rand io.Reader, params *Params, key, m []byte) (ct []byte, err error) {
 	c, err := params.Cipher(key)
 	if err != nil {
 		return
@@ -230,7 +229,7 @@ func symEncrypt(rand io.Reader, params *ECIESParams, key, m []byte) (ct []byte, 
 
 // symDecrypt carries out CTR decryption using the block cipher specified in
 // the parameters
-func symDecrypt(params *ECIESParams, key, ct []byte) (m []byte, err error) {
+func symDecrypt(params *Params, key, ct []byte) (m []byte, err error) {
 	c, err := params.Cipher(key)
 	if err != nil {
 		return
@@ -307,7 +306,7 @@ func (prv *PrivateKey) Decrypt(c, s1, s2 []byte) (m []byte, err error) {
 
 	var (
 		rLen   int
-		hLen   int = hash.Size()
+		hLen   = hash.Size()
 		mStart int
 		mEnd   int
 	)

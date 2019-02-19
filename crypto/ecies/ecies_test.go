@@ -71,7 +71,7 @@ var ErrBadSharedKeys = fmt.Errorf("ecies: shared keys don't match")
 
 // cmpParams compares a set of ECIES parameters. We assume, as per the
 // docs, that AES is the only supported symmetric encryption algorithm.
-func cmpParams(p1, p2 *ECIESParams) bool {
+func cmpParams(p1, p2 *Params) bool {
 	return p1.hashAlgo == p2.hashAlgo &&
 		p1.KeyLen == p2.KeyLen &&
 		p1.BlockSize == p2.BlockSize
@@ -308,7 +308,7 @@ func TestDecryptShared2(t *testing.T) {
 type testCase struct {
 	Curve    elliptic.Curve
 	Name     string
-	Expected *ECIESParams
+	Expected *Params
 }
 
 var testCases = []testCase{
