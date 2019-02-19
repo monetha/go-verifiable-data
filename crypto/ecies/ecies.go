@@ -327,10 +327,11 @@ func (prv *PrivateKey) Decrypt(ct, s1, s2 []byte) (msg []byte, err error) {
 	mEnd = len(ct) - hLen
 
 	ephPubBs := ct[:rLen]
+	ephPub := &PublicKey{
+		Curve: curve,
+	}
+	ephPub.X, ephPub.Y = elliptic.Unmarshal(curve, ephPubBs)
 
-	ephPub := new(PublicKey)
-	ephPub.Curve = curve
-	ephPub.X, ephPub.Y = elliptic.Unmarshal(ephPub.Curve, ephPubBs)
 	if ephPub.X == nil {
 		err = ErrInvalidPublicKey
 		return
