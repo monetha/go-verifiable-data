@@ -275,6 +275,36 @@ func TestEncryptDecrypt(t *testing.T) {
 	}
 }
 
+func TestDecryptShared1(t *testing.T) {
+	prv, err := GenerateKey(rand.Reader, DefaultCurve, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	message := []byte("Hello, world.")
+	shared1 := []byte("shared data 1")
+	ct, err := Encrypt(rand.Reader, &prv.PublicKey, message, shared1, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Check that decrypting with correct shared data works.
+	pt, err := prv.Decrypt(ct, shared1, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(pt, message) {
+		t.Fatal("ecies: plaintext doesn't match message")
+	}
+
+	// Decrypting without shared data or incorrect shared data fails.
+	if _, err = prv.Decrypt(ct, nil, nil); err == nil {
+		t.Fatal("ecies: decrypting without shared data didn't fail")
+	}
+	if _, err = prv.Decrypt(ct, nil, []byte("garbage")); err == nil {
+		t.Fatal("ecies: decrypting with incorrect shared data didn't fail")
+	}
+}
+
 func TestDecryptShared2(t *testing.T) {
 	prv, err := GenerateKey(rand.Reader, DefaultCurve, nil)
 	if err != nil {
