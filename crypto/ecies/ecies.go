@@ -192,8 +192,8 @@ func concatKDF(hash hash.Hash, z, s1 []byte, kdLen int) (k []byte, err error) {
 
 // messageTag computes the MAC of a message (called the tag) as per
 // SEC 1, 3.5.
-func messageTag(hash func() hash.Hash, km, msg, shared []byte) []byte {
-	mac := hmac.New(hash, km)
+func messageTag(hash func() hash.Hash, hmacKey, msg, shared []byte) []byte {
+	mac := hmac.New(hash, hmacKey)
 	mac.Write(msg)
 	mac.Write(shared)
 	tag := mac.Sum(nil)
@@ -201,8 +201,8 @@ func messageTag(hash func() hash.Hash, km, msg, shared []byte) []byte {
 }
 
 // Generate an initialisation vector for CTR mode.
-func generateIV(params *Params, rand io.Reader) (iv []byte, err error) {
-	iv = make([]byte, params.BlockSize)
+func generateIV(blockSize int, rand io.Reader) (iv []byte, err error) {
+	iv = make([]byte, blockSize)
 	_, err = io.ReadFull(rand, iv)
 	return
 }
@@ -210,35 +210,40 @@ func generateIV(params *Params, rand io.Reader) (iv []byte, err error) {
 // symEncrypt carries out CTR encryption using the block cipher specified in the
 // parameters.
 func symEncrypt(rand io.Reader, params *Params, key, m []byte) (ct []byte, err error) {
-	c, err := params.Cipher(key)
+	blockSize := params.BlockSize
+
+	c, err := params.NewCipher(key)
 	if err != nil {
 		return
 	}
 
-	iv, err := generateIV(params, rand)
+	iv, err := generateIV(blockSize, rand)
 	if err != nil {
 		return
 	}
 	ctr := cipher.NewCTR(c, iv)
 
-	ct = make([]byte, len(m)+params.BlockSize)
+	ct = make([]byte, blockSize+len(m))
 	copy(ct, iv)
-	ctr.XORKeyStream(ct[params.BlockSize:], m)
+	ctr.XORKeyStream(ct[blockSize:], m)
 	return
 }
 
 // symDecrypt carries out CTR decryption using the block cipher specified in
 // the parameters
 func symDecrypt(params *Params, key, ct []byte) (m []byte, err error) {
-	c, err := params.Cipher(key)
+	blockSize := params.BlockSize
+
+	c, err := params.NewCipher(key)
 	if err != nil {
 		return
 	}
 
-	ctr := cipher.NewCTR(c, ct[:params.BlockSize])
+	iv := ct[:blockSize]
+	ctr := cipher.NewCTR(c, iv)
 
-	m = make([]byte, len(ct)-params.BlockSize)
-	ctr.XORKeyStream(m, ct[params.BlockSize:])
+	m = make([]byte, len(ct)-blockSize)
+	ctr.XORKeyStream(m, ct[blockSize:])
 	return
 }
 
@@ -247,74 +252,69 @@ func symDecrypt(params *Params, key, ct []byte) (m []byte, err error) {
 // s1 and s2 contain shared information that is not part of the resulting
 // ciphertext. s1 is fed into key derivation, s2 is fed into the MAC. If the
 // shared information parameters aren't being used, they should be nil.
-func Encrypt(rand io.Reader, pub *PublicKey, m, s1, s2 []byte) (ct []byte, err error) {
+func Encrypt(rand io.Reader, pub *PublicKey, msg, s1, s2 []byte) (ct []byte, err error) {
 	params := pub.Params
+	curve := pub.Curve
+
 	if params == nil {
-		if params = ParamsFromCurve(pub.Curve); params == nil {
+		if params = ParamsFromCurve(curve); params == nil {
 			err = ErrUnsupportedECIESParameters
 			return
 		}
 	}
-	R, err := GenerateKey(rand, pub.Curve, params)
+	ephKey, err := GenerateKey(rand, curve, params)
 	if err != nil {
 		return
 	}
 
-	hash := params.Hash()
-	z, err := R.GenerateShared(pub, params.KeyLen, params.KeyLen)
+	encKey, hmacKey, err := ephKey.generateEncryptionHMacKeys(params, pub, s1)
 	if err != nil {
 		return
 	}
-	K, err := concatKDF(hash, z, s1, params.KeyLen+params.KeyLen)
-	if err != nil {
-		return
-	}
-	Ke := K[:params.KeyLen]
-	Km := K[params.KeyLen:]
-	hash.Write(Km)
-	Km = hash.Sum(nil)
-	hash.Reset()
 
-	em, err := symEncrypt(rand, params, Ke, m)
-	if err != nil || len(em) <= params.BlockSize {
+	encMsg, err := symEncrypt(rand, params, encKey, msg)
+	if err != nil || len(encMsg) <= params.BlockSize {
 		return
 	}
 
-	d := messageTag(params.Hash, Km, em, s2)
+	msgHmac := messageTag(params.NewHash, hmacKey, encMsg, s2)
 
-	Rb := elliptic.Marshal(pub.Curve, R.PublicKey.X, R.PublicKey.Y)
-	ct = make([]byte, len(Rb)+len(em)+len(d))
-	copy(ct, Rb)
-	copy(ct[len(Rb):], em)
-	copy(ct[len(Rb)+len(em):], d)
+	ephPub := ephKey.PublicKey
+	ephPubBs := elliptic.Marshal(curve, ephPub.X, ephPub.Y)
+	ct = make([]byte, len(ephPubBs)+len(encMsg)+len(msgHmac))
+	copy(ct, ephPubBs)
+	copy(ct[len(ephPubBs):], encMsg)
+	copy(ct[len(ephPubBs)+len(encMsg):], msgHmac)
 	return
 }
 
 // Decrypt decrypts an ECIES ciphertext.
-func (prv *PrivateKey) Decrypt(c, s1, s2 []byte) (m []byte, err error) {
-	if len(c) == 0 {
+func (prv *PrivateKey) Decrypt(ct, s1, s2 []byte) (msg []byte, err error) {
+	if len(ct) == 0 {
 		return nil, ErrInvalidMessage
 	}
 	params := prv.PublicKey.Params
+	curve := prv.PublicKey.Curve
+
 	if params == nil {
-		if params = ParamsFromCurve(prv.PublicKey.Curve); params == nil {
+		if params = ParamsFromCurve(curve); params == nil {
 			err = ErrUnsupportedECIESParameters
 			return
 		}
 	}
-	hash := params.Hash()
+	h := params.NewHash()
 
 	var (
 		rLen   int
-		hLen   = hash.Size()
+		hLen   = h.Size()
 		mStart int
 		mEnd   int
 	)
 
-	switch c[0] {
+	switch ct[0] {
 	case 2, 3, 4:
-		rLen = (prv.PublicKey.Curve.Params().BitSize + 7) / 4
-		if len(c) < (rLen + hLen + 1) {
+		rLen = (curve.Params().BitSize + 7) / 4
+		if len(ct) < (rLen + hLen + 1) {
 			err = ErrInvalidMessage
 			return
 		}
@@ -324,42 +324,60 @@ func (prv *PrivateKey) Decrypt(c, s1, s2 []byte) (m []byte, err error) {
 	}
 
 	mStart = rLen
-	mEnd = len(c) - hLen
+	mEnd = len(ct) - hLen
 
-	R := new(PublicKey)
-	R.Curve = prv.PublicKey.Curve
-	R.X, R.Y = elliptic.Unmarshal(R.Curve, c[:rLen])
-	if R.X == nil {
+	ephPubBs := ct[:rLen]
+
+	ephPub := new(PublicKey)
+	ephPub.Curve = curve
+	ephPub.X, ephPub.Y = elliptic.Unmarshal(ephPub.Curve, ephPubBs)
+	if ephPub.X == nil {
 		err = ErrInvalidPublicKey
 		return
 	}
-	if !R.Curve.IsOnCurve(R.X, R.Y) {
+	if !curve.IsOnCurve(ephPub.X, ephPub.Y) {
 		err = ErrInvalidCurve
 		return
 	}
 
-	z, err := prv.GenerateShared(R, params.KeyLen, params.KeyLen)
+	encKey, hmacKey, err := prv.generateEncryptionHMacKeys(params, ephPub, s1)
 	if err != nil {
 		return
 	}
 
-	K, err := concatKDF(hash, z, s1, params.KeyLen+params.KeyLen)
-	if err != nil {
-		return
-	}
+	encMsg := ct[mStart:mEnd]
+	msgHmac := ct[mEnd:]
 
-	Ke := K[:params.KeyLen]
-	Km := K[params.KeyLen:]
-	hash.Write(Km)
-	Km = hash.Sum(nil)
-	hash.Reset()
-
-	d := messageTag(params.Hash, Km, c[mStart:mEnd], s2)
-	if subtle.ConstantTimeCompare(c[mEnd:], d) != 1 {
+	calcMsgHmac := messageTag(params.NewHash, hmacKey, encMsg, s2)
+	if subtle.ConstantTimeCompare(msgHmac, calcMsgHmac) != 1 {
 		err = ErrInvalidMessage
 		return
 	}
 
-	m, err = symDecrypt(params, Ke, c[mStart:mEnd])
+	msg, err = symDecrypt(params, encKey, encMsg)
+	return
+}
+
+func (prv *PrivateKey) generateEncryptionHMacKeys(params *Params, pub *PublicKey, s1 []byte) (encKey, hmacKey []byte, err error) {
+	keyLen := params.KeyLen
+
+	z, err := prv.GenerateShared(pub, keyLen, keyLen)
+	if err != nil {
+		return
+	}
+
+	hsh := params.NewHash()
+
+	K, err := concatKDF(hsh, z, s1, keyLen+keyLen)
+	if err != nil {
+		return
+	}
+
+	encKey = K[:keyLen]
+	hmacKey = K[keyLen:]
+	hsh.Write(hmacKey)
+	hmacKey = hsh.Sum(nil)
+	hsh.Reset()
+
 	return
 }

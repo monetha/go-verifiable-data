@@ -51,9 +51,9 @@ var (
 
 // Params holds all the parameters of selected encryption scheme
 type Params struct {
-	Hash      func() hash.Hash // hash function
+	NewHash   func() hash.Hash // hash function
 	hashAlgo  crypto.Hash
-	Cipher    func([]byte) (cipher.Block, error) // symmetric cipher
+	NewCipher func([]byte) (cipher.Block, error) // symmetric cipher
 	BlockSize int                                // block size of symmetric cipher
 	KeyLen    int                                // length of symmetric key
 }
@@ -67,36 +67,36 @@ type Params struct {
 var (
 	// Aes128Sha256Params using AES128 and HMAC-SHA-256-16
 	Aes128Sha256Params = &Params{
-		Hash:      sha256.New,
+		NewHash:   sha256.New,
 		hashAlgo:  crypto.SHA256,
-		Cipher:    aes.NewCipher,
+		NewCipher: aes.NewCipher,
 		BlockSize: aes.BlockSize,
 		KeyLen:    16,
 	}
 
 	// Aes256Sha256Params using AES256 and HMAC-SHA-256-32
 	Aes256Sha256Params = &Params{
-		Hash:      sha256.New,
+		NewHash:   sha256.New,
 		hashAlgo:  crypto.SHA256,
-		Cipher:    aes.NewCipher,
+		NewCipher: aes.NewCipher,
 		BlockSize: aes.BlockSize,
 		KeyLen:    32,
 	}
 
 	// Aes256Sha384Params using AES256 and HMAC-SHA-384-48
 	Aes256Sha384Params = &Params{
-		Hash:      sha512.New384,
+		NewHash:   sha512.New384,
 		hashAlgo:  crypto.SHA384,
-		Cipher:    aes.NewCipher,
+		NewCipher: aes.NewCipher,
 		BlockSize: aes.BlockSize,
 		KeyLen:    32,
 	}
 
 	// Aes256Sha512Params using AES256 and HMAC-SHA-512-64
 	Aes256Sha512Params = &Params{
-		Hash:      sha512.New,
+		NewHash:   sha512.New,
 		hashAlgo:  crypto.SHA512,
-		Cipher:    aes.NewCipher,
+		NewCipher: aes.NewCipher,
 		BlockSize: aes.BlockSize,
 		KeyLen:    32,
 	}
