@@ -65,8 +65,8 @@ type Params struct {
 // * ECIES using AES256 and HMAC-SHA-512-64
 
 var (
-	// ECIES_AES128_SHA256 using AES128 and HMAC-SHA-256-16
-	ECIES_AES128_SHA256 = &Params{
+	// Aes128Sha256Params using AES128 and HMAC-SHA-256-16
+	Aes128Sha256Params = &Params{
 		Hash:      sha256.New,
 		hashAlgo:  crypto.SHA256,
 		Cipher:    aes.NewCipher,
@@ -74,8 +74,8 @@ var (
 		KeyLen:    16,
 	}
 
-	// ECIES_AES256_SHA256 using AES256 and HMAC-SHA-256-32
-	ECIES_AES256_SHA256 = &Params{
+	// Aes256Sha256Params using AES256 and HMAC-SHA-256-32
+	Aes256Sha256Params = &Params{
 		Hash:      sha256.New,
 		hashAlgo:  crypto.SHA256,
 		Cipher:    aes.NewCipher,
@@ -83,8 +83,8 @@ var (
 		KeyLen:    32,
 	}
 
-	// ECIES_AES256_SHA384 using AES256 and HMAC-SHA-384-48
-	ECIES_AES256_SHA384 = &Params{
+	// Aes256Sha384Params using AES256 and HMAC-SHA-384-48
+	Aes256Sha384Params = &Params{
 		Hash:      sha512.New384,
 		hashAlgo:  crypto.SHA384,
 		Cipher:    aes.NewCipher,
@@ -92,8 +92,8 @@ var (
 		KeyLen:    32,
 	}
 
-	// ECIES_AES256_SHA512 using AES256 and HMAC-SHA-512-64
-	ECIES_AES256_SHA512 = &Params{
+	// Aes256Sha512Params using AES256 and HMAC-SHA-512-64
+	Aes256Sha512Params = &Params{
 		Hash:      sha512.New,
 		hashAlgo:  crypto.SHA512,
 		Cipher:    aes.NewCipher,
@@ -103,10 +103,10 @@ var (
 )
 
 var paramsFromCurve = map[elliptic.Curve]*Params{
-	ethcrypto.S256(): ECIES_AES128_SHA256,
-	elliptic.P256():  ECIES_AES128_SHA256,
-	elliptic.P384():  ECIES_AES256_SHA384,
-	elliptic.P521():  ECIES_AES256_SHA512,
+	ethcrypto.S256(): Aes128Sha256Params,
+	elliptic.P256():  Aes128Sha256Params,
+	elliptic.P384():  Aes256Sha384Params,
+	elliptic.P521():  Aes256Sha512Params,
 }
 
 // AddParamsForCurve sets parameters for the specific elliptic curve.
