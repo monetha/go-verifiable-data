@@ -253,6 +253,21 @@ func symDecrypt(params *Params, key, ct []byte) (m []byte, err error) {
 // ciphertext. s1 is fed into key derivation, s2 is fed into the MAC. If the
 // shared information parameters aren't being used, they should be nil.
 func Encrypt(rand io.Reader, pub *PublicKey, msg, s1, s2 []byte) (ct []byte, err error) {
+	c, err := EncryptToCipherText(rand, pub, msg, s1, s2)
+	if err != nil {
+		return
+	}
+
+	return c.Marshal()
+}
+
+// EncryptToCipherText encrypts a message using ECIES as specified in SEC 1, 5.1.
+// Instead of bytes it returns all the parts of encrypted message.
+//
+// s1 and s2 contain shared information that is not part of the resulting
+// ciphertext. s1 is fed into key derivation, s2 is fed into the MAC. If the
+// shared information parameters aren't being used, they should be nil.
+func EncryptToCipherText(rand io.Reader, pub *PublicKey, msg, s1, s2 []byte) (ct *CipherText, err error) {
 	params := pub.Params
 	curve := pub.Curve
 
@@ -279,20 +294,17 @@ func Encrypt(rand io.Reader, pub *PublicKey, msg, s1, s2 []byte) (ct []byte, err
 
 	msgHmac := messageTag(params.NewHash, hmacKey, encMsg, s2)
 
-	ephPub := ephKey.PublicKey
-	ephPubBs := elliptic.Marshal(curve, ephPub.X, ephPub.Y)
-	ct = make([]byte, len(ephPubBs)+len(encMsg)+len(msgHmac))
-	copy(ct, ephPubBs)
-	copy(ct[len(ephPubBs):], encMsg)
-	copy(ct[len(ephPubBs)+len(encMsg):], msgHmac)
+	ct = &CipherText{
+		EphemeralPublicKey: &ephKey.PublicKey,
+		EncryptedMessage:   encMsg,
+		MessageHMac:        msgHmac,
+	}
+
 	return
 }
 
 // Decrypt decrypts an ECIES ciphertext.
 func (prv *PrivateKey) Decrypt(ct, s1, s2 []byte) (msg []byte, err error) {
-	if len(ct) == 0 {
-		return nil, ErrInvalidMessage
-	}
 	params := prv.PublicKey.Params
 	curve := prv.PublicKey.Curve
 
@@ -302,52 +314,22 @@ func (prv *PrivateKey) Decrypt(ct, s1, s2 []byte) (msg []byte, err error) {
 			return
 		}
 	}
-	h := params.NewHash()
 
-	var (
-		rLen   int
-		hLen   = h.Size()
-		mStart int
-		mEnd   int
-	)
+	hashSize := params.NewHash().Size()
 
-	switch ct[0] {
-	case 2, 3, 4:
-		rLen = (curve.Params().BitSize + 7) / 4
-		if len(ct) < (rLen + hLen + 1) {
-			err = ErrInvalidMessage
-			return
-		}
-	default:
-		err = ErrInvalidPublicKey
-		return
-	}
-
-	mStart = rLen
-	mEnd = len(ct) - hLen
-
-	ephPubBs := ct[:rLen]
-	ephPub := &PublicKey{
-		Curve: curve,
-	}
-	ephPub.X, ephPub.Y = elliptic.Unmarshal(curve, ephPubBs)
-
-	if ephPub.X == nil {
-		err = ErrInvalidPublicKey
-		return
-	}
-	if !curve.IsOnCurve(ephPub.X, ephPub.Y) {
-		err = ErrInvalidCurve
-		return
-	}
-
-	encKey, hmacKey, err := prv.generateEncryptionHMacKeys(params, ephPub, s1)
+	c := &CipherText{}
+	err = c.Unmarshal(ct, curve, hashSize)
 	if err != nil {
 		return
 	}
 
-	encMsg := ct[mStart:mEnd]
-	msgHmac := ct[mEnd:]
+	encKey, hmacKey, err := prv.generateEncryptionHMacKeys(params, c.EphemeralPublicKey, s1)
+	if err != nil {
+		return
+	}
+
+	encMsg := c.EncryptedMessage
+	msgHmac := c.MessageHMac
 
 	calcMsgHmac := messageTag(params.NewHash, hmacKey, encMsg, s2)
 	if subtle.ConstantTimeCompare(msgHmac, calcMsgHmac) != 1 {
@@ -381,4 +363,74 @@ func (prv *PrivateKey) generateEncryptionHMacKeys(params *Params, pub *PublicKey
 	hsh.Reset()
 
 	return
+}
+
+// CipherText holds parts of encrypted message
+type CipherText struct {
+	EphemeralPublicKey *PublicKey
+	EncryptedMessage   []byte
+	MessageHMac        []byte
+}
+
+// Marshal converts parts of encrypted message into byte slice.
+func (ct *CipherText) Marshal() ([]byte, error) {
+	ephPub := ct.EphemeralPublicKey
+	curve := ephPub.Curve
+	encMsg := ct.EncryptedMessage
+	msgHmac := ct.MessageHMac
+
+	ephPubBs := elliptic.Marshal(curve, ephPub.X, ephPub.Y)
+	ctBs := make([]byte, len(ephPubBs)+len(encMsg)+len(msgHmac))
+	copy(ctBs, ephPubBs)
+	copy(ctBs[len(ephPubBs):], encMsg)
+	copy(ctBs[len(ephPubBs)+len(encMsg):], msgHmac)
+
+	return ctBs, nil
+}
+
+// Unmarshal splits the bytes of encrypted message, serialized by Marshal, into the parts of encrypted message.
+func (ct *CipherText) Unmarshal(b []byte, curve elliptic.Curve, hashSize int) error {
+	if len(b) == 0 {
+		return ErrInvalidMessage
+	}
+
+	var (
+		rLen   int
+		hLen   = hashSize
+		mStart int
+		mEnd   int
+	)
+
+	switch b[0] {
+	case 2, 3, 4:
+		rLen = (curve.Params().BitSize + 7) / 4
+		if len(b) < (rLen + hLen + 1) {
+			return ErrInvalidMessage
+		}
+	default:
+		return ErrInvalidPublicKey
+	}
+
+	mStart = rLen
+	mEnd = len(b) - hLen
+
+	ephPubBs := b[:rLen]
+
+	x, y := elliptic.Unmarshal(curve, ephPubBs)
+	if x == nil {
+		return ErrInvalidPublicKey
+	}
+	if !curve.IsOnCurve(x, y) {
+		return ErrInvalidCurve
+	}
+
+	ct.EphemeralPublicKey = &PublicKey{
+		Curve: curve,
+		X:     x,
+		Y:     y,
+	}
+	ct.EncryptedMessage = b[mStart:mEnd]
+	ct.MessageHMac = b[mEnd:]
+
+	return nil
 }
