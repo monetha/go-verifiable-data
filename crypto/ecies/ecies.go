@@ -192,8 +192,8 @@ func concatKDF(hash hash.Hash, z, s1 []byte, kdLen int) (k []byte, err error) {
 
 // messageTag computes the MAC of a message (called the tag) as per
 // SEC 1, 3.5.
-func messageTag(hash func() hash.Hash, hmacKey, msg, shared []byte) []byte {
-	mac := hmac.New(hash, hmacKey)
+func messageTag(newHash func() hash.Hash, hmacKey, msg, shared []byte) []byte {
+	mac := hmac.New(newHash, hmacKey)
 	mac.Write(msg)
 	mac.Write(shared)
 	tag := mac.Sum(nil)
@@ -282,7 +282,10 @@ func EncryptToCipherText(rand io.Reader, pub *PublicKey, msg, s1, s2 []byte) (ct
 		return
 	}
 
-	encKey, hmacKey, err := ephKey.generateEncryptionHMacKeys(params, pub, s1)
+	newHash := params.NewHash
+	keyLen := params.KeyLen
+
+	encKey, hmacKey, err := ephKey.generateEncryptionHMacKeys(newHash, keyLen, pub, s1)
 	if err != nil {
 		return
 	}
@@ -315,7 +318,10 @@ func (prv *PrivateKey) Decrypt(ct, s1, s2 []byte) (msg []byte, err error) {
 		}
 	}
 
-	hashSize := params.NewHash().Size()
+	newHash := params.NewHash
+	keyLen := params.KeyLen
+
+	hashSize := newHash().Size()
 
 	c := &CipherText{}
 	err = c.Unmarshal(ct, curve, hashSize)
@@ -323,7 +329,7 @@ func (prv *PrivateKey) Decrypt(ct, s1, s2 []byte) (msg []byte, err error) {
 		return
 	}
 
-	encKey, hmacKey, err := prv.generateEncryptionHMacKeys(params, c.EphemeralPublicKey, s1)
+	encKey, hmacKey, err := prv.generateEncryptionHMacKeys(newHash, keyLen, c.EphemeralPublicKey, s1)
 	if err != nil {
 		return
 	}
@@ -331,7 +337,7 @@ func (prv *PrivateKey) Decrypt(ct, s1, s2 []byte) (msg []byte, err error) {
 	encMsg := c.EncryptedMessage
 	msgHmac := c.MessageHMac
 
-	calcMsgHmac := messageTag(params.NewHash, hmacKey, encMsg, s2)
+	calcMsgHmac := messageTag(newHash, hmacKey, encMsg, s2)
 	if subtle.ConstantTimeCompare(msgHmac, calcMsgHmac) != 1 {
 		err = ErrInvalidMessage
 		return
@@ -341,15 +347,14 @@ func (prv *PrivateKey) Decrypt(ct, s1, s2 []byte) (msg []byte, err error) {
 	return
 }
 
-func (prv *PrivateKey) generateEncryptionHMacKeys(params *Params, pub *PublicKey, s1 []byte) (encKey, hmacKey []byte, err error) {
-	keyLen := params.KeyLen
+func (prv *PrivateKey) generateEncryptionHMacKeys(newHash func() hash.Hash, keyLen int, pub *PublicKey, s1 []byte) (encKey, hmacKey []byte, err error) {
 
 	z, err := prv.GenerateShared(pub, keyLen, keyLen)
 	if err != nil {
 		return
 	}
 
-	hsh := params.NewHash()
+	hsh := newHash()
 
 	K, err := concatKDF(hsh, z, s1, keyLen+keyLen)
 	if err != nil {
@@ -360,7 +365,6 @@ func (prv *PrivateKey) generateEncryptionHMacKeys(params *Params, pub *PublicKey
 	hmacKey = K[keyLen:]
 	hsh.Write(hmacKey)
 	hmacKey = hsh.Sum(nil)
-	hsh.Reset()
 
 	return
 }
