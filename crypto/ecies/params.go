@@ -49,13 +49,22 @@ var (
 	DefaultCurve = ethcrypto.S256()
 )
 
+// NewHashFun is a function type that returns a new hash.Hash computing the checksum.
+type NewHashFun func() hash.Hash
+
+// NewCipherFun is a function type that creates and returns a new cipher.Block
+// The key argument should be the AES key,
+// either 16, 24, or 32 bytes to select
+// AES-128, AES-192, or AES-256.
+type NewCipherFun func([]byte) (cipher.Block, error)
+
 // Params holds all the parameters of selected encryption scheme
 type Params struct {
-	NewHash   func() hash.Hash // hash function
+	NewHash   NewHashFun // hash function
 	hashAlgo  crypto.Hash
-	NewCipher func([]byte) (cipher.Block, error) // symmetric cipher
-	BlockSize int                                // block size of symmetric cipher
-	KeyLen    int                                // length of symmetric key
+	NewCipher NewCipherFun // symmetric cipher
+	BlockSize int          // block size of symmetric cipher
+	KeyLen    int          // length of symmetric key
 }
 
 // Standard ECIES parameters:

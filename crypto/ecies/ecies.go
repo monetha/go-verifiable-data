@@ -192,7 +192,7 @@ func concatKDF(hash hash.Hash, z, s1 []byte, kdLen int) (k []byte, err error) {
 
 // messageTag computes the MAC of a message (called the tag) as per
 // SEC 1, 3.5.
-func messageTag(newHash func() hash.Hash, hmacKey, msg, shared []byte) []byte {
+func messageTag(newHash NewHashFun, hmacKey, msg, shared []byte) []byte {
 	mac := hmac.New(newHash, hmacKey)
 	mac.Write(msg)
 	mac.Write(shared)
@@ -209,10 +209,8 @@ func generateIV(blockSize int, rand io.Reader) (iv []byte, err error) {
 
 // symEncrypt carries out CTR encryption using the block cipher specified in the
 // parameters.
-func symEncrypt(rand io.Reader, params *Params, key, m []byte) (ct []byte, err error) {
-	blockSize := params.BlockSize
-
-	c, err := params.NewCipher(key)
+func symEncrypt(rand io.Reader, newCipher NewCipherFun, blockSize int, key, m []byte) (ct []byte, err error) {
+	c, err := newCipher(key)
 	if err != nil {
 		return
 	}
@@ -231,10 +229,8 @@ func symEncrypt(rand io.Reader, params *Params, key, m []byte) (ct []byte, err e
 
 // symDecrypt carries out CTR decryption using the block cipher specified in
 // the parameters
-func symDecrypt(params *Params, key, ct []byte) (m []byte, err error) {
-	blockSize := params.BlockSize
-
-	c, err := params.NewCipher(key)
+func symDecrypt(newCipher NewCipherFun, blockSize int, key, ct []byte) (m []byte, err error) {
+	c, err := newCipher(key)
 	if err != nil {
 		return
 	}
@@ -284,25 +280,25 @@ func EncryptToCipherText(rand io.Reader, pub *PublicKey, msg, s1, s2 []byte) (ct
 
 	newHash := params.NewHash
 	keyLen := params.KeyLen
-
-	encKey, hmacKey, err := ephKey.generateEncryptionHMacKeys(newHash, keyLen, pub, s1)
+	skm, err := ephKey.deriveSecretKeyringMaterial(newHash, keyLen, pub, s1)
 	if err != nil {
 		return
 	}
 
-	encMsg, err := symEncrypt(rand, params, encKey, msg)
-	if err != nil || len(encMsg) <= params.BlockSize {
+	blockSize := params.BlockSize
+	newCipher := params.NewCipher
+	encMsg, err := symEncrypt(rand, newCipher, blockSize, skm.EncryptionKey, msg)
+	if err != nil || len(encMsg) <= blockSize {
 		return
 	}
 
-	msgHmac := messageTag(params.NewHash, hmacKey, encMsg, s2)
+	msgHmac := messageTag(newHash, skm.MACKey, encMsg, s2)
 
 	ct = &CipherText{
 		EphemeralPublicKey: &ephKey.PublicKey,
 		EncryptedMessage:   encMsg,
 		MessageHMac:        msgHmac,
 	}
-
 	return
 }
 
@@ -321,34 +317,33 @@ func (prv *PrivateKey) Decrypt(ct, s1, s2 []byte) (msg []byte, err error) {
 	newHash := params.NewHash
 	keyLen := params.KeyLen
 
-	hashSize := newHash().Size()
-
 	c := &CipherText{}
-	err = c.Unmarshal(ct, curve, hashSize)
+	err = c.Unmarshal(ct, curve, newHash().Size())
 	if err != nil {
 		return
 	}
 
-	encKey, hmacKey, err := prv.generateEncryptionHMacKeys(newHash, keyLen, c.EphemeralPublicKey, s1)
+	pub := c.EphemeralPublicKey
+	skm, err := prv.deriveSecretKeyringMaterial(newHash, keyLen, pub, s1)
 	if err != nil {
 		return
 	}
 
 	encMsg := c.EncryptedMessage
 	msgHmac := c.MessageHMac
-
-	calcMsgHmac := messageTag(newHash, hmacKey, encMsg, s2)
+	calcMsgHmac := messageTag(newHash, skm.MACKey, encMsg, s2)
 	if subtle.ConstantTimeCompare(msgHmac, calcMsgHmac) != 1 {
 		err = ErrInvalidMessage
 		return
 	}
 
-	msg, err = symDecrypt(params, encKey, encMsg)
+	newCipher := params.NewCipher
+	blockSize := params.BlockSize
+	msg, err = symDecrypt(newCipher, blockSize, skm.EncryptionKey, encMsg)
 	return
 }
 
-func (prv *PrivateKey) generateEncryptionHMacKeys(newHash func() hash.Hash, keyLen int, pub *PublicKey, s1 []byte) (encKey, hmacKey []byte, err error) {
-
+func (prv *PrivateKey) deriveSecretKeyringMaterial(newHash NewHashFun, keyLen int, pub *PublicKey, s1 []byte) (skm *secretKeyringMaterial, err error) {
 	z, err := prv.GenerateShared(pub, keyLen, keyLen)
 	if err != nil {
 		return
@@ -361,12 +356,22 @@ func (prv *PrivateKey) generateEncryptionHMacKeys(newHash func() hash.Hash, keyL
 		return
 	}
 
-	encKey = K[:keyLen]
-	hmacKey = K[keyLen:]
-	hsh.Write(hmacKey)
-	hmacKey = hsh.Sum(nil)
+	encKey := K[:keyLen]
+	macKey := K[keyLen:]
+	hsh.Write(macKey)
+	macKey = hsh.Sum(nil)
+
+	skm = &secretKeyringMaterial{
+		EncryptionKey: encKey,
+		MACKey:        macKey,
+	}
 
 	return
+}
+
+type secretKeyringMaterial struct {
+	EncryptionKey []byte
+	MACKey        []byte
 }
 
 // CipherText holds parts of encrypted message
