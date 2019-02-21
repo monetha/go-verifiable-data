@@ -227,7 +227,7 @@ func symEncrypt(rand io.Reader, newCipher NewCipherFun, blockSize int, key, m []
 	return
 }
 
-// symDecrypt carries out CTR decryption using the block cipher specified in
+// symDecryptAuthenticatedMessage carries out CTR decryption using the block cipher specified in
 // the parameters
 func symDecrypt(newCipher NewCipherFun, blockSize int, key, ct []byte) (m []byte, err error) {
 	c, err := newCipher(key)
@@ -285,19 +285,14 @@ func EncryptToCipherText(rand io.Reader, pub *PublicKey, msg, s1, s2 []byte) (ct
 		return
 	}
 
-	blockSize := params.BlockSize
-	newCipher := params.NewCipher
-	encMsg, err := symEncrypt(rand, newCipher, blockSize, skm.EncryptionKey, msg)
-	if err != nil || len(encMsg) <= blockSize {
+	eam, err := symEncryptToAuthenticatedMessage(params, rand, skm, msg, s2)
+	if err != nil {
 		return
 	}
 
-	msgHmac := messageTag(newHash, skm.MACKey, encMsg, s2)
-
 	ct = &CipherText{
-		EphemeralPublicKey: &ephKey.PublicKey,
-		EncryptedMessage:   encMsg,
-		MessageHMac:        msgHmac,
+		EphemeralPublicKey:            &ephKey.PublicKey,
+		EncryptedAuthenticatedMessage: eam,
 	}
 	return
 }
@@ -329,17 +324,33 @@ func (prv *PrivateKey) Decrypt(ct, s1, s2 []byte) (msg []byte, err error) {
 		return
 	}
 
+	return symDecryptAuthenticatedMessage(params, c.EncryptedAuthenticatedMessage, skm, s2)
+}
+
+func symEncryptToAuthenticatedMessage(params *Params, rand io.Reader, skm *secretKeyringMaterial, msg, s2 []byte) (eam *EncryptedAuthenticatedMessage, err error) {
+	blockSize := params.BlockSize
+	encMsg, err := symEncrypt(rand, params.NewCipher, blockSize, skm.EncryptionKey, msg)
+	if err != nil || len(encMsg) <= blockSize {
+		return
+	}
+
+	msgHmac := messageTag(params.NewHash, skm.MACKey, encMsg, s2)
+	eam = &EncryptedAuthenticatedMessage{
+		EncryptedMessage: encMsg,
+		HMAC:             msgHmac,
+	}
+	return
+}
+
+func symDecryptAuthenticatedMessage(params *Params, c *EncryptedAuthenticatedMessage, skm *secretKeyringMaterial, s2 []byte) (msg []byte, err error) {
 	encMsg := c.EncryptedMessage
-	msgHmac := c.MessageHMac
-	calcMsgHmac := messageTag(newHash, skm.MACKey, encMsg, s2)
-	if subtle.ConstantTimeCompare(msgHmac, calcMsgHmac) != 1 {
+	calcMsgHmac := messageTag(params.NewHash, skm.MACKey, encMsg, s2)
+	if subtle.ConstantTimeCompare(c.HMAC, calcMsgHmac) != 1 {
 		err = ErrInvalidMessage
 		return
 	}
 
-	newCipher := params.NewCipher
-	blockSize := params.BlockSize
-	msg, err = symDecrypt(newCipher, blockSize, skm.EncryptionKey, encMsg)
+	msg, err = symDecrypt(params.NewCipher, params.BlockSize, skm.EncryptionKey, encMsg)
 	return
 }
 
@@ -374,11 +385,16 @@ type secretKeyringMaterial struct {
 	MACKey        []byte
 }
 
+// EncryptedAuthenticatedMessage holds the encrypted message and HMAC
+type EncryptedAuthenticatedMessage struct {
+	EncryptedMessage []byte
+	HMAC             []byte
+}
+
 // CipherText holds parts of encrypted message
 type CipherText struct {
 	EphemeralPublicKey *PublicKey
-	EncryptedMessage   []byte
-	MessageHMac        []byte
+	*EncryptedAuthenticatedMessage
 }
 
 // Marshal converts parts of encrypted message into byte slice.
@@ -386,7 +402,7 @@ func (ct *CipherText) Marshal() ([]byte, error) {
 	ephPub := ct.EphemeralPublicKey
 	curve := ephPub.Curve
 	encMsg := ct.EncryptedMessage
-	msgHmac := ct.MessageHMac
+	msgHmac := ct.HMAC
 
 	ephPubBs := elliptic.Marshal(curve, ephPub.X, ephPub.Y)
 	ctBs := make([]byte, len(ephPubBs)+len(encMsg)+len(msgHmac))
@@ -438,8 +454,10 @@ func (ct *CipherText) Unmarshal(b []byte, curve elliptic.Curve, hashSize int) er
 		X:     x,
 		Y:     y,
 	}
-	ct.EncryptedMessage = b[mStart:mEnd]
-	ct.MessageHMac = b[mEnd:]
+	ct.EncryptedAuthenticatedMessage = &EncryptedAuthenticatedMessage{
+		EncryptedMessage: b[mStart:mEnd],
+		HMAC:             b[mEnd:],
+	}
 
 	return nil
 }
