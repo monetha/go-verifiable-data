@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Dmitrij Koniajev @ Monetha
 // Copyright (c) 2013 Kyle Isom <kyle@tyrfingr.is>
 // Copyright (c) 2012 The Go Authors. All rights reserved.
 //
@@ -52,78 +53,117 @@ var (
 	ErrUnsupportedECIESParameters = fmt.Errorf("ecies: unsupported ECIES parameters")
 )
 
-// PublicKey is a representation of an elliptic curve public key.
-type PublicKey struct {
-	Params *Params
-	elliptic.Curve
-	X, Y *big.Int
+// ECIES implements Elliptic Curve Integrated Encryption Scheme
+type ECIES struct {
+	params *Params           // the parameters of selected encryption scheme
+	prv    *ecdsa.PrivateKey // private key used for encryption/decryption
 }
 
-// ExportECDSA exports an ECIES public key as an ECDSA public key.
-func (pub *PublicKey) ExportECDSA() *ecdsa.PublicKey {
-	return &ecdsa.PublicKey{Curve: pub.Curve, X: pub.X, Y: pub.Y}
-}
-
-// ImportECDSAPublic imports an ECDSA public key as an ECIES public key.
-func ImportECDSAPublic(pub *ecdsa.PublicKey) *PublicKey {
-	return &PublicKey{
-		X:      pub.X,
-		Y:      pub.Y,
-		Curve:  pub.Curve,
-		Params: ParamsFromCurve(pub.Curve),
-	}
-}
-
-// PrivateKey is a representation of an elliptic curve private key.
-type PrivateKey struct {
-	PublicKey
-	D *big.Int
-}
-
-// ExportECDSA exports an ECIES private key as an ECDSA private key.
-func (prv *PrivateKey) ExportECDSA() *ecdsa.PrivateKey {
-	pub := &prv.PublicKey
-	pubECDSA := pub.ExportECDSA()
-	return &ecdsa.PrivateKey{PublicKey: *pubECDSA, D: prv.D}
-}
-
-// ImportECDSA imports an ECDSA private key as an ECIES private key.
-func ImportECDSA(prv *ecdsa.PrivateKey) *PrivateKey {
-	pub := ImportECDSAPublic(&prv.PublicKey)
-	return &PrivateKey{*pub, prv.D}
-}
-
-// GenerateKey generates an elliptic curve public / private keypair. If params is nil,
-// the recommended default parameters for the key will be chosen.
-func GenerateKey(rand io.Reader, curve elliptic.Curve, params *Params) (prv *PrivateKey, err error) {
-	pb, x, y, err := elliptic.GenerateKey(curve, rand)
+// NewGenerate creates an instance of ECIES by generating a public and private key pair for specified elliptic curve,
+// and selecting default parameters for encryption scheme.
+func NewGenerate(c elliptic.Curve, rand io.Reader) (*ECIES, error) {
+	prv, err := ecdsa.GenerateKey(c, rand)
 	if err != nil {
-		return
+		return nil, err
 	}
-	prv = new(PrivateKey)
-	prv.PublicKey.X = x
-	prv.PublicKey.Y = y
-	prv.PublicKey.Curve = curve
-	prv.D = new(big.Int).SetBytes(pb)
+	return NewWithParams(prv, nil)
+}
+
+// New creates an instance of ECIES from specified private key, it tries automatically select appropriate parameters for encryption scheme.
+func New(prv *ecdsa.PrivateKey) (*ECIES, error) {
+	return NewWithParams(prv, nil)
+}
+
+// Must is a helper that wraps a call to a function returning (*ECIES, error)
+// and panics if the error is non-nil. It is intended for use in variable initializations
+// such as
+//	var e = ecies.Must(ecies.NewGenerate(ecies.DefaultCurve, rand.Reader))
+func Must(e *ECIES, err error) *ECIES {
+	if err != nil {
+		panic(err)
+	}
+	return e
+}
+
+// NewWithParams creates an instance of ECIES from specified private key and params.
+// If params is nil, the recommended default parameters for the encryption scheme will be chosen.
+func NewWithParams(prv *ecdsa.PrivateKey, params *Params) (*ECIES, error) {
 	if params == nil {
-		params = ParamsFromCurve(curve)
+		if params = ParamsFromCurve(prv.PublicKey.Curve); params == nil {
+			return nil, ErrUnsupportedECIESParameters
+		}
 	}
-	prv.PublicKey.Params = params
-	return
+
+	return &ECIES{
+		params: params,
+		prv:    prv,
+	}, nil
 }
 
-// MaxSharedKeyLength returns the maximum length of the shared key the
-// public key can produce.
-func MaxSharedKeyLength(pub *PublicKey) int {
-	return (pub.Curve.Params().BitSize + 7) / 8
+// MaxSharedKeyLength returns the maximum length of the shared key the internal public key can produce.
+func (ci *ECIES) MaxSharedKeyLength() int {
+	return maxSharedKeyLength(&ci.prv.PublicKey)
 }
 
-// GenerateShared generates shared secret keys for encryption using ECDH key agreement protocol.
-func (prv *PrivateKey) GenerateShared(pub *PublicKey, skLen, macLen int) (sk []byte, err error) {
+// PublicKey returns pointer to the internal public key.
+func (ci *ECIES) PublicKey() *ecdsa.PublicKey {
+	return &ci.prv.PublicKey
+}
+
+// PrivateKey returns pointer to the internal private key.
+func (ci *ECIES) PrivateKey() *ecdsa.PrivateKey {
+	return ci.prv
+}
+
+// Params returns the parameters of selected encryption scheme.
+func (ci *ECIES) Params() *Params {
+	return ci.params
+}
+
+// DeriveSecretKeyringMaterial derives secret keyring material by computing shared secret from private and public keys and
+// passing it as a parameter to the KDF.
+func (ci *ECIES) DeriveSecretKeyringMaterial(pub *ecdsa.PublicKey, s1 []byte) (skm *SecretKeyringMaterial, err error) {
+	prv := ci.prv
 	if prv.PublicKey.Curve != pub.Curve {
 		return nil, ErrInvalidCurve
 	}
-	if skLen+macLen > MaxSharedKeyLength(pub) {
+
+	params := ci.params
+	keyLen := params.KeyLen
+	z, err := ci.GenerateShared(pub, keyLen, keyLen)
+	if err != nil {
+		return
+	}
+
+	newHash := params.NewHash
+	hsh := newHash()
+
+	K, err := concatKDF(hsh, z, s1, keyLen+keyLen)
+	if err != nil {
+		return
+	}
+
+	encKey := K[:keyLen]
+	macKey := K[keyLen:]
+	hsh.Write(macKey)
+	macKey = hsh.Sum(nil)
+
+	skm = &SecretKeyringMaterial{
+		EncryptionKey: encKey,
+		MACKey:        macKey,
+	}
+
+	return
+}
+
+// GenerateShared generates shared secret keys for encryption using ECDH key agreement protocol.
+func (ci *ECIES) GenerateShared(pub *ecdsa.PublicKey, skLen, macLen int) (sk []byte, err error) {
+	prv := ci.prv
+	if prv.PublicKey.Curve != pub.Curve {
+		return nil, ErrInvalidCurve
+	}
+
+	if skLen+macLen > maxSharedKeyLength(pub) {
 		return nil, ErrSharedKeyTooBig
 	}
 
@@ -136,6 +176,161 @@ func (prv *PrivateKey) GenerateShared(pub *PublicKey, skLen, macLen int) (sk []b
 	skBytes := x.Bytes()
 	copy(sk[len(sk)-len(skBytes):], skBytes)
 	return sk, nil
+}
+
+// maxSharedKeyLength returns the maximum length of the shared key the
+// public key can produce.
+func maxSharedKeyLength(pub *ecdsa.PublicKey) int {
+	return (pub.Curve.Params().BitSize + 7) / 8
+}
+
+// Encrypt encrypts a message using ECIES as specified in SEC 1, 5.1.
+//
+// s1 and s2 contain shared information that is not part of the resulting
+// ciphertext. s1 is fed into key derivation, s2 is fed into the MAC. If the
+// shared information parameters aren't being used, they should be nil.
+func (ci *ECIES) Encrypt(rand io.Reader, pub *ecdsa.PublicKey, msg, s1, s2 []byte) (ct []byte, err error) {
+	c, err := ci.EncryptToCipherText(rand, pub, msg, s1, s2)
+	if err != nil {
+		return
+	}
+
+	return c.Marshal()
+}
+
+// EncryptToCipherText encrypts a message using ECIES as specified in SEC 1, 5.1.
+// Instead of bytes it returns all the parts of encrypted message.
+//
+// s1 and s2 contain shared information that is not part of the resulting
+// ciphertext. s1 is fed into key derivation, s2 is fed into the MAC. If the
+// shared information parameters aren't being used, they should be nil.
+func (ci *ECIES) EncryptToCipherText(rand io.Reader, pub *ecdsa.PublicKey, msg, s1, s2 []byte) (ct *CipherText, err error) {
+	ciPubKey := ci.prv.PublicKey
+	if ciPubKey.Curve != pub.Curve {
+		return nil, ErrInvalidCurve
+	}
+	params := ci.params
+
+	skm, err := ci.DeriveSecretKeyringMaterial(pub, s1)
+	if err != nil {
+		return
+	}
+
+	eam, err := params.EncryptAuth(rand, skm, msg, s2)
+	if err != nil {
+		return
+	}
+
+	ct = &CipherText{
+		EphemeralPublicKey:            &ciPubKey,
+		EncryptedAuthenticatedMessage: eam,
+	}
+	return
+}
+
+// Decrypt decrypts an ECIES ciphertext.
+func (ci *ECIES) Decrypt(ct, s1, s2 []byte) (msg []byte, err error) {
+	params := ci.params
+	curve := ci.prv.PublicKey.Curve
+
+	newHash := params.NewHash
+	c := &CipherText{}
+	err = c.Unmarshal(ct, curve, newHash().Size())
+	if err != nil {
+		return
+	}
+
+	skm, err := ci.DeriveSecretKeyringMaterial(c.EphemeralPublicKey, s1)
+	if err != nil {
+		return
+	}
+
+	return params.DecryptAuth(skm, c.EncryptedAuthenticatedMessage, s2)
+}
+
+// Encrypt encrypts a message using ECIES as specified in SEC 1, 5.1.
+//
+// s1 and s2 contain shared information that is not part of the resulting
+// ciphertext. s1 is fed into key derivation, s2 is fed into the MAC. If the
+// shared information parameters aren't being used, they should be nil.
+func Encrypt(rand io.Reader, pub *ecdsa.PublicKey, msg, s1, s2 []byte) (ct []byte, err error) {
+	e, err := NewGenerate(pub.Curve, rand)
+	if err != nil {
+		return
+	}
+
+	return e.Encrypt(rand, pub, msg, s1, s2)
+}
+
+// CipherText holds parts of encrypted message
+type CipherText struct {
+	EphemeralPublicKey *ecdsa.PublicKey
+	*EncryptedAuthenticatedMessage
+}
+
+// Marshal converts parts of encrypted message into byte slice.
+func (ct *CipherText) Marshal() ([]byte, error) {
+	ephPub := ct.EphemeralPublicKey
+	curve := ephPub.Curve
+	encMsg := ct.EncryptedMessage
+	msgHmac := ct.HMAC
+
+	ephPubBs := elliptic.Marshal(curve, ephPub.X, ephPub.Y)
+	ctBs := make([]byte, len(ephPubBs)+len(encMsg)+len(msgHmac))
+	copy(ctBs, ephPubBs)
+	copy(ctBs[len(ephPubBs):], encMsg)
+	copy(ctBs[len(ephPubBs)+len(encMsg):], msgHmac)
+
+	return ctBs, nil
+}
+
+// Unmarshal splits the bytes of encrypted message, serialized by Marshal, into the parts of encrypted message.
+func (ct *CipherText) Unmarshal(b []byte, curve elliptic.Curve, hashSize int) error {
+	if len(b) == 0 {
+		return ErrInvalidMessage
+	}
+
+	var (
+		rLen   int
+		hLen   = hashSize
+		mStart int
+		mEnd   int
+	)
+
+	switch b[0] {
+	case 2, 3, 4:
+		rLen = (curve.Params().BitSize + 7) / 4
+		if len(b) < (rLen + hLen + 1) {
+			return ErrInvalidMessage
+		}
+	default:
+		return ErrInvalidPublicKey
+	}
+
+	mStart = rLen
+	mEnd = len(b) - hLen
+
+	ephPubBs := b[:rLen]
+
+	x, y := elliptic.Unmarshal(curve, ephPubBs)
+	if x == nil {
+		return ErrInvalidPublicKey
+	}
+	if !curve.IsOnCurve(x, y) {
+		return ErrInvalidCurve
+	}
+
+	ct.EphemeralPublicKey = &ecdsa.PublicKey{
+		Curve: curve,
+		X:     x,
+		Y:     y,
+	}
+	ct.EncryptedAuthenticatedMessage = &EncryptedAuthenticatedMessage{
+		EncryptedMessage: b[mStart:mEnd],
+		HMAC:             b[mEnd:],
+	}
+
+	return nil
 }
 
 var (
@@ -183,127 +378,5 @@ func concatKDF(hash hash.Hash, z, s1 []byte, kdLen int) (k []byte, err error) {
 	}
 
 	k = k[:kdLen]
-	return
-}
-
-// EncryptAuth encrypts a message using ECIES as specified in SEC 1, 5.1.
-//
-// s1 and s2 contain shared information that is not part of the resulting
-// ciphertext. s1 is fed into key derivation, s2 is fed into the MAC. If the
-// shared information parameters aren't being used, they should be nil.
-func Encrypt(rand io.Reader, pub *PublicKey, msg, s1, s2 []byte) (ct []byte, err error) {
-	c, err := EncryptToCipherText(rand, pub, msg, s1, s2)
-	if err != nil {
-		return
-	}
-
-	return c.Marshal()
-}
-
-// EncryptToCipherText encrypts a message using ECIES as specified in SEC 1, 5.1.
-// Instead of bytes it returns all the parts of encrypted message.
-//
-// s1 and s2 contain shared information that is not part of the resulting
-// ciphertext. s1 is fed into key derivation, s2 is fed into the MAC. If the
-// shared information parameters aren't being used, they should be nil.
-func EncryptToCipherText(rand io.Reader, pub *PublicKey, msg, s1, s2 []byte) (ct *CipherText, err error) {
-	params := pub.Params
-	curve := pub.Curve
-
-	if params == nil {
-		if params = ParamsFromCurve(curve); params == nil {
-			err = ErrUnsupportedECIESParameters
-			return
-		}
-	}
-	ephKey, err := GenerateKey(rand, curve, params)
-	if err != nil {
-		return
-	}
-
-	skm, err := ephKey.DeriveSecretKeyringMaterial(pub, s1)
-	if err != nil {
-		return
-	}
-
-	eam, err := params.EncryptAuth(rand, skm, msg, s2)
-	if err != nil {
-		return
-	}
-
-	ct = &CipherText{
-		EphemeralPublicKey:            &ephKey.PublicKey,
-		EncryptedAuthenticatedMessage: eam,
-	}
-	return
-}
-
-// DecryptAuth decrypts an ECIES ciphertext.
-func (prv *PrivateKey) Decrypt(ct, s1, s2 []byte) (msg []byte, err error) {
-	params := prv.PublicKey.Params
-	curve := prv.PublicKey.Curve
-
-	if params == nil {
-		if params = ParamsFromCurve(curve); params == nil {
-			err = ErrUnsupportedECIESParameters
-			return
-		}
-	}
-
-	newHash := params.NewHash
-	c := &CipherText{}
-	err = c.Unmarshal(ct, curve, newHash().Size())
-	if err != nil {
-		return
-	}
-
-	skm, err := prv.DeriveSecretKeyringMaterial(c.EphemeralPublicKey, s1)
-	if err != nil {
-		return
-	}
-
-	return params.DecryptAuth(skm, c.EncryptedAuthenticatedMessage, s2)
-}
-
-// DeriveSecretKeyringMaterial derives secret keyring material by computing shared secret from private and public keys and
-// passing it as a parameter to the KDF.
-func (prv *PrivateKey) DeriveSecretKeyringMaterial(pub *PublicKey, s1 []byte) (skm *SecretKeyringMaterial, err error) {
-	curve := prv.PublicKey.Curve
-	if curve != pub.Curve {
-		return nil, ErrInvalidCurve
-	}
-
-	params := prv.PublicKey.Params
-	if params == nil {
-		if params = ParamsFromCurve(curve); params == nil {
-			err = ErrUnsupportedECIESParameters
-			return
-		}
-	}
-
-	keyLen := params.KeyLen
-	z, err := prv.GenerateShared(pub, keyLen, keyLen)
-	if err != nil {
-		return
-	}
-
-	newHash := params.NewHash
-	hsh := newHash()
-
-	K, err := concatKDF(hsh, z, s1, keyLen+keyLen)
-	if err != nil {
-		return
-	}
-
-	encKey := K[:keyLen]
-	macKey := K[keyLen:]
-	hsh.Write(macKey)
-	macKey = hsh.Sum(nil)
-
-	skm = &SecretKeyringMaterial{
-		EncryptionKey: encKey,
-		MACKey:        macKey,
-	}
-
 	return
 }

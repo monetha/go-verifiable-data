@@ -1,3 +1,4 @@
+// Copyright (c) 2019 Dmitrij Koniajev @ Monetha
 // Copyright (c) 2013 Kyle Isom <kyle@tyrfingr.is>
 // Copyright (c) 2012 The Go Authors. All rights reserved.
 //
@@ -124,19 +125,17 @@ var (
 		BlockSize: aes.BlockSize,
 		KeyLen:    32,
 	}
+
+	paramsFromCurve = map[elliptic.Curve]*Params{
+		ethcrypto.S256(): Aes128Sha256Params,
+		elliptic.P256():  Aes128Sha256Params,
+		elliptic.P384():  Aes256Sha384Params,
+		elliptic.P521():  Aes256Sha512Params,
+	}
+
+	// DefaultParams holds default parameters for the default curve
+	DefaultParams = ParamsFromCurve(DefaultCurve)
 )
-
-var paramsFromCurve = map[elliptic.Curve]*Params{
-	ethcrypto.S256(): Aes128Sha256Params,
-	elliptic.P256():  Aes128Sha256Params,
-	elliptic.P384():  Aes256Sha384Params,
-	elliptic.P521():  Aes256Sha512Params,
-}
-
-// AddParamsForCurve sets parameters for the specific elliptic curve.
-func AddParamsForCurve(curve elliptic.Curve, params *Params) {
-	paramsFromCurve[curve] = params
-}
 
 // ParamsFromCurve selects parameters optimal for the selected elliptic curve.
 // Only the curves P256, P384, and P512 are supported.
