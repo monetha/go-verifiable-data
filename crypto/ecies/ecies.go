@@ -278,14 +278,12 @@ func EncryptToCipherText(rand io.Reader, pub *PublicKey, msg, s1, s2 []byte) (ct
 		return
 	}
 
-	newHash := params.NewHash
-	keyLen := params.KeyLen
-	skm, err := ephKey.deriveSecretKeyringMaterial(newHash, keyLen, pub, s1)
+	skm, err := ephKey.deriveSecretKeyringMaterial(params.NewHash, params.KeyLen, pub, s1)
 	if err != nil {
 		return
 	}
 
-	eam, err := symEncryptToAuthenticatedMessage(params, rand, skm, msg, s2)
+	eam, err := symEncryptToAuthenticatedMessage(rand, params, skm, msg, s2)
 	if err != nil {
 		return
 	}
@@ -310,16 +308,13 @@ func (prv *PrivateKey) Decrypt(ct, s1, s2 []byte) (msg []byte, err error) {
 	}
 
 	newHash := params.NewHash
-	keyLen := params.KeyLen
-
 	c := &CipherText{}
 	err = c.Unmarshal(ct, curve, newHash().Size())
 	if err != nil {
 		return
 	}
 
-	pub := c.EphemeralPublicKey
-	skm, err := prv.deriveSecretKeyringMaterial(newHash, keyLen, pub, s1)
+	skm, err := prv.deriveSecretKeyringMaterial(newHash, params.KeyLen, c.EphemeralPublicKey, s1)
 	if err != nil {
 		return
 	}
@@ -327,10 +322,10 @@ func (prv *PrivateKey) Decrypt(ct, s1, s2 []byte) (msg []byte, err error) {
 	return symDecryptAuthenticatedMessage(params, c.EncryptedAuthenticatedMessage, skm, s2)
 }
 
-func symEncryptToAuthenticatedMessage(params *Params, rand io.Reader, skm *secretKeyringMaterial, msg, s2 []byte) (eam *EncryptedAuthenticatedMessage, err error) {
+func symEncryptToAuthenticatedMessage(rand io.Reader, params *Params, skm *secretKeyringMaterial, msg, s2 []byte) (eam *EncryptedAuthenticatedMessage, err error) {
 	blockSize := params.BlockSize
 	encMsg, err := symEncrypt(rand, params.NewCipher, blockSize, skm.EncryptionKey, msg)
-	if err != nil || len(encMsg) <= blockSize {
+	if err != nil {
 		return
 	}
 
