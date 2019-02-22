@@ -37,9 +37,12 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/elliptic"
+	"crypto/hmac"
 	"crypto/sha256"
 	"crypto/sha512"
+	"crypto/subtle"
 	"hash"
+	"io"
 
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"
 )
@@ -48,6 +51,18 @@ var (
 	// DefaultCurve is an instance of the secp256k1 curve
 	DefaultCurve = ethcrypto.S256()
 )
+
+// SecretKeyringMaterial hold the encryption key and MAC key
+type SecretKeyringMaterial struct {
+	EncryptionKey []byte
+	MACKey        []byte
+}
+
+// EncryptedAuthenticatedMessage holds the encrypted message and HMAC
+type EncryptedAuthenticatedMessage struct {
+	EncryptedMessage []byte
+	HMAC             []byte
+}
 
 // NewHashFun is a function type that returns a new hash.Hash computing the checksum.
 type NewHashFun func() hash.Hash
@@ -127,4 +142,90 @@ func AddParamsForCurve(curve elliptic.Curve, params *Params) {
 // Only the curves P256, P384, and P512 are supported.
 func ParamsFromCurve(curve elliptic.Curve) (params *Params) {
 	return paramsFromCurve[curve]
+}
+
+// EncryptAuth encrypts message using provided secret keyring material and returns encrypted message with the HMAC
+// s2 contains shared information that is not part of the resulting ciphertext, it's fed into the MAC. If the
+// shared information parameters aren't being used, they should be nil.
+func (p *Params) EncryptAuth(rand io.Reader, skm *SecretKeyringMaterial, msg, s2 []byte) (eam *EncryptedAuthenticatedMessage, err error) {
+	blockSize := p.BlockSize
+	encMsg, err := symEncrypt(rand, p.NewCipher, blockSize, skm.EncryptionKey, msg)
+	if err != nil {
+		return
+	}
+
+	msgHmac := messageTag(p.NewHash, skm.MACKey, encMsg, s2)
+	eam = &EncryptedAuthenticatedMessage{
+		EncryptedMessage: encMsg,
+		HMAC:             msgHmac,
+	}
+	return
+}
+
+// DecryptAuth checks encrypted message HMAC and if it's valid decrypts the message
+// s2 contains shared information that is not part of the ciphertext, it's fed into the MAC. If the
+// shared information parameters aren't being used, they should be nil.
+func (p *Params) DecryptAuth(skm *SecretKeyringMaterial, eam *EncryptedAuthenticatedMessage, s2 []byte) (msg []byte, err error) {
+	encMsg := eam.EncryptedMessage
+	calcMsgHmac := messageTag(p.NewHash, skm.MACKey, encMsg, s2)
+	if subtle.ConstantTimeCompare(eam.HMAC, calcMsgHmac) != 1 {
+		err = ErrInvalidMessage
+		return
+	}
+
+	msg, err = symDecrypt(p.NewCipher, p.BlockSize, skm.EncryptionKey, encMsg)
+	return
+}
+
+// Generate an initialisation vector for CTR mode.
+func generateIV(blockSize int, rand io.Reader) (iv []byte, err error) {
+	iv = make([]byte, blockSize)
+	_, err = io.ReadFull(rand, iv)
+	return
+}
+
+// symEncrypt carries out CTR encryption using the block cipher specified in the
+// parameters.
+func symEncrypt(rand io.Reader, newCipher NewCipherFun, blockSize int, key, m []byte) (ct []byte, err error) {
+	c, err := newCipher(key)
+	if err != nil {
+		return
+	}
+
+	iv, err := generateIV(blockSize, rand)
+	if err != nil {
+		return
+	}
+	ctr := cipher.NewCTR(c, iv)
+
+	ct = make([]byte, blockSize+len(m))
+	copy(ct, iv)
+	ctr.XORKeyStream(ct[blockSize:], m)
+	return
+}
+
+// messageTag computes the MAC of a message (called the tag) as per
+// SEC 1, 3.5.
+func messageTag(newHash NewHashFun, hmacKey, msg, shared []byte) []byte {
+	mac := hmac.New(newHash, hmacKey)
+	mac.Write(msg)
+	mac.Write(shared)
+	tag := mac.Sum(nil)
+	return tag
+}
+
+// DecryptAuth carries out CTR decryption using the block cipher specified in
+// the parameters
+func symDecrypt(newCipher NewCipherFun, blockSize int, key, ct []byte) (m []byte, err error) {
+	c, err := newCipher(key)
+	if err != nil {
+		return
+	}
+
+	iv := ct[:blockSize]
+	ctr := cipher.NewCTR(c, iv)
+
+	m = make([]byte, len(ct)-blockSize)
+	ctr.XORKeyStream(m, ct[blockSize:])
+	return
 }

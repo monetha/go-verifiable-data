@@ -30,11 +30,8 @@
 package ecies
 
 import (
-	"crypto/cipher"
 	"crypto/ecdsa"
 	"crypto/elliptic"
-	"crypto/hmac"
-	"crypto/subtle"
 	"fmt"
 	"hash"
 	"io"
@@ -57,10 +54,9 @@ var (
 
 // PublicKey is a representation of an elliptic curve public key.
 type PublicKey struct {
-	X *big.Int
-	Y *big.Int
-	elliptic.Curve
 	Params *Params
+	elliptic.Curve
+	X, Y *big.Int
 }
 
 // ExportECDSA exports an ECIES public key as an ECDSA public key.
@@ -190,60 +186,7 @@ func concatKDF(hash hash.Hash, z, s1 []byte, kdLen int) (k []byte, err error) {
 	return
 }
 
-// messageTag computes the MAC of a message (called the tag) as per
-// SEC 1, 3.5.
-func messageTag(newHash NewHashFun, hmacKey, msg, shared []byte) []byte {
-	mac := hmac.New(newHash, hmacKey)
-	mac.Write(msg)
-	mac.Write(shared)
-	tag := mac.Sum(nil)
-	return tag
-}
-
-// Generate an initialisation vector for CTR mode.
-func generateIV(blockSize int, rand io.Reader) (iv []byte, err error) {
-	iv = make([]byte, blockSize)
-	_, err = io.ReadFull(rand, iv)
-	return
-}
-
-// symEncrypt carries out CTR encryption using the block cipher specified in the
-// parameters.
-func symEncrypt(rand io.Reader, newCipher NewCipherFun, blockSize int, key, m []byte) (ct []byte, err error) {
-	c, err := newCipher(key)
-	if err != nil {
-		return
-	}
-
-	iv, err := generateIV(blockSize, rand)
-	if err != nil {
-		return
-	}
-	ctr := cipher.NewCTR(c, iv)
-
-	ct = make([]byte, blockSize+len(m))
-	copy(ct, iv)
-	ctr.XORKeyStream(ct[blockSize:], m)
-	return
-}
-
-// symDecryptAuthenticatedMessage carries out CTR decryption using the block cipher specified in
-// the parameters
-func symDecrypt(newCipher NewCipherFun, blockSize int, key, ct []byte) (m []byte, err error) {
-	c, err := newCipher(key)
-	if err != nil {
-		return
-	}
-
-	iv := ct[:blockSize]
-	ctr := cipher.NewCTR(c, iv)
-
-	m = make([]byte, len(ct)-blockSize)
-	ctr.XORKeyStream(m, ct[blockSize:])
-	return
-}
-
-// Encrypt encrypts a message using ECIES as specified in SEC 1, 5.1.
+// EncryptAuth encrypts a message using ECIES as specified in SEC 1, 5.1.
 //
 // s1 and s2 contain shared information that is not part of the resulting
 // ciphertext. s1 is fed into key derivation, s2 is fed into the MAC. If the
@@ -278,12 +221,12 @@ func EncryptToCipherText(rand io.Reader, pub *PublicKey, msg, s1, s2 []byte) (ct
 		return
 	}
 
-	skm, err := ephKey.deriveSecretKeyringMaterial(params.NewHash, params.KeyLen, pub, s1)
+	skm, err := ephKey.DeriveSecretKeyringMaterial(pub, s1)
 	if err != nil {
 		return
 	}
 
-	eam, err := symEncryptToAuthenticatedMessage(rand, params, skm, msg, s2)
+	eam, err := params.EncryptAuth(rand, skm, msg, s2)
 	if err != nil {
 		return
 	}
@@ -295,7 +238,7 @@ func EncryptToCipherText(rand io.Reader, pub *PublicKey, msg, s1, s2 []byte) (ct
 	return
 }
 
-// Decrypt decrypts an ECIES ciphertext.
+// DecryptAuth decrypts an ECIES ciphertext.
 func (prv *PrivateKey) Decrypt(ct, s1, s2 []byte) (msg []byte, err error) {
 	params := prv.PublicKey.Params
 	curve := prv.PublicKey.Curve
@@ -314,47 +257,37 @@ func (prv *PrivateKey) Decrypt(ct, s1, s2 []byte) (msg []byte, err error) {
 		return
 	}
 
-	skm, err := prv.deriveSecretKeyringMaterial(newHash, params.KeyLen, c.EphemeralPublicKey, s1)
+	skm, err := prv.DeriveSecretKeyringMaterial(c.EphemeralPublicKey, s1)
 	if err != nil {
 		return
 	}
 
-	return symDecryptAuthenticatedMessage(params, c.EncryptedAuthenticatedMessage, skm, s2)
+	return params.DecryptAuth(skm, c.EncryptedAuthenticatedMessage, s2)
 }
 
-func symEncryptToAuthenticatedMessage(rand io.Reader, params *Params, skm *secretKeyringMaterial, msg, s2 []byte) (eam *EncryptedAuthenticatedMessage, err error) {
-	blockSize := params.BlockSize
-	encMsg, err := symEncrypt(rand, params.NewCipher, blockSize, skm.EncryptionKey, msg)
-	if err != nil {
-		return
+// DeriveSecretKeyringMaterial derives secret keyring material by computing shared secret from private and public keys and
+// passing it as a parameter to the KDF.
+func (prv *PrivateKey) DeriveSecretKeyringMaterial(pub *PublicKey, s1 []byte) (skm *SecretKeyringMaterial, err error) {
+	curve := prv.PublicKey.Curve
+	if curve != pub.Curve {
+		return nil, ErrInvalidCurve
 	}
 
-	msgHmac := messageTag(params.NewHash, skm.MACKey, encMsg, s2)
-	eam = &EncryptedAuthenticatedMessage{
-		EncryptedMessage: encMsg,
-		HMAC:             msgHmac,
-	}
-	return
-}
-
-func symDecryptAuthenticatedMessage(params *Params, c *EncryptedAuthenticatedMessage, skm *secretKeyringMaterial, s2 []byte) (msg []byte, err error) {
-	encMsg := c.EncryptedMessage
-	calcMsgHmac := messageTag(params.NewHash, skm.MACKey, encMsg, s2)
-	if subtle.ConstantTimeCompare(c.HMAC, calcMsgHmac) != 1 {
-		err = ErrInvalidMessage
-		return
+	params := prv.PublicKey.Params
+	if params == nil {
+		if params = ParamsFromCurve(curve); params == nil {
+			err = ErrUnsupportedECIESParameters
+			return
+		}
 	}
 
-	msg, err = symDecrypt(params.NewCipher, params.BlockSize, skm.EncryptionKey, encMsg)
-	return
-}
-
-func (prv *PrivateKey) deriveSecretKeyringMaterial(newHash NewHashFun, keyLen int, pub *PublicKey, s1 []byte) (skm *secretKeyringMaterial, err error) {
+	keyLen := params.KeyLen
 	z, err := prv.GenerateShared(pub, keyLen, keyLen)
 	if err != nil {
 		return
 	}
 
+	newHash := params.NewHash
 	hsh := newHash()
 
 	K, err := concatKDF(hsh, z, s1, keyLen+keyLen)
@@ -367,92 +300,10 @@ func (prv *PrivateKey) deriveSecretKeyringMaterial(newHash NewHashFun, keyLen in
 	hsh.Write(macKey)
 	macKey = hsh.Sum(nil)
 
-	skm = &secretKeyringMaterial{
+	skm = &SecretKeyringMaterial{
 		EncryptionKey: encKey,
 		MACKey:        macKey,
 	}
 
 	return
-}
-
-type secretKeyringMaterial struct {
-	EncryptionKey []byte
-	MACKey        []byte
-}
-
-// EncryptedAuthenticatedMessage holds the encrypted message and HMAC
-type EncryptedAuthenticatedMessage struct {
-	EncryptedMessage []byte
-	HMAC             []byte
-}
-
-// CipherText holds parts of encrypted message
-type CipherText struct {
-	EphemeralPublicKey *PublicKey
-	*EncryptedAuthenticatedMessage
-}
-
-// Marshal converts parts of encrypted message into byte slice.
-func (ct *CipherText) Marshal() ([]byte, error) {
-	ephPub := ct.EphemeralPublicKey
-	curve := ephPub.Curve
-	encMsg := ct.EncryptedMessage
-	msgHmac := ct.HMAC
-
-	ephPubBs := elliptic.Marshal(curve, ephPub.X, ephPub.Y)
-	ctBs := make([]byte, len(ephPubBs)+len(encMsg)+len(msgHmac))
-	copy(ctBs, ephPubBs)
-	copy(ctBs[len(ephPubBs):], encMsg)
-	copy(ctBs[len(ephPubBs)+len(encMsg):], msgHmac)
-
-	return ctBs, nil
-}
-
-// Unmarshal splits the bytes of encrypted message, serialized by Marshal, into the parts of encrypted message.
-func (ct *CipherText) Unmarshal(b []byte, curve elliptic.Curve, hashSize int) error {
-	if len(b) == 0 {
-		return ErrInvalidMessage
-	}
-
-	var (
-		rLen   int
-		hLen   = hashSize
-		mStart int
-		mEnd   int
-	)
-
-	switch b[0] {
-	case 2, 3, 4:
-		rLen = (curve.Params().BitSize + 7) / 4
-		if len(b) < (rLen + hLen + 1) {
-			return ErrInvalidMessage
-		}
-	default:
-		return ErrInvalidPublicKey
-	}
-
-	mStart = rLen
-	mEnd = len(b) - hLen
-
-	ephPubBs := b[:rLen]
-
-	x, y := elliptic.Unmarshal(curve, ephPubBs)
-	if x == nil {
-		return ErrInvalidPublicKey
-	}
-	if !curve.IsOnCurve(x, y) {
-		return ErrInvalidCurve
-	}
-
-	ct.EphemeralPublicKey = &PublicKey{
-		Curve: curve,
-		X:     x,
-		Y:     y,
-	}
-	ct.EncryptedAuthenticatedMessage = &EncryptedAuthenticatedMessage{
-		EncryptedMessage: b[mStart:mEnd],
-		HMAC:             b[mEnd:],
-	}
-
-	return nil
 }
