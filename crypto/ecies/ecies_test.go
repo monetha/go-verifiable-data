@@ -39,6 +39,7 @@ import (
 	"flag"
 	"fmt"
 	"math/big"
+	"reflect"
 	"testing"
 
 	"github.com/ethereum/go-ethereum/crypto"
@@ -100,6 +101,25 @@ func TestSharedKey(t *testing.T) {
 	if !bytes.Equal(sk1, sk2) {
 		fmt.Println(ErrBadSharedKeys.Error())
 		t.FailNow()
+	}
+}
+
+func TestDeriveSecretKeyringMaterial(t *testing.T) {
+	e1 := Must(NewGenerate(DefaultCurve, rand.Reader))
+	e2 := Must(NewGenerate(DefaultCurve, rand.Reader))
+
+	skm1, err := e1.DeriveSecretKeyringMaterial(e2.PublicKey(), nil)
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+
+	skm2, err := e2.DeriveSecretKeyringMaterial(e1.PublicKey(), nil)
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+
+	if !reflect.DeepEqual(skm1, skm2) {
+		t.Fatal("DeriveSecretKeyringMaterial must produce the same result for both sides")
 	}
 }
 
