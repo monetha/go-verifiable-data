@@ -31,16 +31,16 @@ type App struct {
 	GetPassportListButton           dom.Btn
 	PassportListOutputDiv           dom.Elt
 	getPassportListRequestCloser    io.Closer
-	onGetPassportListClickCb        js.Callback
+	onGetPassportListClickCb        js.Func
 
 	PassChangesPassAddressInput     dom.Inp
 	PassChangesStartFromBlockInp    dom.Inp
 	GetPassportChangesButton        dom.Btn
 	PassportChangesOutputDiv        dom.Elt
 	getPassportChangesRequestCloser io.Closer
-	onGetPassportChangesClickCb     js.Callback
+	onGetPassportChangesClickCb     js.Func
 
-	readHistoryValueCb js.Callback
+	readHistoryValueCb js.Func
 }
 
 func (a *App) RegisterCallBacks() *App {
@@ -52,7 +52,7 @@ func (a *App) RegisterCallBacks() *App {
 }
 
 func (a *App) setupOnClickGetPassportList() *App {
-	a.onGetPassportListClickCb = a.GetPassportListButton.OnClick(js.PreventDefault, func(args js.Value) {
+	a.onGetPassportListClickCb = a.GetPassportListButton.OnClick(dom.PreventDefault, func(args js.Value) {
 		a.cancelGetPassportListRequest()
 
 		passportFactoryAddressStr := a.PassListPassFactoryAddressInput.Value()
@@ -129,7 +129,7 @@ func (a *App) setupOnClickGetPassportList() *App {
 }
 
 func (a *App) setupOnClickGetPassportChanges() *App {
-	a.onGetPassportChangesClickCb = a.GetPassportChangesButton.OnClick(js.PreventDefault, func(args js.Value) {
+	a.onGetPassportChangesClickCb = a.GetPassportChangesButton.OnClick(dom.PreventDefault, func(args js.Value) {
 		a.cancelGetPassportChangesRequest()
 
 		passportAddressStr := a.PassChangesPassAddressInput.Value()
@@ -247,10 +247,10 @@ func ipfsHashToUrl(hash string) string {
 }
 
 func (a *App) setupOnReadHistoryValue() {
-	a.readHistoryValueCb = js.NewCallback(func(args []js.Value) {
+	a.readHistoryValueCb = js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 		if len(args) != 5 {
 			a.Log("readHistoryValue: unexpected arguments count", "args", args)
-			return
+			return nil
 		}
 
 		btn := dom.NodeBase{Value: args[0]}.AsElement().WithClassAdded("disabled").AsAnchor()
@@ -307,6 +307,8 @@ func (a *App) setupOnReadHistoryValue() {
 				btn.Call("click")
 			},
 		})
+
+		return nil
 	})
 	js.Global().Set("readHistoryValue", a.readHistoryValueCb)
 }

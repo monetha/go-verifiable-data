@@ -22,6 +22,15 @@ func init() {
 	alert = js.Global().Get("alert")
 }
 
+// EventCallbackFlag is for backward compatibility.
+type EventCallbackFlag int
+
+const (
+	PreventDefault EventCallbackFlag = 1 << iota
+	StopPropagation
+	StopImmediatePropagation
+)
+
 func Alert(s string) {
 	alert.Invoke(s)
 }
@@ -53,8 +62,23 @@ func validJSValue(v js.Value) bool {
 	return v != js.Value{} && v != null && v != undefined
 }
 
-func (n NodeBase) AddEventListener(flags js.EventCallbackFlag, typ string, fn func(js.Value)) js.Callback {
-	callBack := js.NewEventCallback(flags, fn)
+func (n NodeBase) AddEventListener(flags EventCallbackFlag, typ string, fn func(js.Value)) js.Func {
+	callBack := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		e := args[0]
+		if flags&PreventDefault != 0 {
+			e.Call("preventDefault")
+		}
+		if flags&StopPropagation != 0 {
+			e.Call("stopPropagation")
+		}
+		if flags&StopImmediatePropagation != 0 {
+			e.Call("stopImmediatePropagation")
+		}
+		go func() {
+			fn(e)
+		}()
+		return nil
+	})
 	n.Call("addEventListener", typ, callBack)
 	return callBack
 }
@@ -281,7 +305,7 @@ func (i Inp) Value() string { return i.Get("value").String() }
 
 func TextInput() Inp { return Input("text") }
 
-func (i Inp) OnKeyUp(flags js.EventCallbackFlag, fn func(js.Value)) js.Callback {
+func (i Inp) OnKeyUp(flags EventCallbackFlag, fn func(js.Value)) js.Func {
 	return i.AddEventListener(flags, "keyup", fn)
 }
 
@@ -298,6 +322,6 @@ func (b Btn) WithClass(c string) Btn {
 	return b
 }
 
-func (b Btn) OnClick(flags js.EventCallbackFlag, fn func(js.Value)) js.Callback {
+func (b Btn) OnClick(flags EventCallbackFlag, fn func(js.Value)) js.Func {
 	return b.AddEventListener(flags, "click", fn)
 }
