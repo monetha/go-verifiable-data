@@ -36,7 +36,7 @@
 ### Prerequisites
 
 1. Make sure you have [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed.
-1. Install [Go 1.11](https://golang.org/dl/)
+1. Install [Go 1.12](https://golang.org/dl/)
 1. Setup `$GOPATH` environment variable as described [here](https://github.com/golang/go/wiki/SettingGOPATH).
 1. Clone the repository:
     ```bash
@@ -52,7 +52,7 @@
 docker run -it --rm \
   -v "$PWD":/go/src/github.com/monetha/reputation-go-sdk \
   -w /go/src/github.com/monetha/reputation-go-sdk \
-  golang:1.11 \
+  golang:1.12 \
   /bin/bash
 ```
 
