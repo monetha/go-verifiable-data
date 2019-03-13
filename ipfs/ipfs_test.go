@@ -36,13 +36,13 @@ func TestIPFS_Cat(t *testing.T) {
 		}))
 
 	ctx := context.TODO()
-	hash, err := fs.Add(ctx, strings.NewReader(expectedStr))
+	addResult, err := fs.Add(ctx, strings.NewReader(expectedStr))
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("Hash: %v", hash)
+	t.Logf("Hash: %v", addResult.Hash)
 
-	rd, err := fs.Cat(ctx, hash)
+	rd, err := fs.Cat(ctx, addResult.Hash)
 	if err != nil {
 		t.Fatal(err)
 	}

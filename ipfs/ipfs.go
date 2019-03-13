@@ -35,12 +35,14 @@ func NewWithClient(url string, c *http.Client) *IPFS {
 	}
 }
 
-type object struct {
-	Hash string
+// AddResult contains result of Add command
+type AddResult struct {
+	Hash string `json:"Hash"`
+	Size string `json:"Size"`
 }
 
 // Add a file to ipfs from the given reader, returns the hash of the added file
-func (f *IPFS) Add(ctx context.Context, r io.Reader) (string, error) {
+func (f *IPFS) Add(ctx context.Context, r io.Reader) (*AddResult, error) {
 	var rc io.ReadCloser
 	if rclose, ok := r.(io.ReadCloser); ok {
 		rc = rclose
@@ -53,8 +55,8 @@ func (f *IPFS) Add(ctx context.Context, r io.Reader) (string, error) {
 	slf := files.NewSliceFile("", "", []files.File{fr})
 	fileReader := files.NewMultiFileReader(slf, true)
 
-	var out object
-	return out.Hash, f.request("add").
+	var out AddResult
+	return &out, f.request("add").
 		Option("progress", false).
 		Option("pin", true).
 		Body(fileReader).

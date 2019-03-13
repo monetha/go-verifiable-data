@@ -214,13 +214,13 @@ func main() {
 		cmdutils.CheckErr(ignoreHash(provider.WriteBool(ctx, passportAddress, factKey, factBool)), "WriteBool")
 	case data.IPFS:
 		log.Warn("Uploading data to IPFS...", "url", *ipfsURL)
-		hash, err := ipfs.
+		addResult, err := ipfs.
 			New(*ipfsURL).
 			Add(ctx, os.Stdin)
 		cmdutils.CheckErr(err, "IPFS upload")
-		log.Warn("Data successfully uploaded to IPFS...", "hash", hash)
+		log.Warn("Data successfully uploaded to IPFS...", "hash", addResult.Hash)
 
-		cmdutils.CheckErr(ignoreHash(provider.WriteIPFSHash(ctx, passportAddress, factKey, hash)), "WriteIPFSHash")
+		cmdutils.CheckErr(ignoreHash(provider.WriteIPFSHash(ctx, passportAddress, factKey, addResult.Hash)), "WriteIPFSHash")
 	default:
 		cmdutils.CheckErr(fmt.Errorf("unsupported fact type: %v", factType.String()), "writing by type")
 	}
