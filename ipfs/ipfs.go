@@ -38,7 +38,7 @@ func NewWithClient(url string, c *http.Client) *IPFS {
 // AddResult contains result of Add command
 type AddResult struct {
 	Hash string `json:"Hash"`
-	Size string `json:"Size"`
+	Size uint64 `json:"Size,string"`
 }
 
 // Add a file to ipfs from the given reader, returns the hash of the added file
