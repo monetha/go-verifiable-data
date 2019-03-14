@@ -10,7 +10,7 @@ import (
 	"github.com/monetha/reputation-go-sdk/ipfs"
 )
 
-func Example() {
+func ExampleIPFS_DagPutLinks() {
 	// start http recorder
 	r, err := recorder.New("fixtures/dag-links")
 	if err != nil {
