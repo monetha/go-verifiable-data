@@ -16,7 +16,7 @@ func ExampleIPFS_DagPutLinks() {
 	if err != nil {
 		panic(err)
 	}
-	defer r.Stop() // Make sure recorder is stopped once done with it
+	defer func() { _ = r.Stop() }() // Make sure recorder is stopped once done with it
 
 	c := ipfs.NewWithClient("https://ipfs.infura.io:5001", &http.Client{Transport: r})
 
@@ -42,7 +42,7 @@ func ExampleIPFS_DagPutLinks() {
 	}
 	fmt.Printf("subdir: Hash: %v\n", subDir.String())
 
-	subDirStat, err := c.ObjectStat(ctx, subDir)
+	subDirStat, err := c.ObjectStat(ctx, subDir.String())
 	if err != nil {
 		panic(err)
 	}

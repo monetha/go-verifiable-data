@@ -18,7 +18,7 @@ func TestIPFS_Cat(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	defer r.Stop() // Make sure recorder is stopped once done with it
+	defer func() { _ = r.Stop() }() // Make sure recorder is stopped once done with it
 
 	is := is.New(t)
 	expectedStr := "hello world!"
@@ -47,7 +47,7 @@ func TestIPFS_Cat(t *testing.T) {
 
 func copyToString(r io.Reader) (res string, err error) {
 	if c, ok := r.(io.Closer); ok {
-		defer c.Close()
+		defer func() { _ = c.Close() }()
 	}
 
 	var sb strings.Builder

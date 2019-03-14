@@ -143,9 +143,9 @@ type ObjectStat struct {
 }
 
 // ObjectStat returns information about the dag node
-func (f *IPFS) ObjectStat(ctx context.Context, cid Cid) (*ObjectStat, error) {
+func (f *IPFS) ObjectStat(ctx context.Context, path string) (*ObjectStat, error) {
 	var out ObjectStat
-	return &out, f.request("object/stat", cid.String()).Exec(ctx, &out)
+	return &out, f.request("object/stat", path).Exec(ctx, &out)
 }
 
 func (f *IPFS) request(command string, args ...string) *requestBuilder {
