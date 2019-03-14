@@ -63,3 +63,6 @@ func (c *Cid) UnmarshalJSON(b []byte) error {
 
 	return nil
 }
+
+// ToLink creates link from Cid
+func (c *Cid) ToLink(name string, size uint64) Link { return Link{Cid: *c, Name: name, Size: size} }

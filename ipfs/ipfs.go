@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -42,6 +43,12 @@ type AddResult struct {
 	Hash string `json:"Hash"`
 	Size uint64 `json:"Size,string"`
 }
+
+// String implements fmt.Stringer interface
+func (a *AddResult) String() string { return fmt.Sprintf("Hash: %s Size: %d", a.Hash, a.Size) }
+
+// ToLink creates link from AddResult
+func (a *AddResult) ToLink(name string) Link { return Link{Cid: Cid(a.Hash), Name: name, Size: a.Size} }
 
 // Add a file to ipfs from the given reader, returns the hash of the added file
 func (f *IPFS) Add(ctx context.Context, r io.Reader) (*AddResult, error) {
