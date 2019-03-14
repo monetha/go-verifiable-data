@@ -125,6 +125,22 @@ func (f *IPFS) DagGetLinks(ctx context.Context, cid Cid) ([]Link, error) {
 	return out.Links, f.request("dag/get", cid.String()).Exec(ctx, &out)
 }
 
+// ObjectStat provides information about dag nodes
+type ObjectStat struct {
+	Hash           string `json:"Hash"`
+	NumLinks       uint64 `json:"NumLinks"`
+	BlockSize      uint64 `json:"BlockSize"`
+	LinksSize      uint64 `json:"LinksSize"`
+	DataSize       uint64 `json:"DataSize"`
+	CumulativeSize uint64 `json:"CumulativeSize"`
+}
+
+// ObjectStat returns information about the dag node
+func (f *IPFS) ObjectStat(ctx context.Context, cid Cid) (*ObjectStat, error) {
+	var out ObjectStat
+	return &out, f.request("object/stat", cid.String()).Exec(ctx, &out)
+}
+
 func (f *IPFS) request(command string, args ...string) *requestBuilder {
 	return &requestBuilder{
 		command: command,
