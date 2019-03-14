@@ -36,3 +36,5 @@ import:
 - package: github.com/shurcooL/vfsgen
 - package: github.com/shurcooL/httpgzip
 - package: github.com/cheekybits/is
+- package: github.com/dnaeon/go-vcr
+  version: ^1.0.1

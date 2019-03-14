@@ -1,22 +1,31 @@
-hash: feb8e0fcd23c5122fdf587cdccc5838210e1b0bd1cddc91a7e798d0a7502a74d
-updated: 2018-11-19T16:39:49.349414+02:00
+hash: 371dc0edbe5e4e539f39d4e918c0d7c796dea134821111a58fece3f77a863925
+updated: 2019-03-14T15:14:13.043949+02:00
 imports:
+- name: github.com/allegro/bigcache
+  version: 06975fd8de981b85f94a4e5bed7c32999030cef3
+  subpackages:
+  - queue
 - name: github.com/aristanetworks/goarista
-  version: 5faa74ffbed7096292069fdcd0eae96146a3158a
+  version: 18b896026201d8e1758468d9c5d5a558c69c5e9b
   subpackages:
   - monotime
 - name: github.com/btcsuite/btcd
-  version: 67e573d211ace594f1366b4ce9d39726c4b19bd0
+  version: f899737d7f2764dc13e4d01ff00108ec58f766a9
   subpackages:
   - btcec
 - name: github.com/cheekybits/is
   version: 68e9c0620927fb5427fda3708222d0edee89eae9
 - name: github.com/davecgh/go-spew
-  version: d8f796af33cc11cb798c1aaeb27a4ebc5099927d
+  version: 8991bc29aa16c548c550c7ff78260e27b9ab7c73
   subpackages:
   - spew
 - name: github.com/deckarep/golang-set
-  version: 699df6a3acf6867538e50931511e9dc403da108a
+  version: 504e848d77ea4752b3057b8fb46da0e7f746ccf3
+- name: github.com/dnaeon/go-vcr
+  version: b3f5a17c396f1f45e232e36c6eed2577da52d22a
+  subpackages:
+  - cassette
+  - recorder
 - name: github.com/edsrzf/mmap-go
   version: 0bce6a6887123b67a60366d2c9fe2dfb74289d2e
 - name: github.com/elastic/gosigar
@@ -24,7 +33,7 @@ imports:
   subpackages:
   - sys/windows
 - name: github.com/ethereum/go-ethereum
-  version: 58632d44021bf095b43a1bb2443e6e3690a94739
+  version: c942700427557e3ff6de3aaf6b916e2f056c1ec2
   subpackages:
   - accounts
   - accounts/abi
@@ -58,7 +67,6 @@ imports:
   - crypto/bn256/google
   - crypto/ecies
   - crypto/secp256k1
-  - crypto/sha3
   - dashboard
   - eth
   - eth/downloader
@@ -103,7 +111,7 @@ imports:
   subpackages:
   - oleutil
 - name: github.com/go-stack/stack
-  version: 2fee6af1a9795aafbe0253a0cfbdf668e1fb8a9a
+  version: 259ab82a6cad3992b4e21ff5cac294ccb06474bc
 - name: github.com/go-test/deep
   version: 042da051cf3189d80f667339b822c7effac29cd6
 - name: github.com/golang/protobuf
@@ -112,11 +120,9 @@ imports:
   - proto
   - protoc-gen-go/descriptor
 - name: github.com/golang/snappy
-  version: d9eb7a3d35ec988b8585d4a0068e462c27d28380
-- name: github.com/google/uuid
-  version: 9b3b1e0f5f99ae461456d768e7d301a7acdaa2d8
+  version: 2e65f85255dbc3072edf28d6b5b8efc472979f5a
 - name: github.com/hashicorp/golang-lru
-  version: 20f1fb78b0740ba8c3cb143a61e86ba5c8669768
+  version: 0fb14efe8c47ae851c0034ed7a448854d3d34cf3
   subpackages:
   - simplelru
 - name: github.com/huin/goupnp
@@ -154,17 +160,17 @@ imports:
 - name: github.com/monetha/go-ethereum
   version: e7e7ff90cf6f091a867c009b54164332d5eb2440
 - name: github.com/pborman/uuid
-  version: 8b1b92947f46224e3b97bb1a3a5b0382be00d31e
+  version: c65b2f87fee37d1c7854c9164a450713c28d50cd
 - name: github.com/pkg/errors
-  version: 059132a15dd08d6704c67711dae0cf35ab991756
+  version: ba968bfe8b2f7e042a574c888954fccecfa385b4
 - name: github.com/prometheus/prometheus
   version: 3101606756c53221ed58ba94ecba6b26adf89dcc
   subpackages:
   - util/flock
 - name: github.com/rjeczalik/notify
-  version: 352c463f90a00c0cf83b1148f11ada779308f411
+  version: 4e54e7fd043e865c50bda93359fb78813a8d165b
 - name: github.com/rs/cors
-  version: a3460e445dd310dbefee993fe449f2ff9c08ae71
+  version: 9a47f48565a795472d43519dd49aac781f3034fb
 - name: github.com/shurcooL/httpfs
   version: 809beceb23714880abc4a382a00c05f89d13b1cc
   subpackages:
@@ -176,7 +182,7 @@ imports:
 - name: github.com/StackExchange/wmi
   version: b12b22c5341f0c26d88c4d66176330500e84db68
 - name: github.com/syndtr/goleveldb
-  version: f9080354173f192dfc8821931eacf9cfd6819253
+  version: ae2bd5eed72d46b28834ec3f60db3a3ebedd8dbd
   subpackages:
   - leveldb
   - leveldb/cache
@@ -191,11 +197,12 @@ imports:
   - leveldb/table
   - leveldb/util
 - name: golang.org/x/crypto
-  version: 3d3f9f413869b949e48070b5bc593aa22cc2b8f2
+  version: aabede6cba87e37f413b3e60ebfc214f8eeca1b0
   subpackages:
   - pbkdf2
   - ripemd160
   - scrypt
+  - sha3
 - name: golang.org/x/lint
   version: c67002cb31c3a748b7688c27f20d8358b4193582
   repo: https://github.com/golang/lint
@@ -258,4 +265,6 @@ imports:
   - cmd/simple
   - cmd/staticcheck
   - cmd/unused
-testImports: []
+testImports:
+- name: gopkg.in/yaml.v2
+  version: 5420a8b6744d3b0345ab293f6fcba19c978f1183
