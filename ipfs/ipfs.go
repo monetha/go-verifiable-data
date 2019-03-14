@@ -1,7 +1,9 @@
 package ipfs
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -74,6 +76,45 @@ func (f *IPFS) Cat(ctx context.Context, path string) (io.ReadCloser, error) {
 	}
 
 	return resp.Output, nil
+}
+
+// Link represents an IPFS Merkle DAG Link between Nodes.
+type Link struct {
+	// multihash of the target object
+	Cid Cid `json:"Cid"`
+	// utf string name. should be unique per object
+	Name string `json:"Name"`
+	// cumulative size of target object
+	Size uint64 `json:"Size"`
+}
+
+// DagPutDir puts directory containing links and returns an IPFS hash of directory.
+func (f *IPFS) DagPutDir(ctx context.Context, links []Link) (Cid, error) {
+	dagJSONBytes, err := json.Marshal(struct {
+		Data  string `json:"data"`
+		Links []Link `json:"links"`
+	}{
+		Data:  "CAE=",
+		Links: links,
+	})
+	if err != nil {
+		return "", err
+	}
+
+	fr := files.NewReaderFile("", "", ioutil.NopCloser(bytes.NewBuffer(dagJSONBytes)), nil)
+	slf := files.NewSliceFile("", "", []files.File{fr})
+	fileReader := files.NewMultiFileReader(slf, true)
+
+	var out struct {
+		Cid Cid `json:"Cid"`
+	}
+
+	return out.Cid, f.request("dag/put").
+		Option("format", "protobuf").
+		Option("input-enc", "json").
+		Option("pin", true).
+		Body(fileReader).
+		Exec(ctx, &out)
 }
 
 func (f *IPFS) request(command string, args ...string) *requestBuilder {
