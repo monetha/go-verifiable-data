@@ -63,6 +63,17 @@ func ExampleIPFS_DagPutLinks() {
 	}
 	fmt.Printf("rootdir: Hash: %v\n", rootDir.String())
 
+	rc, err := c.Cat(ctx, rootDir.String()+"/subdir/file1.txt")
+	if err != nil {
+		panic(err)
+	}
+
+	file1Content, err := copyToString(rc)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(file1Content)
+
 	// Output:
 	// file1.txt: Hash: QmSFEbC6Y17cdti7damkjoqESWftkyfSXjdKDQqnf4ECV7 Size: 22
 	// file2.txt: Hash: QmVssUfKob8KkUyUiwzoGqNTKqyaEXfqxeGiUJ7ZGyfPLV Size: 22
@@ -70,4 +81,5 @@ func ExampleIPFS_DagPutLinks() {
 	// subdir: Size: 150
 	// readme.txt: Hash: QmeQVyGZQbArEEzukCAXbNbLBBwiBwD4E1WinEeAVw1dZ8 Size: 32
 	// rootdir: Hash: QmZgrVVH6Dp4MR4FoF5npDTtJzLneH2KvxoPHixAiucVJH
+	// file 1 content
 }
