@@ -78,6 +78,11 @@ func (f *IPFS) Cat(ctx context.Context, path string) (io.ReadCloser, error) {
 	return resp.Output, nil
 }
 
+type dagNode struct {
+	Data  string `json:"data"`
+	Links []Link `json:"links"`
+}
+
 // Link represents an IPFS Merkle DAG Link between Nodes.
 type Link struct {
 	// multihash of the target object
@@ -88,12 +93,9 @@ type Link struct {
 	Size uint64 `json:"Size"`
 }
 
-// DagPutDir puts directory containing links and returns an IPFS hash of directory.
-func (f *IPFS) DagPutDir(ctx context.Context, links []Link) (Cid, error) {
-	dagJSONBytes, err := json.Marshal(struct {
-		Data  string `json:"data"`
-		Links []Link `json:"links"`
-	}{
+// DagPutLinks puts directory containing links and returns Cid of directory.
+func (f *IPFS) DagPutLinks(ctx context.Context, links []Link) (Cid, error) {
+	dagJSONBytes, err := json.Marshal(dagNode{
 		Data:  "CAE=",
 		Links: links,
 	})
@@ -115,6 +117,12 @@ func (f *IPFS) DagPutDir(ctx context.Context, links []Link) (Cid, error) {
 		Option("pin", true).
 		Body(fileReader).
 		Exec(ctx, &out)
+}
+
+// DagGetLinks gets directory links.
+func (f *IPFS) DagGetLinks(ctx context.Context, cid Cid) ([]Link, error) {
+	var out dagNode
+	return out.Links, f.request("dag/get", cid.String()).Exec(ctx, &out)
 }
 
 func (f *IPFS) request(command string, args ...string) *requestBuilder {
