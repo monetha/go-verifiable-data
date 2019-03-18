@@ -23,7 +23,10 @@ func TestIPFS_Cat(t *testing.T) {
 	is := is.New(t)
 	expectedStr := "hello world!"
 
-	fs := ipfs.NewWithClient("https://ipfs.infura.io:5001", &http.Client{Transport: r})
+	fs, err := ipfs.NewWithClient("https://ipfs.infura.io:5001", &http.Client{Transport: r})
+	if err != nil {
+		panic(err)
+	}
 
 	ctx := context.TODO()
 	addResult, err := fs.Add(ctx, strings.NewReader(expectedStr))

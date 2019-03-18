@@ -18,7 +18,10 @@ func ExampleIPFS_DagPutLinks() {
 	}
 	defer func() { _ = r.Stop() }() // Make sure recorder is stopped once done with it
 
-	c := ipfs.NewWithClient("https://ipfs.infura.io:5001", &http.Client{Transport: r})
+	c, err := ipfs.NewWithClient("https://ipfs.infura.io:5001", &http.Client{Transport: r})
+	if err != nil {
+		panic(err)
+	}
 
 	ctx := context.Background()
 	file1, err := c.Add(ctx, strings.NewReader("file 1 content"))

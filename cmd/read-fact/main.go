@@ -214,9 +214,11 @@ func main() {
 
 		log.Warn("Reading from IPFS...", "hash", hash)
 		cmdutils.CheckErr(err, "ReadIPFSHash")
-		rc, err := ipfs.
-			New(*ipfsURL).
-			Cat(ctx, hash)
+
+		fs, err := ipfs.New(*ipfsURL)
+		cmdutils.CheckErr(err, "IPFS.New")
+
+		rc, err := fs.Cat(ctx, hash)
 		cmdutils.CheckErr(err, "IPFS.Cat")
 		fileOp = writeReader(rc)
 	default:

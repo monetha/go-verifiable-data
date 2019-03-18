@@ -214,9 +214,11 @@ func main() {
 		cmdutils.CheckErr(ignoreHash(provider.WriteBool(ctx, passportAddress, factKey, factBool)), "WriteBool")
 	case data.IPFS:
 		log.Warn("Uploading data to IPFS...", "url", *ipfsURL)
-		addResult, err := ipfs.
-			New(*ipfsURL).
-			Add(ctx, os.Stdin)
+
+		fs, err := ipfs.New(*ipfsURL)
+		cmdutils.CheckErr(err, "IPFS.New")
+
+		addResult, err := fs.Add(ctx, os.Stdin)
 		cmdutils.CheckErr(err, "IPFS upload")
 		log.Warn("Data successfully uploaded to IPFS...", "hash", addResult.Hash)
 
