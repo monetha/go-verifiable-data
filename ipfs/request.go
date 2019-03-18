@@ -1,162 +1,205 @@
 package ipfs
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 	"net/url"
 	"os"
+	"strconv"
 	"strings"
-
-	"github.com/monetha/reputation-go-sdk/ipfs/files"
 )
 
 type request struct {
-	APIBase string
-	Command string
-	Args    []string
-	Opts    map[string]string
-	Body    io.Reader
-	Headers map[string]string
+	c       *http.Client
+	apiBase string
+	command string
+	args    []string
+	opts    map[string]string
+	body    io.Reader
 }
 
-func newRequest(url, command string, args ...string) *request {
-	if !strings.HasPrefix(url, "http") {
-		url = "http://" + url
+func (f *IPFS) request(command string, args ...string) *request {
+	uri := f.url
+	if !strings.HasPrefix(uri, "http") {
+		uri = "http://" + uri
 	}
 
 	opts := map[string]string{
 		"encoding":        "json",
 		"stream-channels": "true",
 	}
+
 	return &request{
-		APIBase: url + "/api/v0",
-		Command: command,
-		Args:    args,
-		Opts:    opts,
-		Headers: make(map[string]string),
+		c:       f.httpcli,
+		apiBase: uri + "/api/v0",
+		command: command,
+		args:    args,
+		opts:    opts,
 	}
 }
 
-type response struct {
-	Output io.ReadCloser
-	Error  *responseError
-}
-
-func (r *response) Close() error {
-	if r.Output != nil {
-		// always drain output (response body)
-		io.Copy(ioutil.Discard, r.Output)
-		return r.Output.Close()
+// Option sets the given option.
+func (r *request) Option(key string, value interface{}) *request {
+	var s string
+	switch v := value.(type) {
+	case bool:
+		s = strconv.FormatBool(v)
+	case string:
+		s = v
+	case []byte:
+		s = string(v)
+	default:
+		// slow case.
+		s = fmt.Sprint(value)
 	}
-	return nil
-}
-
-func (r *response) Decode(dec interface{}) error {
-	defer r.Close()
-	if r.Error != nil {
-		return r.Error
+	if r.opts == nil {
+		r.opts = make(map[string]string, 1)
 	}
-
-	return json.NewDecoder(r.Output).Decode(dec)
+	r.opts[key] = s
+	return r
 }
 
-type responseError struct {
-	Command string
-	Message string
-	Code    int
+// Body sets the request body to the given reader.
+func (r *request) Body(body io.Reader) *request {
+	r.body = body
+	return r
 }
 
-func (e *responseError) Error() string {
-	var out string
-	if e.Command != "" {
-		out = e.Command + ": "
-	}
-	if e.Code != 0 {
-		out = fmt.Sprintf("%s%d: ", out, e.Code)
-	}
-	return out + e.Message
-}
-
-func (r *request) Send(ctx context.Context, c *http.Client) (*response, error) {
-	url := r.getURL()
-	req, err := http.NewRequest("POST", url, r.Body)
+func (r *request) Send(ctx context.Context) (resp *response, err error) {
+	mpf, err := toMultipartFile(r.body)
 	if err != nil {
-		return nil, err
+		return
+	}
+
+	var body io.Reader
+	if mpf != nil {
+		body = mpf.Body
+	}
+	req, err := http.NewRequest("POST", r.getURL(), body)
+	if err != nil {
+		return
 	}
 
 	req = req.WithContext(ctx)
-
-	// Add any headers that were supplied via the requestBuilder.
-	for k, v := range r.Headers {
-		req.Header.Add(k, v)
+	if mpf != nil {
+		req.Header.Set("Content-Type", mpf.ContentType)
 	}
 
-	if fr, ok := r.Body.(*files.MultiFileReader); ok {
-		req.Header.Set("Content-Type", "multipart/form-data; boundary="+fr.Boundary())
-		req.Header.Set("Content-Disposition", "form-data: name=\"files\"")
-	}
-
-	resp, err := c.Do(req)
+	res, err := r.c.Do(req)
 	if err != nil {
-		return nil, err
+		return
 	}
 
-	contentType := resp.Header.Get("Content-Type")
+	contentType := res.Header.Get("Content-Type")
 	parts := strings.Split(contentType, ";")
 	contentType = parts[0]
 
-	nresp := new(response)
-
-	nresp.Output = resp.Body
-	if resp.StatusCode >= http.StatusBadRequest {
+	resp = &response{}
+	if res.StatusCode >= http.StatusBadRequest {
 		e := &responseError{
-			Command: r.Command,
+			Command: r.command,
 		}
+		resp.Error = e
+
 		switch {
-		case resp.StatusCode == http.StatusNotFound:
+		case res.StatusCode == http.StatusNotFound:
 			e.Message = "command not found"
 		case contentType == "text/plain":
-			out, err := ioutil.ReadAll(resp.Body)
+			out, err := ioutil.ReadAll(res.Body)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "ipfs: warning! response (%d) read error: %s\n", resp.StatusCode, err)
+				_, _ = fmt.Fprintf(os.Stderr, "ipfs: warning! response (%d) read error: %s\n", res.StatusCode, err)
 			}
 			e.Message = string(out)
 		case contentType == "application/json":
-			if err = json.NewDecoder(resp.Body).Decode(e); err != nil {
-				fmt.Fprintf(os.Stderr, "ipfs: warning! response (%d) unmarshall error: %s\n", resp.StatusCode, err)
+			if err = json.NewDecoder(res.Body).Decode(e); err != nil {
+				_, _ = fmt.Fprintf(os.Stderr, "ipfs: warning! response (%d) unmarshall error: %s\n", res.StatusCode, err)
 			}
 		default:
-			fmt.Fprintf(os.Stderr, "ipfs: warning! unhandled response (%d) encoding: %s", resp.StatusCode, contentType)
-			out, err := ioutil.ReadAll(resp.Body)
+			_, _ = fmt.Fprintf(os.Stderr, "ipfs: warning! unhandled response (%d) encoding: %s", res.StatusCode, contentType)
+			out, err := ioutil.ReadAll(res.Body)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "ipfs: response (%d) read error: %s\n", resp.StatusCode, err)
+				_, _ = fmt.Fprintf(os.Stderr, "ipfs: response (%d) read error: %s\n", res.StatusCode, err)
 			}
 			e.Message = fmt.Sprintf("unknown ipfs error encoding: %q - %q", contentType, out)
 		}
-		nresp.Error = e
-		nresp.Output = nil
 
 		// drain body and close
-		io.Copy(ioutil.Discard, resp.Body)
-		resp.Body.Close()
+		_, _ = io.Copy(ioutil.Discard, res.Body)
+		_ = res.Body.Close()
+	} else {
+		resp.Output = res.Body
 	}
 
-	return nresp, nil
+	return
+}
+
+type multiPartFile struct {
+	ContentType string
+	Body        io.Reader
+}
+
+func toMultipartFile(f io.Reader) (mpf *multiPartFile, err error) {
+	if f == nil {
+		return
+	}
+
+	body := &bytes.Buffer{}
+	w := multipart.NewWriter(body)
+	part, err := w.CreateFormFile("file", "")
+	if err != nil {
+		return
+	}
+
+	_, err = io.Copy(part, f)
+	if err != nil {
+		return
+	}
+
+	err = w.Close()
+	if err != nil {
+		return
+	}
+
+	mpf = &multiPartFile{
+		ContentType: w.FormDataContentType(),
+		Body:        body,
+	}
+	return
+}
+
+// Exec sends the request a request and decodes the response.
+func (r *request) Exec(ctx context.Context, res interface{}) error {
+	httpRes, err := r.Send(ctx)
+	if err != nil {
+		return err
+	}
+
+	if res == nil {
+		_ = httpRes.Close()
+		if httpRes.Error != nil {
+			return httpRes.Error
+		}
+		return nil
+	}
+
+	return httpRes.Decode(res)
 }
 
 func (r *request) getURL() string {
 
 	values := make(url.Values)
-	for _, arg := range r.Args {
+	for _, arg := range r.args {
 		values.Add("arg", arg)
 	}
-	for k, v := range r.Opts {
+	for k, v := range r.opts {
 		values.Add(k, v)
 	}
 
-	return fmt.Sprintf("%s/%s?%s", r.APIBase, r.Command, values.Encode())
+	return fmt.Sprintf("%s/%s?%s", r.apiBase, r.command, values.Encode())
 }

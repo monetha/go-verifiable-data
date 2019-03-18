@@ -6,10 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
-
-	"github.com/monetha/reputation-go-sdk/ipfs/files"
 )
 
 // IPFS provides limited functionality to interact with the IPFS (https://ipfs.io)
@@ -38,10 +35,20 @@ func NewWithClient(url string, c *http.Client) *IPFS {
 	}
 }
 
-// AddResult contains result of Add command
+// AddResult contains result of AddResult command
 type AddResult struct {
 	Hash string `json:"Hash"`
 	Size uint64 `json:"Size,string"`
+}
+
+// Link represents an IPFS Merkle DAG Link between Nodes.
+type Link struct {
+	// multihash of the target object
+	Cid Cid `json:"Cid"`
+	// utf string name. should be unique per object
+	Name string `json:"Name"`
+	// cumulative size of target object
+	Size uint64 `json:"Size"`
 }
 
 // String implements fmt.Stringer interface
@@ -52,23 +59,11 @@ func (a *AddResult) ToLink(name string) Link { return Link{Cid: Cid(a.Hash), Nam
 
 // Add a file to ipfs from the given reader, returns the hash of the added file
 func (f *IPFS) Add(ctx context.Context, r io.Reader) (*AddResult, error) {
-	var rc io.ReadCloser
-	if rclose, ok := r.(io.ReadCloser); ok {
-		rc = rclose
-	} else {
-		rc = ioutil.NopCloser(r)
-	}
-
-	// handler expects an array of files
-	fr := files.NewReaderFile("", "", rc, nil)
-	slf := files.NewSliceFile("", "", []files.File{fr})
-	fileReader := files.NewMultiFileReader(slf, true)
-
 	var out AddResult
 	return &out, f.request("add").
 		Option("progress", false).
 		Option("pin", true).
-		Body(fileReader).
+		Body(r).
 		Exec(ctx, &out)
 }
 
@@ -90,16 +85,6 @@ type dagNode struct {
 	Links []Link `json:"links"`
 }
 
-// Link represents an IPFS Merkle DAG Link between Nodes.
-type Link struct {
-	// multihash of the target object
-	Cid Cid `json:"Cid"`
-	// utf string name. should be unique per object
-	Name string `json:"Name"`
-	// cumulative size of target object
-	Size uint64 `json:"Size"`
-}
-
 // DagPutLinks puts directory containing links and returns Cid of directory.
 func (f *IPFS) DagPutLinks(ctx context.Context, links []Link) (Cid, error) {
 	dagJSONBytes, err := json.Marshal(dagNode{
@@ -110,10 +95,6 @@ func (f *IPFS) DagPutLinks(ctx context.Context, links []Link) (Cid, error) {
 		return "", err
 	}
 
-	fr := files.NewReaderFile("", "", ioutil.NopCloser(bytes.NewBuffer(dagJSONBytes)), nil)
-	slf := files.NewSliceFile("", "", []files.File{fr})
-	fileReader := files.NewMultiFileReader(slf, true)
-
 	var out struct {
 		Cid Cid `json:"Cid"`
 	}
@@ -122,7 +103,7 @@ func (f *IPFS) DagPutLinks(ctx context.Context, links []Link) (Cid, error) {
 		Option("format", "protobuf").
 		Option("input-enc", "json").
 		Option("pin", true).
-		Body(fileReader).
+		Body(bytes.NewBuffer(dagJSONBytes)).
 		Exec(ctx, &out)
 }
 
@@ -146,12 +127,4 @@ type ObjectStat struct {
 func (f *IPFS) ObjectStat(ctx context.Context, path string) (*ObjectStat, error) {
 	var out ObjectStat
 	return &out, f.request("object/stat", path).Exec(ctx, &out)
-}
-
-func (f *IPFS) request(command string, args ...string) *requestBuilder {
-	return &requestBuilder{
-		command: command,
-		args:    args,
-		ipfs:    f,
-	}
 }

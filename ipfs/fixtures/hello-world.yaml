@@ -2,16 +2,14 @@
 version: 1
 interactions:
 - request:
-    body: "--dde8972895d7fc93b0aebb76eb08087361fd5f7cc8593ff919632be80bd8\r\nAbspath:
-      \r\nContent-Disposition: file; filename=\"\"\r\nContent-Type: application/octet-stream\r\n\r\nhello
-      world!\r\n--dde8972895d7fc93b0aebb76eb08087361fd5f7cc8593ff919632be80bd8--\r\n"
+    body: "--3d51b86c676a88e44cb1cff980c2672850fd24fa9ae6b931eff7aa150ee6\r\nContent-Disposition:
+      form-data; name=\"file\"; filename=\"\"\r\nContent-Type: application/octet-stream\r\n\r\nhello
+      world!\r\n--3d51b86c676a88e44cb1cff980c2672850fd24fa9ae6b931eff7aa150ee6--\r\n"
     form: {}
     headers:
-      Content-Disposition:
-      - 'form-data: name="files"'
       Content-Type:
-      - multipart/form-data; boundary=dde8972895d7fc93b0aebb76eb08087361fd5f7cc8593ff919632be80bd8
-    url: https://ipfs.infura.io:5001/api/v0/add?pin=true&progress=false
+      - multipart/form-data; boundary=3d51b86c676a88e44cb1cff980c2672850fd24fa9ae6b931eff7aa150ee6
+    url: https://ipfs.infura.io:5001/api/v0/add?encoding=json&pin=true&progress=false&stream-channels=true
     method: POST
   response:
     body: |
@@ -24,7 +22,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 14 Mar 2019 13:32:27 GMT
+      - Mon, 18 Mar 2019 07:57:36 GMT
       Server:
       - nginx
       Vary:
@@ -38,7 +36,7 @@ interactions:
     body: ""
     form: {}
     headers: {}
-    url: https://ipfs.infura.io:5001/api/v0/cat?arg=QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j
+    url: https://ipfs.infura.io:5001/api/v0/cat?arg=QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j&encoding=json&stream-channels=true
     method: POST
   response:
     body: hello world!
@@ -50,7 +48,7 @@ interactions:
       Content-Type:
       - text/plain
       Date:
-      - Thu, 14 Mar 2019 13:32:27 GMT
+      - Mon, 18 Mar 2019 07:57:37 GMT
       Server:
       - nginx
       Vary:
