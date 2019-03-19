@@ -174,7 +174,7 @@ func (_IPassportLogicContract *IPassportLogicContractTransactorRaw) Transact(opt
 
 // GetAddress is a free data retrieval call binding the contract method 0x7ac4ed64.
 //
-// Solidity: function getAddress(_factProvider address, _key bytes32) constant returns(success bool, value address)
+// Solidity: function getAddress(address _factProvider, bytes32 _key) constant returns(bool success, address value)
 func (_IPassportLogicContract *IPassportLogicContractCaller) GetAddress(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   common.Address
@@ -190,7 +190,7 @@ func (_IPassportLogicContract *IPassportLogicContractCaller) GetAddress(opts *bi
 
 // GetAddress is a free data retrieval call binding the contract method 0x7ac4ed64.
 //
-// Solidity: function getAddress(_factProvider address, _key bytes32) constant returns(success bool, value address)
+// Solidity: function getAddress(address _factProvider, bytes32 _key) constant returns(bool success, address value)
 func (_IPassportLogicContract *IPassportLogicContractSession) GetAddress(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   common.Address
@@ -200,7 +200,7 @@ func (_IPassportLogicContract *IPassportLogicContractSession) GetAddress(_factPr
 
 // GetAddress is a free data retrieval call binding the contract method 0x7ac4ed64.
 //
-// Solidity: function getAddress(_factProvider address, _key bytes32) constant returns(success bool, value address)
+// Solidity: function getAddress(address _factProvider, bytes32 _key) constant returns(bool success, address value)
 func (_IPassportLogicContract *IPassportLogicContractCallerSession) GetAddress(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   common.Address
@@ -210,7 +210,7 @@ func (_IPassportLogicContract *IPassportLogicContractCallerSession) GetAddress(_
 
 // GetBool is a free data retrieval call binding the contract method 0x9d74b37d.
 //
-// Solidity: function getBool(_factProvider address, _key bytes32) constant returns(success bool, value bool)
+// Solidity: function getBool(address _factProvider, bytes32 _key) constant returns(bool success, bool value)
 func (_IPassportLogicContract *IPassportLogicContractCaller) GetBool(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   bool
@@ -226,7 +226,7 @@ func (_IPassportLogicContract *IPassportLogicContractCaller) GetBool(opts *bind.
 
 // GetBool is a free data retrieval call binding the contract method 0x9d74b37d.
 //
-// Solidity: function getBool(_factProvider address, _key bytes32) constant returns(success bool, value bool)
+// Solidity: function getBool(address _factProvider, bytes32 _key) constant returns(bool success, bool value)
 func (_IPassportLogicContract *IPassportLogicContractSession) GetBool(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   bool
@@ -236,7 +236,7 @@ func (_IPassportLogicContract *IPassportLogicContractSession) GetBool(_factProvi
 
 // GetBool is a free data retrieval call binding the contract method 0x9d74b37d.
 //
-// Solidity: function getBool(_factProvider address, _key bytes32) constant returns(success bool, value bool)
+// Solidity: function getBool(address _factProvider, bytes32 _key) constant returns(bool success, bool value)
 func (_IPassportLogicContract *IPassportLogicContractCallerSession) GetBool(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   bool
@@ -246,7 +246,7 @@ func (_IPassportLogicContract *IPassportLogicContractCallerSession) GetBool(_fac
 
 // GetBytes is a free data retrieval call binding the contract method 0x6556f767.
 //
-// Solidity: function getBytes(_factProvider address, _key bytes32) constant returns(success bool, value bytes)
+// Solidity: function getBytes(address _factProvider, bytes32 _key) constant returns(bool success, bytes value)
 func (_IPassportLogicContract *IPassportLogicContractCaller) GetBytes(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   []byte
@@ -262,7 +262,7 @@ func (_IPassportLogicContract *IPassportLogicContractCaller) GetBytes(opts *bind
 
 // GetBytes is a free data retrieval call binding the contract method 0x6556f767.
 //
-// Solidity: function getBytes(_factProvider address, _key bytes32) constant returns(success bool, value bytes)
+// Solidity: function getBytes(address _factProvider, bytes32 _key) constant returns(bool success, bytes value)
 func (_IPassportLogicContract *IPassportLogicContractSession) GetBytes(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   []byte
@@ -272,7 +272,7 @@ func (_IPassportLogicContract *IPassportLogicContractSession) GetBytes(_factProv
 
 // GetBytes is a free data retrieval call binding the contract method 0x6556f767.
 //
-// Solidity: function getBytes(_factProvider address, _key bytes32) constant returns(success bool, value bytes)
+// Solidity: function getBytes(address _factProvider, bytes32 _key) constant returns(bool success, bytes value)
 func (_IPassportLogicContract *IPassportLogicContractCallerSession) GetBytes(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   []byte
@@ -282,7 +282,7 @@ func (_IPassportLogicContract *IPassportLogicContractCallerSession) GetBytes(_fa
 
 // GetIPFSHash is a free data retrieval call binding the contract method 0x22b96b63.
 //
-// Solidity: function getIPFSHash(_factProvider address, _key bytes32) constant returns(success bool, value string)
+// Solidity: function getIPFSHash(address _factProvider, bytes32 _key) constant returns(bool success, string value)
 func (_IPassportLogicContract *IPassportLogicContractCaller) GetIPFSHash(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   string
@@ -298,7 +298,7 @@ func (_IPassportLogicContract *IPassportLogicContractCaller) GetIPFSHash(opts *b
 
 // GetIPFSHash is a free data retrieval call binding the contract method 0x22b96b63.
 //
-// Solidity: function getIPFSHash(_factProvider address, _key bytes32) constant returns(success bool, value string)
+// Solidity: function getIPFSHash(address _factProvider, bytes32 _key) constant returns(bool success, string value)
 func (_IPassportLogicContract *IPassportLogicContractSession) GetIPFSHash(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   string
@@ -308,7 +308,7 @@ func (_IPassportLogicContract *IPassportLogicContractSession) GetIPFSHash(_factP
 
 // GetIPFSHash is a free data retrieval call binding the contract method 0x22b96b63.
 //
-// Solidity: function getIPFSHash(_factProvider address, _key bytes32) constant returns(success bool, value string)
+// Solidity: function getIPFSHash(address _factProvider, bytes32 _key) constant returns(bool success, string value)
 func (_IPassportLogicContract *IPassportLogicContractCallerSession) GetIPFSHash(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   string
@@ -318,7 +318,7 @@ func (_IPassportLogicContract *IPassportLogicContractCallerSession) GetIPFSHash(
 
 // GetInt is a free data retrieval call binding the contract method 0x95ee8bae.
 //
-// Solidity: function getInt(_factProvider address, _key bytes32) constant returns(success bool, value int256)
+// Solidity: function getInt(address _factProvider, bytes32 _key) constant returns(bool success, int256 value)
 func (_IPassportLogicContract *IPassportLogicContractCaller) GetInt(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   *big.Int
@@ -334,7 +334,7 @@ func (_IPassportLogicContract *IPassportLogicContractCaller) GetInt(opts *bind.C
 
 // GetInt is a free data retrieval call binding the contract method 0x95ee8bae.
 //
-// Solidity: function getInt(_factProvider address, _key bytes32) constant returns(success bool, value int256)
+// Solidity: function getInt(address _factProvider, bytes32 _key) constant returns(bool success, int256 value)
 func (_IPassportLogicContract *IPassportLogicContractSession) GetInt(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   *big.Int
@@ -344,7 +344,7 @@ func (_IPassportLogicContract *IPassportLogicContractSession) GetInt(_factProvid
 
 // GetInt is a free data retrieval call binding the contract method 0x95ee8bae.
 //
-// Solidity: function getInt(_factProvider address, _key bytes32) constant returns(success bool, value int256)
+// Solidity: function getInt(address _factProvider, bytes32 _key) constant returns(bool success, int256 value)
 func (_IPassportLogicContract *IPassportLogicContractCallerSession) GetInt(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   *big.Int
@@ -354,7 +354,7 @@ func (_IPassportLogicContract *IPassportLogicContractCallerSession) GetInt(_fact
 
 // GetString is a free data retrieval call binding the contract method 0xe318de73.
 //
-// Solidity: function getString(_factProvider address, _key bytes32) constant returns(success bool, value string)
+// Solidity: function getString(address _factProvider, bytes32 _key) constant returns(bool success, string value)
 func (_IPassportLogicContract *IPassportLogicContractCaller) GetString(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   string
@@ -370,7 +370,7 @@ func (_IPassportLogicContract *IPassportLogicContractCaller) GetString(opts *bin
 
 // GetString is a free data retrieval call binding the contract method 0xe318de73.
 //
-// Solidity: function getString(_factProvider address, _key bytes32) constant returns(success bool, value string)
+// Solidity: function getString(address _factProvider, bytes32 _key) constant returns(bool success, string value)
 func (_IPassportLogicContract *IPassportLogicContractSession) GetString(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   string
@@ -380,7 +380,7 @@ func (_IPassportLogicContract *IPassportLogicContractSession) GetString(_factPro
 
 // GetString is a free data retrieval call binding the contract method 0xe318de73.
 //
-// Solidity: function getString(_factProvider address, _key bytes32) constant returns(success bool, value string)
+// Solidity: function getString(address _factProvider, bytes32 _key) constant returns(bool success, string value)
 func (_IPassportLogicContract *IPassportLogicContractCallerSession) GetString(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   string
@@ -390,7 +390,7 @@ func (_IPassportLogicContract *IPassportLogicContractCallerSession) GetString(_f
 
 // GetTxDataBlockNumber is a free data retrieval call binding the contract method 0x174a6277.
 //
-// Solidity: function getTxDataBlockNumber(_factProvider address, _key bytes32) constant returns(success bool, blockNumber uint256)
+// Solidity: function getTxDataBlockNumber(address _factProvider, bytes32 _key) constant returns(bool success, uint256 blockNumber)
 func (_IPassportLogicContract *IPassportLogicContractCaller) GetTxDataBlockNumber(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success     bool
 	BlockNumber *big.Int
@@ -406,7 +406,7 @@ func (_IPassportLogicContract *IPassportLogicContractCaller) GetTxDataBlockNumbe
 
 // GetTxDataBlockNumber is a free data retrieval call binding the contract method 0x174a6277.
 //
-// Solidity: function getTxDataBlockNumber(_factProvider address, _key bytes32) constant returns(success bool, blockNumber uint256)
+// Solidity: function getTxDataBlockNumber(address _factProvider, bytes32 _key) constant returns(bool success, uint256 blockNumber)
 func (_IPassportLogicContract *IPassportLogicContractSession) GetTxDataBlockNumber(_factProvider common.Address, _key [32]byte) (struct {
 	Success     bool
 	BlockNumber *big.Int
@@ -416,7 +416,7 @@ func (_IPassportLogicContract *IPassportLogicContractSession) GetTxDataBlockNumb
 
 // GetTxDataBlockNumber is a free data retrieval call binding the contract method 0x174a6277.
 //
-// Solidity: function getTxDataBlockNumber(_factProvider address, _key bytes32) constant returns(success bool, blockNumber uint256)
+// Solidity: function getTxDataBlockNumber(address _factProvider, bytes32 _key) constant returns(bool success, uint256 blockNumber)
 func (_IPassportLogicContract *IPassportLogicContractCallerSession) GetTxDataBlockNumber(_factProvider common.Address, _key [32]byte) (struct {
 	Success     bool
 	BlockNumber *big.Int
@@ -426,7 +426,7 @@ func (_IPassportLogicContract *IPassportLogicContractCallerSession) GetTxDataBlo
 
 // GetUint is a free data retrieval call binding the contract method 0x71658552.
 //
-// Solidity: function getUint(_factProvider address, _key bytes32) constant returns(success bool, value uint256)
+// Solidity: function getUint(address _factProvider, bytes32 _key) constant returns(bool success, uint256 value)
 func (_IPassportLogicContract *IPassportLogicContractCaller) GetUint(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   *big.Int
@@ -442,7 +442,7 @@ func (_IPassportLogicContract *IPassportLogicContractCaller) GetUint(opts *bind.
 
 // GetUint is a free data retrieval call binding the contract method 0x71658552.
 //
-// Solidity: function getUint(_factProvider address, _key bytes32) constant returns(success bool, value uint256)
+// Solidity: function getUint(address _factProvider, bytes32 _key) constant returns(bool success, uint256 value)
 func (_IPassportLogicContract *IPassportLogicContractSession) GetUint(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   *big.Int
@@ -452,7 +452,7 @@ func (_IPassportLogicContract *IPassportLogicContractSession) GetUint(_factProvi
 
 // GetUint is a free data retrieval call binding the contract method 0x71658552.
 //
-// Solidity: function getUint(_factProvider address, _key bytes32) constant returns(success bool, value uint256)
+// Solidity: function getUint(address _factProvider, bytes32 _key) constant returns(bool success, uint256 value)
 func (_IPassportLogicContract *IPassportLogicContractCallerSession) GetUint(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   *big.Int
@@ -488,336 +488,336 @@ func (_IPassportLogicContract *IPassportLogicContractCallerSession) Owner() (com
 
 // DeleteAddress is a paid mutator transaction binding the contract method 0x0e14a376.
 //
-// Solidity: function deleteAddress(_key bytes32) returns()
+// Solidity: function deleteAddress(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactor) DeleteAddress(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.contract.Transact(opts, "deleteAddress", _key)
 }
 
 // DeleteAddress is a paid mutator transaction binding the contract method 0x0e14a376.
 //
-// Solidity: function deleteAddress(_key bytes32) returns()
+// Solidity: function deleteAddress(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractSession) DeleteAddress(_key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.DeleteAddress(&_IPassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteAddress is a paid mutator transaction binding the contract method 0x0e14a376.
 //
-// Solidity: function deleteAddress(_key bytes32) returns()
+// Solidity: function deleteAddress(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactorSession) DeleteAddress(_key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.DeleteAddress(&_IPassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteBool is a paid mutator transaction binding the contract method 0x2c62ff2d.
 //
-// Solidity: function deleteBool(_key bytes32) returns()
+// Solidity: function deleteBool(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactor) DeleteBool(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.contract.Transact(opts, "deleteBool", _key)
 }
 
 // DeleteBool is a paid mutator transaction binding the contract method 0x2c62ff2d.
 //
-// Solidity: function deleteBool(_key bytes32) returns()
+// Solidity: function deleteBool(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractSession) DeleteBool(_key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.DeleteBool(&_IPassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteBool is a paid mutator transaction binding the contract method 0x2c62ff2d.
 //
-// Solidity: function deleteBool(_key bytes32) returns()
+// Solidity: function deleteBool(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactorSession) DeleteBool(_key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.DeleteBool(&_IPassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteBytes is a paid mutator transaction binding the contract method 0x616b59f6.
 //
-// Solidity: function deleteBytes(_key bytes32) returns()
+// Solidity: function deleteBytes(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactor) DeleteBytes(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.contract.Transact(opts, "deleteBytes", _key)
 }
 
 // DeleteBytes is a paid mutator transaction binding the contract method 0x616b59f6.
 //
-// Solidity: function deleteBytes(_key bytes32) returns()
+// Solidity: function deleteBytes(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractSession) DeleteBytes(_key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.DeleteBytes(&_IPassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteBytes is a paid mutator transaction binding the contract method 0x616b59f6.
 //
-// Solidity: function deleteBytes(_key bytes32) returns()
+// Solidity: function deleteBytes(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactorSession) DeleteBytes(_key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.DeleteBytes(&_IPassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteIPFSHash is a paid mutator transaction binding the contract method 0x257781e7.
 //
-// Solidity: function deleteIPFSHash(_key bytes32) returns()
+// Solidity: function deleteIPFSHash(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactor) DeleteIPFSHash(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.contract.Transact(opts, "deleteIPFSHash", _key)
 }
 
 // DeleteIPFSHash is a paid mutator transaction binding the contract method 0x257781e7.
 //
-// Solidity: function deleteIPFSHash(_key bytes32) returns()
+// Solidity: function deleteIPFSHash(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractSession) DeleteIPFSHash(_key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.DeleteIPFSHash(&_IPassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteIPFSHash is a paid mutator transaction binding the contract method 0x257781e7.
 //
-// Solidity: function deleteIPFSHash(_key bytes32) returns()
+// Solidity: function deleteIPFSHash(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactorSession) DeleteIPFSHash(_key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.DeleteIPFSHash(&_IPassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteInt is a paid mutator transaction binding the contract method 0x8c160095.
 //
-// Solidity: function deleteInt(_key bytes32) returns()
+// Solidity: function deleteInt(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactor) DeleteInt(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.contract.Transact(opts, "deleteInt", _key)
 }
 
 // DeleteInt is a paid mutator transaction binding the contract method 0x8c160095.
 //
-// Solidity: function deleteInt(_key bytes32) returns()
+// Solidity: function deleteInt(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractSession) DeleteInt(_key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.DeleteInt(&_IPassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteInt is a paid mutator transaction binding the contract method 0x8c160095.
 //
-// Solidity: function deleteInt(_key bytes32) returns()
+// Solidity: function deleteInt(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactorSession) DeleteInt(_key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.DeleteInt(&_IPassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteString is a paid mutator transaction binding the contract method 0xf6bb3cc4.
 //
-// Solidity: function deleteString(_key bytes32) returns()
+// Solidity: function deleteString(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactor) DeleteString(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.contract.Transact(opts, "deleteString", _key)
 }
 
 // DeleteString is a paid mutator transaction binding the contract method 0xf6bb3cc4.
 //
-// Solidity: function deleteString(_key bytes32) returns()
+// Solidity: function deleteString(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractSession) DeleteString(_key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.DeleteString(&_IPassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteString is a paid mutator transaction binding the contract method 0xf6bb3cc4.
 //
-// Solidity: function deleteString(_key bytes32) returns()
+// Solidity: function deleteString(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactorSession) DeleteString(_key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.DeleteString(&_IPassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteTxDataBlockNumber is a paid mutator transaction binding the contract method 0xa2b6cbe1.
 //
-// Solidity: function deleteTxDataBlockNumber(_key bytes32) returns()
+// Solidity: function deleteTxDataBlockNumber(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactor) DeleteTxDataBlockNumber(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.contract.Transact(opts, "deleteTxDataBlockNumber", _key)
 }
 
 // DeleteTxDataBlockNumber is a paid mutator transaction binding the contract method 0xa2b6cbe1.
 //
-// Solidity: function deleteTxDataBlockNumber(_key bytes32) returns()
+// Solidity: function deleteTxDataBlockNumber(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractSession) DeleteTxDataBlockNumber(_key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.DeleteTxDataBlockNumber(&_IPassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteTxDataBlockNumber is a paid mutator transaction binding the contract method 0xa2b6cbe1.
 //
-// Solidity: function deleteTxDataBlockNumber(_key bytes32) returns()
+// Solidity: function deleteTxDataBlockNumber(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactorSession) DeleteTxDataBlockNumber(_key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.DeleteTxDataBlockNumber(&_IPassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteUint is a paid mutator transaction binding the contract method 0xe2b202bf.
 //
-// Solidity: function deleteUint(_key bytes32) returns()
+// Solidity: function deleteUint(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactor) DeleteUint(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.contract.Transact(opts, "deleteUint", _key)
 }
 
 // DeleteUint is a paid mutator transaction binding the contract method 0xe2b202bf.
 //
-// Solidity: function deleteUint(_key bytes32) returns()
+// Solidity: function deleteUint(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractSession) DeleteUint(_key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.DeleteUint(&_IPassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteUint is a paid mutator transaction binding the contract method 0xe2b202bf.
 //
-// Solidity: function deleteUint(_key bytes32) returns()
+// Solidity: function deleteUint(bytes32 _key) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactorSession) DeleteUint(_key [32]byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.DeleteUint(&_IPassportLogicContract.TransactOpts, _key)
 }
 
 // SetAddress is a paid mutator transaction binding the contract method 0xca446dd9.
 //
-// Solidity: function setAddress(_key bytes32, _value address) returns()
+// Solidity: function setAddress(bytes32 _key, address _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactor) SetAddress(opts *bind.TransactOpts, _key [32]byte, _value common.Address) (*types.Transaction, error) {
 	return _IPassportLogicContract.contract.Transact(opts, "setAddress", _key, _value)
 }
 
 // SetAddress is a paid mutator transaction binding the contract method 0xca446dd9.
 //
-// Solidity: function setAddress(_key bytes32, _value address) returns()
+// Solidity: function setAddress(bytes32 _key, address _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractSession) SetAddress(_key [32]byte, _value common.Address) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.SetAddress(&_IPassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetAddress is a paid mutator transaction binding the contract method 0xca446dd9.
 //
-// Solidity: function setAddress(_key bytes32, _value address) returns()
+// Solidity: function setAddress(bytes32 _key, address _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactorSession) SetAddress(_key [32]byte, _value common.Address) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.SetAddress(&_IPassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetBool is a paid mutator transaction binding the contract method 0xabfdcced.
 //
-// Solidity: function setBool(_key bytes32, _value bool) returns()
+// Solidity: function setBool(bytes32 _key, bool _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactor) SetBool(opts *bind.TransactOpts, _key [32]byte, _value bool) (*types.Transaction, error) {
 	return _IPassportLogicContract.contract.Transact(opts, "setBool", _key, _value)
 }
 
 // SetBool is a paid mutator transaction binding the contract method 0xabfdcced.
 //
-// Solidity: function setBool(_key bytes32, _value bool) returns()
+// Solidity: function setBool(bytes32 _key, bool _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractSession) SetBool(_key [32]byte, _value bool) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.SetBool(&_IPassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetBool is a paid mutator transaction binding the contract method 0xabfdcced.
 //
-// Solidity: function setBool(_key bytes32, _value bool) returns()
+// Solidity: function setBool(bytes32 _key, bool _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactorSession) SetBool(_key [32]byte, _value bool) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.SetBool(&_IPassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetBytes is a paid mutator transaction binding the contract method 0x2e28d084.
 //
-// Solidity: function setBytes(_key bytes32, _value bytes) returns()
+// Solidity: function setBytes(bytes32 _key, bytes _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactor) SetBytes(opts *bind.TransactOpts, _key [32]byte, _value []byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.contract.Transact(opts, "setBytes", _key, _value)
 }
 
 // SetBytes is a paid mutator transaction binding the contract method 0x2e28d084.
 //
-// Solidity: function setBytes(_key bytes32, _value bytes) returns()
+// Solidity: function setBytes(bytes32 _key, bytes _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractSession) SetBytes(_key [32]byte, _value []byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.SetBytes(&_IPassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetBytes is a paid mutator transaction binding the contract method 0x2e28d084.
 //
-// Solidity: function setBytes(_key bytes32, _value bytes) returns()
+// Solidity: function setBytes(bytes32 _key, bytes _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactorSession) SetBytes(_key [32]byte, _value []byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.SetBytes(&_IPassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetIPFSHash is a paid mutator transaction binding the contract method 0x6bfc8bb5.
 //
-// Solidity: function setIPFSHash(_key bytes32, _value string) returns()
+// Solidity: function setIPFSHash(bytes32 _key, string _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactor) SetIPFSHash(opts *bind.TransactOpts, _key [32]byte, _value string) (*types.Transaction, error) {
 	return _IPassportLogicContract.contract.Transact(opts, "setIPFSHash", _key, _value)
 }
 
 // SetIPFSHash is a paid mutator transaction binding the contract method 0x6bfc8bb5.
 //
-// Solidity: function setIPFSHash(_key bytes32, _value string) returns()
+// Solidity: function setIPFSHash(bytes32 _key, string _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractSession) SetIPFSHash(_key [32]byte, _value string) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.SetIPFSHash(&_IPassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetIPFSHash is a paid mutator transaction binding the contract method 0x6bfc8bb5.
 //
-// Solidity: function setIPFSHash(_key bytes32, _value string) returns()
+// Solidity: function setIPFSHash(bytes32 _key, string _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactorSession) SetIPFSHash(_key [32]byte, _value string) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.SetIPFSHash(&_IPassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetInt is a paid mutator transaction binding the contract method 0x3e49bed0.
 //
-// Solidity: function setInt(_key bytes32, _value int256) returns()
+// Solidity: function setInt(bytes32 _key, int256 _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactor) SetInt(opts *bind.TransactOpts, _key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _IPassportLogicContract.contract.Transact(opts, "setInt", _key, _value)
 }
 
 // SetInt is a paid mutator transaction binding the contract method 0x3e49bed0.
 //
-// Solidity: function setInt(_key bytes32, _value int256) returns()
+// Solidity: function setInt(bytes32 _key, int256 _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractSession) SetInt(_key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.SetInt(&_IPassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetInt is a paid mutator transaction binding the contract method 0x3e49bed0.
 //
-// Solidity: function setInt(_key bytes32, _value int256) returns()
+// Solidity: function setInt(bytes32 _key, int256 _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactorSession) SetInt(_key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.SetInt(&_IPassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetString is a paid mutator transaction binding the contract method 0x6e899550.
 //
-// Solidity: function setString(_key bytes32, _value string) returns()
+// Solidity: function setString(bytes32 _key, string _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactor) SetString(opts *bind.TransactOpts, _key [32]byte, _value string) (*types.Transaction, error) {
 	return _IPassportLogicContract.contract.Transact(opts, "setString", _key, _value)
 }
 
 // SetString is a paid mutator transaction binding the contract method 0x6e899550.
 //
-// Solidity: function setString(_key bytes32, _value string) returns()
+// Solidity: function setString(bytes32 _key, string _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractSession) SetString(_key [32]byte, _value string) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.SetString(&_IPassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetString is a paid mutator transaction binding the contract method 0x6e899550.
 //
-// Solidity: function setString(_key bytes32, _value string) returns()
+// Solidity: function setString(bytes32 _key, string _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactorSession) SetString(_key [32]byte, _value string) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.SetString(&_IPassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetTxDataBlockNumber is a paid mutator transaction binding the contract method 0x5b2a372d.
 //
-// Solidity: function setTxDataBlockNumber(_key bytes32, _data bytes) returns()
+// Solidity: function setTxDataBlockNumber(bytes32 _key, bytes _data) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactor) SetTxDataBlockNumber(opts *bind.TransactOpts, _key [32]byte, _data []byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.contract.Transact(opts, "setTxDataBlockNumber", _key, _data)
 }
 
 // SetTxDataBlockNumber is a paid mutator transaction binding the contract method 0x5b2a372d.
 //
-// Solidity: function setTxDataBlockNumber(_key bytes32, _data bytes) returns()
+// Solidity: function setTxDataBlockNumber(bytes32 _key, bytes _data) returns()
 func (_IPassportLogicContract *IPassportLogicContractSession) SetTxDataBlockNumber(_key [32]byte, _data []byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.SetTxDataBlockNumber(&_IPassportLogicContract.TransactOpts, _key, _data)
 }
 
 // SetTxDataBlockNumber is a paid mutator transaction binding the contract method 0x5b2a372d.
 //
-// Solidity: function setTxDataBlockNumber(_key bytes32, _data bytes) returns()
+// Solidity: function setTxDataBlockNumber(bytes32 _key, bytes _data) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactorSession) SetTxDataBlockNumber(_key [32]byte, _data []byte) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.SetTxDataBlockNumber(&_IPassportLogicContract.TransactOpts, _key, _data)
 }
 
 // SetUint is a paid mutator transaction binding the contract method 0xe2a4853a.
 //
-// Solidity: function setUint(_key bytes32, _value uint256) returns()
+// Solidity: function setUint(bytes32 _key, uint256 _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactor) SetUint(opts *bind.TransactOpts, _key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _IPassportLogicContract.contract.Transact(opts, "setUint", _key, _value)
 }
 
 // SetUint is a paid mutator transaction binding the contract method 0xe2a4853a.
 //
-// Solidity: function setUint(_key bytes32, _value uint256) returns()
+// Solidity: function setUint(bytes32 _key, uint256 _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractSession) SetUint(_key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.SetUint(&_IPassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetUint is a paid mutator transaction binding the contract method 0xe2a4853a.
 //
-// Solidity: function setUint(_key bytes32, _value uint256) returns()
+// Solidity: function setUint(bytes32 _key, uint256 _value) returns()
 func (_IPassportLogicContract *IPassportLogicContractTransactorSession) SetUint(_key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _IPassportLogicContract.Contract.SetUint(&_IPassportLogicContract.TransactOpts, _key, _value)
 }

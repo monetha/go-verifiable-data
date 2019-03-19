@@ -226,7 +226,7 @@ func (_IPassportLogicRegistryContract *IPassportLogicRegistryContractCallerSessi
 
 // GetPassportLogic is a free data retrieval call binding the contract method 0x9a1295d9.
 //
-// Solidity: function getPassportLogic(_version string) constant returns(address)
+// Solidity: function getPassportLogic(string _version) constant returns(address)
 func (_IPassportLogicRegistryContract *IPassportLogicRegistryContractCaller) GetPassportLogic(opts *bind.CallOpts, _version string) (common.Address, error) {
 	var (
 		ret0 = new(common.Address)
@@ -238,14 +238,14 @@ func (_IPassportLogicRegistryContract *IPassportLogicRegistryContractCaller) Get
 
 // GetPassportLogic is a free data retrieval call binding the contract method 0x9a1295d9.
 //
-// Solidity: function getPassportLogic(_version string) constant returns(address)
+// Solidity: function getPassportLogic(string _version) constant returns(address)
 func (_IPassportLogicRegistryContract *IPassportLogicRegistryContractSession) GetPassportLogic(_version string) (common.Address, error) {
 	return _IPassportLogicRegistryContract.Contract.GetPassportLogic(&_IPassportLogicRegistryContract.CallOpts, _version)
 }
 
 // GetPassportLogic is a free data retrieval call binding the contract method 0x9a1295d9.
 //
-// Solidity: function getPassportLogic(_version string) constant returns(address)
+// Solidity: function getPassportLogic(string _version) constant returns(address)
 func (_IPassportLogicRegistryContract *IPassportLogicRegistryContractCallerSession) GetPassportLogic(_version string) (common.Address, error) {
 	return _IPassportLogicRegistryContract.Contract.GetPassportLogic(&_IPassportLogicRegistryContract.CallOpts, _version)
 }
@@ -326,7 +326,7 @@ type IPassportLogicRegistryContractCurrentPassportLogicSet struct {
 
 // FilterCurrentPassportLogicSet is a free log retrieval operation binding the contract event 0x4e366bf178b123bb29442cddeceedf743c23cbb40cffa5f577217fe2c54a0b19.
 //
-// Solidity: e CurrentPassportLogicSet(version string, implementation address)
+// Solidity: event CurrentPassportLogicSet(string version, address implementation)
 func (_IPassportLogicRegistryContract *IPassportLogicRegistryContractFilterer) FilterCurrentPassportLogicSet(opts *bind.FilterOpts) (*IPassportLogicRegistryContractCurrentPassportLogicSetIterator, error) {
 
 	logs, sub, err := _IPassportLogicRegistryContract.contract.FilterLogs(opts, "CurrentPassportLogicSet")
@@ -338,7 +338,7 @@ func (_IPassportLogicRegistryContract *IPassportLogicRegistryContractFilterer) F
 
 // WatchCurrentPassportLogicSet is a free log subscription operation binding the contract event 0x4e366bf178b123bb29442cddeceedf743c23cbb40cffa5f577217fe2c54a0b19.
 //
-// Solidity: e CurrentPassportLogicSet(version string, implementation address)
+// Solidity: event CurrentPassportLogicSet(string version, address implementation)
 func (_IPassportLogicRegistryContract *IPassportLogicRegistryContractFilterer) WatchCurrentPassportLogicSet(opts *bind.WatchOpts, sink chan<- *IPassportLogicRegistryContractCurrentPassportLogicSet) (event.Subscription, error) {
 
 	logs, sub, err := _IPassportLogicRegistryContract.contract.WatchLogs(opts, "CurrentPassportLogicSet")
@@ -449,7 +449,7 @@ type IPassportLogicRegistryContractPassportLogicAdded struct {
 
 // FilterPassportLogicAdded is a free log retrieval operation binding the contract event 0x7471eb04045ae72adb2fb73deb1e873113901110dd66dbde715232f2495a0cd8.
 //
-// Solidity: e PassportLogicAdded(version string, implementation address)
+// Solidity: event PassportLogicAdded(string version, address implementation)
 func (_IPassportLogicRegistryContract *IPassportLogicRegistryContractFilterer) FilterPassportLogicAdded(opts *bind.FilterOpts) (*IPassportLogicRegistryContractPassportLogicAddedIterator, error) {
 
 	logs, sub, err := _IPassportLogicRegistryContract.contract.FilterLogs(opts, "PassportLogicAdded")
@@ -461,7 +461,7 @@ func (_IPassportLogicRegistryContract *IPassportLogicRegistryContractFilterer) F
 
 // WatchPassportLogicAdded is a free log subscription operation binding the contract event 0x7471eb04045ae72adb2fb73deb1e873113901110dd66dbde715232f2495a0cd8.
 //
-// Solidity: e PassportLogicAdded(version string, implementation address)
+// Solidity: event PassportLogicAdded(string version, address implementation)
 func (_IPassportLogicRegistryContract *IPassportLogicRegistryContractFilterer) WatchPassportLogicAdded(opts *bind.WatchOpts, sink chan<- *IPassportLogicRegistryContractPassportLogicAdded) (event.Subscription, error) {
 
 	logs, sub, err := _IPassportLogicRegistryContract.contract.WatchLogs(opts, "PassportLogicAdded")
