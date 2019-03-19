@@ -432,7 +432,7 @@ To play with the web application, run the command
 
 and open [http://localhost:8080](http://localhost:8080) in your browser. More details can be found [here](cmd/passport-scanner).
 
-The latest version of passport scanner is also uploaded to IPFS: https://ipfs.io/ipfs/QmSHm4iHBg5hHxXTvecgeB9HS43A9iTftXddQCKorhLcQQ
+The latest version of passport scanner is also uploaded to IPFS: https://ipfs.io/ipfs/QmNyHrzkD5RpxmxJyJKg9QraUYtGJ48KhskWjnGPfudhoy/
 
 Happy scanning!
 
