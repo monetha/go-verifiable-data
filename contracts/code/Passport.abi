@@ -145,20 +145,6 @@
     "type": "event"
   },
   {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_registry",
-        "type": "address"
-      }
-    ],
-    "name": "changePassportLogicRegistry",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "constant": true,
     "inputs": [],
     "name": "getPassportLogicRegistry",
