@@ -33,4 +33,4 @@ In your browser make sure you use the correct parameters for `Backend URL` and `
 By default, these parameters are set to the following values:
 
 * `Backend URL`: `https://ropsten.infura.io`
-* `Passport factory address`: `0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2`
+* `Passport factory address`: `0x5FD962855e9b327262F47594949fd6d742FE2A01`

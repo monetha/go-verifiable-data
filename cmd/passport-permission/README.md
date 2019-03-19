@@ -30,42 +30,42 @@ Usage of `./passport-permission`:
 
 ## Examples
 
-* Owner of a passport [`0x9CfabB3172DFd5ED740c3b8A327BF573226c5064`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+* Owner of a passport [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
 adds fact provider `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d` to the whitelist in Ropsten network:
 
     ```bash
     ./passport-permission -ownerkey pass_owner.key \
-      -passaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+      -passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
       -add 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d \
       -backendurl https://ropsten.infura.io
     ```
     
-* Owner of a passport [`0x9CfabB3172DFd5ED740c3b8A327BF573226c5064`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+* Owner of a passport [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
 removes fact provider `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d` to the whitelist in Ropsten network:
 
     ```bash
     ./passport-permission -ownerkey pass_owner.key \
-      -passaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+      -passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
       -remove 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d \
       -backendurl https://ropsten.infura.io
     ```
     
-* Owner of a passport [`0x9CfabB3172DFd5ED740c3b8A327BF573226c5064`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+* Owner of a passport [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
 allows to store the facts only to fact providers from the whitelist:
 
     ```bash
     ./passport-permission -ownerkey pass_owner.key \
-      -passaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+      -passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
       -onlywhitelist true \
       -backendurl https://ropsten.infura.io
     ```
     
-* Owner of a passport [`0x9CfabB3172DFd5ED740c3b8A327BF573226c5064`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+* Owner of a passport [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
 allows any fact provider to write the facts:
 
     ```bash
     ./passport-permission -ownerkey pass_owner.key \
-      -passaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+      -passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
       -onlywhitelist false \
       -backendurl https://ropsten.infura.io
     ```

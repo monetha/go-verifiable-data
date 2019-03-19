@@ -57,22 +57,22 @@ using fact provider private key `1dae9ab9e0c080371c56d816f4b6323e6c229e1cea4d15b
   ```
 
 * Store image from the file `~/Downloads/monetha.jpg` under the key `monetha.jpg` as `txdata` in passport
-  [`0x9CfabB3172DFd5ED740c3b8A327BF573226c5064`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064):
+  [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064):
   ```bash
   ./write-fact -ownerkey fact_provider.key \
     -fkey monetha.jpg \
     -ftype txdata \
-    -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+    -passportaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
     -backendurl https://ropsten.infura.io < ~/Downloads/monetha.jpg
   ```
   
 * Store image from the file `~/Downloads/monetha.jpg` under the key `monetha.jpg` as `ipfs` (data will be stored in IPFS,
   only hash will be stored in the Ethereum storage) in passport
-  [`0x9CfabB3172DFd5ED740c3b8A327BF573226c5064`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064):
+  [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064):
   ```bash
   ./write-fact -ownerkey fact_provider.key \
     -fkey monetha.jpg \
     -ftype ipfs \
-    -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+    -passportaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
     -backendurl https://ropsten.infura.io < ~/Downloads/monetha.jpg
   ```

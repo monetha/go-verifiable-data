@@ -25,10 +25,10 @@ Usage of `./passport-list`:
   ./passport-list
   ```
 
-* Get all passports created by the passport factory [`0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2`](https://ropsten.etherscan.io/address/0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2#code) in Ropsten network
+* Get all passports created by the passport factory [`0x5FD962855e9b327262F47594949fd6d742FE2A01`](https://ropsten.etherscan.io/address/0x5FD962855e9b327262F47594949fd6d742FE2A01#code) in Ropsten network
   and write them to the file `./passports.csv`:
   ```bash
   ./passport-list -out ./passports.csv \
     -backendurl https://ropsten.infura.io \
-    -factoryaddr 0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2
+    -factoryaddr 0x5FD962855e9b327262F47594949fd6d742FE2A01
   ```
