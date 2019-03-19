@@ -117,9 +117,9 @@ The contract addresses deployed on Ropsten:
 
 | Contract      | Address                                      |
 |---------------|----------------------------------------------|
-| `PassportLogic` | [`0x0361a024040E7020251fF0756Bb40B8e136B9c9f`](https://ropsten.etherscan.io/address/0x0361a024040E7020251fF0756Bb40B8e136B9c9f) |
-| `PassportLogicRegistry`  | [`0xabA015Fc83E9B88e8334bD9b536257db75e05295`](https://ropsten.etherscan.io/address/0xabA015Fc83E9B88e8334bD9b536257db75e05295) |
-| `PassportFactory` | [`0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2`](https://ropsten.etherscan.io/address/0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2) |
+| `PassportLogic` | [`0xEf95422e66761A5a468FE72c1fD3C946884d5E50`](https://ropsten.etherscan.io/address/0xEf95422e66761A5a468FE72c1fD3C946884d5E50) |
+| `PassportLogicRegistry`  | [`0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c`](https://ropsten.etherscan.io/address/0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c) |
+| `PassportFactory` | [`0x5FD962855e9b327262F47594949fd6d742FE2A01`](https://ropsten.etherscan.io/address/0x5FD962855e9b327262F47594949fd6d742FE2A01) |
 
 The contract addresses deployed on Mainnet:
 
@@ -149,18 +149,21 @@ To deploy all contracts in Rospten network using Ethereum private key stored in 
 After running the command, you should see something like the following output:
 
 ```
-WARN [09-19|14:52:47.640] Loaded configuration                     owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55 backend_url=https://ropsten.infura.io
-WARN [09-19|14:52:47.640] Checking balance                         address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55
-WARN [09-19|14:52:48.675] Deploying PassportLogic                  owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55
-WARN [09-19|14:52:49.426] Waiting for transaction                  hash=0x5a6e6c4110852149113619905ac8752b9120072082f525c8ad84b81c99d53ccb
-WARN [09-19|14:53:06.042] PassportLogic deployed                   contract_address=0x977De088AD659D37c064DB4dc2738ACf3aE09dd8
-WARN [09-19|14:53:06.042] Deploying PassportLogicRegistry          owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55 impl_version=0.1 impl_address=0x977De088AD659D37c064DB4dc2738ACf3aE09dd8
-WARN [09-19|14:53:06.819] Waiting for transaction                  hash=0x984c87fb83607c2b1e8bb008e5d6ab07429149c817f2ce368901136b0a786902
-WARN [09-19|14:53:10.965] PassportLogicRegistry deployed           contract_address=0xabA015Fc83E9B88e8334bD9b536257db75e05295
-WARN [09-19|14:53:10.965] Deploying PassportFactory                owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55 registry=0xabA015Fc83E9B88e8334bD9b536257db75e05295
-WARN [09-19|14:53:11.585] Waiting for transaction                  hash=0x2467e6fa520fbc09aab94758a766a891aa3222d56ab56c28783a3c93e29a892e
-WARN [09-19|14:53:15.726] PassportFactory deployed                 contract_address=0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2
-WARN [09-19|14:53:15.726] Done.
+WARN [03-19|10:29:04.273] Loaded configuration                     owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55 backend_url=https://ropsten.infura.io
+WARN [03-19|10:29:05.038] Getting balance                          address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55
+WARN [03-19|10:29:05.172] Deploying PassportLogic                  owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55
+WARN [03-19|10:29:05.759] Waiting for transaction                  hash=0xaa4149349dc9856289cacdb9158d6d215124f7a9b3d182c3b31429004a908bc8
+WARN [03-19|10:29:18.216] Transaction successfully mined           tx_hash=0xaa4149349dc9856289cacdb9158d6d215124f7a9b3d182c3b31429004a908bc8 cumulative_gas_used=2412986
+WARN [03-19|10:29:18.216] PassportLogic deployed                   contract_address=0xEf95422e66761A5a468FE72c1fD3C946884d5E50
+WARN [03-19|10:29:18.216] Deploying PassportLogicRegistry          owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55 impl_version=0.1 impl_address=0xEf95422e66761A5a468FE72c1fD3C946884d5E50
+WARN [03-19|10:29:18.704] Waiting for transaction                  hash=0x1b0174592e60e8e7f8619b6e1d9bceb498530feb405c7f8f6715c26d68445ebb
+WARN [03-19|10:29:39.585] Transaction successfully mined           tx_hash=0x1b0174592e60e8e7f8619b6e1d9bceb498530feb405c7f8f6715c26d68445ebb cumulative_gas_used=2157734
+WARN [03-19|10:29:39.585] PassportLogicRegistry deployed           contract_address=0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c
+WARN [03-19|10:29:39.585] Deploying PassportFactory                owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55 registry=0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c
+WARN [03-19|10:29:40.275] Waiting for transaction                  hash=0x984b1df10640a5fe3005aea593b1cbb7af59682469564063a490820c8a8cb6f0
+WARN [03-19|10:29:48.602] Transaction successfully mined           tx_hash=0x984b1df10640a5fe3005aea593b1cbb7af59682469564063a490820c8a8cb6f0 cumulative_gas_used=1446005
+WARN [03-19|10:29:48.602] PassportFactory deployed                 contract_address=0x5FD962855e9b327262F47594949fd6d742FE2A01
+WARN [03-19|10:29:48.602] Done.
 ```
 
 In the output you can find the addresses of all the deployed contracts.
@@ -176,66 +179,63 @@ Before creating a passport for a specific Ethereum address, store the private ke
 Make sure that the passport owner has enough money to create a passport contract. Usually passport contract deployment takes `425478` gas.
 
 To create a passport contract you need to know address of the `PassportFactory` contract. Let's try to create a passport in Ropsten
-using the `PassportFactory` contract deployed by Monetha ([`0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2`](https://ropsten.etherscan.io/address/0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2)):
+using the `PassportFactory` contract deployed by Monetha ([`0x5FD962855e9b327262F47594949fd6d742FE2A01`](https://ropsten.etherscan.io/address/0x5FD962855e9b327262F47594949fd6d742FE2A01)):
 
 ```bash
 ./bin/deploy-passport -ownerkey ./pass_owner.key \
-  -factoryaddr 0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2 \
+  -factoryaddr 0x5FD962855e9b327262F47594949fd6d742FE2A01 \
   -backendurl https://ropsten.infura.io
 ```
 
 Below you can see the output of the command to create a passport for the address `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d`.
 
 ```
-WARN [10-24|16:19:32.928] Loaded configuration                     owner_address=0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d backend_url=https://ropsten.infura.io factory=0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2
-WARN [10-24|16:19:33.971] Getting balance                          address=0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d
-WARN [10-24|16:19:34.138] Initializing PassportFactory contract    factory=0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2
-WARN [10-24|16:19:34.139] Deploying Passport contract              owner_address=0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d
-WARN [10-24|16:19:34.823] Waiting for transaction                  hash=0x96f4c583994c2d1c033a0722f7cbe8d85c636b62d1f5fcd8bb0b32346c61c4a9
-WARN [10-24|16:19:47.364] Transaction successfully mined           tx_hash=0x96f4c583994c2d1c033a0722f7cbe8d85c636b62d1f5fcd8bb0b32346c61c4a9 cumulative_gas_used=1445116
-WARN [10-24|16:19:47.365] Passport deployed                        contract_address=0x86eEb0D360D286BcF9211780878fe0D0c0e3fF00
-WARN [10-24|16:19:47.365] Initializing Passport contract           passport=0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2
-WARN [10-24|16:19:47.365] Claiming ownership                       owner_address=0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d
-WARN [10-24|16:19:48.141] Waiting for transaction                  hash=0x1aa26e7416e97747f0da7103cfc1dd3662bd3bbee3dee4680f378e13057a09b7
-WARN [10-24|16:20:04.819] Transaction successfully mined           tx_hash=0x1aa26e7416e97747f0da7103cfc1dd3662bd3bbee3dee4680f378e13057a09b7 cumulative_gas_used=1930990
-WARN [10-24|16:20:04.825] Done.
+WARN [03-19|10:41:59.024] Loaded configuration                     owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55 backend_url=https://ropsten.infura.io factory=0x5FD962855e9b327262F47594949fd6d742FE2A01
+WARN [03-19|10:41:59.798] Getting balance                          address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55
+WARN [03-19|10:41:59.933] Initializing PassportFactory contract    factory=0x5FD962855e9b327262F47594949fd6d742FE2A01
+WARN [03-19|10:41:59.940] Deploying Passport contract              owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55
+WARN [03-19|10:42:00.692] Waiting for transaction                  hash=0x33e7d5dc34f5e8597859c319c34ef4f613238defbadcc2fda3ae65f508b45884
+WARN [03-19|10:42:08.980] Transaction successfully mined           tx_hash=0x33e7d5dc34f5e8597859c319c34ef4f613238defbadcc2fda3ae65f508b45884 cumulative_gas_used=6130011
+WARN [03-19|10:42:08.987] Passport deployed                        contract_address=0x1C3A76a9A27470657BcBE7BfB47820457E4DB682
+WARN [03-19|10:42:08.987] Initializing Passport contract           passport=0x5FD962855e9b327262F47594949fd6d742FE2A01
+WARN [03-19|10:42:08.987] Claiming ownership                       owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55
+WARN [03-19|10:42:09.550] Waiting for transaction                  hash=0xae51f2769db4bb7d5c8c651cfa78b8048f5fcd6bc949ac3d6b220aa7c2d5255e
+WARN [03-19|10:42:22.061] Transaction successfully mined           tx_hash=0xae51f2769db4bb7d5c8c651cfa78b8048f5fcd6bc949ac3d6b220aa7c2d5255e cumulative_gas_used=2220151
+WARN [03-19|10:42:22.061] Done.
 ```
 
-As you can see in the line `Passport deployed`, a passport contract was created at address [`0x86eEb0D360D286BcF9211780878fe0D0c0e3fF00`](https://ropsten.etherscan.io/address/0x86eEb0D360D286BcF9211780878fe0D0c0e3fF00).
+As you can see in the line `Passport deployed`, a passport contract was created at address [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x1C3A76a9A27470657BcBE7BfB47820457E4DB682).
 
 ### Passport list
 
 The passport factory allows you to get a list of all the passports that have been created.
 
-Let's try to get a list of all passports using the address of `PassportFactory` contract deployed by Monetha ([`0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2`](https://ropsten.etherscan.io/address/0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2))
+Let's try to get a list of all passports using the address of `PassportFactory` contract deployed by Monetha ([`0x5FD962855e9b327262F47594949fd6d742FE2A01`](https://ropsten.etherscan.io/address/0x5FD962855e9b327262F47594949fd6d742FE2A01))
 in Ropsten network:
 
 ```bash
 ./bin/passport-list -out /dev/stdout \
   -backendurl https://ropsten.infura.io \
-  -factoryaddr 0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2
+  -factoryaddr 0x5FD962855e9b327262F47594949fd6d742FE2A01
 ```
 
 You should see something like this:
 
 ```
-WARN [10-24|16:30:43.549] Loaded configuration                     factory_provider=0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2 backend_url=https://ropsten.infura.io
-WARN [10-24|16:30:44.670] Initialising passport factory contract   passport_factory=0x87b7Ec2602Da6C9e4D563d788e1e29C064A364a2
-WARN [10-24|16:30:45.000] Writing collected passports to file
+WARN [03-19|10:44:48.830] Loaded configuration                     factory_provider=0x5FD962855e9b327262F47594949fd6d742FE2A01 backend_url=https://ropsten.infura.io
+WARN [03-19|10:44:49.579] Initialising passport factory contract   passport_factory=0x5FD962855e9b327262F47594949fd6d742FE2A01
+WARN [03-19|10:44:49.579] FilterPassportCreated                    start_block=0
+WARN [03-19|10:44:49.841] Writing collected passports to file
 passport_address,first_owner,block_number,tx_hash
-0x9CfabB3172DFd5ED740c3b8A327BF573226c5064,0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55,4105235,0x5a26791f5404f7d26c9c75e4fa006d851162f4bbaacc49372ce45d89db8fd967
-0x2ff877C92458F995332bc189F258eF8fB8458050,0xA12eB9Cde44664B6513D66f1fc4d43c951d4594e,4276542,0x639262c4abf2868e376e6b08baa5663a2449b18fc668836b5451d07f24c04db5
-0x86eEb0D360D286BcF9211780878fe0D0c0e3fF00,0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d,4292633,0x96f4c583994c2d1c033a0722f7cbe8d85c636b62d1f5fcd8bb0b32346c61c4a9
-WARN [10-24|16:30:45.000] Done.
+0x1C3A76a9A27470657BcBE7BfB47820457E4DB682,0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55,5233845,0x33e7d5dc34f5e8597859c319c34ef4f613238defbadcc2fda3ae65f508b45884
+WARN [03-19|10:44:49.841] Done.
 ```
 
-The output can be saved to a file and converted to the table. Currently three passports are deployed:
+The output can be saved to a file and converted to the table. Currently one passport is deployed:
 
 |passport_address|first_owner|block_number|tx_hash|
 |----------------|-----------|------------|-------|
-|0x9CfabB3172DFd5ED740c3b8A327BF573226c5064|0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55|4105235|0x5a26791f5404f7d26c9c75e4fa006d851162f4bbaacc49372ce45d89db8fd967|
-|0x2ff877C92458F995332bc189F258eF8fB8458050|0xA12eB9Cde44664B6513D66f1fc4d43c951d4594e|4276542|0x639262c4abf2868e376e6b08baa5663a2449b18fc668836b5451d07f24c04db5|
-|0x86eEb0D360D286BcF9211780878fe0D0c0e3fF00|0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d|4292633|0x96f4c583994c2d1c033a0722f7cbe8d85c636b62d1f5fcd8bb0b32346c61c4a9|
+|0x1C3A76a9A27470657BcBE7BfB47820457E4DB682|0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55|5233845|0x33e7d5dc34f5e8597859c319c34ef4f613238defbadcc2fda3ae65f508b45884|
 
 The block number and transaction hash indicate the transaction in which the passport was created.
 
@@ -257,13 +257,13 @@ of data, it is better to use `txdata` type of data. The disadvantage of the `txd
 using the SDK, within the contracts this data is not available.
 
 Let's try to store image from the file `~/Downloads/monetha.jpg` under the key `monetha.jpg` as `txdata` in passport
-`0x9CfabB3172DFd5ED740c3b8A327BF573226c5064`:
+`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`:
 
 ```bash
 ./bin/write-fact -ownerkey fact_provider.key \
   -fkey monetha.jpg \
   -ftype txdata \
-  -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -passportaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
   -backendurl https://ropsten.infura.io < ~/Downloads/monetha.jpg
 ```
 
@@ -274,7 +274,7 @@ Keep in mind, the data will be stored in IPFS, only IPFS hash will be stored in 
 ./bin/write-fact -ownerkey fact_provider.key \
   -fkey monetha.jpg \
   -ftype ipfs \
-  -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -passportaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
   -backendurl https://ropsten.infura.io < ~/Downloads/monetha.jpg
 ```
 
@@ -284,13 +284,13 @@ After the fact provider has written the public data to the passport, the data ca
 To read the data you need to know: the address of the passport, the address of the fact provider who stored the data, 
 the key under which the data was stored and the type of data.
 
-Let's try to retrieve image from passport `0x9CfabB3172DFd5ED740c3b8A327BF573226c5064` that was stored by the fact provider
+Let's try to retrieve image from passport `0x1C3A76a9A27470657BcBE7BfB47820457E4DB682` that was stored by the fact provider
 `0x5b2ae3b3a801469886bb8f5349fc3744caa6348d` under the key `monetha.jpg` as `txdata` data type and write it to the file 
 `./fact_image.jpg`:
 
 ```bash
 ./bin/read-fact -out ./fact_image.jpg \
-  -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -passportaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
   -factprovideraddr 0x5b2ae3b3a801469886bb8f5349fc3744caa6348d \
   -fkey monetha.jpg \
   -ftype txdata \
@@ -303,7 +303,7 @@ To get the same file that was previously saved in IPFS, just change the paramete
 
 ```bash
 ./bin/read-fact -out ./ipfs_fact_image.jpg \
-  -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -passportaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
   -factprovideraddr 0x5b2ae3b3a801469886bb8f5349fc3744caa6348d \
   -fkey monetha.jpg \
   -ftype ipfs \
@@ -318,12 +318,12 @@ By default any fact provider can write to a passport, but a passport owner can c
 fact providers from the whitelist to write to a passport. To do this, the passport owner must add the authorized fact providers 
 to the whitelist and then allow to store the facts only to fact providers from the whitelist.
 
-Consider an example of how owner of a passport `0x9CfabB3172DFd5ED740c3b8A327BF573226c5064` adds fact provider 
+Consider an example of how owner of a passport `0x1C3A76a9A27470657BcBE7BfB47820457E4DB682` adds fact provider 
 `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d` to the whitelist in Ropsten network:
 
 ```bash
 ./bin/passport-permission -ownerkey pass_owner.key \
-  -passaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
   -add 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d \
   -backendurl https://ropsten.infura.io
 ```
@@ -332,12 +332,12 @@ Please note that the passport owner’s private key is stored in the file `pass_
 
 After executing the command, any fact provider is still allowed to store the facts in the passport. Let's fix it!
 
-Owner of a passport `0x9CfabB3172DFd5ED740c3b8A327BF573226c5064` may allow to store the facts only to fact providers 
+Owner of a passport `0x1C3A76a9A27470657BcBE7BfB47820457E4DB682` may allow to store the facts only to fact providers 
 from the whitelist by running the command:
 
 ```bash
 ./bin/passport-permission -ownerkey pass_owner.key \
-  -passaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
   -onlywhitelist true \
   -backendurl https://ropsten.infura.io
 ```
@@ -348,69 +348,69 @@ More examples can be found [here](cmd/passport-permission#examples).
 
 The SDK allows you to see the history of absolutely all changes of facts in the passport.
 
-Let's try to retrieve the entire change history for the passport [`0x9CfabB3172DFd5ED740c3b8A327BF573226c5064`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+Let's try to retrieve the entire change history for the passport [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
 in `Ropsten` block-chain and write it to the file `/dev/stdout` (outputs to the screen, but you can change this to the file name to write to the file):
 
 ```bash
 ./bin/read-history -out /dev/stdout \
-  -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -passportaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
   -backendurl https://ropsten.infura.io
 ```
 
 After running the command you should see something like this:
 
 ```
-WARN [11-21|17:49:37.251] Loaded configuration                     backend_url=https://ropsten.infura.io passport=0x9CfabB3172DFd5ED740c3b8A327BF573226c5064
+WARN [03-19|11:00:42.836] Loaded configuration                     backend_url=https://ropsten.infura.io passport=0x1C3A76a9A27470657BcBE7BfB47820457E4DB682
 fact_provider,key,data_type,change_type,block_number,tx_hash
-0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d,monetha.jpg,TxData,Updated,4177015,0x627913f620990ec12360a6f1fda4887ea837b41e2f6cbae90e24322dc8cf8b1a
-0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d,monetha.jpg,TxData,Updated,4337297,0x31e06af4e04450333d468835c995fc02622c1b07ae0feeb4c7afe73c5a2e3ed8
-0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d,Monetha_WP.pdf,IPFS,Updated,4468222,0x91c5d11c7f220660fb2c98273627e9c2f01b59e32163c760a4a9a836f7758f7f
-WARN [11-21|17:49:38.709] Done.
+0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d,monetha.jpg,TxData,Updated,5233914,0xd43201d6b23a18b90a53bf7ef1fffad0b04af603c039b6617601a225a129c632
+0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d,monetha.jpg,IPFS,Updated,5233917,0xf069012520c55d293595654805f3f2b1ff032c1395ddd37cd1366fc1ac67114e
+0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d,Monetha_WP.pdf,IPFS,Updated,5233930,0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca
+WARN [03-19|11:00:44.497] Done.
 ```
 
 The CSV output can be saved to a file and converted to the table:
 
 | fact_provider | key | data_type | change_type | block_number | tx_hash |
 |---------------|-----|-----------|-------------|--------------|---------|
-| 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d | monetha.jpg | TxData | Updated | 4177015 | 0x627913f620990ec12360a6f1fda4887ea837b41e2f6cbae90e24322dc8cf8b1a |
-| 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d | monetha.jpg | TxData | Updated | 4337297 | 0x31e06af4e04450333d468835c995fc02622c1b07ae0feeb4c7afe73c5a2e3ed8 |
-| 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d | Monetha_WP.pdf | IPFS | Updated | 4468222 | 0x91c5d11c7f220660fb2c98273627e9c2f01b59e32163c760a4a9a836f7758f7f |
+| 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d | monetha.jpg | TxData | Updated | 5233914 | 0xd43201d6b23a18b90a53bf7ef1fffad0b04af603c039b6617601a225a129c632 |
+| 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d | monetha.jpg | IPFS | Updated | 5233917 | 0xf069012520c55d293595654805f3f2b1ff032c1395ddd37cd1366fc1ac67114e |
+| 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d | Monetha_WP.pdf | IPFS | Updated | 5233930 | 0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca |
 
 As we can see, there were two fact updates of type `TxData` (under the same key `monetha.jpg`) by the same data provider `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d`, 
 and one update of type `IPFS` by the same data provider.
 The `block_number` and `tx_hash` columns allow us to understand in which block and in which transaction the changes were made.
 The `change_type` column may contain either `Updated` or `Deleted` values. Even if the value of a fact has been deleted, we can read its value as it was before the deletion.
 
-Let's read what the value of the fact was during the first update. To do this, we need to specify the transaction hash `0x627913f620990ec12360a6f1fda4887ea837b41e2f6cbae90e24322dc8cf8b1a` and the type of data `txdata`:
+Let's read what the value of the fact was during the first update. To do this, we need to specify the transaction hash `0xd43201d6b23a18b90a53bf7ef1fffad0b04af603c039b6617601a225a129c632` and the type of data `txdata`:
 
 ```bash
 ./bin/read-history -out monetha1.jpg \
-  -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -passportaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
   -ftype txdata \
-  -txhash 0x627913f620990ec12360a6f1fda4887ea837b41e2f6cbae90e24322dc8cf8b1a \
+  -txhash 0xd43201d6b23a18b90a53bf7ef1fffad0b04af603c039b6617601a225a129c632 \
   -backendurl https://ropsten.infura.io
 ```
 
-Similarly, we can read what fact value was written in the second transaction `0x31e06af4e04450333d468835c995fc02622c1b07ae0feeb4c7afe73c5a2e3ed8`:
+Similarly, we can read what fact value was written in the second transaction `0xf069012520c55d293595654805f3f2b1ff032c1395ddd37cd1366fc1ac67114e`:
 
 ```bash
 ./bin/read-history -out monetha2.jpg \
-  -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
-  -ftype txdata \
-  -txhash 0x31e06af4e04450333d468835c995fc02622c1b07ae0feeb4c7afe73c5a2e3ed8 \
+  -passportaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
+  -ftype ipfs \
+  -txhash 0xf069012520c55d293595654805f3f2b1ff032c1395ddd37cd1366fc1ac67114e \
   -backendurl https://ropsten.infura.io
 ```
 
 Now you can compare pictures `monetha1.jpg` and `monetha2.jpg` to see what changes have been made.
 
 To read fact value of type `TxData` in the third transaction parameter `-ftype` should be changed to `ipfs` and `-txhash` 
-to `0x91c5d11c7f220660fb2c98273627e9c2f01b59e32163c760a4a9a836f7758f7f`:
+to `0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca`:
 
 ```bash
 ./bin/read-history -out Monetha_WP.pdf \
-  -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+  -passportaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
   -ftype ipfs \
-  -txhash 0x91c5d11c7f220660fb2c98273627e9c2f01b59e32163c760a4a9a836f7758f7f \
+  -txhash 0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca \
   -backendurl https://ropsten.infura.io
 ```
 
@@ -430,9 +430,9 @@ To play with the web application, run the command
 ./bin/passport-scanner
 ```
 
-and open [http://localhost:8080](http://localhost:8080) in your browser.
+and open [http://localhost:8080](http://localhost:8080) in your browser. More details can be found [here](cmd/passport-scanner).
 
-More details can be found [here](cmd/passport-scanner).
+The latest version of passport scanner is also uploaded to IPFS: https://ipfs.io/ipfs/QmSHm4iHBg5hHxXTvecgeB9HS43A9iTftXddQCKorhLcQQ
 
 Happy scanning!
 

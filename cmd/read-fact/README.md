@@ -38,11 +38,11 @@ Usage of `./read-fact`:
   
 * Retrieve the value of type `txdata` stored under the key `monetha.jpg` by the fact provider `0x5b2ae3b3a801469886bb8f5349fc3744caa6348d`
   from passport 
-  [`0x9CfabB3172DFd5ED740c3b8A327BF573226c5064`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+  [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
   in `Ropsten` block-chain and write it to the file `./fact_image.jpg`:
   ```bash
   ./read-fact -out ./fact_image.jpg \
-    -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+    -passportaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
     -factprovideraddr 0x5b2ae3b3a801469886bb8f5349fc3744caa6348d \
     -fkey monetha.jpg \
     -ftype txdata \
@@ -51,11 +51,11 @@ Usage of `./read-fact`:
   
 * Retrieve the value of type `ipfs` stored under the key `Monetha_WP.pdf` by the fact provider `0x5b2ae3b3a801469886bb8f5349fc3744caa6348d`
   from passport 
-  [`0x9CfabB3172DFd5ED740c3b8A327BF573226c5064`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+  [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
   in `Ropsten` block-chain and write it to the file `./Monetha_WP.pdf`:
   ```bash
   ./read-fact -out ./Monetha_WP.pdf \
-    -passportaddr 0x9CfabB3172DFd5ED740c3b8A327BF573226c5064 \
+    -passportaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
     -factprovideraddr 0x5b2ae3b3a801469886bb8f5349fc3744caa6348d \
     -fkey Monetha_WP.pdf \
     -ftype ipfs \
