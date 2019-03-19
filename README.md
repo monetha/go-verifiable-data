@@ -125,9 +125,9 @@ The contract addresses deployed on Mainnet:
 
 | Contract      | Address                                      |
 |---------------|----------------------------------------------|
-| `PassportLogic` | [`0xbCd4C9ba1EfB413b1AC952EfaA2374F98641eb7f`](https://etherscan.io/address/0xbCd4C9ba1EfB413b1AC952EfaA2374F98641eb7f) |
-| `PassportLogicRegistry`  | [`0x3dC70507087D36A726a0A3fD99eb2D4b513248B0`](https://etherscan.io/address/0x3dC70507087D36A726a0A3fD99eb2D4b513248B0) |
-| `PassportFactory` | [`0x9F58301392696aaa0A23FBA7B8dE3118c72A8685`](https://etherscan.io/address/0x9F58301392696aaa0A23FBA7B8dE3118c72A8685) |
+| `PassportLogic` | [`0x76E2fe5C37c47Fe09DCFa55Bec9Fd34318922F27`](https://etherscan.io/address/0x76E2fe5C37c47Fe09DCFa55Bec9Fd34318922F27) |
+| `PassportLogicRegistry`  | [`0x41c32A8387ff178659ED9B04190613623F545657`](https://etherscan.io/address/0x41c32A8387ff178659ED9B04190613623F545657) |
+| `PassportFactory` | [`0xdbf780f836D8a22b56AcF9Fd266171fAFf31F521`](https://etherscan.io/address/0xdbf780f836D8a22b56AcF9Fd266171fAFf31F521) |
 
 Consider the process of deploying your own set of auxiliary repoutation layer contracts to experiment with our implementation. If you are going to deploy your contracts, then you will have to support them yourself.
 
