@@ -23,6 +23,8 @@ after_success:
   - make cover
   - bash <(curl -s https://codecov.io/bash) -s ./${ARTIFACTS_DIR}/.cover
   - make cmdx
+  - mkdir dependency; curl -sS -L -o - https://github.com/dimchansky/ipfs-add/releases/download/0.1.1/ipfs-add-linux-amd64-0.1.1.tgz | tar -C dependency -zxf -
+  - ./dependency/ipfs-add ./cmd/passport-scanner/assets
 
 addons:
   artifacts:
