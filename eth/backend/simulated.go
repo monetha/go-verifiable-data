@@ -22,7 +22,7 @@ var _ Backend = &SimulatedBackendExt{}
 // `ethereum.TransactionReader` interface.
 func NewSimulatedBackendExtended(alloc core.GenesisAlloc, gasLimit uint64) *SimulatedBackendExt {
 	return &SimulatedBackendExt{
-		b: backends.NewSimulatedBackend(alloc, 10000000),
+		b: backends.NewSimulatedBackend(alloc, gasLimit),
 	}
 }
 
