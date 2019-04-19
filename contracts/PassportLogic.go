@@ -28,10 +28,10 @@ var (
 )
 
 // PassportLogicContractABI is the input ABI used to generate the binding from.
-const PassportLogicContractABI = "[{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteAddress\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getTxDataBlockNumber\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"blockNumber\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"isAllowedFactProvider\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getIPFSHash\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteIPFSHash\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_onlyWhitelist\",\"type\":\"bool\"}],\"name\":\"setWhitelistOnlyPermission\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteBool\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"bytes\"}],\"name\":\"setBytes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"int256\"}],\"name\":\"setInt\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"claimOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"setTxDataBlockNumber\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteBytes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"isWhitelistOnlyPermissionSet\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getBytes\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"bytes\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"string\"}],\"name\":\"setIPFSHash\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"removeFactProviderFromWhitelist\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"string\"}],\"name\":\"setString\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getUint\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getAddress\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"isFactProviderInWhitelist\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteInt\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getInt\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getBool\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteTxDataBlockNumber\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"bool\"}],\"name\":\"setBool\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"addFactProviderToWhitelist\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"address\"}],\"name\":\"setAddress\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"uint256\"}],\"name\":\"setUint\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteUint\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"pendingOwner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getString\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteString\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"IPFSHashUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"IPFSHashDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"TxDataUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"TxDataDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"BytesUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"BytesDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"StringUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"StringDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"BoolUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"BoolDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"IntUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"IntDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"UintUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"UintDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"AddressUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"AddressDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"onlyWhitelist\",\"type\":\"bool\"}],\"name\":\"WhitelistOnlyPermissionSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"}],\"name\":\"WhitelistFactProviderAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"}],\"name\":\"WhitelistFactProviderRemoved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"}],\"name\":\"OwnershipRenounced\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"}]"
+const PassportLogicContractABI = "[{\"constant\":false,\"inputs\":[{\"name\":\"_exchangeIdx\",\"type\":\"uint256\"}],\"name\":\"finishPrivateDataExchange\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_exchangeIdx\",\"type\":\"uint256\"}],\"name\":\"timeoutPrivateDataExchange\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"privateDataExchangeAcceptTimeout\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteAddress\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getTxDataBlockNumber\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"blockNumber\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"isAllowedFactProvider\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_dataIPFSHash\",\"type\":\"string\"},{\"name\":\"_keyHash\",\"type\":\"bytes32\"}],\"name\":\"setPrivateData\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getIPFSHash\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteIPFSHash\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_onlyWhitelist\",\"type\":\"bool\"}],\"name\":\"setWhitelistOnlyPermission\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteBool\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"bytes\"}],\"name\":\"setBytes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"int256\"}],\"name\":\"setInt\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"claimOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"setTxDataBlockNumber\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteBytes\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"isWhitelistOnlyPermissionSet\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getBytes\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"bytes\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"string\"}],\"name\":\"setIPFSHash\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"removeFactProviderFromWhitelist\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"string\"}],\"name\":\"setString\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"privateDataExchanges\",\"outputs\":[{\"name\":\"dataRequester\",\"type\":\"address\"},{\"name\":\"dataRequesterValue\",\"type\":\"uint256\"},{\"name\":\"passportOwner\",\"type\":\"address\"},{\"name\":\"passportOwnerValue\",\"type\":\"uint256\"},{\"name\":\"factProvider\",\"type\":\"address\"},{\"name\":\"key\",\"type\":\"bytes32\"},{\"name\":\"dataIPFSHash\",\"type\":\"string\"},{\"name\":\"dataKeyHash\",\"type\":\"bytes32\"},{\"name\":\"encryptedExchangeKey\",\"type\":\"bytes\"},{\"name\":\"exchangeKeyHash\",\"type\":\"bytes32\"},{\"name\":\"encryptedDataKey\",\"type\":\"bytes32\"},{\"name\":\"state\",\"type\":\"uint8\"},{\"name\":\"stateExpired\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getUint\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getAddress\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getPrivateDataExchangesCount\",\"outputs\":[{\"name\":\"count\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_exchangeIdx\",\"type\":\"uint256\"},{\"name\":\"_encryptedDataKey\",\"type\":\"bytes32\"}],\"name\":\"acceptPrivateDataExchange\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"isFactProviderInWhitelist\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteInt\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getInt\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"int256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getPrivateData\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"dataIPFSHash\",\"type\":\"string\"},{\"name\":\"dataKeyHash\",\"type\":\"bytes32\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getBool\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteTxDataBlockNumber\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"privateDataExchangeProposeTimeout\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"bool\"}],\"name\":\"setBool\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"addFactProviderToWhitelist\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"address\"}],\"name\":\"setAddress\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"openPrivateDataExchangesCount\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_encryptedExchangeKey\",\"type\":\"bytes\"},{\"name\":\"_exchangeKeyHash\",\"type\":\"bytes32\"}],\"name\":\"proposePrivateDataExchange\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deletePrivateData\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"},{\"name\":\"_value\",\"type\":\"uint256\"}],\"name\":\"setUint\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteUint\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"pendingOwner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_factProvider\",\"type\":\"address\"},{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"getString\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"},{\"name\":\"value\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_key\",\"type\":\"bytes32\"}],\"name\":\"deleteString\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_exchangeIdx\",\"type\":\"uint256\"},{\"name\":\"_exchangeKey\",\"type\":\"bytes32\"}],\"name\":\"disputePrivateDataExchange\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"PrivateDataUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"PrivateDataDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"exchangeIdx\",\"type\":\"uint256\"},{\"indexed\":true,\"name\":\"dataRequester\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"passportOwner\",\"type\":\"address\"}],\"name\":\"PrivateDataExchangeProposed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"exchangeIdx\",\"type\":\"uint256\"},{\"indexed\":true,\"name\":\"dataRequester\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"passportOwner\",\"type\":\"address\"}],\"name\":\"PrivateDataExchangeAccepted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"exchangeIdx\",\"type\":\"uint256\"}],\"name\":\"PrivateDataExchangeClosed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"exchangeIdx\",\"type\":\"uint256\"},{\"indexed\":true,\"name\":\"successful\",\"type\":\"bool\"},{\"indexed\":true,\"name\":\"cheater\",\"type\":\"address\"}],\"name\":\"PrivateDataExchangeDisputed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"IPFSHashUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"IPFSHashDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"TxDataUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"TxDataDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"BytesUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"BytesDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"StringUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"StringDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"BoolUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"BoolDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"IntUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"IntDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"UintUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"UintDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"AddressUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"key\",\"type\":\"bytes32\"}],\"name\":\"AddressDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"onlyWhitelist\",\"type\":\"bool\"}],\"name\":\"WhitelistOnlyPermissionSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"}],\"name\":\"WhitelistFactProviderAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"factProvider\",\"type\":\"address\"}],\"name\":\"WhitelistFactProviderRemoved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"}],\"name\":\"OwnershipRenounced\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"}]"
 
 // PassportLogicContractBin is the compiled bytecode used for deploying new contracts.
-const PassportLogicContractBin = `0x608060408190527f6f72672e6d6f6e657468612e70726f78792e6f776e6572000000000000000000905261003b3364010000000061009a810204565b604080517f6f72672e6d6f6e657468612e70726f78792e70656e64696e674f776e657200008152905190819003601e0190207fcfd0c6ea5352192d7d4c5d4e7a73c5da12c871730cb60ff57879cbe7b403bb521461009557fe5b6100be565b7f3ca57e4b51fc2e18497b219410298879868edada7e6fe5132c8feceb0a080d2255565b6117c0806100cd6000396000f3006080604052600436106101b65763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416630e14a37681146101bb578063174a6277146101d5578063208881581461021457806322b96b6314610249578063257781e7146102f05780632b42a89a146103085780632c62ff2d146103225780632e28d0841461033a5780633e49bed01461035e5780634e71e0c8146103795780635b2a372d1461038e578063616b59f6146103b257806361a2d076146103ca5780636556f767146103df5780636bfc8bb5146104035780636d4e7802146104275780636e89955014610448578063715018a61461046c57806371658552146104815780637ac4ed64146104a55780638ae44a08146104ec5780638c1600951461050d5780638da5cb5b1461052557806395ee8bae146105565780639d74b37d1461057a578063a2b6cbe1146105b9578063abfdcced146105d1578063ac0aeb1a146105ee578063ca446dd91461060f578063e2a4853a14610633578063e2b202bf1461064e578063e30c397814610666578063e318de731461067b578063f2fde38b1461069f578063f6bb3cc4146106c0575b600080fd5b3480156101c757600080fd5b506101d36004356106d8565b005b3480156101e157600080fd5b506101f9600160a060020a03600435166024356106e4565b60408051921515835260208301919091528051918290030190f35b34801561022057600080fd5b50610235600160a060020a03600435166106fc565b604080519115158252519081900360200190f35b34801561025557600080fd5b5061026d600160a060020a0360043516602435610752565b604051808315151515815260200180602001828103825283818151815260200191508051906020019080838360005b838110156102b457818101518382015260200161029c565b50505050905090810190601f1680156102e15780820380516001836020036101000a031916815260200191505b50935050505060405180910390f35b3480156102fc57600080fd5b506101d3600435610760565b34801561031457600080fd5b506101d36004351515610769565b34801561032e57600080fd5b506101d36004356107c2565b34801561034657600080fd5b506101d36004803590602480359081019101356107cb565b34801561036a57600080fd5b506101d360043560243561080a565b34801561038557600080fd5b506101d3610818565b34801561039a57600080fd5b506101d360048035906024803590810191013561089e565b3480156103be57600080fd5b506101d3600435610923565b3480156103d657600080fd5b5061023561092c565b3480156103eb57600080fd5b5061026d600160a060020a0360043516602435610936565b34801561040f57600080fd5b506101d3600480359060248035908101910135610944565b34801561043357600080fd5b506101d3600160a060020a036004351661097e565b34801561045457600080fd5b506101d36004803590602480359081019101356109e3565b34801561047857600080fd5b506101d3610a1d565b34801561048d57600080fd5b506101f9600160a060020a0360043516602435610a80565b3480156104b157600080fd5b506104c9600160a060020a0360043516602435610a8d565b604080519215158352600160a060020a0390911660208301528051918290030190f35b3480156104f857600080fd5b50610235600160a060020a0360043516610a9a565b34801561051957600080fd5b506101d3600435610ab8565b34801561053157600080fd5b5061053a610ac1565b60408051600160a060020a039092168252519081900360200190f35b34801561056257600080fd5b506101f9600160a060020a0360043516602435610ad0565b34801561058657600080fd5b5061059e600160a060020a0360043516602435610add565b60408051921515835290151560208301528051918290030190f35b3480156105c557600080fd5b506101d3600435610aea565b3480156105dd57600080fd5b506101d36004356024351515610b51565b3480156105fa57600080fd5b506101d3600160a060020a0360043516610b5b565b34801561061b57600080fd5b506101d3600435600160a060020a0360243516610bc3565b34801561063f57600080fd5b506101d3600435602435610bcd565b34801561065a57600080fd5b506101d3600435610bd7565b34801561067257600080fd5b5061053a610be0565b34801561068757600080fd5b5061026d600160a060020a0360043516602435610bea565b3480156106ab57600080fd5b506101d3600160a060020a0360043516610bf8565b3480156106cc57600080fd5b506101d3600435610c1d565b6106e181610c26565b50565b6000806106f18484610c99565b915091509250929050565b60075460009060ff1615806107295750600160a060020a03821660009081526008602052604090205460ff165b8061074c5750610737610ccd565b600160a060020a031682600160a060020a0316145b92915050565b600060606106f18484610cf2565b6106e181610dbc565b610771610ccd565b600160a060020a0316331461078557600080fd5b6007805460ff19168215159081179091556040517f6e1eb3fa845047cf9d5fd1deb1b7770b4e26163dd4d88cefb14fe7964a70059590600090a250565b6106e181610e32565b6108058383838080601f01602080910402602001604051908101604052809392919081815260200183838082843750610e94945050505050565b505050565b6108148282610f2e565b5050565b610820610fb2565b600160a060020a0316331461083457600080fd5b61083c610fb2565b600160a060020a031661084d610ccd565b600160a060020a03167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a361089261088d610fb2565b610fd7565b61089c6000610ffb565b565b6108a7336106fc565b15156108b257600080fd5b6040805180820182526001808252436020808401918252336000818152600683528681208a82529092528582209451855460ff191690151517855591519390920192909255915185927fcbde9cd310365ff3de3ad9cb44ed688d8880c7b1d15df733a73880fb84d032de91a3505050565b6106e18161101f565b60075460ff165b90565b600060606106f18484611095565b6108058383838080601f01602080910402602001604051908101604052809392919081815260200183838082843750611121945050505050565b610986610ccd565b600160a060020a0316331461099a57600080fd5b600160a060020a038116600081815260086020526040808220805460ff19169055517f5bf47f016603dfff957e6086bd9a350212686e8f1d9208b3db47c5a3107c78789190a250565b6108058383838080601f016020809104026020016040519081016040528093929190818152602001838380828437506111bb945050505050565b610a25610ccd565b600160a060020a03163314610a3957600080fd5b610a41610ccd565b600160a060020a03167ff8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c6482060405160405180910390a261089c6000610fd7565b6000806106f18484611255565b6000806106f18484611288565b600160a060020a031660009081526008602052604090205460ff1690565b6106e1816112bb565b6000610acb610ccd565b905090565b6000806106f18484611322565b6000806106f18484611356565b610af3336106fc565b1515610afe57600080fd5b336000818152600660209081526040808320858452909152808220805460ff19168155600101829055518392917f9b9532c8ba5879554dee7c3e9374bd26dbfb2f79cf7f247bcf90648fc81fc16491a350565b610814828261138b565b610b63610ccd565b600160a060020a03163314610b7757600080fd5b600160a060020a038116600081815260086020526040808220805460ff19166001179055517fff8ac5f0e9cdc8f7ffbbc29ab1301ee649cf01cf7a6a9265a2d90587612c41759190a250565b610814828261141e565b61081482826114cc565b6106e18161154f565b6000610acb610fb2565b600060606106f184846115b6565b610c00610ccd565b600160a060020a03163314610c1457600080fd5b6106e181610ffb565b6106e181611642565b610c2f336106fc565b1515610c3a57600080fd5b33600081815260208181526040808320858452909152808220805474ffffffffffffffffffffffffffffffffffffffffff19169055518392917fed9474c4702ee9da4d0d2085840fafed5912b8e13daf1d6ea341ebe98803aec291a350565b600160a060020a0391909116600090815260066020908152604080832093835292905220805460019091015460ff90911691565b7f3ca57e4b51fc2e18497b219410298879868edada7e6fe5132c8feceb0a080d225490565b600160a060020a038216600090815260096020908152604080832084845282528083208054600180830180548551601f600294831615610100026000190190921693909304908101879004870283018701909552848252606095939460ff9093169390928391830182828015610da95780601f10610d7e57610100808354040283529160200191610da9565b820191906000526020600020905b815481529060010190602001808311610d8c57829003601f168201915b5050505050905092509250509250929050565b610dc5336106fc565b1515610dd057600080fd5b3360009081526009602090815260408083208484529091528120805460ff1916815590610e0060018301826116b8565b5050604051819033907f140278d2322b9671bf293aea878e7717c46d5b7cd955e3e426ee67e01b90165490600090a350565b610e3b336106fc565b1515610e4657600080fd5b336000818152600360209081526040808320858452909152808220805461ffff19169055518392917f191bd7fc1f22ce6b74b7d7e42126f0ed225b109728607c99971de9e78b0db6eb91a350565b610e9d336106fc565b1515610ea857600080fd5b60408051808201825260018082526020808301858152336000908152600583528581208882528352949094208351815460ff191690151517815593518051939493610efa9385019291909101906116fc565b505060405183915033907fee56af66250a5cbba377132a356dc403d520776e30969594927024c44af8440b90600090a35050565b610f37336106fc565b1515610f4257600080fd5b60408051808201825260018082526020808301858152336000818152600284528681208982529093528583209451855460ff19169015151785559051939092019290925591518492917fdb4ad6a3ed2bdacbae02da45a5bb54192cdb7d72648674d13e08d2fc4c45ac6691a35050565b7fcfd0c6ea5352192d7d4c5d4e7a73c5da12c871730cb60ff57879cbe7b403bb525490565b7f3ca57e4b51fc2e18497b219410298879868edada7e6fe5132c8feceb0a080d2255565b7fcfd0c6ea5352192d7d4c5d4e7a73c5da12c871730cb60ff57879cbe7b403bb5255565b611028336106fc565b151561103357600080fd5b3360009081526005602090815260408083208484529091528120805460ff191681559061106360018301826116b8565b5050604051819033907f0eaf95ab41777ff88e28181b1c43418524616bcef6d37c3b216015b5548cb10890600090a350565b600160a060020a038216600090815260056020908152604080832084845282528083208054600180830180548551601f600294831615610100026000190190921693909304908101879004870283018701909552848252606095939460ff9093169390928391830182828015610da95780601f10610d7e57610100808354040283529160200191610da9565b61112a336106fc565b151561113557600080fd5b60408051808201825260018082526020808301858152336000908152600983528581208882528352949094208351815460ff1916901515178155935180519394936111879385019291909101906116fc565b505060405183915033907fdb23beee028623a85d5af1d247423ca471d20e499b131cd5e5c76277eaa2ad5b90600090a35050565b6111c4336106fc565b15156111cf57600080fd5b60408051808201825260018082526020808301858152336000908152600483528581208882528352949094208351815460ff1916901515178155935180519394936112219385019291909101906116fc565b505060405183915033907f43e6b7e3323b4598401023341c086c07c3ff5577f594b5aab9c065f2c3c9d59090600090a35050565b600160a060020a03919091166000908152600160208181526040808420948452939052919020805491015460ff90911691565b600160a060020a03918216600090815260208181526040808320938352929052205460ff81169261010090910490911690565b6112c4336106fc565b15156112cf57600080fd5b336000818152600260209081526040808320858452909152808220805460ff19168155600101829055518392917f3c3ff48e02e407eb1e78310d11b5e3f9e735263a9cafc2bcf4aa981b8ecb32a591a350565b600160a060020a0391909116600090815260026020908152604080832093835292905220805460019091015460ff90911691565b600160a060020a03919091166000908152600360209081526040808320938352929052205460ff808216926101009092041690565b611394336106fc565b151561139f57600080fd5b6040805180820182526001815282151560208083019182523360008181526003835285812088825290925284822093518454935115156101000261ff001991151560ff1990951694909417169290921790925591518492917f68cc3496efaac4c1f2c0cd52da916138f6c5fc541992f05d97423a89b6914ae591a35050565b611427336106fc565b151561143257600080fd5b60408051808201825260018152600160a060020a03838116602080840191825233600081815280835286812089825290925285822094518554935160ff199094169015151774ffffffffffffffffffffffffffffffffffffffff001916610100939094169290920292909217909255915184927f8e7e6ab6c4613205e833e1faf5415d78dd10130a8828f729c08036e2a7a6277091a35050565b6114d5336106fc565b15156114e057600080fd5b604080518082018252600180825260208083018581523360008181528484528681208982529093528583209451855460ff19169015151785559051939092019290925591518492917fff76cb7634629f8d05011ab2a58380dfc0743157a70ba4173f866e113eca75c091a35050565b611558336106fc565b151561156357600080fd5b336000818152600160208181526040808420868552909152808320805460ff19168155909101829055518392917fd5f853f7aaba549b5a46be1de24cac4c20e716b4c603d24b2b0b7b5d97ca1c4d91a350565b600160a060020a038216600090815260046020908152604080832084845282528083208054600180830180548551601f600294831615610100026000190190921693909304908101879004870283018701909552848252606095939460ff9093169390928391830182828015610da95780601f10610d7e57610100808354040283529160200191610da9565b61164b336106fc565b151561165657600080fd5b3360009081526004602090815260408083208484529091528120805460ff191681559061168660018301826116b8565b5050604051819033907f491a0e0281af9fc88ff024cffc24db22eddd4f826cb30d84936592967dc9237c90600090a350565b50805460018160011615610100020316600290046000825580601f106116de57506106e1565b601f0160209004906000526020600020908101906106e1919061177a565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061173d57805160ff191683800117855561176a565b8280016001018555821561176a579182015b8281111561176a57825182559160200191906001019061174f565b5061177692915061177a565b5090565b61093391905b8082111561177657600081556001016117805600a165627a7a723058203ad81923d93f174a6e4448d59b574e984451906d9efdf053462f66fce73a600a0029`
+const PassportLogicContractBin = `0x608060408190527f6f72672e6d6f6e657468612e70726f78792e6f776e6572000000000000000000905261003b3364010000000061009a810204565b604080517f6f72672e6d6f6e657468612e70726f78792e70656e64696e674f776e657200008152905190819003601e0190207fcfd0c6ea5352192d7d4c5d4e7a73c5da12c871730cb60ff57879cbe7b403bb521461009557fe5b6100be565b7f3ca57e4b51fc2e18497b219410298879868edada7e6fe5132c8feceb0a080d2255565b612f1780620000ce6000396000f3006080604052600436106102455763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166306427a88811461024a57806308c50498146102645780630a2565251461027c5780630e14a376146102a3578063174a6277146102bb57806320888158146102fa578063215f86671461032f57806322b96b6314610356578063257781e7146103fd5780632b42a89a146104155780632c62ff2d1461042f5780632e28d084146104475780633e49bed01461046b5780634e71e0c8146104865780635b2a372d1461049b578063616b59f6146104bf57806361a2d076146104d75780636556f767146104ec5780636bfc8bb5146105105780636d4e7802146105345780636e899550146105555780636f618f9a14610579578063715018a61461072057806371658552146107355780637ac4ed64146107595780637dd291e4146107a057806386ca9a7c146107b55780638ae44a08146107c35780638c160095146107e45780638da5cb5b146107fc57806395ee8bae1461082d5780639972a4f5146108515780639d74b37d146108fc578063a2b6cbe11461093b578063ab338e361461027c578063abfdcced14610953578063ac0aeb1a14610970578063ca446dd914610991578063caa95f1b146109b5578063cea332cc146109ca578063dfc3cf81146109f1578063e2a4853a14610a09578063e2b202bf14610a24578063e30c397814610a3c578063e318de7314610a51578063f2fde38b14610a75578063f6bb3cc414610a96578063fc2d058414610aae575b600080fd5b34801561025657600080fd5b50610262600435610ac9565b005b34801561027057600080fd5b50610262600435610cfa565b34801561028857600080fd5b50610291610f13565b60408051918252519081900360200190f35b3480156102af57600080fd5b50610262600435610f1a565b3480156102c757600080fd5b506102df600160a060020a0360043516602435610f26565b60408051921515835260208301919091528051918290030190f35b34801561030657600080fd5b5061031b600160a060020a0360043516610f3e565b604080519115158252519081900360200190f35b34801561033b57600080fd5b50610262600480359060248035908101910135604435610f94565b34801561036257600080fd5b5061037a600160a060020a0360043516602435610fd6565b604051808315151515815260200180602001828103825283818151815260200191508051906020019080838360005b838110156103c15781810151838201526020016103a9565b50505050905090810190601f1680156103ee5780820380516001836020036101000a031916815260200191505b50935050505060405180910390f35b34801561040957600080fd5b50610262600435610fe4565b34801561042157600080fd5b506102626004351515610fed565b34801561043b57600080fd5b50610262600435611046565b34801561045357600080fd5b5061026260048035906024803590810191013561104f565b34801561047757600080fd5b5061026260043560243561108e565b34801561049257600080fd5b5061026261109c565b3480156104a757600080fd5b50610262600480359060248035908101910135611122565b3480156104cb57600080fd5b506102626004356111a7565b3480156104e357600080fd5b5061031b6111b0565b3480156104f857600080fd5b5061037a600160a060020a03600435166024356111ba565b34801561051c57600080fd5b506102626004803590602480359081019101356111c8565b34801561054057600080fd5b50610262600160a060020a0360043516611202565b34801561056157600080fd5b50610262600480359060248035908101910135611267565b34801561058557600080fd5b506105916004356112a1565b604051808e600160a060020a0316600160a060020a031681526020018d81526020018c600160a060020a0316600160a060020a031681526020018b81526020018a600160a060020a0316600160a060020a031681526020018960001916600019168152602001806020018860001916600019168152602001806020018760001916600019168152602001866000191660001916815260200185600281111561063557fe5b60ff16815260200184815260200183810383528a818151815260200191508051906020019080838360005b83811015610678578181015183820152602001610660565b50505050905090810190601f1680156106a55780820380516001836020036101000a031916815260200191505b5083810382528851815288516020918201918a019080838360005b838110156106d85781810151838201526020016106c0565b50505050905090810190601f1680156107055780820380516001836020036101000a031916815260200191505b509f5050505050505050505050505050505060405180910390f35b34801561072c57600080fd5b50610262611441565b34801561074157600080fd5b506102df600160a060020a03600435166024356114a4565b34801561076557600080fd5b5061077d600160a060020a03600435166024356114b1565b604080519215158352600160a060020a0390911660208301528051918290030190f35b3480156107ac57600080fd5b506102916114be565b6102626004356024356114c4565b3480156107cf57600080fd5b5061031b600160a060020a036004351661174d565b3480156107f057600080fd5b5061026260043561176b565b34801561080857600080fd5b50610811611774565b60408051600160a060020a039092168252519081900360200190f35b34801561083957600080fd5b506102df600160a060020a0360043516602435611783565b34801561085d57600080fd5b50610875600160a060020a0360043516602435611790565b604080518415158152908101829052606060208083018281528551928401929092528451608084019186019080838360005b838110156108bf5781810151838201526020016108a7565b50505050905090810190601f1680156108ec5780820380516001836020036101000a031916815260200191505b5094505050505060405180910390f35b34801561090857600080fd5b50610920600160a060020a03600435166024356117ad565b60408051921515835290151560208301528051918290030190f35b34801561094757600080fd5b506102626004356117ba565b34801561095f57600080fd5b506102626004356024351515611821565b34801561097c57600080fd5b50610262600160a060020a036004351661182b565b34801561099d57600080fd5b50610262600435600160a060020a0360243516611893565b3480156109c157600080fd5b5061029161189d565b61026260048035600160a060020a03169060248035916044359182019101356064356118a3565b3480156109fd57600080fd5b50610262600435611c2c565b348015610a1557600080fd5b50610262600435602435611c35565b348015610a3057600080fd5b50610262600435611c3f565b348015610a4857600080fd5b50610811611c48565b348015610a5d57600080fd5b5061037a600160a060020a0360043516602435611c52565b348015610a8157600080fd5b50610262600160a060020a0360043516611c60565b348015610aa257600080fd5b50610262600435611c85565b348015610aba57600080fd5b50610262600435602435611c8e565b600c5460009081908310610b15576040805160e560020a62461bcd0281526020600482015260166024820152600080516020612ecc833981519152604482015290519081900360640190fd5b600c805484908110610b2357fe5b60009182526020909120600d90910201600b81015490925060ff166002811115610b4957fe5b600214610bae576040805160e560020a62461bcd02815260206004820152602260248201527f65786368616e6765206d75737420626520696e20616363657074656420737461604482015260f060020a61746502606482015290519081900360840190fd5b81600c0154421180610bc957508154600160a060020a031633145b1515610c6c576040805160e560020a62461bcd028152602060048201526044602482018190527f65786368616e6765206d75737420626520656974686572206578706972656420908201527f6f722062652066696e697368656420627920746865206461746120726571756560648201527f7374657200000000000000000000000000000000000000000000000000000000608482015290519081900360a40190fd5b600b8201805460ff1916905560038201546001830154610c8b916120c2565b6002830154604051919250600160a060020a03169082156108fc029083906000818181858888f193505050501515610cc257600080fd5b610cca6120cf565b60405183907f5d1a7ae2ffda31cae15ed5129d32260ef2a270a21325f536f7954ed297e52c8e90600090a2505050565b600c546000908210610d44576040805160e560020a62461bcd0281526020600482015260166024820152600080516020612ecc833981519152604482015290519081900360640190fd5b600c805483908110610d5257fe5b60009182526020909120600d90910201600b81015490915060ff166002811115610d7857fe5b600114610ddd576040805160e560020a62461bcd02815260206004820152602260248201527f65786368616e6765206d75737420626520696e2070726f706f73656420737461604482015260f060020a61746502606482015290519081900360840190fd5b8054600160a060020a03163314610e3e576040805160e560020a62461bcd02815260206004820152601b60248201527f6f6e6c7920646174612072657175657374657220616c6c6f7765640000000000604482015290519081900360640190fd5b600c8101544211610e99576040805160e560020a62461bcd02815260206004820152601860248201527f65786368616e6765206d75737420626520657870697265640000000000000000604482015290519081900360640190fd5b600b8101805460ff1916905580546001820154604051600160a060020a03909216916108fc82150291906000818181858888f193505050501515610edc57600080fd5b610ee46120cf565b60405182907f5d1a7ae2ffda31cae15ed5129d32260ef2a270a21325f536f7954ed297e52c8e90600090a25050565b6201518081565b610f23816120db565b50565b600080610f33848461214e565b915091509250929050565b60075460009060ff161580610f6b5750600160a060020a03821660009081526008602052604090205460ff165b80610f8e5750610f79612182565b600160a060020a031682600160a060020a0316145b92915050565b610fd08484848080601f016020809104026020016040519081016040528093929190818152602001838380828437508894506121a79350505050565b50505050565b60006060610f338484612265565b610f238161232f565b610ff5612182565b600160a060020a0316331461100957600080fd5b6007805460ff19168215159081179091556040517f6e1eb3fa845047cf9d5fd1deb1b7770b4e26163dd4d88cefb14fe7964a70059590600090a250565b610f23816123a5565b6110898383838080601f01602080910402602001604051908101604052809392919081815260200183838082843750612407945050505050565b505050565b61109882826124a1565b5050565b6110a4612525565b600160a060020a031633146110b857600080fd5b6110c0612525565b600160a060020a03166110d1612182565b600160a060020a03167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a3611116611111612525565b61254a565b611120600061256e565b565b61112b33610f3e565b151561113657600080fd5b6040805180820182526001808252436020808401918252336000818152600683528681208a82529092528582209451855460ff191690151517855591519390920192909255915185927fcbde9cd310365ff3de3ad9cb44ed688d8880c7b1d15df733a73880fb84d032de91a3505050565b610f2381612592565b60075460ff165b90565b60006060610f338484612608565b6110898383838080601f01602080910402602001604051908101604052809392919081815260200183838082843750612694945050505050565b61120a612182565b600160a060020a0316331461121e57600080fd5b600160a060020a038116600081815260086020526040808220805460ff19169055517f5bf47f016603dfff957e6086bd9a350212686e8f1d9208b3db47c5a3107c78789190a250565b6110898383838080601f0160208091040260200160405190810160405280939291908181526020018383808284375061272e945050505050565b600c8054829081106112af57fe5b6000918252602091829020600d90910201805460018083015460028085015460038601546004870154600588015460068901805460408051601f6000199b841615610100029b909b01909216979097049889018c90048c0281018c01909652878652600160a060020a039889169b509599938816989297919091169590949193928301828280156113815780601f1061135657610100808354040283529160200191611381565b820191906000526020600020905b81548152906001019060200180831161136457829003601f168201915b50505050600783015460088401805460408051602060026001851615610100026000190190941693909304601f810184900484028201840190925281815295969395939450908301828280156114185780601f106113ed57610100808354040283529160200191611418565b820191906000526020600020905b8154815290600101906020018083116113fb57829003601f168201915b5050506009840154600a850154600b860154600c909601549495919490935060ff90911691508d565b611449612182565b600160a060020a0316331461145d57600080fd5b611465612182565b600160a060020a03167ff8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c6482060405160405180910390a2611120600061254a565b600080610f3384846127c8565b600080610f3384846127fb565b600c5490565b600c54600090831061150e576040805160e560020a62461bcd0281526020600482015260166024820152600080516020612ecc833981519152604482015290519081900360640190fd5b600c80548490811061151c57fe5b60009182526020909120600d909102016002810154909150600160a060020a03163314611593576040805160e560020a62461bcd02815260206004820152601b60248201527f6f6e6c792070617373706f7274206f776e657220616c6c6f7765640000000000604482015290519081900360640190fd5b600b81015460ff1660028111156115a657fe5b60011461160b576040805160e560020a62461bcd02815260206004820152602260248201527f65786368616e6765206d75737420626520696e2070726f706f73656420737461604482015260f060020a61746502606482015290519081900360840190fd5b600181015434101561168d576040805160e560020a62461bcd02815260206004820152602c60248201527f6e65656420746f207374616b65206174206c656173742064617461207265717560448201527f657374657220616d6f756e740000000000000000000000000000000000000000606482015290519081900360840190fd5b600c81015442106116e8576040805160e560020a62461bcd02815260206004820152601660248201527f65786368616e6765207374617465206578706972656400000000000000000000604482015290519081900360640190fd5b346003820155600a8101829055600b8101805460ff19166002179055620151804201600c82015580546040513391600160a060020a03169085907f843dda373d0d243dce80a6cd203b9cbba8576d036c7eb937f9de36ebe6e8b02390600090a4505050565b600160a060020a031660009081526008602052604090205460ff1690565b610f238161282e565b600061177e612182565b905090565b600080610f338484612895565b6000606060006117a085856128c9565b9250925092509250925092565b600080610f338484612999565b6117c333610f3e565b15156117ce57600080fd5b336000818152600660209081526040808320858452909152808220805460ff19168155600101829055518392917f9b9532c8ba5879554dee7c3e9374bd26dbfb2f79cf7f247bcf90648fc81fc16491a350565b61109882826129ce565b611833612182565b600160a060020a0316331461184757600080fd5b600160a060020a038116600081815260086020526040808220805460ff19166001179055517fff8ac5f0e9cdc8f7ffbbc29ab1301ee649cf01cf7a6a9265a2d90587612c41759190a250565b6110988282612a61565b600b5481565b6000606060008060006118b4612d88565b60006118c08c8c6128c9565b96509650965086151561191d576040805160e560020a62461bcd02815260206004820152601760248201527f707269766174652064617461206d757374206578697374000000000000000000604482015290519081900360640190fd5b611925612182565b93506101a06040519081016040528033600160a060020a0316815260200134815260200185600160a060020a03168152602001600081526020018d600160a060020a031681526020018c600019168152602001878152602001866000191681526020018b8b8080601f016020809104026020016040519081016040528093929190818152602001838380828437505050928452505050602081018a90526040810185905260600160018152426201518001602091820152600c8054600181018083556000929092528351600d9091027fdf6966c971051c3d54ec59162606531493a51404a002842f56009d7e5cf4a8c781018054600160a060020a0393841673ffffffffffffffffffffffffffffffffffffffff19918216178255868601517fdf6966c971051c3d54ec59162606531493a51404a002842f56009d7e5cf4a8c884015560408701517fdf6966c971051c3d54ec59162606531493a51404a002842f56009d7e5cf4a8c98401805491861691831691909117905560608701517fdf6966c971051c3d54ec59162606531493a51404a002842f56009d7e5cf4a8ca84015560808701517fdf6966c971051c3d54ec59162606531493a51404a002842f56009d7e5cf4a8cb840180549190951691161790925560a08501517fdf6966c971051c3d54ec59162606531493a51404a002842f56009d7e5cf4a8cc82015560c08501518051959750929487949293611b64937fdf6966c971051c3d54ec59162606531493a51404a002842f56009d7e5cf4a8cd909301920190612df3565b5060e082015160078201556101008201518051611b8b916008840191602090910190612df3565b506101208201516009820155610140820151600a820155610160820151600b8201805460ff19166001836002811115611bc057fe5b021790555061018082015181600c0155505050611bdb612b0f565b50600c5460405160001990910190600160a060020a03851690339083907fabe53237e9ea366da7fa5507ac62db22bd446d6b66bcff4a6d6c1b11e9af198390600090a4505050505050505050505050565b610f2381612b1a565b6110988282612b9c565b610f2381612c1f565b600061177e612525565b60006060610f338484612c86565b611c68612182565b600160a060020a03163314611c7c57600080fd5b610f238161256e565b610f2381612d12565b6000806000806000600c8054905087101515611ce2576040805160e560020a62461bcd0281526020600482015260166024820152600080516020612ecc833981519152604482015290519081900360640190fd5b600c805488908110611cf057fe5b60009182526020909120600d90910201600b81015490955060ff166002811115611d1657fe5b600214611d7b576040805160e560020a62461bcd02815260206004820152602260248201527f65786368616e6765206d75737420626520696e20616363657074656420737461604482015260f060020a61746502606482015290519081900360840190fd5b8454600160a060020a03163314611ddc576040805160e560020a62461bcd02815260206004820152601b60248201527f6f6e6c7920646174612072657175657374657220616c6c6f7765640000000000604482015290519081900360640190fd5b600c8501544210611e37576040805160e560020a62461bcd02815260206004820152601c60248201527f65786368616e6765206d757374206e6f74206265206578706972656400000000604482015290519081900360640190fd5b60098501546040805160208082018a905282518083038201815291830192839052815191929182918401908083835b60208310611e855780518252601f199092019160209182019101611e66565b6001836020036101000a038019825116818451168082178552505050505050905001915050604051809103902060001916141515611f0d576040805160e560020a62461bcd02815260206004820152601c60248201527f65786368616e6765206b65792068617368206d757374206d6174636800000000604482015290519081900360640190fd5b600a85015460078601546040805192891860208085018290528251808603820181529483019283905284519198509293928291908401908083835b60208310611f675780518252601f199092019160209182019101611f48565b5181516020939093036101000a60001901801990911692169190911790526040519201829003909120600b8a01805460ff1916905560038a015460018b0154959091149750611fbb94935091506120c29050565b9150821561200a576002850154604051600160a060020a039091169083156108fc029084906000818181858888f193505050501515611ff957600080fd5b508354600160a060020a031661204d565b8454604051600160a060020a039091169083156108fc029084906000818181858888f19350505050151561203d57600080fd5b506002840154600160a060020a03165b6120556120cf565b60405187907f5d1a7ae2ffda31cae15ed5129d32260ef2a270a21325f536f7954ed297e52c8e90600090a2604051600160a060020a0382169084159089907f540941e0fc2370abde0bfa6ddbb49188469597e518416fa24327f39469c9b2ec90600090a450505050505050565b81810182811015610f8e57fe5b600b8054600019019055565b6120e433610f3e565b15156120ef57600080fd5b33600081815260208181526040808320858452909152808220805474ffffffffffffffffffffffffffffffffffffffffff19169055518392917fed9474c4702ee9da4d0d2085840fafed5912b8e13daf1d6ea341ebe98803aec291a350565b600160a060020a0391909116600090815260066020908152604080832093835292905220805460019091015460ff90911691565b7f3ca57e4b51fc2e18497b219410298879868edada7e6fe5132c8feceb0a080d225490565b6121b033610f3e565b15156121bb57600080fd5b6040805180820182526001808252825180840184528581526020808201869052808401918252336000908152600a82528581208982528252949094208351815460ff191690151517815590518051805194959294919385019261222392849290910190612df3565b50602091909101516001909101555050604051839033907f1bd7e914e13f7cf5c918a20e77d8191f4851771f8c9425e85ec118fa3e2e33e790600090a3505050565b600160a060020a038216600090815260096020908152604080832084845282528083208054600180830180548551601f600294831615610100026000190190921693909304908101879004870283018701909552848252606095939460ff909316939092839183018282801561231c5780601f106122f15761010080835404028352916020019161231c565b820191906000526020600020905b8154815290600101906020018083116122ff57829003601f168201915b5050505050905092509250509250929050565b61233833610f3e565b151561234357600080fd5b3360009081526009602090815260408083208484529091528120805460ff19168155906123736001830182612e71565b5050604051819033907f140278d2322b9671bf293aea878e7717c46d5b7cd955e3e426ee67e01b90165490600090a350565b6123ae33610f3e565b15156123b957600080fd5b336000818152600360209081526040808320858452909152808220805461ffff19169055518392917f191bd7fc1f22ce6b74b7d7e42126f0ed225b109728607c99971de9e78b0db6eb91a350565b61241033610f3e565b151561241b57600080fd5b60408051808201825260018082526020808301858152336000908152600583528581208882528352949094208351815460ff19169015151781559351805193949361246d938501929190910190612df3565b505060405183915033907fee56af66250a5cbba377132a356dc403d520776e30969594927024c44af8440b90600090a35050565b6124aa33610f3e565b15156124b557600080fd5b60408051808201825260018082526020808301858152336000818152600284528681208982529093528583209451855460ff19169015151785559051939092019290925591518492917fdb4ad6a3ed2bdacbae02da45a5bb54192cdb7d72648674d13e08d2fc4c45ac6691a35050565b7fcfd0c6ea5352192d7d4c5d4e7a73c5da12c871730cb60ff57879cbe7b403bb525490565b7f3ca57e4b51fc2e18497b219410298879868edada7e6fe5132c8feceb0a080d2255565b7fcfd0c6ea5352192d7d4c5d4e7a73c5da12c871730cb60ff57879cbe7b403bb5255565b61259b33610f3e565b15156125a657600080fd5b3360009081526005602090815260408083208484529091528120805460ff19168155906125d66001830182612e71565b5050604051819033907f0eaf95ab41777ff88e28181b1c43418524616bcef6d37c3b216015b5548cb10890600090a350565b600160a060020a038216600090815260056020908152604080832084845282528083208054600180830180548551601f600294831615610100026000190190921693909304908101879004870283018701909552848252606095939460ff909316939092839183018282801561231c5780601f106122f15761010080835404028352916020019161231c565b61269d33610f3e565b15156126a857600080fd5b60408051808201825260018082526020808301858152336000908152600983528581208882528352949094208351815460ff1916901515178155935180519394936126fa938501929190910190612df3565b505060405183915033907fdb23beee028623a85d5af1d247423ca471d20e499b131cd5e5c76277eaa2ad5b90600090a35050565b61273733610f3e565b151561274257600080fd5b60408051808201825260018082526020808301858152336000908152600483528581208882528352949094208351815460ff191690151517815593518051939493612794938501929190910190612df3565b505060405183915033907f43e6b7e3323b4598401023341c086c07c3ff5577f594b5aab9c065f2c3c9d59090600090a35050565b600160a060020a03919091166000908152600160208181526040808420948452939052919020805491015460ff90911691565b600160a060020a03918216600090815260208181526040808320938352929052205460ff81169261010090910490911690565b61283733610f3e565b151561284257600080fd5b336000818152600260209081526040808320858452909152808220805460ff19168155600101829055518392917f3c3ff48e02e407eb1e78310d11b5e3f9e735263a9cafc2bcf4aa981b8ecb32a591a350565b600160a060020a0391909116600090815260026020908152604080832093835292905220805460019091015460ff90911691565b600160a060020a0382166000908152600a6020908152604080832084845282528083208054600280830154600180850180548751601f93821615610100026000190190911694909404918201889004880284018801909652808352606096889660ff90951694939184918301828280156129845780601f1061295957610100808354040283529160200191612984565b820191906000526020600020905b81548152906001019060200180831161296757829003601f168201915b50505050509150935093509350509250925092565b600160a060020a03919091166000908152600360209081526040808320938352929052205460ff808216926101009092041690565b6129d733610f3e565b15156129e257600080fd5b6040805180820182526001815282151560208083019182523360008181526003835285812088825290925284822093518454935115156101000261ff001991151560ff1990951694909417169290921790925591518492917f68cc3496efaac4c1f2c0cd52da916138f6c5fc541992f05d97423a89b6914ae591a35050565b612a6a33610f3e565b1515612a7557600080fd5b60408051808201825260018152600160a060020a03838116602080840191825233600081815280835286812089825290925285822094518554935160ff199094169015151774ffffffffffffffffffffffffffffffffffffffff001916610100939094169290920292909217909255915184927f8e7e6ab6c4613205e833e1faf5415d78dd10130a8828f729c08036e2a7a6277091a35050565b600b80546001019055565b612b2333610f3e565b1515612b2e57600080fd5b336000908152600a602090815260408083208484529091528120805460ff19168155906001820181612b608282612e71565b5060006001919091018190556040518493503392507f25e5b7d51c31a9c5ccb88759f5d30bbd5cac7eb300c5cb2498574f56463a6d379190a350565b612ba533610f3e565b1515612bb057600080fd5b604080518082018252600180825260208083018581523360008181528484528681208982529093528583209451855460ff19169015151785559051939092019290925591518492917fff76cb7634629f8d05011ab2a58380dfc0743157a70ba4173f866e113eca75c091a35050565b612c2833610f3e565b1515612c3357600080fd5b336000818152600160208181526040808420868552909152808320805460ff19168155909101829055518392917fd5f853f7aaba549b5a46be1de24cac4c20e716b4c603d24b2b0b7b5d97ca1c4d91a350565b600160a060020a038216600090815260046020908152604080832084845282528083208054600180830180548551601f600294831615610100026000190190921693909304908101879004870283018701909552848252606095939460ff909316939092839183018282801561231c5780601f106122f15761010080835404028352916020019161231c565b612d1b33610f3e565b1515612d2657600080fd5b3360009081526004602090815260408083208484529091528120805460ff1916815590612d566001830182612e71565b5050604051819033907f491a0e0281af9fc88ff024cffc24db22eddd4f826cb30d84936592967dc9237c90600090a350565b604080516101a08101825260008082526020820181905291810182905260608082018390526080820183905260a0820183905260c0820181905260e0820183905261010082015261012081018290526101408101829052906101608201908152602001600081525090565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f10612e3457805160ff1916838001178555612e61565b82800160010185558215612e61579182015b82811115612e61578251825591602001919060010190612e46565b50612e6d929150612eb1565b5090565b50805460018160011615610100020316600290046000825580601f10612e975750610f23565b601f016020900490600052602060002090810190610f2391905b6111b791905b80821115612e6d5760008155600101612eb75600696e76616c69642065786368616e676520696e64657800000000000000000000a165627a7a72305820eece3a7358b39cb1f8e6f2f4fba0df12493faef8c3035517ae20b842b26108cd0029`
 
 // DeployPassportLogicContract deploys a new Ethereum contract, binding an instance of PassportLogicContract to it.
 func DeployPassportLogicContract(auth *bind.TransactOpts, backend bind.ContractBackend) (common.Address, *types.Transaction, *PassportLogicContract, error) {
@@ -190,7 +190,7 @@ func (_PassportLogicContract *PassportLogicContractTransactorRaw) Transact(opts 
 
 // GetAddress is a free data retrieval call binding the contract method 0x7ac4ed64.
 //
-// Solidity: function getAddress(address _factProvider, bytes32 _key) constant returns(bool success, address value)
+// Solidity: function getAddress(_factProvider address, _key bytes32) constant returns(success bool, value address)
 func (_PassportLogicContract *PassportLogicContractCaller) GetAddress(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   common.Address
@@ -206,7 +206,7 @@ func (_PassportLogicContract *PassportLogicContractCaller) GetAddress(opts *bind
 
 // GetAddress is a free data retrieval call binding the contract method 0x7ac4ed64.
 //
-// Solidity: function getAddress(address _factProvider, bytes32 _key) constant returns(bool success, address value)
+// Solidity: function getAddress(_factProvider address, _key bytes32) constant returns(success bool, value address)
 func (_PassportLogicContract *PassportLogicContractSession) GetAddress(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   common.Address
@@ -216,7 +216,7 @@ func (_PassportLogicContract *PassportLogicContractSession) GetAddress(_factProv
 
 // GetAddress is a free data retrieval call binding the contract method 0x7ac4ed64.
 //
-// Solidity: function getAddress(address _factProvider, bytes32 _key) constant returns(bool success, address value)
+// Solidity: function getAddress(_factProvider address, _key bytes32) constant returns(success bool, value address)
 func (_PassportLogicContract *PassportLogicContractCallerSession) GetAddress(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   common.Address
@@ -226,7 +226,7 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) GetAddress(_fa
 
 // GetBool is a free data retrieval call binding the contract method 0x9d74b37d.
 //
-// Solidity: function getBool(address _factProvider, bytes32 _key) constant returns(bool success, bool value)
+// Solidity: function getBool(_factProvider address, _key bytes32) constant returns(success bool, value bool)
 func (_PassportLogicContract *PassportLogicContractCaller) GetBool(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   bool
@@ -242,7 +242,7 @@ func (_PassportLogicContract *PassportLogicContractCaller) GetBool(opts *bind.Ca
 
 // GetBool is a free data retrieval call binding the contract method 0x9d74b37d.
 //
-// Solidity: function getBool(address _factProvider, bytes32 _key) constant returns(bool success, bool value)
+// Solidity: function getBool(_factProvider address, _key bytes32) constant returns(success bool, value bool)
 func (_PassportLogicContract *PassportLogicContractSession) GetBool(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   bool
@@ -252,7 +252,7 @@ func (_PassportLogicContract *PassportLogicContractSession) GetBool(_factProvide
 
 // GetBool is a free data retrieval call binding the contract method 0x9d74b37d.
 //
-// Solidity: function getBool(address _factProvider, bytes32 _key) constant returns(bool success, bool value)
+// Solidity: function getBool(_factProvider address, _key bytes32) constant returns(success bool, value bool)
 func (_PassportLogicContract *PassportLogicContractCallerSession) GetBool(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   bool
@@ -262,7 +262,7 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) GetBool(_factP
 
 // GetBytes is a free data retrieval call binding the contract method 0x6556f767.
 //
-// Solidity: function getBytes(address _factProvider, bytes32 _key) constant returns(bool success, bytes value)
+// Solidity: function getBytes(_factProvider address, _key bytes32) constant returns(success bool, value bytes)
 func (_PassportLogicContract *PassportLogicContractCaller) GetBytes(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   []byte
@@ -278,7 +278,7 @@ func (_PassportLogicContract *PassportLogicContractCaller) GetBytes(opts *bind.C
 
 // GetBytes is a free data retrieval call binding the contract method 0x6556f767.
 //
-// Solidity: function getBytes(address _factProvider, bytes32 _key) constant returns(bool success, bytes value)
+// Solidity: function getBytes(_factProvider address, _key bytes32) constant returns(success bool, value bytes)
 func (_PassportLogicContract *PassportLogicContractSession) GetBytes(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   []byte
@@ -288,7 +288,7 @@ func (_PassportLogicContract *PassportLogicContractSession) GetBytes(_factProvid
 
 // GetBytes is a free data retrieval call binding the contract method 0x6556f767.
 //
-// Solidity: function getBytes(address _factProvider, bytes32 _key) constant returns(bool success, bytes value)
+// Solidity: function getBytes(_factProvider address, _key bytes32) constant returns(success bool, value bytes)
 func (_PassportLogicContract *PassportLogicContractCallerSession) GetBytes(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   []byte
@@ -298,7 +298,7 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) GetBytes(_fact
 
 // GetIPFSHash is a free data retrieval call binding the contract method 0x22b96b63.
 //
-// Solidity: function getIPFSHash(address _factProvider, bytes32 _key) constant returns(bool success, string value)
+// Solidity: function getIPFSHash(_factProvider address, _key bytes32) constant returns(success bool, value string)
 func (_PassportLogicContract *PassportLogicContractCaller) GetIPFSHash(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   string
@@ -314,7 +314,7 @@ func (_PassportLogicContract *PassportLogicContractCaller) GetIPFSHash(opts *bin
 
 // GetIPFSHash is a free data retrieval call binding the contract method 0x22b96b63.
 //
-// Solidity: function getIPFSHash(address _factProvider, bytes32 _key) constant returns(bool success, string value)
+// Solidity: function getIPFSHash(_factProvider address, _key bytes32) constant returns(success bool, value string)
 func (_PassportLogicContract *PassportLogicContractSession) GetIPFSHash(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   string
@@ -324,7 +324,7 @@ func (_PassportLogicContract *PassportLogicContractSession) GetIPFSHash(_factPro
 
 // GetIPFSHash is a free data retrieval call binding the contract method 0x22b96b63.
 //
-// Solidity: function getIPFSHash(address _factProvider, bytes32 _key) constant returns(bool success, string value)
+// Solidity: function getIPFSHash(_factProvider address, _key bytes32) constant returns(success bool, value string)
 func (_PassportLogicContract *PassportLogicContractCallerSession) GetIPFSHash(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   string
@@ -334,7 +334,7 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) GetIPFSHash(_f
 
 // GetInt is a free data retrieval call binding the contract method 0x95ee8bae.
 //
-// Solidity: function getInt(address _factProvider, bytes32 _key) constant returns(bool success, int256 value)
+// Solidity: function getInt(_factProvider address, _key bytes32) constant returns(success bool, value int256)
 func (_PassportLogicContract *PassportLogicContractCaller) GetInt(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   *big.Int
@@ -350,7 +350,7 @@ func (_PassportLogicContract *PassportLogicContractCaller) GetInt(opts *bind.Cal
 
 // GetInt is a free data retrieval call binding the contract method 0x95ee8bae.
 //
-// Solidity: function getInt(address _factProvider, bytes32 _key) constant returns(bool success, int256 value)
+// Solidity: function getInt(_factProvider address, _key bytes32) constant returns(success bool, value int256)
 func (_PassportLogicContract *PassportLogicContractSession) GetInt(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   *big.Int
@@ -360,7 +360,7 @@ func (_PassportLogicContract *PassportLogicContractSession) GetInt(_factProvider
 
 // GetInt is a free data retrieval call binding the contract method 0x95ee8bae.
 //
-// Solidity: function getInt(address _factProvider, bytes32 _key) constant returns(bool success, int256 value)
+// Solidity: function getInt(_factProvider address, _key bytes32) constant returns(success bool, value int256)
 func (_PassportLogicContract *PassportLogicContractCallerSession) GetInt(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   *big.Int
@@ -368,9 +368,75 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) GetInt(_factPr
 	return _PassportLogicContract.Contract.GetInt(&_PassportLogicContract.CallOpts, _factProvider, _key)
 }
 
+// GetPrivateData is a free data retrieval call binding the contract method 0x9972a4f5.
+//
+// Solidity: function getPrivateData(_factProvider address, _key bytes32) constant returns(success bool, dataIPFSHash string, dataKeyHash bytes32)
+func (_PassportLogicContract *PassportLogicContractCaller) GetPrivateData(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
+	Success      bool
+	DataIPFSHash string
+	DataKeyHash  [32]byte
+}, error) {
+	ret := new(struct {
+		Success      bool
+		DataIPFSHash string
+		DataKeyHash  [32]byte
+	})
+	out := ret
+	err := _PassportLogicContract.contract.Call(opts, out, "getPrivateData", _factProvider, _key)
+	return *ret, err
+}
+
+// GetPrivateData is a free data retrieval call binding the contract method 0x9972a4f5.
+//
+// Solidity: function getPrivateData(_factProvider address, _key bytes32) constant returns(success bool, dataIPFSHash string, dataKeyHash bytes32)
+func (_PassportLogicContract *PassportLogicContractSession) GetPrivateData(_factProvider common.Address, _key [32]byte) (struct {
+	Success      bool
+	DataIPFSHash string
+	DataKeyHash  [32]byte
+}, error) {
+	return _PassportLogicContract.Contract.GetPrivateData(&_PassportLogicContract.CallOpts, _factProvider, _key)
+}
+
+// GetPrivateData is a free data retrieval call binding the contract method 0x9972a4f5.
+//
+// Solidity: function getPrivateData(_factProvider address, _key bytes32) constant returns(success bool, dataIPFSHash string, dataKeyHash bytes32)
+func (_PassportLogicContract *PassportLogicContractCallerSession) GetPrivateData(_factProvider common.Address, _key [32]byte) (struct {
+	Success      bool
+	DataIPFSHash string
+	DataKeyHash  [32]byte
+}, error) {
+	return _PassportLogicContract.Contract.GetPrivateData(&_PassportLogicContract.CallOpts, _factProvider, _key)
+}
+
+// GetPrivateDataExchangesCount is a free data retrieval call binding the contract method 0x7dd291e4.
+//
+// Solidity: function getPrivateDataExchangesCount() constant returns(count uint256)
+func (_PassportLogicContract *PassportLogicContractCaller) GetPrivateDataExchangesCount(opts *bind.CallOpts) (*big.Int, error) {
+	var (
+		ret0 = new(*big.Int)
+	)
+	out := ret0
+	err := _PassportLogicContract.contract.Call(opts, out, "getPrivateDataExchangesCount")
+	return *ret0, err
+}
+
+// GetPrivateDataExchangesCount is a free data retrieval call binding the contract method 0x7dd291e4.
+//
+// Solidity: function getPrivateDataExchangesCount() constant returns(count uint256)
+func (_PassportLogicContract *PassportLogicContractSession) GetPrivateDataExchangesCount() (*big.Int, error) {
+	return _PassportLogicContract.Contract.GetPrivateDataExchangesCount(&_PassportLogicContract.CallOpts)
+}
+
+// GetPrivateDataExchangesCount is a free data retrieval call binding the contract method 0x7dd291e4.
+//
+// Solidity: function getPrivateDataExchangesCount() constant returns(count uint256)
+func (_PassportLogicContract *PassportLogicContractCallerSession) GetPrivateDataExchangesCount() (*big.Int, error) {
+	return _PassportLogicContract.Contract.GetPrivateDataExchangesCount(&_PassportLogicContract.CallOpts)
+}
+
 // GetString is a free data retrieval call binding the contract method 0xe318de73.
 //
-// Solidity: function getString(address _factProvider, bytes32 _key) constant returns(bool success, string value)
+// Solidity: function getString(_factProvider address, _key bytes32) constant returns(success bool, value string)
 func (_PassportLogicContract *PassportLogicContractCaller) GetString(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   string
@@ -386,7 +452,7 @@ func (_PassportLogicContract *PassportLogicContractCaller) GetString(opts *bind.
 
 // GetString is a free data retrieval call binding the contract method 0xe318de73.
 //
-// Solidity: function getString(address _factProvider, bytes32 _key) constant returns(bool success, string value)
+// Solidity: function getString(_factProvider address, _key bytes32) constant returns(success bool, value string)
 func (_PassportLogicContract *PassportLogicContractSession) GetString(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   string
@@ -396,7 +462,7 @@ func (_PassportLogicContract *PassportLogicContractSession) GetString(_factProvi
 
 // GetString is a free data retrieval call binding the contract method 0xe318de73.
 //
-// Solidity: function getString(address _factProvider, bytes32 _key) constant returns(bool success, string value)
+// Solidity: function getString(_factProvider address, _key bytes32) constant returns(success bool, value string)
 func (_PassportLogicContract *PassportLogicContractCallerSession) GetString(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   string
@@ -406,7 +472,7 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) GetString(_fac
 
 // GetTxDataBlockNumber is a free data retrieval call binding the contract method 0x174a6277.
 //
-// Solidity: function getTxDataBlockNumber(address _factProvider, bytes32 _key) constant returns(bool success, uint256 blockNumber)
+// Solidity: function getTxDataBlockNumber(_factProvider address, _key bytes32) constant returns(success bool, blockNumber uint256)
 func (_PassportLogicContract *PassportLogicContractCaller) GetTxDataBlockNumber(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success     bool
 	BlockNumber *big.Int
@@ -422,7 +488,7 @@ func (_PassportLogicContract *PassportLogicContractCaller) GetTxDataBlockNumber(
 
 // GetTxDataBlockNumber is a free data retrieval call binding the contract method 0x174a6277.
 //
-// Solidity: function getTxDataBlockNumber(address _factProvider, bytes32 _key) constant returns(bool success, uint256 blockNumber)
+// Solidity: function getTxDataBlockNumber(_factProvider address, _key bytes32) constant returns(success bool, blockNumber uint256)
 func (_PassportLogicContract *PassportLogicContractSession) GetTxDataBlockNumber(_factProvider common.Address, _key [32]byte) (struct {
 	Success     bool
 	BlockNumber *big.Int
@@ -432,7 +498,7 @@ func (_PassportLogicContract *PassportLogicContractSession) GetTxDataBlockNumber
 
 // GetTxDataBlockNumber is a free data retrieval call binding the contract method 0x174a6277.
 //
-// Solidity: function getTxDataBlockNumber(address _factProvider, bytes32 _key) constant returns(bool success, uint256 blockNumber)
+// Solidity: function getTxDataBlockNumber(_factProvider address, _key bytes32) constant returns(success bool, blockNumber uint256)
 func (_PassportLogicContract *PassportLogicContractCallerSession) GetTxDataBlockNumber(_factProvider common.Address, _key [32]byte) (struct {
 	Success     bool
 	BlockNumber *big.Int
@@ -442,7 +508,7 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) GetTxDataBlock
 
 // GetUint is a free data retrieval call binding the contract method 0x71658552.
 //
-// Solidity: function getUint(address _factProvider, bytes32 _key) constant returns(bool success, uint256 value)
+// Solidity: function getUint(_factProvider address, _key bytes32) constant returns(success bool, value uint256)
 func (_PassportLogicContract *PassportLogicContractCaller) GetUint(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   *big.Int
@@ -458,7 +524,7 @@ func (_PassportLogicContract *PassportLogicContractCaller) GetUint(opts *bind.Ca
 
 // GetUint is a free data retrieval call binding the contract method 0x71658552.
 //
-// Solidity: function getUint(address _factProvider, bytes32 _key) constant returns(bool success, uint256 value)
+// Solidity: function getUint(_factProvider address, _key bytes32) constant returns(success bool, value uint256)
 func (_PassportLogicContract *PassportLogicContractSession) GetUint(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   *big.Int
@@ -468,7 +534,7 @@ func (_PassportLogicContract *PassportLogicContractSession) GetUint(_factProvide
 
 // GetUint is a free data retrieval call binding the contract method 0x71658552.
 //
-// Solidity: function getUint(address _factProvider, bytes32 _key) constant returns(bool success, uint256 value)
+// Solidity: function getUint(_factProvider address, _key bytes32) constant returns(success bool, value uint256)
 func (_PassportLogicContract *PassportLogicContractCallerSession) GetUint(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   *big.Int
@@ -478,7 +544,7 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) GetUint(_factP
 
 // IsAllowedFactProvider is a free data retrieval call binding the contract method 0x20888158.
 //
-// Solidity: function isAllowedFactProvider(address _address) constant returns(bool)
+// Solidity: function isAllowedFactProvider(_address address) constant returns(bool)
 func (_PassportLogicContract *PassportLogicContractCaller) IsAllowedFactProvider(opts *bind.CallOpts, _address common.Address) (bool, error) {
 	var (
 		ret0 = new(bool)
@@ -490,21 +556,21 @@ func (_PassportLogicContract *PassportLogicContractCaller) IsAllowedFactProvider
 
 // IsAllowedFactProvider is a free data retrieval call binding the contract method 0x20888158.
 //
-// Solidity: function isAllowedFactProvider(address _address) constant returns(bool)
+// Solidity: function isAllowedFactProvider(_address address) constant returns(bool)
 func (_PassportLogicContract *PassportLogicContractSession) IsAllowedFactProvider(_address common.Address) (bool, error) {
 	return _PassportLogicContract.Contract.IsAllowedFactProvider(&_PassportLogicContract.CallOpts, _address)
 }
 
 // IsAllowedFactProvider is a free data retrieval call binding the contract method 0x20888158.
 //
-// Solidity: function isAllowedFactProvider(address _address) constant returns(bool)
+// Solidity: function isAllowedFactProvider(_address address) constant returns(bool)
 func (_PassportLogicContract *PassportLogicContractCallerSession) IsAllowedFactProvider(_address common.Address) (bool, error) {
 	return _PassportLogicContract.Contract.IsAllowedFactProvider(&_PassportLogicContract.CallOpts, _address)
 }
 
 // IsFactProviderInWhitelist is a free data retrieval call binding the contract method 0x8ae44a08.
 //
-// Solidity: function isFactProviderInWhitelist(address _address) constant returns(bool)
+// Solidity: function isFactProviderInWhitelist(_address address) constant returns(bool)
 func (_PassportLogicContract *PassportLogicContractCaller) IsFactProviderInWhitelist(opts *bind.CallOpts, _address common.Address) (bool, error) {
 	var (
 		ret0 = new(bool)
@@ -516,14 +582,14 @@ func (_PassportLogicContract *PassportLogicContractCaller) IsFactProviderInWhite
 
 // IsFactProviderInWhitelist is a free data retrieval call binding the contract method 0x8ae44a08.
 //
-// Solidity: function isFactProviderInWhitelist(address _address) constant returns(bool)
+// Solidity: function isFactProviderInWhitelist(_address address) constant returns(bool)
 func (_PassportLogicContract *PassportLogicContractSession) IsFactProviderInWhitelist(_address common.Address) (bool, error) {
 	return _PassportLogicContract.Contract.IsFactProviderInWhitelist(&_PassportLogicContract.CallOpts, _address)
 }
 
 // IsFactProviderInWhitelist is a free data retrieval call binding the contract method 0x8ae44a08.
 //
-// Solidity: function isFactProviderInWhitelist(address _address) constant returns(bool)
+// Solidity: function isFactProviderInWhitelist(_address address) constant returns(bool)
 func (_PassportLogicContract *PassportLogicContractCallerSession) IsFactProviderInWhitelist(_address common.Address) (bool, error) {
 	return _PassportLogicContract.Contract.IsFactProviderInWhitelist(&_PassportLogicContract.CallOpts, _address)
 }
@@ -552,6 +618,32 @@ func (_PassportLogicContract *PassportLogicContractSession) IsWhitelistOnlyPermi
 // Solidity: function isWhitelistOnlyPermissionSet() constant returns(bool)
 func (_PassportLogicContract *PassportLogicContractCallerSession) IsWhitelistOnlyPermissionSet() (bool, error) {
 	return _PassportLogicContract.Contract.IsWhitelistOnlyPermissionSet(&_PassportLogicContract.CallOpts)
+}
+
+// OpenPrivateDataExchangesCount is a free data retrieval call binding the contract method 0xcaa95f1b.
+//
+// Solidity: function openPrivateDataExchangesCount() constant returns(uint256)
+func (_PassportLogicContract *PassportLogicContractCaller) OpenPrivateDataExchangesCount(opts *bind.CallOpts) (*big.Int, error) {
+	var (
+		ret0 = new(*big.Int)
+	)
+	out := ret0
+	err := _PassportLogicContract.contract.Call(opts, out, "openPrivateDataExchangesCount")
+	return *ret0, err
+}
+
+// OpenPrivateDataExchangesCount is a free data retrieval call binding the contract method 0xcaa95f1b.
+//
+// Solidity: function openPrivateDataExchangesCount() constant returns(uint256)
+func (_PassportLogicContract *PassportLogicContractSession) OpenPrivateDataExchangesCount() (*big.Int, error) {
+	return _PassportLogicContract.Contract.OpenPrivateDataExchangesCount(&_PassportLogicContract.CallOpts)
+}
+
+// OpenPrivateDataExchangesCount is a free data retrieval call binding the contract method 0xcaa95f1b.
+//
+// Solidity: function openPrivateDataExchangesCount() constant returns(uint256)
+func (_PassportLogicContract *PassportLogicContractCallerSession) OpenPrivateDataExchangesCount() (*big.Int, error) {
+	return _PassportLogicContract.Contract.OpenPrivateDataExchangesCount(&_PassportLogicContract.CallOpts)
 }
 
 // Owner is a free data retrieval call binding the contract method 0x8da5cb5b.
@@ -606,23 +698,176 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) PendingOwner()
 	return _PassportLogicContract.Contract.PendingOwner(&_PassportLogicContract.CallOpts)
 }
 
+// PrivateDataExchangeAcceptTimeout is a free data retrieval call binding the contract method 0x0a256525.
+//
+// Solidity: function privateDataExchangeAcceptTimeout() constant returns(uint256)
+func (_PassportLogicContract *PassportLogicContractCaller) PrivateDataExchangeAcceptTimeout(opts *bind.CallOpts) (*big.Int, error) {
+	var (
+		ret0 = new(*big.Int)
+	)
+	out := ret0
+	err := _PassportLogicContract.contract.Call(opts, out, "privateDataExchangeAcceptTimeout")
+	return *ret0, err
+}
+
+// PrivateDataExchangeAcceptTimeout is a free data retrieval call binding the contract method 0x0a256525.
+//
+// Solidity: function privateDataExchangeAcceptTimeout() constant returns(uint256)
+func (_PassportLogicContract *PassportLogicContractSession) PrivateDataExchangeAcceptTimeout() (*big.Int, error) {
+	return _PassportLogicContract.Contract.PrivateDataExchangeAcceptTimeout(&_PassportLogicContract.CallOpts)
+}
+
+// PrivateDataExchangeAcceptTimeout is a free data retrieval call binding the contract method 0x0a256525.
+//
+// Solidity: function privateDataExchangeAcceptTimeout() constant returns(uint256)
+func (_PassportLogicContract *PassportLogicContractCallerSession) PrivateDataExchangeAcceptTimeout() (*big.Int, error) {
+	return _PassportLogicContract.Contract.PrivateDataExchangeAcceptTimeout(&_PassportLogicContract.CallOpts)
+}
+
+// PrivateDataExchangeProposeTimeout is a free data retrieval call binding the contract method 0xab338e36.
+//
+// Solidity: function privateDataExchangeProposeTimeout() constant returns(uint256)
+func (_PassportLogicContract *PassportLogicContractCaller) PrivateDataExchangeProposeTimeout(opts *bind.CallOpts) (*big.Int, error) {
+	var (
+		ret0 = new(*big.Int)
+	)
+	out := ret0
+	err := _PassportLogicContract.contract.Call(opts, out, "privateDataExchangeProposeTimeout")
+	return *ret0, err
+}
+
+// PrivateDataExchangeProposeTimeout is a free data retrieval call binding the contract method 0xab338e36.
+//
+// Solidity: function privateDataExchangeProposeTimeout() constant returns(uint256)
+func (_PassportLogicContract *PassportLogicContractSession) PrivateDataExchangeProposeTimeout() (*big.Int, error) {
+	return _PassportLogicContract.Contract.PrivateDataExchangeProposeTimeout(&_PassportLogicContract.CallOpts)
+}
+
+// PrivateDataExchangeProposeTimeout is a free data retrieval call binding the contract method 0xab338e36.
+//
+// Solidity: function privateDataExchangeProposeTimeout() constant returns(uint256)
+func (_PassportLogicContract *PassportLogicContractCallerSession) PrivateDataExchangeProposeTimeout() (*big.Int, error) {
+	return _PassportLogicContract.Contract.PrivateDataExchangeProposeTimeout(&_PassportLogicContract.CallOpts)
+}
+
+// PrivateDataExchanges is a free data retrieval call binding the contract method 0x6f618f9a.
+//
+// Solidity: function privateDataExchanges( uint256) constant returns(dataRequester address, dataRequesterValue uint256, passportOwner address, passportOwnerValue uint256, factProvider address, key bytes32, dataIPFSHash string, dataKeyHash bytes32, encryptedExchangeKey bytes, exchangeKeyHash bytes32, encryptedDataKey bytes32, state uint8, stateExpired uint256)
+func (_PassportLogicContract *PassportLogicContractCaller) PrivateDataExchanges(opts *bind.CallOpts, arg0 *big.Int) (struct {
+	DataRequester        common.Address
+	DataRequesterValue   *big.Int
+	PassportOwner        common.Address
+	PassportOwnerValue   *big.Int
+	FactProvider         common.Address
+	Key                  [32]byte
+	DataIPFSHash         string
+	DataKeyHash          [32]byte
+	EncryptedExchangeKey []byte
+	ExchangeKeyHash      [32]byte
+	EncryptedDataKey     [32]byte
+	State                uint8
+	StateExpired         *big.Int
+}, error) {
+	ret := new(struct {
+		DataRequester        common.Address
+		DataRequesterValue   *big.Int
+		PassportOwner        common.Address
+		PassportOwnerValue   *big.Int
+		FactProvider         common.Address
+		Key                  [32]byte
+		DataIPFSHash         string
+		DataKeyHash          [32]byte
+		EncryptedExchangeKey []byte
+		ExchangeKeyHash      [32]byte
+		EncryptedDataKey     [32]byte
+		State                uint8
+		StateExpired         *big.Int
+	})
+	out := ret
+	err := _PassportLogicContract.contract.Call(opts, out, "privateDataExchanges", arg0)
+	return *ret, err
+}
+
+// PrivateDataExchanges is a free data retrieval call binding the contract method 0x6f618f9a.
+//
+// Solidity: function privateDataExchanges( uint256) constant returns(dataRequester address, dataRequesterValue uint256, passportOwner address, passportOwnerValue uint256, factProvider address, key bytes32, dataIPFSHash string, dataKeyHash bytes32, encryptedExchangeKey bytes, exchangeKeyHash bytes32, encryptedDataKey bytes32, state uint8, stateExpired uint256)
+func (_PassportLogicContract *PassportLogicContractSession) PrivateDataExchanges(arg0 *big.Int) (struct {
+	DataRequester        common.Address
+	DataRequesterValue   *big.Int
+	PassportOwner        common.Address
+	PassportOwnerValue   *big.Int
+	FactProvider         common.Address
+	Key                  [32]byte
+	DataIPFSHash         string
+	DataKeyHash          [32]byte
+	EncryptedExchangeKey []byte
+	ExchangeKeyHash      [32]byte
+	EncryptedDataKey     [32]byte
+	State                uint8
+	StateExpired         *big.Int
+}, error) {
+	return _PassportLogicContract.Contract.PrivateDataExchanges(&_PassportLogicContract.CallOpts, arg0)
+}
+
+// PrivateDataExchanges is a free data retrieval call binding the contract method 0x6f618f9a.
+//
+// Solidity: function privateDataExchanges( uint256) constant returns(dataRequester address, dataRequesterValue uint256, passportOwner address, passportOwnerValue uint256, factProvider address, key bytes32, dataIPFSHash string, dataKeyHash bytes32, encryptedExchangeKey bytes, exchangeKeyHash bytes32, encryptedDataKey bytes32, state uint8, stateExpired uint256)
+func (_PassportLogicContract *PassportLogicContractCallerSession) PrivateDataExchanges(arg0 *big.Int) (struct {
+	DataRequester        common.Address
+	DataRequesterValue   *big.Int
+	PassportOwner        common.Address
+	PassportOwnerValue   *big.Int
+	FactProvider         common.Address
+	Key                  [32]byte
+	DataIPFSHash         string
+	DataKeyHash          [32]byte
+	EncryptedExchangeKey []byte
+	ExchangeKeyHash      [32]byte
+	EncryptedDataKey     [32]byte
+	State                uint8
+	StateExpired         *big.Int
+}, error) {
+	return _PassportLogicContract.Contract.PrivateDataExchanges(&_PassportLogicContract.CallOpts, arg0)
+}
+
+// AcceptPrivateDataExchange is a paid mutator transaction binding the contract method 0x86ca9a7c.
+//
+// Solidity: function acceptPrivateDataExchange(_exchangeIdx uint256, _encryptedDataKey bytes32) returns()
+func (_PassportLogicContract *PassportLogicContractTransactor) AcceptPrivateDataExchange(opts *bind.TransactOpts, _exchangeIdx *big.Int, _encryptedDataKey [32]byte) (*types.Transaction, error) {
+	return _PassportLogicContract.contract.Transact(opts, "acceptPrivateDataExchange", _exchangeIdx, _encryptedDataKey)
+}
+
+// AcceptPrivateDataExchange is a paid mutator transaction binding the contract method 0x86ca9a7c.
+//
+// Solidity: function acceptPrivateDataExchange(_exchangeIdx uint256, _encryptedDataKey bytes32) returns()
+func (_PassportLogicContract *PassportLogicContractSession) AcceptPrivateDataExchange(_exchangeIdx *big.Int, _encryptedDataKey [32]byte) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.AcceptPrivateDataExchange(&_PassportLogicContract.TransactOpts, _exchangeIdx, _encryptedDataKey)
+}
+
+// AcceptPrivateDataExchange is a paid mutator transaction binding the contract method 0x86ca9a7c.
+//
+// Solidity: function acceptPrivateDataExchange(_exchangeIdx uint256, _encryptedDataKey bytes32) returns()
+func (_PassportLogicContract *PassportLogicContractTransactorSession) AcceptPrivateDataExchange(_exchangeIdx *big.Int, _encryptedDataKey [32]byte) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.AcceptPrivateDataExchange(&_PassportLogicContract.TransactOpts, _exchangeIdx, _encryptedDataKey)
+}
+
 // AddFactProviderToWhitelist is a paid mutator transaction binding the contract method 0xac0aeb1a.
 //
-// Solidity: function addFactProviderToWhitelist(address _address) returns()
+// Solidity: function addFactProviderToWhitelist(_address address) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) AddFactProviderToWhitelist(opts *bind.TransactOpts, _address common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "addFactProviderToWhitelist", _address)
 }
 
 // AddFactProviderToWhitelist is a paid mutator transaction binding the contract method 0xac0aeb1a.
 //
-// Solidity: function addFactProviderToWhitelist(address _address) returns()
+// Solidity: function addFactProviderToWhitelist(_address address) returns()
 func (_PassportLogicContract *PassportLogicContractSession) AddFactProviderToWhitelist(_address common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.AddFactProviderToWhitelist(&_PassportLogicContract.TransactOpts, _address)
 }
 
 // AddFactProviderToWhitelist is a paid mutator transaction binding the contract method 0xac0aeb1a.
 //
-// Solidity: function addFactProviderToWhitelist(address _address) returns()
+// Solidity: function addFactProviderToWhitelist(_address address) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) AddFactProviderToWhitelist(_address common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.AddFactProviderToWhitelist(&_PassportLogicContract.TransactOpts, _address)
 }
@@ -650,189 +895,273 @@ func (_PassportLogicContract *PassportLogicContractTransactorSession) ClaimOwner
 
 // DeleteAddress is a paid mutator transaction binding the contract method 0x0e14a376.
 //
-// Solidity: function deleteAddress(bytes32 _key) returns()
+// Solidity: function deleteAddress(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) DeleteAddress(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "deleteAddress", _key)
 }
 
 // DeleteAddress is a paid mutator transaction binding the contract method 0x0e14a376.
 //
-// Solidity: function deleteAddress(bytes32 _key) returns()
+// Solidity: function deleteAddress(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractSession) DeleteAddress(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteAddress(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteAddress is a paid mutator transaction binding the contract method 0x0e14a376.
 //
-// Solidity: function deleteAddress(bytes32 _key) returns()
+// Solidity: function deleteAddress(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) DeleteAddress(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteAddress(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteBool is a paid mutator transaction binding the contract method 0x2c62ff2d.
 //
-// Solidity: function deleteBool(bytes32 _key) returns()
+// Solidity: function deleteBool(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) DeleteBool(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "deleteBool", _key)
 }
 
 // DeleteBool is a paid mutator transaction binding the contract method 0x2c62ff2d.
 //
-// Solidity: function deleteBool(bytes32 _key) returns()
+// Solidity: function deleteBool(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractSession) DeleteBool(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteBool(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteBool is a paid mutator transaction binding the contract method 0x2c62ff2d.
 //
-// Solidity: function deleteBool(bytes32 _key) returns()
+// Solidity: function deleteBool(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) DeleteBool(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteBool(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteBytes is a paid mutator transaction binding the contract method 0x616b59f6.
 //
-// Solidity: function deleteBytes(bytes32 _key) returns()
+// Solidity: function deleteBytes(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) DeleteBytes(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "deleteBytes", _key)
 }
 
 // DeleteBytes is a paid mutator transaction binding the contract method 0x616b59f6.
 //
-// Solidity: function deleteBytes(bytes32 _key) returns()
+// Solidity: function deleteBytes(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractSession) DeleteBytes(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteBytes(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteBytes is a paid mutator transaction binding the contract method 0x616b59f6.
 //
-// Solidity: function deleteBytes(bytes32 _key) returns()
+// Solidity: function deleteBytes(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) DeleteBytes(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteBytes(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteIPFSHash is a paid mutator transaction binding the contract method 0x257781e7.
 //
-// Solidity: function deleteIPFSHash(bytes32 _key) returns()
+// Solidity: function deleteIPFSHash(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) DeleteIPFSHash(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "deleteIPFSHash", _key)
 }
 
 // DeleteIPFSHash is a paid mutator transaction binding the contract method 0x257781e7.
 //
-// Solidity: function deleteIPFSHash(bytes32 _key) returns()
+// Solidity: function deleteIPFSHash(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractSession) DeleteIPFSHash(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteIPFSHash(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteIPFSHash is a paid mutator transaction binding the contract method 0x257781e7.
 //
-// Solidity: function deleteIPFSHash(bytes32 _key) returns()
+// Solidity: function deleteIPFSHash(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) DeleteIPFSHash(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteIPFSHash(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteInt is a paid mutator transaction binding the contract method 0x8c160095.
 //
-// Solidity: function deleteInt(bytes32 _key) returns()
+// Solidity: function deleteInt(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) DeleteInt(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "deleteInt", _key)
 }
 
 // DeleteInt is a paid mutator transaction binding the contract method 0x8c160095.
 //
-// Solidity: function deleteInt(bytes32 _key) returns()
+// Solidity: function deleteInt(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractSession) DeleteInt(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteInt(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteInt is a paid mutator transaction binding the contract method 0x8c160095.
 //
-// Solidity: function deleteInt(bytes32 _key) returns()
+// Solidity: function deleteInt(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) DeleteInt(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteInt(&_PassportLogicContract.TransactOpts, _key)
 }
 
+// DeletePrivateData is a paid mutator transaction binding the contract method 0xdfc3cf81.
+//
+// Solidity: function deletePrivateData(_key bytes32) returns()
+func (_PassportLogicContract *PassportLogicContractTransactor) DeletePrivateData(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
+	return _PassportLogicContract.contract.Transact(opts, "deletePrivateData", _key)
+}
+
+// DeletePrivateData is a paid mutator transaction binding the contract method 0xdfc3cf81.
+//
+// Solidity: function deletePrivateData(_key bytes32) returns()
+func (_PassportLogicContract *PassportLogicContractSession) DeletePrivateData(_key [32]byte) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.DeletePrivateData(&_PassportLogicContract.TransactOpts, _key)
+}
+
+// DeletePrivateData is a paid mutator transaction binding the contract method 0xdfc3cf81.
+//
+// Solidity: function deletePrivateData(_key bytes32) returns()
+func (_PassportLogicContract *PassportLogicContractTransactorSession) DeletePrivateData(_key [32]byte) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.DeletePrivateData(&_PassportLogicContract.TransactOpts, _key)
+}
+
 // DeleteString is a paid mutator transaction binding the contract method 0xf6bb3cc4.
 //
-// Solidity: function deleteString(bytes32 _key) returns()
+// Solidity: function deleteString(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) DeleteString(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "deleteString", _key)
 }
 
 // DeleteString is a paid mutator transaction binding the contract method 0xf6bb3cc4.
 //
-// Solidity: function deleteString(bytes32 _key) returns()
+// Solidity: function deleteString(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractSession) DeleteString(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteString(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteString is a paid mutator transaction binding the contract method 0xf6bb3cc4.
 //
-// Solidity: function deleteString(bytes32 _key) returns()
+// Solidity: function deleteString(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) DeleteString(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteString(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteTxDataBlockNumber is a paid mutator transaction binding the contract method 0xa2b6cbe1.
 //
-// Solidity: function deleteTxDataBlockNumber(bytes32 _key) returns()
+// Solidity: function deleteTxDataBlockNumber(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) DeleteTxDataBlockNumber(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "deleteTxDataBlockNumber", _key)
 }
 
 // DeleteTxDataBlockNumber is a paid mutator transaction binding the contract method 0xa2b6cbe1.
 //
-// Solidity: function deleteTxDataBlockNumber(bytes32 _key) returns()
+// Solidity: function deleteTxDataBlockNumber(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractSession) DeleteTxDataBlockNumber(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteTxDataBlockNumber(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteTxDataBlockNumber is a paid mutator transaction binding the contract method 0xa2b6cbe1.
 //
-// Solidity: function deleteTxDataBlockNumber(bytes32 _key) returns()
+// Solidity: function deleteTxDataBlockNumber(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) DeleteTxDataBlockNumber(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteTxDataBlockNumber(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteUint is a paid mutator transaction binding the contract method 0xe2b202bf.
 //
-// Solidity: function deleteUint(bytes32 _key) returns()
+// Solidity: function deleteUint(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) DeleteUint(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "deleteUint", _key)
 }
 
 // DeleteUint is a paid mutator transaction binding the contract method 0xe2b202bf.
 //
-// Solidity: function deleteUint(bytes32 _key) returns()
+// Solidity: function deleteUint(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractSession) DeleteUint(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteUint(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteUint is a paid mutator transaction binding the contract method 0xe2b202bf.
 //
-// Solidity: function deleteUint(bytes32 _key) returns()
+// Solidity: function deleteUint(_key bytes32) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) DeleteUint(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteUint(&_PassportLogicContract.TransactOpts, _key)
 }
 
+// DisputePrivateDataExchange is a paid mutator transaction binding the contract method 0xfc2d0584.
+//
+// Solidity: function disputePrivateDataExchange(_exchangeIdx uint256, _exchangeKey bytes32) returns()
+func (_PassportLogicContract *PassportLogicContractTransactor) DisputePrivateDataExchange(opts *bind.TransactOpts, _exchangeIdx *big.Int, _exchangeKey [32]byte) (*types.Transaction, error) {
+	return _PassportLogicContract.contract.Transact(opts, "disputePrivateDataExchange", _exchangeIdx, _exchangeKey)
+}
+
+// DisputePrivateDataExchange is a paid mutator transaction binding the contract method 0xfc2d0584.
+//
+// Solidity: function disputePrivateDataExchange(_exchangeIdx uint256, _exchangeKey bytes32) returns()
+func (_PassportLogicContract *PassportLogicContractSession) DisputePrivateDataExchange(_exchangeIdx *big.Int, _exchangeKey [32]byte) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.DisputePrivateDataExchange(&_PassportLogicContract.TransactOpts, _exchangeIdx, _exchangeKey)
+}
+
+// DisputePrivateDataExchange is a paid mutator transaction binding the contract method 0xfc2d0584.
+//
+// Solidity: function disputePrivateDataExchange(_exchangeIdx uint256, _exchangeKey bytes32) returns()
+func (_PassportLogicContract *PassportLogicContractTransactorSession) DisputePrivateDataExchange(_exchangeIdx *big.Int, _exchangeKey [32]byte) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.DisputePrivateDataExchange(&_PassportLogicContract.TransactOpts, _exchangeIdx, _exchangeKey)
+}
+
+// FinishPrivateDataExchange is a paid mutator transaction binding the contract method 0x06427a88.
+//
+// Solidity: function finishPrivateDataExchange(_exchangeIdx uint256) returns()
+func (_PassportLogicContract *PassportLogicContractTransactor) FinishPrivateDataExchange(opts *bind.TransactOpts, _exchangeIdx *big.Int) (*types.Transaction, error) {
+	return _PassportLogicContract.contract.Transact(opts, "finishPrivateDataExchange", _exchangeIdx)
+}
+
+// FinishPrivateDataExchange is a paid mutator transaction binding the contract method 0x06427a88.
+//
+// Solidity: function finishPrivateDataExchange(_exchangeIdx uint256) returns()
+func (_PassportLogicContract *PassportLogicContractSession) FinishPrivateDataExchange(_exchangeIdx *big.Int) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.FinishPrivateDataExchange(&_PassportLogicContract.TransactOpts, _exchangeIdx)
+}
+
+// FinishPrivateDataExchange is a paid mutator transaction binding the contract method 0x06427a88.
+//
+// Solidity: function finishPrivateDataExchange(_exchangeIdx uint256) returns()
+func (_PassportLogicContract *PassportLogicContractTransactorSession) FinishPrivateDataExchange(_exchangeIdx *big.Int) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.FinishPrivateDataExchange(&_PassportLogicContract.TransactOpts, _exchangeIdx)
+}
+
+// ProposePrivateDataExchange is a paid mutator transaction binding the contract method 0xcea332cc.
+//
+// Solidity: function proposePrivateDataExchange(_factProvider address, _key bytes32, _encryptedExchangeKey bytes, _exchangeKeyHash bytes32) returns()
+func (_PassportLogicContract *PassportLogicContractTransactor) ProposePrivateDataExchange(opts *bind.TransactOpts, _factProvider common.Address, _key [32]byte, _encryptedExchangeKey []byte, _exchangeKeyHash [32]byte) (*types.Transaction, error) {
+	return _PassportLogicContract.contract.Transact(opts, "proposePrivateDataExchange", _factProvider, _key, _encryptedExchangeKey, _exchangeKeyHash)
+}
+
+// ProposePrivateDataExchange is a paid mutator transaction binding the contract method 0xcea332cc.
+//
+// Solidity: function proposePrivateDataExchange(_factProvider address, _key bytes32, _encryptedExchangeKey bytes, _exchangeKeyHash bytes32) returns()
+func (_PassportLogicContract *PassportLogicContractSession) ProposePrivateDataExchange(_factProvider common.Address, _key [32]byte, _encryptedExchangeKey []byte, _exchangeKeyHash [32]byte) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.ProposePrivateDataExchange(&_PassportLogicContract.TransactOpts, _factProvider, _key, _encryptedExchangeKey, _exchangeKeyHash)
+}
+
+// ProposePrivateDataExchange is a paid mutator transaction binding the contract method 0xcea332cc.
+//
+// Solidity: function proposePrivateDataExchange(_factProvider address, _key bytes32, _encryptedExchangeKey bytes, _exchangeKeyHash bytes32) returns()
+func (_PassportLogicContract *PassportLogicContractTransactorSession) ProposePrivateDataExchange(_factProvider common.Address, _key [32]byte, _encryptedExchangeKey []byte, _exchangeKeyHash [32]byte) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.ProposePrivateDataExchange(&_PassportLogicContract.TransactOpts, _factProvider, _key, _encryptedExchangeKey, _exchangeKeyHash)
+}
+
 // RemoveFactProviderFromWhitelist is a paid mutator transaction binding the contract method 0x6d4e7802.
 //
-// Solidity: function removeFactProviderFromWhitelist(address _address) returns()
+// Solidity: function removeFactProviderFromWhitelist(_address address) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) RemoveFactProviderFromWhitelist(opts *bind.TransactOpts, _address common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "removeFactProviderFromWhitelist", _address)
 }
 
 // RemoveFactProviderFromWhitelist is a paid mutator transaction binding the contract method 0x6d4e7802.
 //
-// Solidity: function removeFactProviderFromWhitelist(address _address) returns()
+// Solidity: function removeFactProviderFromWhitelist(_address address) returns()
 func (_PassportLogicContract *PassportLogicContractSession) RemoveFactProviderFromWhitelist(_address common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.RemoveFactProviderFromWhitelist(&_PassportLogicContract.TransactOpts, _address)
 }
 
 // RemoveFactProviderFromWhitelist is a paid mutator transaction binding the contract method 0x6d4e7802.
 //
-// Solidity: function removeFactProviderFromWhitelist(address _address) returns()
+// Solidity: function removeFactProviderFromWhitelist(_address address) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) RemoveFactProviderFromWhitelist(_address common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.RemoveFactProviderFromWhitelist(&_PassportLogicContract.TransactOpts, _address)
 }
@@ -860,210 +1189,252 @@ func (_PassportLogicContract *PassportLogicContractTransactorSession) RenounceOw
 
 // SetAddress is a paid mutator transaction binding the contract method 0xca446dd9.
 //
-// Solidity: function setAddress(bytes32 _key, address _value) returns()
+// Solidity: function setAddress(_key bytes32, _value address) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetAddress(opts *bind.TransactOpts, _key [32]byte, _value common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setAddress", _key, _value)
 }
 
 // SetAddress is a paid mutator transaction binding the contract method 0xca446dd9.
 //
-// Solidity: function setAddress(bytes32 _key, address _value) returns()
+// Solidity: function setAddress(_key bytes32, _value address) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetAddress(_key [32]byte, _value common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetAddress(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetAddress is a paid mutator transaction binding the contract method 0xca446dd9.
 //
-// Solidity: function setAddress(bytes32 _key, address _value) returns()
+// Solidity: function setAddress(_key bytes32, _value address) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetAddress(_key [32]byte, _value common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetAddress(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetBool is a paid mutator transaction binding the contract method 0xabfdcced.
 //
-// Solidity: function setBool(bytes32 _key, bool _value) returns()
+// Solidity: function setBool(_key bytes32, _value bool) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetBool(opts *bind.TransactOpts, _key [32]byte, _value bool) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setBool", _key, _value)
 }
 
 // SetBool is a paid mutator transaction binding the contract method 0xabfdcced.
 //
-// Solidity: function setBool(bytes32 _key, bool _value) returns()
+// Solidity: function setBool(_key bytes32, _value bool) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetBool(_key [32]byte, _value bool) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetBool(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetBool is a paid mutator transaction binding the contract method 0xabfdcced.
 //
-// Solidity: function setBool(bytes32 _key, bool _value) returns()
+// Solidity: function setBool(_key bytes32, _value bool) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetBool(_key [32]byte, _value bool) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetBool(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetBytes is a paid mutator transaction binding the contract method 0x2e28d084.
 //
-// Solidity: function setBytes(bytes32 _key, bytes _value) returns()
+// Solidity: function setBytes(_key bytes32, _value bytes) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetBytes(opts *bind.TransactOpts, _key [32]byte, _value []byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setBytes", _key, _value)
 }
 
 // SetBytes is a paid mutator transaction binding the contract method 0x2e28d084.
 //
-// Solidity: function setBytes(bytes32 _key, bytes _value) returns()
+// Solidity: function setBytes(_key bytes32, _value bytes) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetBytes(_key [32]byte, _value []byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetBytes(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetBytes is a paid mutator transaction binding the contract method 0x2e28d084.
 //
-// Solidity: function setBytes(bytes32 _key, bytes _value) returns()
+// Solidity: function setBytes(_key bytes32, _value bytes) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetBytes(_key [32]byte, _value []byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetBytes(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetIPFSHash is a paid mutator transaction binding the contract method 0x6bfc8bb5.
 //
-// Solidity: function setIPFSHash(bytes32 _key, string _value) returns()
+// Solidity: function setIPFSHash(_key bytes32, _value string) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetIPFSHash(opts *bind.TransactOpts, _key [32]byte, _value string) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setIPFSHash", _key, _value)
 }
 
 // SetIPFSHash is a paid mutator transaction binding the contract method 0x6bfc8bb5.
 //
-// Solidity: function setIPFSHash(bytes32 _key, string _value) returns()
+// Solidity: function setIPFSHash(_key bytes32, _value string) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetIPFSHash(_key [32]byte, _value string) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetIPFSHash(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetIPFSHash is a paid mutator transaction binding the contract method 0x6bfc8bb5.
 //
-// Solidity: function setIPFSHash(bytes32 _key, string _value) returns()
+// Solidity: function setIPFSHash(_key bytes32, _value string) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetIPFSHash(_key [32]byte, _value string) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetIPFSHash(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetInt is a paid mutator transaction binding the contract method 0x3e49bed0.
 //
-// Solidity: function setInt(bytes32 _key, int256 _value) returns()
+// Solidity: function setInt(_key bytes32, _value int256) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetInt(opts *bind.TransactOpts, _key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setInt", _key, _value)
 }
 
 // SetInt is a paid mutator transaction binding the contract method 0x3e49bed0.
 //
-// Solidity: function setInt(bytes32 _key, int256 _value) returns()
+// Solidity: function setInt(_key bytes32, _value int256) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetInt(_key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetInt(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetInt is a paid mutator transaction binding the contract method 0x3e49bed0.
 //
-// Solidity: function setInt(bytes32 _key, int256 _value) returns()
+// Solidity: function setInt(_key bytes32, _value int256) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetInt(_key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetInt(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
+// SetPrivateData is a paid mutator transaction binding the contract method 0x215f8667.
+//
+// Solidity: function setPrivateData(_key bytes32, _dataIPFSHash string, _keyHash bytes32) returns()
+func (_PassportLogicContract *PassportLogicContractTransactor) SetPrivateData(opts *bind.TransactOpts, _key [32]byte, _dataIPFSHash string, _keyHash [32]byte) (*types.Transaction, error) {
+	return _PassportLogicContract.contract.Transact(opts, "setPrivateData", _key, _dataIPFSHash, _keyHash)
+}
+
+// SetPrivateData is a paid mutator transaction binding the contract method 0x215f8667.
+//
+// Solidity: function setPrivateData(_key bytes32, _dataIPFSHash string, _keyHash bytes32) returns()
+func (_PassportLogicContract *PassportLogicContractSession) SetPrivateData(_key [32]byte, _dataIPFSHash string, _keyHash [32]byte) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.SetPrivateData(&_PassportLogicContract.TransactOpts, _key, _dataIPFSHash, _keyHash)
+}
+
+// SetPrivateData is a paid mutator transaction binding the contract method 0x215f8667.
+//
+// Solidity: function setPrivateData(_key bytes32, _dataIPFSHash string, _keyHash bytes32) returns()
+func (_PassportLogicContract *PassportLogicContractTransactorSession) SetPrivateData(_key [32]byte, _dataIPFSHash string, _keyHash [32]byte) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.SetPrivateData(&_PassportLogicContract.TransactOpts, _key, _dataIPFSHash, _keyHash)
+}
+
 // SetString is a paid mutator transaction binding the contract method 0x6e899550.
 //
-// Solidity: function setString(bytes32 _key, string _value) returns()
+// Solidity: function setString(_key bytes32, _value string) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetString(opts *bind.TransactOpts, _key [32]byte, _value string) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setString", _key, _value)
 }
 
 // SetString is a paid mutator transaction binding the contract method 0x6e899550.
 //
-// Solidity: function setString(bytes32 _key, string _value) returns()
+// Solidity: function setString(_key bytes32, _value string) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetString(_key [32]byte, _value string) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetString(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetString is a paid mutator transaction binding the contract method 0x6e899550.
 //
-// Solidity: function setString(bytes32 _key, string _value) returns()
+// Solidity: function setString(_key bytes32, _value string) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetString(_key [32]byte, _value string) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetString(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetTxDataBlockNumber is a paid mutator transaction binding the contract method 0x5b2a372d.
 //
-// Solidity: function setTxDataBlockNumber(bytes32 _key, bytes _data) returns()
+// Solidity: function setTxDataBlockNumber(_key bytes32, _data bytes) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetTxDataBlockNumber(opts *bind.TransactOpts, _key [32]byte, _data []byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setTxDataBlockNumber", _key, _data)
 }
 
 // SetTxDataBlockNumber is a paid mutator transaction binding the contract method 0x5b2a372d.
 //
-// Solidity: function setTxDataBlockNumber(bytes32 _key, bytes _data) returns()
+// Solidity: function setTxDataBlockNumber(_key bytes32, _data bytes) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetTxDataBlockNumber(_key [32]byte, _data []byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetTxDataBlockNumber(&_PassportLogicContract.TransactOpts, _key, _data)
 }
 
 // SetTxDataBlockNumber is a paid mutator transaction binding the contract method 0x5b2a372d.
 //
-// Solidity: function setTxDataBlockNumber(bytes32 _key, bytes _data) returns()
+// Solidity: function setTxDataBlockNumber(_key bytes32, _data bytes) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetTxDataBlockNumber(_key [32]byte, _data []byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetTxDataBlockNumber(&_PassportLogicContract.TransactOpts, _key, _data)
 }
 
 // SetUint is a paid mutator transaction binding the contract method 0xe2a4853a.
 //
-// Solidity: function setUint(bytes32 _key, uint256 _value) returns()
+// Solidity: function setUint(_key bytes32, _value uint256) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetUint(opts *bind.TransactOpts, _key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setUint", _key, _value)
 }
 
 // SetUint is a paid mutator transaction binding the contract method 0xe2a4853a.
 //
-// Solidity: function setUint(bytes32 _key, uint256 _value) returns()
+// Solidity: function setUint(_key bytes32, _value uint256) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetUint(_key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetUint(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetUint is a paid mutator transaction binding the contract method 0xe2a4853a.
 //
-// Solidity: function setUint(bytes32 _key, uint256 _value) returns()
+// Solidity: function setUint(_key bytes32, _value uint256) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetUint(_key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetUint(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetWhitelistOnlyPermission is a paid mutator transaction binding the contract method 0x2b42a89a.
 //
-// Solidity: function setWhitelistOnlyPermission(bool _onlyWhitelist) returns()
+// Solidity: function setWhitelistOnlyPermission(_onlyWhitelist bool) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetWhitelistOnlyPermission(opts *bind.TransactOpts, _onlyWhitelist bool) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setWhitelistOnlyPermission", _onlyWhitelist)
 }
 
 // SetWhitelistOnlyPermission is a paid mutator transaction binding the contract method 0x2b42a89a.
 //
-// Solidity: function setWhitelistOnlyPermission(bool _onlyWhitelist) returns()
+// Solidity: function setWhitelistOnlyPermission(_onlyWhitelist bool) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetWhitelistOnlyPermission(_onlyWhitelist bool) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetWhitelistOnlyPermission(&_PassportLogicContract.TransactOpts, _onlyWhitelist)
 }
 
 // SetWhitelistOnlyPermission is a paid mutator transaction binding the contract method 0x2b42a89a.
 //
-// Solidity: function setWhitelistOnlyPermission(bool _onlyWhitelist) returns()
+// Solidity: function setWhitelistOnlyPermission(_onlyWhitelist bool) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetWhitelistOnlyPermission(_onlyWhitelist bool) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetWhitelistOnlyPermission(&_PassportLogicContract.TransactOpts, _onlyWhitelist)
 }
 
+// TimeoutPrivateDataExchange is a paid mutator transaction binding the contract method 0x08c50498.
+//
+// Solidity: function timeoutPrivateDataExchange(_exchangeIdx uint256) returns()
+func (_PassportLogicContract *PassportLogicContractTransactor) TimeoutPrivateDataExchange(opts *bind.TransactOpts, _exchangeIdx *big.Int) (*types.Transaction, error) {
+	return _PassportLogicContract.contract.Transact(opts, "timeoutPrivateDataExchange", _exchangeIdx)
+}
+
+// TimeoutPrivateDataExchange is a paid mutator transaction binding the contract method 0x08c50498.
+//
+// Solidity: function timeoutPrivateDataExchange(_exchangeIdx uint256) returns()
+func (_PassportLogicContract *PassportLogicContractSession) TimeoutPrivateDataExchange(_exchangeIdx *big.Int) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.TimeoutPrivateDataExchange(&_PassportLogicContract.TransactOpts, _exchangeIdx)
+}
+
+// TimeoutPrivateDataExchange is a paid mutator transaction binding the contract method 0x08c50498.
+//
+// Solidity: function timeoutPrivateDataExchange(_exchangeIdx uint256) returns()
+func (_PassportLogicContract *PassportLogicContractTransactorSession) TimeoutPrivateDataExchange(_exchangeIdx *big.Int) (*types.Transaction, error) {
+	return _PassportLogicContract.Contract.TimeoutPrivateDataExchange(&_PassportLogicContract.TransactOpts, _exchangeIdx)
+}
+
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
 //
-// Solidity: function transferOwnership(address newOwner) returns()
+// Solidity: function transferOwnership(newOwner address) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) TransferOwnership(opts *bind.TransactOpts, newOwner common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "transferOwnership", newOwner)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
 //
-// Solidity: function transferOwnership(address newOwner) returns()
+// Solidity: function transferOwnership(newOwner address) returns()
 func (_PassportLogicContract *PassportLogicContractSession) TransferOwnership(newOwner common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.TransferOwnership(&_PassportLogicContract.TransactOpts, newOwner)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
 //
-// Solidity: function transferOwnership(address newOwner) returns()
+// Solidity: function transferOwnership(newOwner address) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) TransferOwnership(newOwner common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.TransferOwnership(&_PassportLogicContract.TransactOpts, newOwner)
 }
@@ -1144,7 +1515,7 @@ type PassportLogicContractAddressDeleted struct {
 
 // FilterAddressDeleted is a free log retrieval operation binding the contract event 0xed9474c4702ee9da4d0d2085840fafed5912b8e13daf1d6ea341ebe98803aec2.
 //
-// Solidity: event AddressDeleted(address indexed factProvider, bytes32 indexed key)
+// Solidity: e AddressDeleted(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterAddressDeleted(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractAddressDeletedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -1165,7 +1536,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterAddressDelete
 
 // WatchAddressDeleted is a free log subscription operation binding the contract event 0xed9474c4702ee9da4d0d2085840fafed5912b8e13daf1d6ea341ebe98803aec2.
 //
-// Solidity: event AddressDeleted(address indexed factProvider, bytes32 indexed key)
+// Solidity: e AddressDeleted(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchAddressDeleted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractAddressDeleted, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -1285,7 +1656,7 @@ type PassportLogicContractAddressUpdated struct {
 
 // FilterAddressUpdated is a free log retrieval operation binding the contract event 0x8e7e6ab6c4613205e833e1faf5415d78dd10130a8828f729c08036e2a7a62770.
 //
-// Solidity: event AddressUpdated(address indexed factProvider, bytes32 indexed key)
+// Solidity: e AddressUpdated(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterAddressUpdated(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractAddressUpdatedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -1306,7 +1677,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterAddressUpdate
 
 // WatchAddressUpdated is a free log subscription operation binding the contract event 0x8e7e6ab6c4613205e833e1faf5415d78dd10130a8828f729c08036e2a7a62770.
 //
-// Solidity: event AddressUpdated(address indexed factProvider, bytes32 indexed key)
+// Solidity: e AddressUpdated(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchAddressUpdated(opts *bind.WatchOpts, sink chan<- *PassportLogicContractAddressUpdated, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -1426,7 +1797,7 @@ type PassportLogicContractBoolDeleted struct {
 
 // FilterBoolDeleted is a free log retrieval operation binding the contract event 0x191bd7fc1f22ce6b74b7d7e42126f0ed225b109728607c99971de9e78b0db6eb.
 //
-// Solidity: event BoolDeleted(address indexed factProvider, bytes32 indexed key)
+// Solidity: e BoolDeleted(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterBoolDeleted(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractBoolDeletedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -1447,7 +1818,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterBoolDeleted(o
 
 // WatchBoolDeleted is a free log subscription operation binding the contract event 0x191bd7fc1f22ce6b74b7d7e42126f0ed225b109728607c99971de9e78b0db6eb.
 //
-// Solidity: event BoolDeleted(address indexed factProvider, bytes32 indexed key)
+// Solidity: e BoolDeleted(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchBoolDeleted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractBoolDeleted, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -1567,7 +1938,7 @@ type PassportLogicContractBoolUpdated struct {
 
 // FilterBoolUpdated is a free log retrieval operation binding the contract event 0x68cc3496efaac4c1f2c0cd52da916138f6c5fc541992f05d97423a89b6914ae5.
 //
-// Solidity: event BoolUpdated(address indexed factProvider, bytes32 indexed key)
+// Solidity: e BoolUpdated(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterBoolUpdated(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractBoolUpdatedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -1588,7 +1959,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterBoolUpdated(o
 
 // WatchBoolUpdated is a free log subscription operation binding the contract event 0x68cc3496efaac4c1f2c0cd52da916138f6c5fc541992f05d97423a89b6914ae5.
 //
-// Solidity: event BoolUpdated(address indexed factProvider, bytes32 indexed key)
+// Solidity: e BoolUpdated(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchBoolUpdated(opts *bind.WatchOpts, sink chan<- *PassportLogicContractBoolUpdated, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -1708,7 +2079,7 @@ type PassportLogicContractBytesDeleted struct {
 
 // FilterBytesDeleted is a free log retrieval operation binding the contract event 0x0eaf95ab41777ff88e28181b1c43418524616bcef6d37c3b216015b5548cb108.
 //
-// Solidity: event BytesDeleted(address indexed factProvider, bytes32 indexed key)
+// Solidity: e BytesDeleted(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterBytesDeleted(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractBytesDeletedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -1729,7 +2100,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterBytesDeleted(
 
 // WatchBytesDeleted is a free log subscription operation binding the contract event 0x0eaf95ab41777ff88e28181b1c43418524616bcef6d37c3b216015b5548cb108.
 //
-// Solidity: event BytesDeleted(address indexed factProvider, bytes32 indexed key)
+// Solidity: e BytesDeleted(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchBytesDeleted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractBytesDeleted, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -1849,7 +2220,7 @@ type PassportLogicContractBytesUpdated struct {
 
 // FilterBytesUpdated is a free log retrieval operation binding the contract event 0xee56af66250a5cbba377132a356dc403d520776e30969594927024c44af8440b.
 //
-// Solidity: event BytesUpdated(address indexed factProvider, bytes32 indexed key)
+// Solidity: e BytesUpdated(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterBytesUpdated(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractBytesUpdatedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -1870,7 +2241,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterBytesUpdated(
 
 // WatchBytesUpdated is a free log subscription operation binding the contract event 0xee56af66250a5cbba377132a356dc403d520776e30969594927024c44af8440b.
 //
-// Solidity: event BytesUpdated(address indexed factProvider, bytes32 indexed key)
+// Solidity: e BytesUpdated(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchBytesUpdated(opts *bind.WatchOpts, sink chan<- *PassportLogicContractBytesUpdated, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -1990,7 +2361,7 @@ type PassportLogicContractIPFSHashDeleted struct {
 
 // FilterIPFSHashDeleted is a free log retrieval operation binding the contract event 0x140278d2322b9671bf293aea878e7717c46d5b7cd955e3e426ee67e01b901654.
 //
-// Solidity: event IPFSHashDeleted(address indexed factProvider, bytes32 indexed key)
+// Solidity: e IPFSHashDeleted(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterIPFSHashDeleted(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractIPFSHashDeletedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -2011,7 +2382,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterIPFSHashDelet
 
 // WatchIPFSHashDeleted is a free log subscription operation binding the contract event 0x140278d2322b9671bf293aea878e7717c46d5b7cd955e3e426ee67e01b901654.
 //
-// Solidity: event IPFSHashDeleted(address indexed factProvider, bytes32 indexed key)
+// Solidity: e IPFSHashDeleted(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchIPFSHashDeleted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractIPFSHashDeleted, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -2131,7 +2502,7 @@ type PassportLogicContractIPFSHashUpdated struct {
 
 // FilterIPFSHashUpdated is a free log retrieval operation binding the contract event 0xdb23beee028623a85d5af1d247423ca471d20e499b131cd5e5c76277eaa2ad5b.
 //
-// Solidity: event IPFSHashUpdated(address indexed factProvider, bytes32 indexed key)
+// Solidity: e IPFSHashUpdated(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterIPFSHashUpdated(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractIPFSHashUpdatedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -2152,7 +2523,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterIPFSHashUpdat
 
 // WatchIPFSHashUpdated is a free log subscription operation binding the contract event 0xdb23beee028623a85d5af1d247423ca471d20e499b131cd5e5c76277eaa2ad5b.
 //
-// Solidity: event IPFSHashUpdated(address indexed factProvider, bytes32 indexed key)
+// Solidity: e IPFSHashUpdated(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchIPFSHashUpdated(opts *bind.WatchOpts, sink chan<- *PassportLogicContractIPFSHashUpdated, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -2272,7 +2643,7 @@ type PassportLogicContractIntDeleted struct {
 
 // FilterIntDeleted is a free log retrieval operation binding the contract event 0x3c3ff48e02e407eb1e78310d11b5e3f9e735263a9cafc2bcf4aa981b8ecb32a5.
 //
-// Solidity: event IntDeleted(address indexed factProvider, bytes32 indexed key)
+// Solidity: e IntDeleted(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterIntDeleted(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractIntDeletedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -2293,7 +2664,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterIntDeleted(op
 
 // WatchIntDeleted is a free log subscription operation binding the contract event 0x3c3ff48e02e407eb1e78310d11b5e3f9e735263a9cafc2bcf4aa981b8ecb32a5.
 //
-// Solidity: event IntDeleted(address indexed factProvider, bytes32 indexed key)
+// Solidity: e IntDeleted(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchIntDeleted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractIntDeleted, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -2413,7 +2784,7 @@ type PassportLogicContractIntUpdated struct {
 
 // FilterIntUpdated is a free log retrieval operation binding the contract event 0xdb4ad6a3ed2bdacbae02da45a5bb54192cdb7d72648674d13e08d2fc4c45ac66.
 //
-// Solidity: event IntUpdated(address indexed factProvider, bytes32 indexed key)
+// Solidity: e IntUpdated(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterIntUpdated(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractIntUpdatedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -2434,7 +2805,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterIntUpdated(op
 
 // WatchIntUpdated is a free log subscription operation binding the contract event 0xdb4ad6a3ed2bdacbae02da45a5bb54192cdb7d72648674d13e08d2fc4c45ac66.
 //
-// Solidity: event IntUpdated(address indexed factProvider, bytes32 indexed key)
+// Solidity: e IntUpdated(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchIntUpdated(opts *bind.WatchOpts, sink chan<- *PassportLogicContractIntUpdated, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -2553,7 +2924,7 @@ type PassportLogicContractOwnershipRenounced struct {
 
 // FilterOwnershipRenounced is a free log retrieval operation binding the contract event 0xf8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c64820.
 //
-// Solidity: event OwnershipRenounced(address indexed previousOwner)
+// Solidity: e OwnershipRenounced(previousOwner indexed address)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterOwnershipRenounced(opts *bind.FilterOpts, previousOwner []common.Address) (*PassportLogicContractOwnershipRenouncedIterator, error) {
 
 	var previousOwnerRule []interface{}
@@ -2570,7 +2941,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterOwnershipReno
 
 // WatchOwnershipRenounced is a free log subscription operation binding the contract event 0xf8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c64820.
 //
-// Solidity: event OwnershipRenounced(address indexed previousOwner)
+// Solidity: e OwnershipRenounced(previousOwner indexed address)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchOwnershipRenounced(opts *bind.WatchOpts, sink chan<- *PassportLogicContractOwnershipRenounced, previousOwner []common.Address) (event.Subscription, error) {
 
 	var previousOwnerRule []interface{}
@@ -2686,7 +3057,7 @@ type PassportLogicContractOwnershipTransferred struct {
 
 // FilterOwnershipTransferred is a free log retrieval operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
 //
-// Solidity: event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
+// Solidity: e OwnershipTransferred(previousOwner indexed address, newOwner indexed address)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterOwnershipTransferred(opts *bind.FilterOpts, previousOwner []common.Address, newOwner []common.Address) (*PassportLogicContractOwnershipTransferredIterator, error) {
 
 	var previousOwnerRule []interface{}
@@ -2707,7 +3078,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterOwnershipTran
 
 // WatchOwnershipTransferred is a free log subscription operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
 //
-// Solidity: event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
+// Solidity: e OwnershipTransferred(previousOwner indexed address, newOwner indexed address)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchOwnershipTransferred(opts *bind.WatchOpts, sink chan<- *PassportLogicContractOwnershipTransferred, previousOwner []common.Address, newOwner []common.Address) (event.Subscription, error) {
 
 	var previousOwnerRule []interface{}
@@ -2731,6 +3102,870 @@ func (_PassportLogicContract *PassportLogicContractFilterer) WatchOwnershipTrans
 				// New log arrived, parse the event and forward to the user
 				event := new(PassportLogicContractOwnershipTransferred)
 				if err := _PassportLogicContract.contract.UnpackLog(event, "OwnershipTransferred", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// PassportLogicContractPrivateDataDeletedIterator is returned from FilterPrivateDataDeleted and is used to iterate over the raw logs and unpacked data for PrivateDataDeleted events raised by the PassportLogicContract contract.
+type PassportLogicContractPrivateDataDeletedIterator struct {
+	Event *PassportLogicContractPrivateDataDeleted // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *PassportLogicContractPrivateDataDeletedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(PassportLogicContractPrivateDataDeleted)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(PassportLogicContractPrivateDataDeleted)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *PassportLogicContractPrivateDataDeletedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *PassportLogicContractPrivateDataDeletedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// PassportLogicContractPrivateDataDeleted represents a PrivateDataDeleted event raised by the PassportLogicContract contract.
+type PassportLogicContractPrivateDataDeleted struct {
+	FactProvider common.Address
+	Key          [32]byte
+	Raw          types.Log // Blockchain specific contextual infos
+}
+
+// FilterPrivateDataDeleted is a free log retrieval operation binding the contract event 0x25e5b7d51c31a9c5ccb88759f5d30bbd5cac7eb300c5cb2498574f56463a6d37.
+//
+// Solidity: e PrivateDataDeleted(factProvider indexed address, key indexed bytes32)
+func (_PassportLogicContract *PassportLogicContractFilterer) FilterPrivateDataDeleted(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractPrivateDataDeletedIterator, error) {
+
+	var factProviderRule []interface{}
+	for _, factProviderItem := range factProvider {
+		factProviderRule = append(factProviderRule, factProviderItem)
+	}
+	var keyRule []interface{}
+	for _, keyItem := range key {
+		keyRule = append(keyRule, keyItem)
+	}
+
+	logs, sub, err := _PassportLogicContract.contract.FilterLogs(opts, "PrivateDataDeleted", factProviderRule, keyRule)
+	if err != nil {
+		return nil, err
+	}
+	return &PassportLogicContractPrivateDataDeletedIterator{contract: _PassportLogicContract.contract, event: "PrivateDataDeleted", logs: logs, sub: sub}, nil
+}
+
+// WatchPrivateDataDeleted is a free log subscription operation binding the contract event 0x25e5b7d51c31a9c5ccb88759f5d30bbd5cac7eb300c5cb2498574f56463a6d37.
+//
+// Solidity: e PrivateDataDeleted(factProvider indexed address, key indexed bytes32)
+func (_PassportLogicContract *PassportLogicContractFilterer) WatchPrivateDataDeleted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractPrivateDataDeleted, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
+
+	var factProviderRule []interface{}
+	for _, factProviderItem := range factProvider {
+		factProviderRule = append(factProviderRule, factProviderItem)
+	}
+	var keyRule []interface{}
+	for _, keyItem := range key {
+		keyRule = append(keyRule, keyItem)
+	}
+
+	logs, sub, err := _PassportLogicContract.contract.WatchLogs(opts, "PrivateDataDeleted", factProviderRule, keyRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(PassportLogicContractPrivateDataDeleted)
+				if err := _PassportLogicContract.contract.UnpackLog(event, "PrivateDataDeleted", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// PassportLogicContractPrivateDataExchangeAcceptedIterator is returned from FilterPrivateDataExchangeAccepted and is used to iterate over the raw logs and unpacked data for PrivateDataExchangeAccepted events raised by the PassportLogicContract contract.
+type PassportLogicContractPrivateDataExchangeAcceptedIterator struct {
+	Event *PassportLogicContractPrivateDataExchangeAccepted // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *PassportLogicContractPrivateDataExchangeAcceptedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(PassportLogicContractPrivateDataExchangeAccepted)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(PassportLogicContractPrivateDataExchangeAccepted)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *PassportLogicContractPrivateDataExchangeAcceptedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *PassportLogicContractPrivateDataExchangeAcceptedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// PassportLogicContractPrivateDataExchangeAccepted represents a PrivateDataExchangeAccepted event raised by the PassportLogicContract contract.
+type PassportLogicContractPrivateDataExchangeAccepted struct {
+	ExchangeIdx   *big.Int
+	DataRequester common.Address
+	PassportOwner common.Address
+	Raw           types.Log // Blockchain specific contextual infos
+}
+
+// FilterPrivateDataExchangeAccepted is a free log retrieval operation binding the contract event 0x843dda373d0d243dce80a6cd203b9cbba8576d036c7eb937f9de36ebe6e8b023.
+//
+// Solidity: e PrivateDataExchangeAccepted(exchangeIdx indexed uint256, dataRequester indexed address, passportOwner indexed address)
+func (_PassportLogicContract *PassportLogicContractFilterer) FilterPrivateDataExchangeAccepted(opts *bind.FilterOpts, exchangeIdx []*big.Int, dataRequester []common.Address, passportOwner []common.Address) (*PassportLogicContractPrivateDataExchangeAcceptedIterator, error) {
+
+	var exchangeIdxRule []interface{}
+	for _, exchangeIdxItem := range exchangeIdx {
+		exchangeIdxRule = append(exchangeIdxRule, exchangeIdxItem)
+	}
+	var dataRequesterRule []interface{}
+	for _, dataRequesterItem := range dataRequester {
+		dataRequesterRule = append(dataRequesterRule, dataRequesterItem)
+	}
+	var passportOwnerRule []interface{}
+	for _, passportOwnerItem := range passportOwner {
+		passportOwnerRule = append(passportOwnerRule, passportOwnerItem)
+	}
+
+	logs, sub, err := _PassportLogicContract.contract.FilterLogs(opts, "PrivateDataExchangeAccepted", exchangeIdxRule, dataRequesterRule, passportOwnerRule)
+	if err != nil {
+		return nil, err
+	}
+	return &PassportLogicContractPrivateDataExchangeAcceptedIterator{contract: _PassportLogicContract.contract, event: "PrivateDataExchangeAccepted", logs: logs, sub: sub}, nil
+}
+
+// WatchPrivateDataExchangeAccepted is a free log subscription operation binding the contract event 0x843dda373d0d243dce80a6cd203b9cbba8576d036c7eb937f9de36ebe6e8b023.
+//
+// Solidity: e PrivateDataExchangeAccepted(exchangeIdx indexed uint256, dataRequester indexed address, passportOwner indexed address)
+func (_PassportLogicContract *PassportLogicContractFilterer) WatchPrivateDataExchangeAccepted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractPrivateDataExchangeAccepted, exchangeIdx []*big.Int, dataRequester []common.Address, passportOwner []common.Address) (event.Subscription, error) {
+
+	var exchangeIdxRule []interface{}
+	for _, exchangeIdxItem := range exchangeIdx {
+		exchangeIdxRule = append(exchangeIdxRule, exchangeIdxItem)
+	}
+	var dataRequesterRule []interface{}
+	for _, dataRequesterItem := range dataRequester {
+		dataRequesterRule = append(dataRequesterRule, dataRequesterItem)
+	}
+	var passportOwnerRule []interface{}
+	for _, passportOwnerItem := range passportOwner {
+		passportOwnerRule = append(passportOwnerRule, passportOwnerItem)
+	}
+
+	logs, sub, err := _PassportLogicContract.contract.WatchLogs(opts, "PrivateDataExchangeAccepted", exchangeIdxRule, dataRequesterRule, passportOwnerRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(PassportLogicContractPrivateDataExchangeAccepted)
+				if err := _PassportLogicContract.contract.UnpackLog(event, "PrivateDataExchangeAccepted", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// PassportLogicContractPrivateDataExchangeClosedIterator is returned from FilterPrivateDataExchangeClosed and is used to iterate over the raw logs and unpacked data for PrivateDataExchangeClosed events raised by the PassportLogicContract contract.
+type PassportLogicContractPrivateDataExchangeClosedIterator struct {
+	Event *PassportLogicContractPrivateDataExchangeClosed // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *PassportLogicContractPrivateDataExchangeClosedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(PassportLogicContractPrivateDataExchangeClosed)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(PassportLogicContractPrivateDataExchangeClosed)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *PassportLogicContractPrivateDataExchangeClosedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *PassportLogicContractPrivateDataExchangeClosedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// PassportLogicContractPrivateDataExchangeClosed represents a PrivateDataExchangeClosed event raised by the PassportLogicContract contract.
+type PassportLogicContractPrivateDataExchangeClosed struct {
+	ExchangeIdx *big.Int
+	Raw         types.Log // Blockchain specific contextual infos
+}
+
+// FilterPrivateDataExchangeClosed is a free log retrieval operation binding the contract event 0x5d1a7ae2ffda31cae15ed5129d32260ef2a270a21325f536f7954ed297e52c8e.
+//
+// Solidity: e PrivateDataExchangeClosed(exchangeIdx indexed uint256)
+func (_PassportLogicContract *PassportLogicContractFilterer) FilterPrivateDataExchangeClosed(opts *bind.FilterOpts, exchangeIdx []*big.Int) (*PassportLogicContractPrivateDataExchangeClosedIterator, error) {
+
+	var exchangeIdxRule []interface{}
+	for _, exchangeIdxItem := range exchangeIdx {
+		exchangeIdxRule = append(exchangeIdxRule, exchangeIdxItem)
+	}
+
+	logs, sub, err := _PassportLogicContract.contract.FilterLogs(opts, "PrivateDataExchangeClosed", exchangeIdxRule)
+	if err != nil {
+		return nil, err
+	}
+	return &PassportLogicContractPrivateDataExchangeClosedIterator{contract: _PassportLogicContract.contract, event: "PrivateDataExchangeClosed", logs: logs, sub: sub}, nil
+}
+
+// WatchPrivateDataExchangeClosed is a free log subscription operation binding the contract event 0x5d1a7ae2ffda31cae15ed5129d32260ef2a270a21325f536f7954ed297e52c8e.
+//
+// Solidity: e PrivateDataExchangeClosed(exchangeIdx indexed uint256)
+func (_PassportLogicContract *PassportLogicContractFilterer) WatchPrivateDataExchangeClosed(opts *bind.WatchOpts, sink chan<- *PassportLogicContractPrivateDataExchangeClosed, exchangeIdx []*big.Int) (event.Subscription, error) {
+
+	var exchangeIdxRule []interface{}
+	for _, exchangeIdxItem := range exchangeIdx {
+		exchangeIdxRule = append(exchangeIdxRule, exchangeIdxItem)
+	}
+
+	logs, sub, err := _PassportLogicContract.contract.WatchLogs(opts, "PrivateDataExchangeClosed", exchangeIdxRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(PassportLogicContractPrivateDataExchangeClosed)
+				if err := _PassportLogicContract.contract.UnpackLog(event, "PrivateDataExchangeClosed", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// PassportLogicContractPrivateDataExchangeDisputedIterator is returned from FilterPrivateDataExchangeDisputed and is used to iterate over the raw logs and unpacked data for PrivateDataExchangeDisputed events raised by the PassportLogicContract contract.
+type PassportLogicContractPrivateDataExchangeDisputedIterator struct {
+	Event *PassportLogicContractPrivateDataExchangeDisputed // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *PassportLogicContractPrivateDataExchangeDisputedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(PassportLogicContractPrivateDataExchangeDisputed)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(PassportLogicContractPrivateDataExchangeDisputed)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *PassportLogicContractPrivateDataExchangeDisputedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *PassportLogicContractPrivateDataExchangeDisputedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// PassportLogicContractPrivateDataExchangeDisputed represents a PrivateDataExchangeDisputed event raised by the PassportLogicContract contract.
+type PassportLogicContractPrivateDataExchangeDisputed struct {
+	ExchangeIdx *big.Int
+	Successful  bool
+	Cheater     common.Address
+	Raw         types.Log // Blockchain specific contextual infos
+}
+
+// FilterPrivateDataExchangeDisputed is a free log retrieval operation binding the contract event 0x540941e0fc2370abde0bfa6ddbb49188469597e518416fa24327f39469c9b2ec.
+//
+// Solidity: e PrivateDataExchangeDisputed(exchangeIdx indexed uint256, successful indexed bool, cheater indexed address)
+func (_PassportLogicContract *PassportLogicContractFilterer) FilterPrivateDataExchangeDisputed(opts *bind.FilterOpts, exchangeIdx []*big.Int, successful []bool, cheater []common.Address) (*PassportLogicContractPrivateDataExchangeDisputedIterator, error) {
+
+	var exchangeIdxRule []interface{}
+	for _, exchangeIdxItem := range exchangeIdx {
+		exchangeIdxRule = append(exchangeIdxRule, exchangeIdxItem)
+	}
+	var successfulRule []interface{}
+	for _, successfulItem := range successful {
+		successfulRule = append(successfulRule, successfulItem)
+	}
+	var cheaterRule []interface{}
+	for _, cheaterItem := range cheater {
+		cheaterRule = append(cheaterRule, cheaterItem)
+	}
+
+	logs, sub, err := _PassportLogicContract.contract.FilterLogs(opts, "PrivateDataExchangeDisputed", exchangeIdxRule, successfulRule, cheaterRule)
+	if err != nil {
+		return nil, err
+	}
+	return &PassportLogicContractPrivateDataExchangeDisputedIterator{contract: _PassportLogicContract.contract, event: "PrivateDataExchangeDisputed", logs: logs, sub: sub}, nil
+}
+
+// WatchPrivateDataExchangeDisputed is a free log subscription operation binding the contract event 0x540941e0fc2370abde0bfa6ddbb49188469597e518416fa24327f39469c9b2ec.
+//
+// Solidity: e PrivateDataExchangeDisputed(exchangeIdx indexed uint256, successful indexed bool, cheater indexed address)
+func (_PassportLogicContract *PassportLogicContractFilterer) WatchPrivateDataExchangeDisputed(opts *bind.WatchOpts, sink chan<- *PassportLogicContractPrivateDataExchangeDisputed, exchangeIdx []*big.Int, successful []bool, cheater []common.Address) (event.Subscription, error) {
+
+	var exchangeIdxRule []interface{}
+	for _, exchangeIdxItem := range exchangeIdx {
+		exchangeIdxRule = append(exchangeIdxRule, exchangeIdxItem)
+	}
+	var successfulRule []interface{}
+	for _, successfulItem := range successful {
+		successfulRule = append(successfulRule, successfulItem)
+	}
+	var cheaterRule []interface{}
+	for _, cheaterItem := range cheater {
+		cheaterRule = append(cheaterRule, cheaterItem)
+	}
+
+	logs, sub, err := _PassportLogicContract.contract.WatchLogs(opts, "PrivateDataExchangeDisputed", exchangeIdxRule, successfulRule, cheaterRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(PassportLogicContractPrivateDataExchangeDisputed)
+				if err := _PassportLogicContract.contract.UnpackLog(event, "PrivateDataExchangeDisputed", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// PassportLogicContractPrivateDataExchangeProposedIterator is returned from FilterPrivateDataExchangeProposed and is used to iterate over the raw logs and unpacked data for PrivateDataExchangeProposed events raised by the PassportLogicContract contract.
+type PassportLogicContractPrivateDataExchangeProposedIterator struct {
+	Event *PassportLogicContractPrivateDataExchangeProposed // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *PassportLogicContractPrivateDataExchangeProposedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(PassportLogicContractPrivateDataExchangeProposed)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(PassportLogicContractPrivateDataExchangeProposed)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *PassportLogicContractPrivateDataExchangeProposedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *PassportLogicContractPrivateDataExchangeProposedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// PassportLogicContractPrivateDataExchangeProposed represents a PrivateDataExchangeProposed event raised by the PassportLogicContract contract.
+type PassportLogicContractPrivateDataExchangeProposed struct {
+	ExchangeIdx   *big.Int
+	DataRequester common.Address
+	PassportOwner common.Address
+	Raw           types.Log // Blockchain specific contextual infos
+}
+
+// FilterPrivateDataExchangeProposed is a free log retrieval operation binding the contract event 0xabe53237e9ea366da7fa5507ac62db22bd446d6b66bcff4a6d6c1b11e9af1983.
+//
+// Solidity: e PrivateDataExchangeProposed(exchangeIdx indexed uint256, dataRequester indexed address, passportOwner indexed address)
+func (_PassportLogicContract *PassportLogicContractFilterer) FilterPrivateDataExchangeProposed(opts *bind.FilterOpts, exchangeIdx []*big.Int, dataRequester []common.Address, passportOwner []common.Address) (*PassportLogicContractPrivateDataExchangeProposedIterator, error) {
+
+	var exchangeIdxRule []interface{}
+	for _, exchangeIdxItem := range exchangeIdx {
+		exchangeIdxRule = append(exchangeIdxRule, exchangeIdxItem)
+	}
+	var dataRequesterRule []interface{}
+	for _, dataRequesterItem := range dataRequester {
+		dataRequesterRule = append(dataRequesterRule, dataRequesterItem)
+	}
+	var passportOwnerRule []interface{}
+	for _, passportOwnerItem := range passportOwner {
+		passportOwnerRule = append(passportOwnerRule, passportOwnerItem)
+	}
+
+	logs, sub, err := _PassportLogicContract.contract.FilterLogs(opts, "PrivateDataExchangeProposed", exchangeIdxRule, dataRequesterRule, passportOwnerRule)
+	if err != nil {
+		return nil, err
+	}
+	return &PassportLogicContractPrivateDataExchangeProposedIterator{contract: _PassportLogicContract.contract, event: "PrivateDataExchangeProposed", logs: logs, sub: sub}, nil
+}
+
+// WatchPrivateDataExchangeProposed is a free log subscription operation binding the contract event 0xabe53237e9ea366da7fa5507ac62db22bd446d6b66bcff4a6d6c1b11e9af1983.
+//
+// Solidity: e PrivateDataExchangeProposed(exchangeIdx indexed uint256, dataRequester indexed address, passportOwner indexed address)
+func (_PassportLogicContract *PassportLogicContractFilterer) WatchPrivateDataExchangeProposed(opts *bind.WatchOpts, sink chan<- *PassportLogicContractPrivateDataExchangeProposed, exchangeIdx []*big.Int, dataRequester []common.Address, passportOwner []common.Address) (event.Subscription, error) {
+
+	var exchangeIdxRule []interface{}
+	for _, exchangeIdxItem := range exchangeIdx {
+		exchangeIdxRule = append(exchangeIdxRule, exchangeIdxItem)
+	}
+	var dataRequesterRule []interface{}
+	for _, dataRequesterItem := range dataRequester {
+		dataRequesterRule = append(dataRequesterRule, dataRequesterItem)
+	}
+	var passportOwnerRule []interface{}
+	for _, passportOwnerItem := range passportOwner {
+		passportOwnerRule = append(passportOwnerRule, passportOwnerItem)
+	}
+
+	logs, sub, err := _PassportLogicContract.contract.WatchLogs(opts, "PrivateDataExchangeProposed", exchangeIdxRule, dataRequesterRule, passportOwnerRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(PassportLogicContractPrivateDataExchangeProposed)
+				if err := _PassportLogicContract.contract.UnpackLog(event, "PrivateDataExchangeProposed", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// PassportLogicContractPrivateDataUpdatedIterator is returned from FilterPrivateDataUpdated and is used to iterate over the raw logs and unpacked data for PrivateDataUpdated events raised by the PassportLogicContract contract.
+type PassportLogicContractPrivateDataUpdatedIterator struct {
+	Event *PassportLogicContractPrivateDataUpdated // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *PassportLogicContractPrivateDataUpdatedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(PassportLogicContractPrivateDataUpdated)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(PassportLogicContractPrivateDataUpdated)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *PassportLogicContractPrivateDataUpdatedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *PassportLogicContractPrivateDataUpdatedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// PassportLogicContractPrivateDataUpdated represents a PrivateDataUpdated event raised by the PassportLogicContract contract.
+type PassportLogicContractPrivateDataUpdated struct {
+	FactProvider common.Address
+	Key          [32]byte
+	Raw          types.Log // Blockchain specific contextual infos
+}
+
+// FilterPrivateDataUpdated is a free log retrieval operation binding the contract event 0x1bd7e914e13f7cf5c918a20e77d8191f4851771f8c9425e85ec118fa3e2e33e7.
+//
+// Solidity: e PrivateDataUpdated(factProvider indexed address, key indexed bytes32)
+func (_PassportLogicContract *PassportLogicContractFilterer) FilterPrivateDataUpdated(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractPrivateDataUpdatedIterator, error) {
+
+	var factProviderRule []interface{}
+	for _, factProviderItem := range factProvider {
+		factProviderRule = append(factProviderRule, factProviderItem)
+	}
+	var keyRule []interface{}
+	for _, keyItem := range key {
+		keyRule = append(keyRule, keyItem)
+	}
+
+	logs, sub, err := _PassportLogicContract.contract.FilterLogs(opts, "PrivateDataUpdated", factProviderRule, keyRule)
+	if err != nil {
+		return nil, err
+	}
+	return &PassportLogicContractPrivateDataUpdatedIterator{contract: _PassportLogicContract.contract, event: "PrivateDataUpdated", logs: logs, sub: sub}, nil
+}
+
+// WatchPrivateDataUpdated is a free log subscription operation binding the contract event 0x1bd7e914e13f7cf5c918a20e77d8191f4851771f8c9425e85ec118fa3e2e33e7.
+//
+// Solidity: e PrivateDataUpdated(factProvider indexed address, key indexed bytes32)
+func (_PassportLogicContract *PassportLogicContractFilterer) WatchPrivateDataUpdated(opts *bind.WatchOpts, sink chan<- *PassportLogicContractPrivateDataUpdated, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
+
+	var factProviderRule []interface{}
+	for _, factProviderItem := range factProvider {
+		factProviderRule = append(factProviderRule, factProviderItem)
+	}
+	var keyRule []interface{}
+	for _, keyItem := range key {
+		keyRule = append(keyRule, keyItem)
+	}
+
+	logs, sub, err := _PassportLogicContract.contract.WatchLogs(opts, "PrivateDataUpdated", factProviderRule, keyRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(PassportLogicContractPrivateDataUpdated)
+				if err := _PassportLogicContract.contract.UnpackLog(event, "PrivateDataUpdated", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -2827,7 +4062,7 @@ type PassportLogicContractStringDeleted struct {
 
 // FilterStringDeleted is a free log retrieval operation binding the contract event 0x491a0e0281af9fc88ff024cffc24db22eddd4f826cb30d84936592967dc9237c.
 //
-// Solidity: event StringDeleted(address indexed factProvider, bytes32 indexed key)
+// Solidity: e StringDeleted(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterStringDeleted(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractStringDeletedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -2848,7 +4083,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterStringDeleted
 
 // WatchStringDeleted is a free log subscription operation binding the contract event 0x491a0e0281af9fc88ff024cffc24db22eddd4f826cb30d84936592967dc9237c.
 //
-// Solidity: event StringDeleted(address indexed factProvider, bytes32 indexed key)
+// Solidity: e StringDeleted(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchStringDeleted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractStringDeleted, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -2968,7 +4203,7 @@ type PassportLogicContractStringUpdated struct {
 
 // FilterStringUpdated is a free log retrieval operation binding the contract event 0x43e6b7e3323b4598401023341c086c07c3ff5577f594b5aab9c065f2c3c9d590.
 //
-// Solidity: event StringUpdated(address indexed factProvider, bytes32 indexed key)
+// Solidity: e StringUpdated(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterStringUpdated(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractStringUpdatedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -2989,7 +4224,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterStringUpdated
 
 // WatchStringUpdated is a free log subscription operation binding the contract event 0x43e6b7e3323b4598401023341c086c07c3ff5577f594b5aab9c065f2c3c9d590.
 //
-// Solidity: event StringUpdated(address indexed factProvider, bytes32 indexed key)
+// Solidity: e StringUpdated(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchStringUpdated(opts *bind.WatchOpts, sink chan<- *PassportLogicContractStringUpdated, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -3109,7 +4344,7 @@ type PassportLogicContractTxDataDeleted struct {
 
 // FilterTxDataDeleted is a free log retrieval operation binding the contract event 0x9b9532c8ba5879554dee7c3e9374bd26dbfb2f79cf7f247bcf90648fc81fc164.
 //
-// Solidity: event TxDataDeleted(address indexed factProvider, bytes32 indexed key)
+// Solidity: e TxDataDeleted(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterTxDataDeleted(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractTxDataDeletedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -3130,7 +4365,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterTxDataDeleted
 
 // WatchTxDataDeleted is a free log subscription operation binding the contract event 0x9b9532c8ba5879554dee7c3e9374bd26dbfb2f79cf7f247bcf90648fc81fc164.
 //
-// Solidity: event TxDataDeleted(address indexed factProvider, bytes32 indexed key)
+// Solidity: e TxDataDeleted(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchTxDataDeleted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractTxDataDeleted, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -3250,7 +4485,7 @@ type PassportLogicContractTxDataUpdated struct {
 
 // FilterTxDataUpdated is a free log retrieval operation binding the contract event 0xcbde9cd310365ff3de3ad9cb44ed688d8880c7b1d15df733a73880fb84d032de.
 //
-// Solidity: event TxDataUpdated(address indexed factProvider, bytes32 indexed key)
+// Solidity: e TxDataUpdated(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterTxDataUpdated(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractTxDataUpdatedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -3271,7 +4506,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterTxDataUpdated
 
 // WatchTxDataUpdated is a free log subscription operation binding the contract event 0xcbde9cd310365ff3de3ad9cb44ed688d8880c7b1d15df733a73880fb84d032de.
 //
-// Solidity: event TxDataUpdated(address indexed factProvider, bytes32 indexed key)
+// Solidity: e TxDataUpdated(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchTxDataUpdated(opts *bind.WatchOpts, sink chan<- *PassportLogicContractTxDataUpdated, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -3391,7 +4626,7 @@ type PassportLogicContractUintDeleted struct {
 
 // FilterUintDeleted is a free log retrieval operation binding the contract event 0xd5f853f7aaba549b5a46be1de24cac4c20e716b4c603d24b2b0b7b5d97ca1c4d.
 //
-// Solidity: event UintDeleted(address indexed factProvider, bytes32 indexed key)
+// Solidity: e UintDeleted(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterUintDeleted(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractUintDeletedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -3412,7 +4647,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterUintDeleted(o
 
 // WatchUintDeleted is a free log subscription operation binding the contract event 0xd5f853f7aaba549b5a46be1de24cac4c20e716b4c603d24b2b0b7b5d97ca1c4d.
 //
-// Solidity: event UintDeleted(address indexed factProvider, bytes32 indexed key)
+// Solidity: e UintDeleted(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchUintDeleted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractUintDeleted, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -3532,7 +4767,7 @@ type PassportLogicContractUintUpdated struct {
 
 // FilterUintUpdated is a free log retrieval operation binding the contract event 0xff76cb7634629f8d05011ab2a58380dfc0743157a70ba4173f866e113eca75c0.
 //
-// Solidity: event UintUpdated(address indexed factProvider, bytes32 indexed key)
+// Solidity: e UintUpdated(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterUintUpdated(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractUintUpdatedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -3553,7 +4788,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterUintUpdated(o
 
 // WatchUintUpdated is a free log subscription operation binding the contract event 0xff76cb7634629f8d05011ab2a58380dfc0743157a70ba4173f866e113eca75c0.
 //
-// Solidity: event UintUpdated(address indexed factProvider, bytes32 indexed key)
+// Solidity: e UintUpdated(factProvider indexed address, key indexed bytes32)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchUintUpdated(opts *bind.WatchOpts, sink chan<- *PassportLogicContractUintUpdated, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -3672,7 +4907,7 @@ type PassportLogicContractWhitelistFactProviderAdded struct {
 
 // FilterWhitelistFactProviderAdded is a free log retrieval operation binding the contract event 0xff8ac5f0e9cdc8f7ffbbc29ab1301ee649cf01cf7a6a9265a2d90587612c4175.
 //
-// Solidity: event WhitelistFactProviderAdded(address indexed factProvider)
+// Solidity: e WhitelistFactProviderAdded(factProvider indexed address)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterWhitelistFactProviderAdded(opts *bind.FilterOpts, factProvider []common.Address) (*PassportLogicContractWhitelistFactProviderAddedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -3689,7 +4924,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterWhitelistFact
 
 // WatchWhitelistFactProviderAdded is a free log subscription operation binding the contract event 0xff8ac5f0e9cdc8f7ffbbc29ab1301ee649cf01cf7a6a9265a2d90587612c4175.
 //
-// Solidity: event WhitelistFactProviderAdded(address indexed factProvider)
+// Solidity: e WhitelistFactProviderAdded(factProvider indexed address)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchWhitelistFactProviderAdded(opts *bind.WatchOpts, sink chan<- *PassportLogicContractWhitelistFactProviderAdded, factProvider []common.Address) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -3804,7 +5039,7 @@ type PassportLogicContractWhitelistFactProviderRemoved struct {
 
 // FilterWhitelistFactProviderRemoved is a free log retrieval operation binding the contract event 0x5bf47f016603dfff957e6086bd9a350212686e8f1d9208b3db47c5a3107c7878.
 //
-// Solidity: event WhitelistFactProviderRemoved(address indexed factProvider)
+// Solidity: e WhitelistFactProviderRemoved(factProvider indexed address)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterWhitelistFactProviderRemoved(opts *bind.FilterOpts, factProvider []common.Address) (*PassportLogicContractWhitelistFactProviderRemovedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -3821,7 +5056,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterWhitelistFact
 
 // WatchWhitelistFactProviderRemoved is a free log subscription operation binding the contract event 0x5bf47f016603dfff957e6086bd9a350212686e8f1d9208b3db47c5a3107c7878.
 //
-// Solidity: event WhitelistFactProviderRemoved(address indexed factProvider)
+// Solidity: e WhitelistFactProviderRemoved(factProvider indexed address)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchWhitelistFactProviderRemoved(opts *bind.WatchOpts, sink chan<- *PassportLogicContractWhitelistFactProviderRemoved, factProvider []common.Address) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -3936,7 +5171,7 @@ type PassportLogicContractWhitelistOnlyPermissionSet struct {
 
 // FilterWhitelistOnlyPermissionSet is a free log retrieval operation binding the contract event 0x6e1eb3fa845047cf9d5fd1deb1b7770b4e26163dd4d88cefb14fe7964a700595.
 //
-// Solidity: event WhitelistOnlyPermissionSet(bool indexed onlyWhitelist)
+// Solidity: e WhitelistOnlyPermissionSet(onlyWhitelist indexed bool)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterWhitelistOnlyPermissionSet(opts *bind.FilterOpts, onlyWhitelist []bool) (*PassportLogicContractWhitelistOnlyPermissionSetIterator, error) {
 
 	var onlyWhitelistRule []interface{}
@@ -3953,7 +5188,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterWhitelistOnly
 
 // WatchWhitelistOnlyPermissionSet is a free log subscription operation binding the contract event 0x6e1eb3fa845047cf9d5fd1deb1b7770b4e26163dd4d88cefb14fe7964a700595.
 //
-// Solidity: event WhitelistOnlyPermissionSet(bool indexed onlyWhitelist)
+// Solidity: e WhitelistOnlyPermissionSet(onlyWhitelist indexed bool)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchWhitelistOnlyPermissionSet(opts *bind.WatchOpts, sink chan<- *PassportLogicContractWhitelistOnlyPermissionSet, onlyWhitelist []bool) (event.Subscription, error) {
 
 	var onlyWhitelistRule []interface{}

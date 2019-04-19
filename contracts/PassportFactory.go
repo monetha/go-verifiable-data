@@ -242,7 +242,7 @@ func (_PassportFactoryContract *PassportFactoryContractCallerSession) Owner() (c
 
 // TokenFallback is a free data retrieval call binding the contract method 0xc0ee0b8a.
 //
-// Solidity: function tokenFallback(address _from, uint256 _value, bytes _data) constant returns()
+// Solidity: function tokenFallback(_from address, _value uint256, _data bytes) constant returns()
 func (_PassportFactoryContract *PassportFactoryContractCaller) TokenFallback(opts *bind.CallOpts, _from common.Address, _value *big.Int, _data []byte) error {
 	var ()
 	out := &[]interface{}{}
@@ -252,14 +252,14 @@ func (_PassportFactoryContract *PassportFactoryContractCaller) TokenFallback(opt
 
 // TokenFallback is a free data retrieval call binding the contract method 0xc0ee0b8a.
 //
-// Solidity: function tokenFallback(address _from, uint256 _value, bytes _data) constant returns()
+// Solidity: function tokenFallback(_from address, _value uint256, _data bytes) constant returns()
 func (_PassportFactoryContract *PassportFactoryContractSession) TokenFallback(_from common.Address, _value *big.Int, _data []byte) error {
 	return _PassportFactoryContract.Contract.TokenFallback(&_PassportFactoryContract.CallOpts, _from, _value, _data)
 }
 
 // TokenFallback is a free data retrieval call binding the contract method 0xc0ee0b8a.
 //
-// Solidity: function tokenFallback(address _from, uint256 _value, bytes _data) constant returns()
+// Solidity: function tokenFallback(_from address, _value uint256, _data bytes) constant returns()
 func (_PassportFactoryContract *PassportFactoryContractCallerSession) TokenFallback(_from common.Address, _value *big.Int, _data []byte) error {
 	return _PassportFactoryContract.Contract.TokenFallback(&_PassportFactoryContract.CallOpts, _from, _value, _data)
 }
@@ -308,21 +308,21 @@ func (_PassportFactoryContract *PassportFactoryContractTransactorSession) Reclai
 
 // ReclaimToken is a paid mutator transaction binding the contract method 0x17ffc320.
 //
-// Solidity: function reclaimToken(address _token) returns()
+// Solidity: function reclaimToken(_token address) returns()
 func (_PassportFactoryContract *PassportFactoryContractTransactor) ReclaimToken(opts *bind.TransactOpts, _token common.Address) (*types.Transaction, error) {
 	return _PassportFactoryContract.contract.Transact(opts, "reclaimToken", _token)
 }
 
 // ReclaimToken is a paid mutator transaction binding the contract method 0x17ffc320.
 //
-// Solidity: function reclaimToken(address _token) returns()
+// Solidity: function reclaimToken(_token address) returns()
 func (_PassportFactoryContract *PassportFactoryContractSession) ReclaimToken(_token common.Address) (*types.Transaction, error) {
 	return _PassportFactoryContract.Contract.ReclaimToken(&_PassportFactoryContract.TransactOpts, _token)
 }
 
 // ReclaimToken is a paid mutator transaction binding the contract method 0x17ffc320.
 //
-// Solidity: function reclaimToken(address _token) returns()
+// Solidity: function reclaimToken(_token address) returns()
 func (_PassportFactoryContract *PassportFactoryContractTransactorSession) ReclaimToken(_token common.Address) (*types.Transaction, error) {
 	return _PassportFactoryContract.Contract.ReclaimToken(&_PassportFactoryContract.TransactOpts, _token)
 }
@@ -350,42 +350,42 @@ func (_PassportFactoryContract *PassportFactoryContractTransactorSession) Renoun
 
 // SetRegistry is a paid mutator transaction binding the contract method 0xa91ee0dc.
 //
-// Solidity: function setRegistry(address _registry) returns()
+// Solidity: function setRegistry(_registry address) returns()
 func (_PassportFactoryContract *PassportFactoryContractTransactor) SetRegistry(opts *bind.TransactOpts, _registry common.Address) (*types.Transaction, error) {
 	return _PassportFactoryContract.contract.Transact(opts, "setRegistry", _registry)
 }
 
 // SetRegistry is a paid mutator transaction binding the contract method 0xa91ee0dc.
 //
-// Solidity: function setRegistry(address _registry) returns()
+// Solidity: function setRegistry(_registry address) returns()
 func (_PassportFactoryContract *PassportFactoryContractSession) SetRegistry(_registry common.Address) (*types.Transaction, error) {
 	return _PassportFactoryContract.Contract.SetRegistry(&_PassportFactoryContract.TransactOpts, _registry)
 }
 
 // SetRegistry is a paid mutator transaction binding the contract method 0xa91ee0dc.
 //
-// Solidity: function setRegistry(address _registry) returns()
+// Solidity: function setRegistry(_registry address) returns()
 func (_PassportFactoryContract *PassportFactoryContractTransactorSession) SetRegistry(_registry common.Address) (*types.Transaction, error) {
 	return _PassportFactoryContract.Contract.SetRegistry(&_PassportFactoryContract.TransactOpts, _registry)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
 //
-// Solidity: function transferOwnership(address _newOwner) returns()
+// Solidity: function transferOwnership(_newOwner address) returns()
 func (_PassportFactoryContract *PassportFactoryContractTransactor) TransferOwnership(opts *bind.TransactOpts, _newOwner common.Address) (*types.Transaction, error) {
 	return _PassportFactoryContract.contract.Transact(opts, "transferOwnership", _newOwner)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
 //
-// Solidity: function transferOwnership(address _newOwner) returns()
+// Solidity: function transferOwnership(_newOwner address) returns()
 func (_PassportFactoryContract *PassportFactoryContractSession) TransferOwnership(_newOwner common.Address) (*types.Transaction, error) {
 	return _PassportFactoryContract.Contract.TransferOwnership(&_PassportFactoryContract.TransactOpts, _newOwner)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
 //
-// Solidity: function transferOwnership(address _newOwner) returns()
+// Solidity: function transferOwnership(_newOwner address) returns()
 func (_PassportFactoryContract *PassportFactoryContractTransactorSession) TransferOwnership(_newOwner common.Address) (*types.Transaction, error) {
 	return _PassportFactoryContract.Contract.TransferOwnership(&_PassportFactoryContract.TransactOpts, _newOwner)
 }
@@ -465,7 +465,7 @@ type PassportFactoryContractOwnershipRenounced struct {
 
 // FilterOwnershipRenounced is a free log retrieval operation binding the contract event 0xf8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c64820.
 //
-// Solidity: event OwnershipRenounced(address indexed previousOwner)
+// Solidity: e OwnershipRenounced(previousOwner indexed address)
 func (_PassportFactoryContract *PassportFactoryContractFilterer) FilterOwnershipRenounced(opts *bind.FilterOpts, previousOwner []common.Address) (*PassportFactoryContractOwnershipRenouncedIterator, error) {
 
 	var previousOwnerRule []interface{}
@@ -482,7 +482,7 @@ func (_PassportFactoryContract *PassportFactoryContractFilterer) FilterOwnership
 
 // WatchOwnershipRenounced is a free log subscription operation binding the contract event 0xf8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c64820.
 //
-// Solidity: event OwnershipRenounced(address indexed previousOwner)
+// Solidity: e OwnershipRenounced(previousOwner indexed address)
 func (_PassportFactoryContract *PassportFactoryContractFilterer) WatchOwnershipRenounced(opts *bind.WatchOpts, sink chan<- *PassportFactoryContractOwnershipRenounced, previousOwner []common.Address) (event.Subscription, error) {
 
 	var previousOwnerRule []interface{}
@@ -598,7 +598,7 @@ type PassportFactoryContractOwnershipTransferred struct {
 
 // FilterOwnershipTransferred is a free log retrieval operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
 //
-// Solidity: event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
+// Solidity: e OwnershipTransferred(previousOwner indexed address, newOwner indexed address)
 func (_PassportFactoryContract *PassportFactoryContractFilterer) FilterOwnershipTransferred(opts *bind.FilterOpts, previousOwner []common.Address, newOwner []common.Address) (*PassportFactoryContractOwnershipTransferredIterator, error) {
 
 	var previousOwnerRule []interface{}
@@ -619,7 +619,7 @@ func (_PassportFactoryContract *PassportFactoryContractFilterer) FilterOwnership
 
 // WatchOwnershipTransferred is a free log subscription operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
 //
-// Solidity: event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
+// Solidity: e OwnershipTransferred(previousOwner indexed address, newOwner indexed address)
 func (_PassportFactoryContract *PassportFactoryContractFilterer) WatchOwnershipTransferred(opts *bind.WatchOpts, sink chan<- *PassportFactoryContractOwnershipTransferred, previousOwner []common.Address, newOwner []common.Address) (event.Subscription, error) {
 
 	var previousOwnerRule []interface{}
@@ -739,7 +739,7 @@ type PassportFactoryContractPassportCreated struct {
 
 // FilterPassportCreated is a free log retrieval operation binding the contract event 0x03f096f07a4d27c54645fa682640d44179c821150e16c48b27130ca928fa937c.
 //
-// Solidity: event PassportCreated(address indexed passport, address indexed owner)
+// Solidity: e PassportCreated(passport indexed address, owner indexed address)
 func (_PassportFactoryContract *PassportFactoryContractFilterer) FilterPassportCreated(opts *bind.FilterOpts, passport []common.Address, owner []common.Address) (*PassportFactoryContractPassportCreatedIterator, error) {
 
 	var passportRule []interface{}
@@ -760,7 +760,7 @@ func (_PassportFactoryContract *PassportFactoryContractFilterer) FilterPassportC
 
 // WatchPassportCreated is a free log subscription operation binding the contract event 0x03f096f07a4d27c54645fa682640d44179c821150e16c48b27130ca928fa937c.
 //
-// Solidity: event PassportCreated(address indexed passport, address indexed owner)
+// Solidity: e PassportCreated(passport indexed address, owner indexed address)
 func (_PassportFactoryContract *PassportFactoryContractFilterer) WatchPassportCreated(opts *bind.WatchOpts, sink chan<- *PassportFactoryContractPassportCreated, passport []common.Address, owner []common.Address) (event.Subscription, error) {
 
 	var passportRule []interface{}
@@ -880,7 +880,7 @@ type PassportFactoryContractPassportLogicRegistryChanged struct {
 
 // FilterPassportLogicRegistryChanged is a free log retrieval operation binding the contract event 0x5c2abfd67230c0e47d6de28402bfe206c7a57283cba891416ed657fd70a714c2.
 //
-// Solidity: event PassportLogicRegistryChanged(address indexed oldRegistry, address indexed newRegistry)
+// Solidity: e PassportLogicRegistryChanged(oldRegistry indexed address, newRegistry indexed address)
 func (_PassportFactoryContract *PassportFactoryContractFilterer) FilterPassportLogicRegistryChanged(opts *bind.FilterOpts, oldRegistry []common.Address, newRegistry []common.Address) (*PassportFactoryContractPassportLogicRegistryChangedIterator, error) {
 
 	var oldRegistryRule []interface{}
@@ -901,7 +901,7 @@ func (_PassportFactoryContract *PassportFactoryContractFilterer) FilterPassportL
 
 // WatchPassportLogicRegistryChanged is a free log subscription operation binding the contract event 0x5c2abfd67230c0e47d6de28402bfe206c7a57283cba891416ed657fd70a714c2.
 //
-// Solidity: event PassportLogicRegistryChanged(address indexed oldRegistry, address indexed newRegistry)
+// Solidity: e PassportLogicRegistryChanged(oldRegistry indexed address, newRegistry indexed address)
 func (_PassportFactoryContract *PassportFactoryContractFilterer) WatchPassportLogicRegistryChanged(opts *bind.WatchOpts, sink chan<- *PassportFactoryContractPassportLogicRegistryChanged, oldRegistry []common.Address, newRegistry []common.Address) (event.Subscription, error) {
 
 	var oldRegistryRule []interface{}

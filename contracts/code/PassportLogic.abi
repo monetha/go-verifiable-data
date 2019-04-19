@@ -3,6 +3,48 @@
     "constant": false,
     "inputs": [
       {
+        "name": "_exchangeIdx",
+        "type": "uint256"
+      }
+    ],
+    "name": "finishPrivateDataExchange",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_exchangeIdx",
+        "type": "uint256"
+      }
+    ],
+    "name": "timeoutPrivateDataExchange",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "privateDataExchangeAcceptTimeout",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
         "name": "_key",
         "type": "bytes32"
       }
@@ -57,6 +99,28 @@
     ],
     "payable": false,
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_key",
+        "type": "bytes32"
+      },
+      {
+        "name": "_dataIPFSHash",
+        "type": "string"
+      },
+      {
+        "name": "_keyHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "setPrivateData",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -297,6 +361,73 @@
     "type": "function"
   },
   {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "privateDataExchanges",
+    "outputs": [
+      {
+        "name": "dataRequester",
+        "type": "address"
+      },
+      {
+        "name": "dataRequesterValue",
+        "type": "uint256"
+      },
+      {
+        "name": "passportOwner",
+        "type": "address"
+      },
+      {
+        "name": "passportOwnerValue",
+        "type": "uint256"
+      },
+      {
+        "name": "factProvider",
+        "type": "address"
+      },
+      {
+        "name": "key",
+        "type": "bytes32"
+      },
+      {
+        "name": "dataIPFSHash",
+        "type": "string"
+      },
+      {
+        "name": "dataKeyHash",
+        "type": "bytes32"
+      },
+      {
+        "name": "encryptedExchangeKey",
+        "type": "bytes"
+      },
+      {
+        "name": "exchangeKeyHash",
+        "type": "bytes32"
+      },
+      {
+        "name": "encryptedDataKey",
+        "type": "bytes32"
+      },
+      {
+        "name": "state",
+        "type": "uint8"
+      },
+      {
+        "name": "stateExpired",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "constant": false,
     "inputs": [],
     "name": "renounceOwnership",
@@ -357,6 +488,38 @@
     ],
     "payable": false,
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getPrivateDataExchangesCount",
+    "outputs": [
+      {
+        "name": "count",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_exchangeIdx",
+        "type": "uint256"
+      },
+      {
+        "name": "_encryptedDataKey",
+        "type": "bytes32"
+      }
+    ],
+    "name": "acceptPrivateDataExchange",
+    "outputs": [],
+    "payable": true,
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -445,6 +608,37 @@
         "type": "bytes32"
       }
     ],
+    "name": "getPrivateData",
+    "outputs": [
+      {
+        "name": "success",
+        "type": "bool"
+      },
+      {
+        "name": "dataIPFSHash",
+        "type": "string"
+      },
+      {
+        "name": "dataKeyHash",
+        "type": "bytes32"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_factProvider",
+        "type": "address"
+      },
+      {
+        "name": "_key",
+        "type": "bytes32"
+      }
+    ],
     "name": "getBool",
     "outputs": [
       {
@@ -472,6 +666,20 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "privateDataExchangeProposeTimeout",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -519,6 +727,60 @@
       }
     ],
     "name": "setAddress",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "openPrivateDataExchangesCount",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_factProvider",
+        "type": "address"
+      },
+      {
+        "name": "_key",
+        "type": "bytes32"
+      },
+      {
+        "name": "_encryptedExchangeKey",
+        "type": "bytes"
+      },
+      {
+        "name": "_exchangeKeyHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "proposePrivateDataExchange",
+    "outputs": [],
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_key",
+        "type": "bytes32"
+      }
+    ],
+    "name": "deletePrivateData",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -624,6 +886,136 @@
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_exchangeIdx",
+        "type": "uint256"
+      },
+      {
+        "name": "_exchangeKey",
+        "type": "bytes32"
+      }
+    ],
+    "name": "disputePrivateDataExchange",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "factProvider",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "name": "key",
+        "type": "bytes32"
+      }
+    ],
+    "name": "PrivateDataUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "factProvider",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "name": "key",
+        "type": "bytes32"
+      }
+    ],
+    "name": "PrivateDataDeleted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "exchangeIdx",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "name": "dataRequester",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "name": "passportOwner",
+        "type": "address"
+      }
+    ],
+    "name": "PrivateDataExchangeProposed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "exchangeIdx",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "name": "dataRequester",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "name": "passportOwner",
+        "type": "address"
+      }
+    ],
+    "name": "PrivateDataExchangeAccepted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "exchangeIdx",
+        "type": "uint256"
+      }
+    ],
+    "name": "PrivateDataExchangeClosed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "exchangeIdx",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "name": "successful",
+        "type": "bool"
+      },
+      {
+        "indexed": true,
+        "name": "cheater",
+        "type": "address"
+      }
+    ],
+    "name": "PrivateDataExchangeDisputed",
+    "type": "event"
   },
   {
     "anonymous": false,

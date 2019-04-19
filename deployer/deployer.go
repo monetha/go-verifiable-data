@@ -12,7 +12,7 @@ import (
 
 const (
 	// PassportFactoryGasLimit is a minimum gas amount needed to fully deployer passport factory contract with all dependent contracts
-	PassportFactoryGasLimit = 4000000
+	PassportFactoryGasLimit = 5500000
 
 	// PassportGasLimit is a minimum gas amount needed to fully deployer passport contract
 	PassportGasLimit = 460000
