@@ -76,6 +76,7 @@ The reputation-go-sdk project comes with several executables found in the [`cmd`
 |:----------:|-------------|
 | [`deploy-bootstrap`](cmd/deploy-bootstrap) | Utility tool to deploy three contracts at once: [PassportLogic](contracts/code/PassportLogic.sol), [PassportLogicRegistry](contracts/code/PassportLogicRegistry.sol), [PassportFactory](contracts/code/PassportFactory.sol). |
 | [`deploy-passport`](cmd/deploy-passport) | Utility tool to deploy [Passport](contracts/code/Passport.sol) contracts using already deployed [PassportFactory](contracts/code/PassportFactory.sol). |
+| [`upgrade-passport-logic`](cmd/upgrade-passport-logic) | Utility tool to upgrade [PassportLogic](contracts/code/PassportLogic.sol) contract. |
 | [`write-fact`](cmd/write-fact) | Utility tool to write facts to passport. |
 | [`read-fact`](cmd/read-fact) | Utility tool to read facts from passport. |
 | [`passport-list`](cmd/passport-list) | Utility tool for getting a list of passports created using specific [PassportFactory](../../contracts/code/PassportFactory.sol) contract. |
@@ -117,7 +118,7 @@ The contract addresses deployed on Ropsten:
 
 | Contract      | Address                                      |
 |---------------|----------------------------------------------|
-| `PassportLogic` | [`0xEf95422e66761A5a468FE72c1fD3C946884d5E50`](https://ropsten.etherscan.io/address/0xEf95422e66761A5a468FE72c1fD3C946884d5E50) |
+| `PassportLogic` | [`0xf7adefec07440c9846afe5cc7ecca6821a831208`](https://ropsten.etherscan.io/address/0xf7adefec07440c9846afe5cc7ecca6821a831208) |
 | `PassportLogicRegistry`  | [`0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c`](https://ropsten.etherscan.io/address/0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c) |
 | `PassportFactory` | [`0x5FD962855e9b327262F47594949fd6d742FE2A01`](https://ropsten.etherscan.io/address/0x5FD962855e9b327262F47594949fd6d742FE2A01) |
 
