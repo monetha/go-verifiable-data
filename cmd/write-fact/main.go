@@ -174,8 +174,9 @@ func main() {
 		cmdutils.CheckBalance(ctx, monethaSession, deployer.PassportFactoryGasLimit)
 
 		// deploying passport factory
-		passportFactoryAddress, err := deployer.New(monethaSession).DeployPassportFactory(ctx)
+		res, err := deployer.New(monethaSession).DeployPassportFactory(ctx)
 		cmdutils.CheckErr(err, "create passport factory")
+		passportFactoryAddress := res.PassportFactoryAddress
 
 		// creating passport owner session and checking balance
 		passportOwnerSession := e.NewSession(passportOwnerKey)
