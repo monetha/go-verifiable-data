@@ -32,6 +32,7 @@ func TestHistorian_FilterChanges(t *testing.T) {
 	provider.WriteUint(ctx, passportAddress, key, big.NewInt(123456))
 	provider.WriteBool(ctx, passportAddress, key, true)
 	provider.WriteIPFSHash(ctx, passportAddress, key, "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j")
+	provider.WritePrivateData(ctx, passportAddress, key, &facts.PrivateData{DataIPFSHash: "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j", DataKeyHash: [32]byte{1, 2, 3}})
 
 	// make some deletes
 	provider.DeleteTxData(ctx, passportAddress, key)
@@ -42,6 +43,7 @@ func TestHistorian_FilterChanges(t *testing.T) {
 	provider.DeleteUint(ctx, passportAddress, key)
 	provider.DeleteBool(ctx, passportAddress, key)
 	provider.DeleteIPFSHash(ctx, passportAddress, key)
+	provider.DeletePrivateData(ctx, passportAddress, key)
 
 	eth := factProviderSession.Eth
 	hist := facts.NewHistorian(eth)
@@ -163,6 +165,14 @@ func (c *providerChanges) WriteIPFSHash(ctx context.Context, passportAddress com
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Updated, DataType: data.IPFS, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
 
+func (c *providerChanges) WritePrivateData(ctx context.Context, passportAddress common.Address, key [32]byte, privateData *facts.PrivateData) {
+	txHash, err := c.p.WritePrivateData(ctx, passportAddress, key, privateData)
+	if err != nil {
+		c.t.Fatalf("Provider.WritePrivateData() error = %v", err)
+	}
+	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Updated, DataType: data.PrivateData, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
+}
+
 func (c *providerChanges) DeleteTxData(ctx context.Context, passportAddress common.Address, key [32]byte) {
 	txHash, err := c.p.DeleteTxData(ctx, passportAddress, key)
 	if err != nil {
@@ -225,6 +235,14 @@ func (c *providerChanges) DeleteIPFSHash(ctx context.Context, passportAddress co
 		c.t.Fatalf("Provider.DeleteIPFSHash() error = %v", err)
 	}
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Deleted, DataType: data.IPFS, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
+}
+
+func (c *providerChanges) DeletePrivateData(ctx context.Context, passportAddress common.Address, key [32]byte) {
+	txHash, err := c.p.DeletePrivateData(ctx, passportAddress, key)
+	if err != nil {
+		c.t.Fatalf("Provider.DeletePrivateData() error = %v", err)
+	}
+	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Deleted, DataType: data.PrivateData, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
 
 func testFilterChangesExactOne(t *testing.T, hist *facts.Historian, changeType change.Type, dataType data.Type, passportAddress common.Address, factProviderAddress common.Address, key [32]byte, allChanges []changeDetails) {

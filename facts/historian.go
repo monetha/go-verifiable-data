@@ -161,24 +161,26 @@ type ChangesFilterOpts struct {
 var (
 	eventNameByChangeTypeDataType = map[change.Type]map[data.Type]string{
 		change.Deleted: {
-			data.Address: "AddressDeleted",
-			data.Bool:    "BoolDeleted",
-			data.Bytes:   "BytesDeleted",
-			data.Int:     "IntDeleted",
-			data.String:  "StringDeleted",
-			data.TxData:  "TxDataDeleted",
-			data.Uint:    "UintDeleted",
-			data.IPFS:    "IPFSHashDeleted",
+			data.Address:     "AddressDeleted",
+			data.Bool:        "BoolDeleted",
+			data.Bytes:       "BytesDeleted",
+			data.Int:         "IntDeleted",
+			data.String:      "StringDeleted",
+			data.TxData:      "TxDataDeleted",
+			data.Uint:        "UintDeleted",
+			data.IPFS:        "IPFSHashDeleted",
+			data.PrivateData: "PrivateDataDeleted",
 		},
 		change.Updated: {
-			data.Address: "AddressUpdated",
-			data.Bool:    "BoolUpdated",
-			data.Bytes:   "BytesUpdated",
-			data.Int:     "IntUpdated",
-			data.String:  "StringUpdated",
-			data.TxData:  "TxDataUpdated",
-			data.Uint:    "UintUpdated",
-			data.IPFS:    "IPFSHashUpdated",
+			data.Address:     "AddressUpdated",
+			data.Bool:        "BoolUpdated",
+			data.Bytes:       "BytesUpdated",
+			data.Int:         "IntUpdated",
+			data.String:      "StringUpdated",
+			data.TxData:      "TxDataUpdated",
+			data.Uint:        "UintUpdated",
+			data.IPFS:        "IPFSHashUpdated",
+			data.PrivateData: "PrivateDataUpdated",
 		},
 	}
 )
@@ -348,6 +350,14 @@ type (
 		Key          [32]byte
 		Hash         string
 	}
+
+	// WritePrivateDataHistoryItem holds parameters of WritePrivateData call
+	WritePrivateDataHistoryItem struct {
+		FactProvider common.Address
+		Key          [32]byte
+		DataIPFSHash string
+		DataKeyHash  [32]byte
+	}
 )
 
 // GetHistoryItemOfWriteTxData returns the data value that was set in the given transaction.
@@ -499,6 +509,26 @@ func (h *Historian) GetHistoryItemOfWriteIPFSHash(ctx context.Context, passport 
 		FactProvider: from,
 		Key:          params.Key,
 		Hash:         params.Hash,
+	}, nil
+}
+
+// GetHistoryItemOfWritePrivateData returns the private data value that was set in the given transaction.
+func (h *Historian) GetHistoryItemOfWritePrivateData(ctx context.Context, passport common.Address, txHash common.Hash) (*WritePrivateDataHistoryItem, error) {
+	from, txData, err := h.getTransactionSenderData(ctx, txHash)
+	if err != nil {
+		return nil, err
+	}
+
+	params, err := txdata.ParseSetPrivateDataCallData(txData)
+	if err != nil {
+		return nil, err
+	}
+
+	return &WritePrivateDataHistoryItem{
+		FactProvider: from,
+		Key:          params.Key,
+		DataIPFSHash: params.DataIPFSHash,
+		DataKeyHash:  params.DataKeyHash,
 	}, nil
 }
 
