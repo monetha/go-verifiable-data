@@ -285,7 +285,7 @@ func (r *Reader) ReadPrivateDataHashes(ctx context.Context, passport common.Addr
 		DataKeyHash  [32]byte
 	}
 
-	(*eth.Eth)(r).Log("Getting IPFS private data", "fact_provider", factProvider, "key", key)
+	(*eth.Eth)(r).Log("Getting IPFS private data hashes", "fact_provider", factProvider, "key", key)
 	res, err := contracts.InitPassportLogicContract(passport, backend).GetPrivateDataHashes(&bind.CallOpts{Context: ctx}, factProvider, key)
 	if err != nil {
 		return nil, fmt.Errorf("facts: GetPrivateDataHashes: %v", err)

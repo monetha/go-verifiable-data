@@ -236,7 +236,7 @@ func (p *Provider) WritePrivateDataHashes(ctx context.Context, passportAddress c
 		return common.Hash{}, err
 	}
 
-	p.Log("Writing IPFS private data to passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	p.Log("Writing IPFS private data hashes to passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
 	tx, err := c.SetPrivateDataHashes(factProviderAuth, key, privateData.DataIPFSHash, privateData.DataKeyHash)
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: SetPrivateDataHashes: %v", err)
@@ -416,7 +416,7 @@ func (p *Provider) DeletePrivateDataHashes(ctx context.Context, passportAddress 
 		return common.Hash{}, err
 	}
 
-	p.Log("Deleting IPFS private data from passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	p.Log("Deleting IPFS private data hashes from passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
 	tx, err := c.DeletePrivateDataHashes(factProviderAuth, key)
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: DeletePrivateDataHashes: %v", err)
