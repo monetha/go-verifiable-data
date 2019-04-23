@@ -228,7 +228,7 @@ func (p *Provider) WriteIPFSHash(ctx context.Context, passportAddress common.Add
 }
 
 // WritePrivateDataHashes writes IPFS hash of encrypted private data and hash of data encryption key
-func (p *Provider) WritePrivateDataHashes(ctx context.Context, passportAddress common.Address, key [32]byte, privateData *PrivateData) (common.Hash, error) {
+func (p *Provider) WritePrivateDataHashes(ctx context.Context, passportAddress common.Address, key [32]byte, privateData *PrivateDataHashes) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
 
 	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
@@ -237,9 +237,9 @@ func (p *Provider) WritePrivateDataHashes(ctx context.Context, passportAddress c
 	}
 
 	p.Log("Writing IPFS private data to passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
-	tx, err := c.SetPrivateData(factProviderAuth, key, privateData.DataIPFSHash, privateData.DataKeyHash)
+	tx, err := c.SetPrivateDataHashes(factProviderAuth, key, privateData.DataIPFSHash, privateData.DataKeyHash)
 	if err != nil {
-		return common.Hash{}, fmt.Errorf("facts: SetPrivateData: %v", err)
+		return common.Hash{}, fmt.Errorf("facts: SetPrivateDataHashes: %v", err)
 	}
 	txHash := tx.Hash()
 	_, err = p.WaitForTxReceipt(ctx, txHash)
@@ -417,7 +417,7 @@ func (p *Provider) DeletePrivateDataHashes(ctx context.Context, passportAddress 
 	}
 
 	p.Log("Deleting IPFS private data from passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
-	tx, err := c.DeletePrivateData(factProviderAuth, key)
+	tx, err := c.DeletePrivateDataHashes(factProviderAuth, key)
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: DeletePrivateDataHashes: %v", err)
 	}

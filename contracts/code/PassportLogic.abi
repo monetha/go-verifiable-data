@@ -102,28 +102,6 @@
     "type": "function"
   },
   {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_key",
-        "type": "bytes32"
-      },
-      {
-        "name": "_dataIPFSHash",
-        "type": "string"
-      },
-      {
-        "name": "_keyHash",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setPrivateData",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "constant": true,
     "inputs": [
       {
@@ -190,6 +168,37 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_factProvider",
+        "type": "address"
+      },
+      {
+        "name": "_key",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getPrivateDataHashes",
+    "outputs": [
+      {
+        "name": "success",
+        "type": "bool"
+      },
+      {
+        "name": "dataIPFSHash",
+        "type": "string"
+      },
+      {
+        "name": "dataKeyHash",
+        "type": "bytes32"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -281,6 +290,20 @@
     ],
     "payable": false,
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_key",
+        "type": "bytes32"
+      }
+    ],
+    "name": "deletePrivateDataHashes",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -608,37 +631,6 @@
         "type": "bytes32"
       }
     ],
-    "name": "getPrivateData",
-    "outputs": [
-      {
-        "name": "success",
-        "type": "bool"
-      },
-      {
-        "name": "dataIPFSHash",
-        "type": "string"
-      },
-      {
-        "name": "dataKeyHash",
-        "type": "bytes32"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_factProvider",
-        "type": "address"
-      },
-      {
-        "name": "_key",
-        "type": "bytes32"
-      }
-    ],
     "name": "getBool",
     "outputs": [
       {
@@ -778,20 +770,6 @@
       {
         "name": "_key",
         "type": "bytes32"
-      }
-    ],
-    "name": "deletePrivateData",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_key",
-        "type": "bytes32"
       },
       {
         "name": "_value",
@@ -863,6 +841,28 @@
     "constant": false,
     "inputs": [
       {
+        "name": "_key",
+        "type": "bytes32"
+      },
+      {
+        "name": "_dataIPFSHash",
+        "type": "string"
+      },
+      {
+        "name": "_dataKeyHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "setPrivateDataHashes",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
         "name": "newOwner",
         "type": "address"
       }
@@ -919,7 +919,7 @@
         "type": "bytes32"
       }
     ],
-    "name": "PrivateDataUpdated",
+    "name": "PrivateDataHashesUpdated",
     "type": "event"
   },
   {
@@ -936,7 +936,7 @@
         "type": "bytes32"
       }
     ],
-    "name": "PrivateDataDeleted",
+    "name": "PrivateDataHashesDeleted",
     "type": "event"
   },
   {

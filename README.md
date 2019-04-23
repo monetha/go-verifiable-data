@@ -118,7 +118,7 @@ The contract addresses deployed on Ropsten:
 
 | Contract      | Address                                      |
 |---------------|----------------------------------------------|
-| `PassportLogic` | [`0xf7adefec07440c9846afe5cc7ecca6821a831208`](https://ropsten.etherscan.io/address/0xf7adefec07440c9846afe5cc7ecca6821a831208) |
+| `PassportLogic` | [`0xe11BeF038e0F34EeFef1Ee2ef3bc2154a64A8D6C`](https://ropsten.etherscan.io/address/0xe11BeF038e0F34EeFef1Ee2ef3bc2154a64A8D6C) |
 | `PassportLogicRegistry`  | [`0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c`](https://ropsten.etherscan.io/address/0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c) |
 | `PassportFactory` | [`0x5FD962855e9b327262F47594949fd6d742FE2A01`](https://ropsten.etherscan.io/address/0x5FD962855e9b327262F47594949fd6d742FE2A01) |
 

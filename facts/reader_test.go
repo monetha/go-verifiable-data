@@ -442,10 +442,10 @@ func TestReader_ReadPrivateData(t *testing.T) {
 	tests := []struct {
 		name string
 		key  [32]byte
-		data *facts.PrivateData
+		data *facts.PrivateDataHashes
 	}{
-		{"test 1", [32]byte{}, &facts.PrivateData{DataIPFSHash: "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j", DataKeyHash: [32]byte{1, 2, 3}}},
-		{"test 2", [32]byte{9, 8, 7, 6}, &facts.PrivateData{DataIPFSHash: "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j", DataKeyHash: [32]byte{1, 2, 3}}},
+		{"test 1", [32]byte{}, &facts.PrivateDataHashes{DataIPFSHash: "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j", DataKeyHash: [32]byte{1, 2, 3}}},
+		{"test 2", [32]byte{9, 8, 7, 6}, &facts.PrivateDataHashes{DataIPFSHash: "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j", DataKeyHash: [32]byte{1, 2, 3}}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

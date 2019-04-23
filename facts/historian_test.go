@@ -32,7 +32,7 @@ func TestHistorian_FilterChanges(t *testing.T) {
 	provider.WriteUint(ctx, passportAddress, key, big.NewInt(123456))
 	provider.WriteBool(ctx, passportAddress, key, true)
 	provider.WriteIPFSHash(ctx, passportAddress, key, "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j")
-	provider.WritePrivateDataHashes(ctx, passportAddress, key, &facts.PrivateData{DataIPFSHash: "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j", DataKeyHash: [32]byte{1, 2, 3}})
+	provider.WritePrivateDataHashes(ctx, passportAddress, key, &facts.PrivateDataHashes{DataIPFSHash: "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j", DataKeyHash: [32]byte{1, 2, 3}})
 
 	// make some deletes
 	provider.DeleteTxData(ctx, passportAddress, key)
@@ -165,7 +165,7 @@ func (c *providerChanges) WriteIPFSHash(ctx context.Context, passportAddress com
 	c.AllChanges = append(c.AllChanges, changeDetails{ChangeType: change.Updated, DataType: data.IPFS, FactProvider: c.p.TransactOpts.From, Key: key, TxHash: txHash})
 }
 
-func (c *providerChanges) WritePrivateDataHashes(ctx context.Context, passportAddress common.Address, key [32]byte, privateData *facts.PrivateData) {
+func (c *providerChanges) WritePrivateDataHashes(ctx context.Context, passportAddress common.Address, key [32]byte, privateData *facts.PrivateDataHashes) {
 	txHash, err := c.p.WritePrivateDataHashes(ctx, passportAddress, key, privateData)
 	if err != nil {
 		c.t.Fatalf("Provider.WritePrivateDataHashes() error = %v", err)

@@ -62,7 +62,7 @@ type (
 	SetPrivateDataParameters struct {
 		Key          [32]byte `abi:"_key"`
 		DataIPFSHash string   `abi:"_dataIPFSHash"`
-		DataKeyHash  [32]byte `abi:"_keyHash"`
+		DataKeyHash  [32]byte `abi:"_dataKeyHash"`
 	}
 )
 
@@ -146,10 +146,10 @@ func ParseSetIPFSHashCallData(input []byte) (parms *SetIPFSHashParameters, err e
 	return
 }
 
-// ParseSetPrivateDataCallData parses setPrivateData method call parameters from transaction input data
-func ParseSetPrivateDataCallData(input []byte) (parms *SetPrivateDataParameters, err error) {
+// ParseSetPrivateDataHashesCallData parses setPrivateData method call parameters from transaction input data
+func ParseSetPrivateDataHashesCallData(input []byte) (parms *SetPrivateDataParameters, err error) {
 	v := &SetPrivateDataParameters{}
-	err = unpackInput(contracts.PassportLogicABI, v, "setPrivateData", input)
+	err = unpackInput(contracts.PassportLogicABI, v, "setPrivateDataHashes", input)
 	if err == nil {
 		parms = v
 	}

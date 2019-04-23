@@ -169,7 +169,7 @@ var (
 			data.TxData:      "TxDataDeleted",
 			data.Uint:        "UintDeleted",
 			data.IPFS:        "IPFSHashDeleted",
-			data.PrivateData: "PrivateDataDeleted",
+			data.PrivateData: "PrivateDataHashesDeleted",
 		},
 		change.Updated: {
 			data.Address:     "AddressUpdated",
@@ -180,7 +180,7 @@ var (
 			data.TxData:      "TxDataUpdated",
 			data.Uint:        "UintUpdated",
 			data.IPFS:        "IPFSHashUpdated",
-			data.PrivateData: "PrivateDataUpdated",
+			data.PrivateData: "PrivateDataHashesUpdated",
 		},
 	}
 )
@@ -519,7 +519,7 @@ func (h *Historian) GetHistoryItemOfWritePrivateDataHashes(ctx context.Context, 
 		return nil, err
 	}
 
-	params, err := txdata.ParseSetPrivateDataCallData(txData)
+	params, err := txdata.ParseSetPrivateDataHashesCallData(txData)
 	if err != nil {
 		return nil, err
 	}

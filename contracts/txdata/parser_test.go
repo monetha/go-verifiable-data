@@ -286,14 +286,14 @@ func TestParseSetPrivateDataCallData(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tx, err := contractTransactor.SetPrivateData(transactOpts, tt.params.Key, tt.params.DataIPFSHash, tt.params.DataKeyHash)
+			tx, err := contractTransactor.SetPrivateDataHashes(transactOpts, tt.params.Key, tt.params.DataIPFSHash, tt.params.DataKeyHash)
 			if err != nil {
-				t.Errorf("contractTransactor.SetPrivateData: %v", err)
+				t.Errorf("contractTransactor.SetPrivateDataHashes: %v", err)
 			}
 
-			params, err := ParseSetPrivateDataCallData(tx.Data())
+			params, err := ParseSetPrivateDataHashesCallData(tx.Data())
 			if err != nil {
-				t.Errorf("ParseSetPrivateDataCallData: %v", err)
+				t.Errorf("ParseSetPrivateDataHashesCallData: %v", err)
 			}
 
 			if diff := deep.Equal(tt.params, params); diff != nil {
