@@ -190,7 +190,7 @@ func (_PassportLogicContract *PassportLogicContractTransactorRaw) Transact(opts 
 
 // GetAddress is a free data retrieval call binding the contract method 0x7ac4ed64.
 //
-// Solidity: function getAddress(_factProvider address, _key bytes32) constant returns(success bool, value address)
+// Solidity: function getAddress(address _factProvider, bytes32 _key) constant returns(bool success, address value)
 func (_PassportLogicContract *PassportLogicContractCaller) GetAddress(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   common.Address
@@ -206,7 +206,7 @@ func (_PassportLogicContract *PassportLogicContractCaller) GetAddress(opts *bind
 
 // GetAddress is a free data retrieval call binding the contract method 0x7ac4ed64.
 //
-// Solidity: function getAddress(_factProvider address, _key bytes32) constant returns(success bool, value address)
+// Solidity: function getAddress(address _factProvider, bytes32 _key) constant returns(bool success, address value)
 func (_PassportLogicContract *PassportLogicContractSession) GetAddress(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   common.Address
@@ -216,7 +216,7 @@ func (_PassportLogicContract *PassportLogicContractSession) GetAddress(_factProv
 
 // GetAddress is a free data retrieval call binding the contract method 0x7ac4ed64.
 //
-// Solidity: function getAddress(_factProvider address, _key bytes32) constant returns(success bool, value address)
+// Solidity: function getAddress(address _factProvider, bytes32 _key) constant returns(bool success, address value)
 func (_PassportLogicContract *PassportLogicContractCallerSession) GetAddress(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   common.Address
@@ -226,7 +226,7 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) GetAddress(_fa
 
 // GetBool is a free data retrieval call binding the contract method 0x9d74b37d.
 //
-// Solidity: function getBool(_factProvider address, _key bytes32) constant returns(success bool, value bool)
+// Solidity: function getBool(address _factProvider, bytes32 _key) constant returns(bool success, bool value)
 func (_PassportLogicContract *PassportLogicContractCaller) GetBool(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   bool
@@ -242,7 +242,7 @@ func (_PassportLogicContract *PassportLogicContractCaller) GetBool(opts *bind.Ca
 
 // GetBool is a free data retrieval call binding the contract method 0x9d74b37d.
 //
-// Solidity: function getBool(_factProvider address, _key bytes32) constant returns(success bool, value bool)
+// Solidity: function getBool(address _factProvider, bytes32 _key) constant returns(bool success, bool value)
 func (_PassportLogicContract *PassportLogicContractSession) GetBool(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   bool
@@ -252,7 +252,7 @@ func (_PassportLogicContract *PassportLogicContractSession) GetBool(_factProvide
 
 // GetBool is a free data retrieval call binding the contract method 0x9d74b37d.
 //
-// Solidity: function getBool(_factProvider address, _key bytes32) constant returns(success bool, value bool)
+// Solidity: function getBool(address _factProvider, bytes32 _key) constant returns(bool success, bool value)
 func (_PassportLogicContract *PassportLogicContractCallerSession) GetBool(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   bool
@@ -262,7 +262,7 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) GetBool(_factP
 
 // GetBytes is a free data retrieval call binding the contract method 0x6556f767.
 //
-// Solidity: function getBytes(_factProvider address, _key bytes32) constant returns(success bool, value bytes)
+// Solidity: function getBytes(address _factProvider, bytes32 _key) constant returns(bool success, bytes value)
 func (_PassportLogicContract *PassportLogicContractCaller) GetBytes(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   []byte
@@ -278,7 +278,7 @@ func (_PassportLogicContract *PassportLogicContractCaller) GetBytes(opts *bind.C
 
 // GetBytes is a free data retrieval call binding the contract method 0x6556f767.
 //
-// Solidity: function getBytes(_factProvider address, _key bytes32) constant returns(success bool, value bytes)
+// Solidity: function getBytes(address _factProvider, bytes32 _key) constant returns(bool success, bytes value)
 func (_PassportLogicContract *PassportLogicContractSession) GetBytes(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   []byte
@@ -288,7 +288,7 @@ func (_PassportLogicContract *PassportLogicContractSession) GetBytes(_factProvid
 
 // GetBytes is a free data retrieval call binding the contract method 0x6556f767.
 //
-// Solidity: function getBytes(_factProvider address, _key bytes32) constant returns(success bool, value bytes)
+// Solidity: function getBytes(address _factProvider, bytes32 _key) constant returns(bool success, bytes value)
 func (_PassportLogicContract *PassportLogicContractCallerSession) GetBytes(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   []byte
@@ -298,7 +298,7 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) GetBytes(_fact
 
 // GetIPFSHash is a free data retrieval call binding the contract method 0x22b96b63.
 //
-// Solidity: function getIPFSHash(_factProvider address, _key bytes32) constant returns(success bool, value string)
+// Solidity: function getIPFSHash(address _factProvider, bytes32 _key) constant returns(bool success, string value)
 func (_PassportLogicContract *PassportLogicContractCaller) GetIPFSHash(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   string
@@ -314,7 +314,7 @@ func (_PassportLogicContract *PassportLogicContractCaller) GetIPFSHash(opts *bin
 
 // GetIPFSHash is a free data retrieval call binding the contract method 0x22b96b63.
 //
-// Solidity: function getIPFSHash(_factProvider address, _key bytes32) constant returns(success bool, value string)
+// Solidity: function getIPFSHash(address _factProvider, bytes32 _key) constant returns(bool success, string value)
 func (_PassportLogicContract *PassportLogicContractSession) GetIPFSHash(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   string
@@ -324,7 +324,7 @@ func (_PassportLogicContract *PassportLogicContractSession) GetIPFSHash(_factPro
 
 // GetIPFSHash is a free data retrieval call binding the contract method 0x22b96b63.
 //
-// Solidity: function getIPFSHash(_factProvider address, _key bytes32) constant returns(success bool, value string)
+// Solidity: function getIPFSHash(address _factProvider, bytes32 _key) constant returns(bool success, string value)
 func (_PassportLogicContract *PassportLogicContractCallerSession) GetIPFSHash(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   string
@@ -334,7 +334,7 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) GetIPFSHash(_f
 
 // GetInt is a free data retrieval call binding the contract method 0x95ee8bae.
 //
-// Solidity: function getInt(_factProvider address, _key bytes32) constant returns(success bool, value int256)
+// Solidity: function getInt(address _factProvider, bytes32 _key) constant returns(bool success, int256 value)
 func (_PassportLogicContract *PassportLogicContractCaller) GetInt(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   *big.Int
@@ -350,7 +350,7 @@ func (_PassportLogicContract *PassportLogicContractCaller) GetInt(opts *bind.Cal
 
 // GetInt is a free data retrieval call binding the contract method 0x95ee8bae.
 //
-// Solidity: function getInt(_factProvider address, _key bytes32) constant returns(success bool, value int256)
+// Solidity: function getInt(address _factProvider, bytes32 _key) constant returns(bool success, int256 value)
 func (_PassportLogicContract *PassportLogicContractSession) GetInt(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   *big.Int
@@ -360,7 +360,7 @@ func (_PassportLogicContract *PassportLogicContractSession) GetInt(_factProvider
 
 // GetInt is a free data retrieval call binding the contract method 0x95ee8bae.
 //
-// Solidity: function getInt(_factProvider address, _key bytes32) constant returns(success bool, value int256)
+// Solidity: function getInt(address _factProvider, bytes32 _key) constant returns(bool success, int256 value)
 func (_PassportLogicContract *PassportLogicContractCallerSession) GetInt(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   *big.Int
@@ -370,7 +370,7 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) GetInt(_factPr
 
 // GetPrivateData is a free data retrieval call binding the contract method 0x9972a4f5.
 //
-// Solidity: function getPrivateData(_factProvider address, _key bytes32) constant returns(success bool, dataIPFSHash string, dataKeyHash bytes32)
+// Solidity: function getPrivateData(address _factProvider, bytes32 _key) constant returns(bool success, string dataIPFSHash, bytes32 dataKeyHash)
 func (_PassportLogicContract *PassportLogicContractCaller) GetPrivateData(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success      bool
 	DataIPFSHash string
@@ -388,7 +388,7 @@ func (_PassportLogicContract *PassportLogicContractCaller) GetPrivateData(opts *
 
 // GetPrivateData is a free data retrieval call binding the contract method 0x9972a4f5.
 //
-// Solidity: function getPrivateData(_factProvider address, _key bytes32) constant returns(success bool, dataIPFSHash string, dataKeyHash bytes32)
+// Solidity: function getPrivateData(address _factProvider, bytes32 _key) constant returns(bool success, string dataIPFSHash, bytes32 dataKeyHash)
 func (_PassportLogicContract *PassportLogicContractSession) GetPrivateData(_factProvider common.Address, _key [32]byte) (struct {
 	Success      bool
 	DataIPFSHash string
@@ -399,7 +399,7 @@ func (_PassportLogicContract *PassportLogicContractSession) GetPrivateData(_fact
 
 // GetPrivateData is a free data retrieval call binding the contract method 0x9972a4f5.
 //
-// Solidity: function getPrivateData(_factProvider address, _key bytes32) constant returns(success bool, dataIPFSHash string, dataKeyHash bytes32)
+// Solidity: function getPrivateData(address _factProvider, bytes32 _key) constant returns(bool success, string dataIPFSHash, bytes32 dataKeyHash)
 func (_PassportLogicContract *PassportLogicContractCallerSession) GetPrivateData(_factProvider common.Address, _key [32]byte) (struct {
 	Success      bool
 	DataIPFSHash string
@@ -410,7 +410,7 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) GetPrivateData
 
 // GetPrivateDataExchangesCount is a free data retrieval call binding the contract method 0x7dd291e4.
 //
-// Solidity: function getPrivateDataExchangesCount() constant returns(count uint256)
+// Solidity: function getPrivateDataExchangesCount() constant returns(uint256 count)
 func (_PassportLogicContract *PassportLogicContractCaller) GetPrivateDataExchangesCount(opts *bind.CallOpts) (*big.Int, error) {
 	var (
 		ret0 = new(*big.Int)
@@ -422,21 +422,21 @@ func (_PassportLogicContract *PassportLogicContractCaller) GetPrivateDataExchang
 
 // GetPrivateDataExchangesCount is a free data retrieval call binding the contract method 0x7dd291e4.
 //
-// Solidity: function getPrivateDataExchangesCount() constant returns(count uint256)
+// Solidity: function getPrivateDataExchangesCount() constant returns(uint256 count)
 func (_PassportLogicContract *PassportLogicContractSession) GetPrivateDataExchangesCount() (*big.Int, error) {
 	return _PassportLogicContract.Contract.GetPrivateDataExchangesCount(&_PassportLogicContract.CallOpts)
 }
 
 // GetPrivateDataExchangesCount is a free data retrieval call binding the contract method 0x7dd291e4.
 //
-// Solidity: function getPrivateDataExchangesCount() constant returns(count uint256)
+// Solidity: function getPrivateDataExchangesCount() constant returns(uint256 count)
 func (_PassportLogicContract *PassportLogicContractCallerSession) GetPrivateDataExchangesCount() (*big.Int, error) {
 	return _PassportLogicContract.Contract.GetPrivateDataExchangesCount(&_PassportLogicContract.CallOpts)
 }
 
 // GetString is a free data retrieval call binding the contract method 0xe318de73.
 //
-// Solidity: function getString(_factProvider address, _key bytes32) constant returns(success bool, value string)
+// Solidity: function getString(address _factProvider, bytes32 _key) constant returns(bool success, string value)
 func (_PassportLogicContract *PassportLogicContractCaller) GetString(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   string
@@ -452,7 +452,7 @@ func (_PassportLogicContract *PassportLogicContractCaller) GetString(opts *bind.
 
 // GetString is a free data retrieval call binding the contract method 0xe318de73.
 //
-// Solidity: function getString(_factProvider address, _key bytes32) constant returns(success bool, value string)
+// Solidity: function getString(address _factProvider, bytes32 _key) constant returns(bool success, string value)
 func (_PassportLogicContract *PassportLogicContractSession) GetString(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   string
@@ -462,7 +462,7 @@ func (_PassportLogicContract *PassportLogicContractSession) GetString(_factProvi
 
 // GetString is a free data retrieval call binding the contract method 0xe318de73.
 //
-// Solidity: function getString(_factProvider address, _key bytes32) constant returns(success bool, value string)
+// Solidity: function getString(address _factProvider, bytes32 _key) constant returns(bool success, string value)
 func (_PassportLogicContract *PassportLogicContractCallerSession) GetString(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   string
@@ -472,7 +472,7 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) GetString(_fac
 
 // GetTxDataBlockNumber is a free data retrieval call binding the contract method 0x174a6277.
 //
-// Solidity: function getTxDataBlockNumber(_factProvider address, _key bytes32) constant returns(success bool, blockNumber uint256)
+// Solidity: function getTxDataBlockNumber(address _factProvider, bytes32 _key) constant returns(bool success, uint256 blockNumber)
 func (_PassportLogicContract *PassportLogicContractCaller) GetTxDataBlockNumber(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success     bool
 	BlockNumber *big.Int
@@ -488,7 +488,7 @@ func (_PassportLogicContract *PassportLogicContractCaller) GetTxDataBlockNumber(
 
 // GetTxDataBlockNumber is a free data retrieval call binding the contract method 0x174a6277.
 //
-// Solidity: function getTxDataBlockNumber(_factProvider address, _key bytes32) constant returns(success bool, blockNumber uint256)
+// Solidity: function getTxDataBlockNumber(address _factProvider, bytes32 _key) constant returns(bool success, uint256 blockNumber)
 func (_PassportLogicContract *PassportLogicContractSession) GetTxDataBlockNumber(_factProvider common.Address, _key [32]byte) (struct {
 	Success     bool
 	BlockNumber *big.Int
@@ -498,7 +498,7 @@ func (_PassportLogicContract *PassportLogicContractSession) GetTxDataBlockNumber
 
 // GetTxDataBlockNumber is a free data retrieval call binding the contract method 0x174a6277.
 //
-// Solidity: function getTxDataBlockNumber(_factProvider address, _key bytes32) constant returns(success bool, blockNumber uint256)
+// Solidity: function getTxDataBlockNumber(address _factProvider, bytes32 _key) constant returns(bool success, uint256 blockNumber)
 func (_PassportLogicContract *PassportLogicContractCallerSession) GetTxDataBlockNumber(_factProvider common.Address, _key [32]byte) (struct {
 	Success     bool
 	BlockNumber *big.Int
@@ -508,7 +508,7 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) GetTxDataBlock
 
 // GetUint is a free data retrieval call binding the contract method 0x71658552.
 //
-// Solidity: function getUint(_factProvider address, _key bytes32) constant returns(success bool, value uint256)
+// Solidity: function getUint(address _factProvider, bytes32 _key) constant returns(bool success, uint256 value)
 func (_PassportLogicContract *PassportLogicContractCaller) GetUint(opts *bind.CallOpts, _factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   *big.Int
@@ -524,7 +524,7 @@ func (_PassportLogicContract *PassportLogicContractCaller) GetUint(opts *bind.Ca
 
 // GetUint is a free data retrieval call binding the contract method 0x71658552.
 //
-// Solidity: function getUint(_factProvider address, _key bytes32) constant returns(success bool, value uint256)
+// Solidity: function getUint(address _factProvider, bytes32 _key) constant returns(bool success, uint256 value)
 func (_PassportLogicContract *PassportLogicContractSession) GetUint(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   *big.Int
@@ -534,7 +534,7 @@ func (_PassportLogicContract *PassportLogicContractSession) GetUint(_factProvide
 
 // GetUint is a free data retrieval call binding the contract method 0x71658552.
 //
-// Solidity: function getUint(_factProvider address, _key bytes32) constant returns(success bool, value uint256)
+// Solidity: function getUint(address _factProvider, bytes32 _key) constant returns(bool success, uint256 value)
 func (_PassportLogicContract *PassportLogicContractCallerSession) GetUint(_factProvider common.Address, _key [32]byte) (struct {
 	Success bool
 	Value   *big.Int
@@ -544,7 +544,7 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) GetUint(_factP
 
 // IsAllowedFactProvider is a free data retrieval call binding the contract method 0x20888158.
 //
-// Solidity: function isAllowedFactProvider(_address address) constant returns(bool)
+// Solidity: function isAllowedFactProvider(address _address) constant returns(bool)
 func (_PassportLogicContract *PassportLogicContractCaller) IsAllowedFactProvider(opts *bind.CallOpts, _address common.Address) (bool, error) {
 	var (
 		ret0 = new(bool)
@@ -556,21 +556,21 @@ func (_PassportLogicContract *PassportLogicContractCaller) IsAllowedFactProvider
 
 // IsAllowedFactProvider is a free data retrieval call binding the contract method 0x20888158.
 //
-// Solidity: function isAllowedFactProvider(_address address) constant returns(bool)
+// Solidity: function isAllowedFactProvider(address _address) constant returns(bool)
 func (_PassportLogicContract *PassportLogicContractSession) IsAllowedFactProvider(_address common.Address) (bool, error) {
 	return _PassportLogicContract.Contract.IsAllowedFactProvider(&_PassportLogicContract.CallOpts, _address)
 }
 
 // IsAllowedFactProvider is a free data retrieval call binding the contract method 0x20888158.
 //
-// Solidity: function isAllowedFactProvider(_address address) constant returns(bool)
+// Solidity: function isAllowedFactProvider(address _address) constant returns(bool)
 func (_PassportLogicContract *PassportLogicContractCallerSession) IsAllowedFactProvider(_address common.Address) (bool, error) {
 	return _PassportLogicContract.Contract.IsAllowedFactProvider(&_PassportLogicContract.CallOpts, _address)
 }
 
 // IsFactProviderInWhitelist is a free data retrieval call binding the contract method 0x8ae44a08.
 //
-// Solidity: function isFactProviderInWhitelist(_address address) constant returns(bool)
+// Solidity: function isFactProviderInWhitelist(address _address) constant returns(bool)
 func (_PassportLogicContract *PassportLogicContractCaller) IsFactProviderInWhitelist(opts *bind.CallOpts, _address common.Address) (bool, error) {
 	var (
 		ret0 = new(bool)
@@ -582,14 +582,14 @@ func (_PassportLogicContract *PassportLogicContractCaller) IsFactProviderInWhite
 
 // IsFactProviderInWhitelist is a free data retrieval call binding the contract method 0x8ae44a08.
 //
-// Solidity: function isFactProviderInWhitelist(_address address) constant returns(bool)
+// Solidity: function isFactProviderInWhitelist(address _address) constant returns(bool)
 func (_PassportLogicContract *PassportLogicContractSession) IsFactProviderInWhitelist(_address common.Address) (bool, error) {
 	return _PassportLogicContract.Contract.IsFactProviderInWhitelist(&_PassportLogicContract.CallOpts, _address)
 }
 
 // IsFactProviderInWhitelist is a free data retrieval call binding the contract method 0x8ae44a08.
 //
-// Solidity: function isFactProviderInWhitelist(_address address) constant returns(bool)
+// Solidity: function isFactProviderInWhitelist(address _address) constant returns(bool)
 func (_PassportLogicContract *PassportLogicContractCallerSession) IsFactProviderInWhitelist(_address common.Address) (bool, error) {
 	return _PassportLogicContract.Contract.IsFactProviderInWhitelist(&_PassportLogicContract.CallOpts, _address)
 }
@@ -752,7 +752,7 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) PrivateDataExc
 
 // PrivateDataExchanges is a free data retrieval call binding the contract method 0x6f618f9a.
 //
-// Solidity: function privateDataExchanges( uint256) constant returns(dataRequester address, dataRequesterValue uint256, passportOwner address, passportOwnerValue uint256, factProvider address, key bytes32, dataIPFSHash string, dataKeyHash bytes32, encryptedExchangeKey bytes, exchangeKeyHash bytes32, encryptedDataKey bytes32, state uint8, stateExpired uint256)
+// Solidity: function privateDataExchanges(uint256 ) constant returns(address dataRequester, uint256 dataRequesterValue, address passportOwner, uint256 passportOwnerValue, address factProvider, bytes32 key, string dataIPFSHash, bytes32 dataKeyHash, bytes encryptedExchangeKey, bytes32 exchangeKeyHash, bytes32 encryptedDataKey, uint8 state, uint256 stateExpired)
 func (_PassportLogicContract *PassportLogicContractCaller) PrivateDataExchanges(opts *bind.CallOpts, arg0 *big.Int) (struct {
 	DataRequester        common.Address
 	DataRequesterValue   *big.Int
@@ -790,7 +790,7 @@ func (_PassportLogicContract *PassportLogicContractCaller) PrivateDataExchanges(
 
 // PrivateDataExchanges is a free data retrieval call binding the contract method 0x6f618f9a.
 //
-// Solidity: function privateDataExchanges( uint256) constant returns(dataRequester address, dataRequesterValue uint256, passportOwner address, passportOwnerValue uint256, factProvider address, key bytes32, dataIPFSHash string, dataKeyHash bytes32, encryptedExchangeKey bytes, exchangeKeyHash bytes32, encryptedDataKey bytes32, state uint8, stateExpired uint256)
+// Solidity: function privateDataExchanges(uint256 ) constant returns(address dataRequester, uint256 dataRequesterValue, address passportOwner, uint256 passportOwnerValue, address factProvider, bytes32 key, string dataIPFSHash, bytes32 dataKeyHash, bytes encryptedExchangeKey, bytes32 exchangeKeyHash, bytes32 encryptedDataKey, uint8 state, uint256 stateExpired)
 func (_PassportLogicContract *PassportLogicContractSession) PrivateDataExchanges(arg0 *big.Int) (struct {
 	DataRequester        common.Address
 	DataRequesterValue   *big.Int
@@ -811,7 +811,7 @@ func (_PassportLogicContract *PassportLogicContractSession) PrivateDataExchanges
 
 // PrivateDataExchanges is a free data retrieval call binding the contract method 0x6f618f9a.
 //
-// Solidity: function privateDataExchanges( uint256) constant returns(dataRequester address, dataRequesterValue uint256, passportOwner address, passportOwnerValue uint256, factProvider address, key bytes32, dataIPFSHash string, dataKeyHash bytes32, encryptedExchangeKey bytes, exchangeKeyHash bytes32, encryptedDataKey bytes32, state uint8, stateExpired uint256)
+// Solidity: function privateDataExchanges(uint256 ) constant returns(address dataRequester, uint256 dataRequesterValue, address passportOwner, uint256 passportOwnerValue, address factProvider, bytes32 key, string dataIPFSHash, bytes32 dataKeyHash, bytes encryptedExchangeKey, bytes32 exchangeKeyHash, bytes32 encryptedDataKey, uint8 state, uint256 stateExpired)
 func (_PassportLogicContract *PassportLogicContractCallerSession) PrivateDataExchanges(arg0 *big.Int) (struct {
 	DataRequester        common.Address
 	DataRequesterValue   *big.Int
@@ -832,42 +832,42 @@ func (_PassportLogicContract *PassportLogicContractCallerSession) PrivateDataExc
 
 // AcceptPrivateDataExchange is a paid mutator transaction binding the contract method 0x86ca9a7c.
 //
-// Solidity: function acceptPrivateDataExchange(_exchangeIdx uint256, _encryptedDataKey bytes32) returns()
+// Solidity: function acceptPrivateDataExchange(uint256 _exchangeIdx, bytes32 _encryptedDataKey) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) AcceptPrivateDataExchange(opts *bind.TransactOpts, _exchangeIdx *big.Int, _encryptedDataKey [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "acceptPrivateDataExchange", _exchangeIdx, _encryptedDataKey)
 }
 
 // AcceptPrivateDataExchange is a paid mutator transaction binding the contract method 0x86ca9a7c.
 //
-// Solidity: function acceptPrivateDataExchange(_exchangeIdx uint256, _encryptedDataKey bytes32) returns()
+// Solidity: function acceptPrivateDataExchange(uint256 _exchangeIdx, bytes32 _encryptedDataKey) returns()
 func (_PassportLogicContract *PassportLogicContractSession) AcceptPrivateDataExchange(_exchangeIdx *big.Int, _encryptedDataKey [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.AcceptPrivateDataExchange(&_PassportLogicContract.TransactOpts, _exchangeIdx, _encryptedDataKey)
 }
 
 // AcceptPrivateDataExchange is a paid mutator transaction binding the contract method 0x86ca9a7c.
 //
-// Solidity: function acceptPrivateDataExchange(_exchangeIdx uint256, _encryptedDataKey bytes32) returns()
+// Solidity: function acceptPrivateDataExchange(uint256 _exchangeIdx, bytes32 _encryptedDataKey) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) AcceptPrivateDataExchange(_exchangeIdx *big.Int, _encryptedDataKey [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.AcceptPrivateDataExchange(&_PassportLogicContract.TransactOpts, _exchangeIdx, _encryptedDataKey)
 }
 
 // AddFactProviderToWhitelist is a paid mutator transaction binding the contract method 0xac0aeb1a.
 //
-// Solidity: function addFactProviderToWhitelist(_address address) returns()
+// Solidity: function addFactProviderToWhitelist(address _address) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) AddFactProviderToWhitelist(opts *bind.TransactOpts, _address common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "addFactProviderToWhitelist", _address)
 }
 
 // AddFactProviderToWhitelist is a paid mutator transaction binding the contract method 0xac0aeb1a.
 //
-// Solidity: function addFactProviderToWhitelist(_address address) returns()
+// Solidity: function addFactProviderToWhitelist(address _address) returns()
 func (_PassportLogicContract *PassportLogicContractSession) AddFactProviderToWhitelist(_address common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.AddFactProviderToWhitelist(&_PassportLogicContract.TransactOpts, _address)
 }
 
 // AddFactProviderToWhitelist is a paid mutator transaction binding the contract method 0xac0aeb1a.
 //
-// Solidity: function addFactProviderToWhitelist(_address address) returns()
+// Solidity: function addFactProviderToWhitelist(address _address) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) AddFactProviderToWhitelist(_address common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.AddFactProviderToWhitelist(&_PassportLogicContract.TransactOpts, _address)
 }
@@ -895,273 +895,273 @@ func (_PassportLogicContract *PassportLogicContractTransactorSession) ClaimOwner
 
 // DeleteAddress is a paid mutator transaction binding the contract method 0x0e14a376.
 //
-// Solidity: function deleteAddress(_key bytes32) returns()
+// Solidity: function deleteAddress(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) DeleteAddress(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "deleteAddress", _key)
 }
 
 // DeleteAddress is a paid mutator transaction binding the contract method 0x0e14a376.
 //
-// Solidity: function deleteAddress(_key bytes32) returns()
+// Solidity: function deleteAddress(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractSession) DeleteAddress(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteAddress(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteAddress is a paid mutator transaction binding the contract method 0x0e14a376.
 //
-// Solidity: function deleteAddress(_key bytes32) returns()
+// Solidity: function deleteAddress(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) DeleteAddress(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteAddress(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteBool is a paid mutator transaction binding the contract method 0x2c62ff2d.
 //
-// Solidity: function deleteBool(_key bytes32) returns()
+// Solidity: function deleteBool(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) DeleteBool(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "deleteBool", _key)
 }
 
 // DeleteBool is a paid mutator transaction binding the contract method 0x2c62ff2d.
 //
-// Solidity: function deleteBool(_key bytes32) returns()
+// Solidity: function deleteBool(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractSession) DeleteBool(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteBool(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteBool is a paid mutator transaction binding the contract method 0x2c62ff2d.
 //
-// Solidity: function deleteBool(_key bytes32) returns()
+// Solidity: function deleteBool(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) DeleteBool(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteBool(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteBytes is a paid mutator transaction binding the contract method 0x616b59f6.
 //
-// Solidity: function deleteBytes(_key bytes32) returns()
+// Solidity: function deleteBytes(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) DeleteBytes(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "deleteBytes", _key)
 }
 
 // DeleteBytes is a paid mutator transaction binding the contract method 0x616b59f6.
 //
-// Solidity: function deleteBytes(_key bytes32) returns()
+// Solidity: function deleteBytes(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractSession) DeleteBytes(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteBytes(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteBytes is a paid mutator transaction binding the contract method 0x616b59f6.
 //
-// Solidity: function deleteBytes(_key bytes32) returns()
+// Solidity: function deleteBytes(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) DeleteBytes(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteBytes(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteIPFSHash is a paid mutator transaction binding the contract method 0x257781e7.
 //
-// Solidity: function deleteIPFSHash(_key bytes32) returns()
+// Solidity: function deleteIPFSHash(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) DeleteIPFSHash(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "deleteIPFSHash", _key)
 }
 
 // DeleteIPFSHash is a paid mutator transaction binding the contract method 0x257781e7.
 //
-// Solidity: function deleteIPFSHash(_key bytes32) returns()
+// Solidity: function deleteIPFSHash(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractSession) DeleteIPFSHash(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteIPFSHash(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteIPFSHash is a paid mutator transaction binding the contract method 0x257781e7.
 //
-// Solidity: function deleteIPFSHash(_key bytes32) returns()
+// Solidity: function deleteIPFSHash(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) DeleteIPFSHash(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteIPFSHash(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteInt is a paid mutator transaction binding the contract method 0x8c160095.
 //
-// Solidity: function deleteInt(_key bytes32) returns()
+// Solidity: function deleteInt(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) DeleteInt(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "deleteInt", _key)
 }
 
 // DeleteInt is a paid mutator transaction binding the contract method 0x8c160095.
 //
-// Solidity: function deleteInt(_key bytes32) returns()
+// Solidity: function deleteInt(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractSession) DeleteInt(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteInt(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteInt is a paid mutator transaction binding the contract method 0x8c160095.
 //
-// Solidity: function deleteInt(_key bytes32) returns()
+// Solidity: function deleteInt(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) DeleteInt(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteInt(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeletePrivateData is a paid mutator transaction binding the contract method 0xdfc3cf81.
 //
-// Solidity: function deletePrivateData(_key bytes32) returns()
+// Solidity: function deletePrivateData(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) DeletePrivateData(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "deletePrivateData", _key)
 }
 
 // DeletePrivateData is a paid mutator transaction binding the contract method 0xdfc3cf81.
 //
-// Solidity: function deletePrivateData(_key bytes32) returns()
+// Solidity: function deletePrivateData(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractSession) DeletePrivateData(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeletePrivateData(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeletePrivateData is a paid mutator transaction binding the contract method 0xdfc3cf81.
 //
-// Solidity: function deletePrivateData(_key bytes32) returns()
+// Solidity: function deletePrivateData(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) DeletePrivateData(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeletePrivateData(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteString is a paid mutator transaction binding the contract method 0xf6bb3cc4.
 //
-// Solidity: function deleteString(_key bytes32) returns()
+// Solidity: function deleteString(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) DeleteString(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "deleteString", _key)
 }
 
 // DeleteString is a paid mutator transaction binding the contract method 0xf6bb3cc4.
 //
-// Solidity: function deleteString(_key bytes32) returns()
+// Solidity: function deleteString(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractSession) DeleteString(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteString(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteString is a paid mutator transaction binding the contract method 0xf6bb3cc4.
 //
-// Solidity: function deleteString(_key bytes32) returns()
+// Solidity: function deleteString(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) DeleteString(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteString(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteTxDataBlockNumber is a paid mutator transaction binding the contract method 0xa2b6cbe1.
 //
-// Solidity: function deleteTxDataBlockNumber(_key bytes32) returns()
+// Solidity: function deleteTxDataBlockNumber(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) DeleteTxDataBlockNumber(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "deleteTxDataBlockNumber", _key)
 }
 
 // DeleteTxDataBlockNumber is a paid mutator transaction binding the contract method 0xa2b6cbe1.
 //
-// Solidity: function deleteTxDataBlockNumber(_key bytes32) returns()
+// Solidity: function deleteTxDataBlockNumber(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractSession) DeleteTxDataBlockNumber(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteTxDataBlockNumber(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteTxDataBlockNumber is a paid mutator transaction binding the contract method 0xa2b6cbe1.
 //
-// Solidity: function deleteTxDataBlockNumber(_key bytes32) returns()
+// Solidity: function deleteTxDataBlockNumber(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) DeleteTxDataBlockNumber(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteTxDataBlockNumber(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteUint is a paid mutator transaction binding the contract method 0xe2b202bf.
 //
-// Solidity: function deleteUint(_key bytes32) returns()
+// Solidity: function deleteUint(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) DeleteUint(opts *bind.TransactOpts, _key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "deleteUint", _key)
 }
 
 // DeleteUint is a paid mutator transaction binding the contract method 0xe2b202bf.
 //
-// Solidity: function deleteUint(_key bytes32) returns()
+// Solidity: function deleteUint(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractSession) DeleteUint(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteUint(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DeleteUint is a paid mutator transaction binding the contract method 0xe2b202bf.
 //
-// Solidity: function deleteUint(_key bytes32) returns()
+// Solidity: function deleteUint(bytes32 _key) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) DeleteUint(_key [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DeleteUint(&_PassportLogicContract.TransactOpts, _key)
 }
 
 // DisputePrivateDataExchange is a paid mutator transaction binding the contract method 0xfc2d0584.
 //
-// Solidity: function disputePrivateDataExchange(_exchangeIdx uint256, _exchangeKey bytes32) returns()
+// Solidity: function disputePrivateDataExchange(uint256 _exchangeIdx, bytes32 _exchangeKey) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) DisputePrivateDataExchange(opts *bind.TransactOpts, _exchangeIdx *big.Int, _exchangeKey [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "disputePrivateDataExchange", _exchangeIdx, _exchangeKey)
 }
 
 // DisputePrivateDataExchange is a paid mutator transaction binding the contract method 0xfc2d0584.
 //
-// Solidity: function disputePrivateDataExchange(_exchangeIdx uint256, _exchangeKey bytes32) returns()
+// Solidity: function disputePrivateDataExchange(uint256 _exchangeIdx, bytes32 _exchangeKey) returns()
 func (_PassportLogicContract *PassportLogicContractSession) DisputePrivateDataExchange(_exchangeIdx *big.Int, _exchangeKey [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DisputePrivateDataExchange(&_PassportLogicContract.TransactOpts, _exchangeIdx, _exchangeKey)
 }
 
 // DisputePrivateDataExchange is a paid mutator transaction binding the contract method 0xfc2d0584.
 //
-// Solidity: function disputePrivateDataExchange(_exchangeIdx uint256, _exchangeKey bytes32) returns()
+// Solidity: function disputePrivateDataExchange(uint256 _exchangeIdx, bytes32 _exchangeKey) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) DisputePrivateDataExchange(_exchangeIdx *big.Int, _exchangeKey [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.DisputePrivateDataExchange(&_PassportLogicContract.TransactOpts, _exchangeIdx, _exchangeKey)
 }
 
 // FinishPrivateDataExchange is a paid mutator transaction binding the contract method 0x06427a88.
 //
-// Solidity: function finishPrivateDataExchange(_exchangeIdx uint256) returns()
+// Solidity: function finishPrivateDataExchange(uint256 _exchangeIdx) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) FinishPrivateDataExchange(opts *bind.TransactOpts, _exchangeIdx *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "finishPrivateDataExchange", _exchangeIdx)
 }
 
 // FinishPrivateDataExchange is a paid mutator transaction binding the contract method 0x06427a88.
 //
-// Solidity: function finishPrivateDataExchange(_exchangeIdx uint256) returns()
+// Solidity: function finishPrivateDataExchange(uint256 _exchangeIdx) returns()
 func (_PassportLogicContract *PassportLogicContractSession) FinishPrivateDataExchange(_exchangeIdx *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.FinishPrivateDataExchange(&_PassportLogicContract.TransactOpts, _exchangeIdx)
 }
 
 // FinishPrivateDataExchange is a paid mutator transaction binding the contract method 0x06427a88.
 //
-// Solidity: function finishPrivateDataExchange(_exchangeIdx uint256) returns()
+// Solidity: function finishPrivateDataExchange(uint256 _exchangeIdx) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) FinishPrivateDataExchange(_exchangeIdx *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.FinishPrivateDataExchange(&_PassportLogicContract.TransactOpts, _exchangeIdx)
 }
 
 // ProposePrivateDataExchange is a paid mutator transaction binding the contract method 0xcea332cc.
 //
-// Solidity: function proposePrivateDataExchange(_factProvider address, _key bytes32, _encryptedExchangeKey bytes, _exchangeKeyHash bytes32) returns()
+// Solidity: function proposePrivateDataExchange(address _factProvider, bytes32 _key, bytes _encryptedExchangeKey, bytes32 _exchangeKeyHash) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) ProposePrivateDataExchange(opts *bind.TransactOpts, _factProvider common.Address, _key [32]byte, _encryptedExchangeKey []byte, _exchangeKeyHash [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "proposePrivateDataExchange", _factProvider, _key, _encryptedExchangeKey, _exchangeKeyHash)
 }
 
 // ProposePrivateDataExchange is a paid mutator transaction binding the contract method 0xcea332cc.
 //
-// Solidity: function proposePrivateDataExchange(_factProvider address, _key bytes32, _encryptedExchangeKey bytes, _exchangeKeyHash bytes32) returns()
+// Solidity: function proposePrivateDataExchange(address _factProvider, bytes32 _key, bytes _encryptedExchangeKey, bytes32 _exchangeKeyHash) returns()
 func (_PassportLogicContract *PassportLogicContractSession) ProposePrivateDataExchange(_factProvider common.Address, _key [32]byte, _encryptedExchangeKey []byte, _exchangeKeyHash [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.ProposePrivateDataExchange(&_PassportLogicContract.TransactOpts, _factProvider, _key, _encryptedExchangeKey, _exchangeKeyHash)
 }
 
 // ProposePrivateDataExchange is a paid mutator transaction binding the contract method 0xcea332cc.
 //
-// Solidity: function proposePrivateDataExchange(_factProvider address, _key bytes32, _encryptedExchangeKey bytes, _exchangeKeyHash bytes32) returns()
+// Solidity: function proposePrivateDataExchange(address _factProvider, bytes32 _key, bytes _encryptedExchangeKey, bytes32 _exchangeKeyHash) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) ProposePrivateDataExchange(_factProvider common.Address, _key [32]byte, _encryptedExchangeKey []byte, _exchangeKeyHash [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.ProposePrivateDataExchange(&_PassportLogicContract.TransactOpts, _factProvider, _key, _encryptedExchangeKey, _exchangeKeyHash)
 }
 
 // RemoveFactProviderFromWhitelist is a paid mutator transaction binding the contract method 0x6d4e7802.
 //
-// Solidity: function removeFactProviderFromWhitelist(_address address) returns()
+// Solidity: function removeFactProviderFromWhitelist(address _address) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) RemoveFactProviderFromWhitelist(opts *bind.TransactOpts, _address common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "removeFactProviderFromWhitelist", _address)
 }
 
 // RemoveFactProviderFromWhitelist is a paid mutator transaction binding the contract method 0x6d4e7802.
 //
-// Solidity: function removeFactProviderFromWhitelist(_address address) returns()
+// Solidity: function removeFactProviderFromWhitelist(address _address) returns()
 func (_PassportLogicContract *PassportLogicContractSession) RemoveFactProviderFromWhitelist(_address common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.RemoveFactProviderFromWhitelist(&_PassportLogicContract.TransactOpts, _address)
 }
 
 // RemoveFactProviderFromWhitelist is a paid mutator transaction binding the contract method 0x6d4e7802.
 //
-// Solidity: function removeFactProviderFromWhitelist(_address address) returns()
+// Solidity: function removeFactProviderFromWhitelist(address _address) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) RemoveFactProviderFromWhitelist(_address common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.RemoveFactProviderFromWhitelist(&_PassportLogicContract.TransactOpts, _address)
 }
@@ -1189,252 +1189,252 @@ func (_PassportLogicContract *PassportLogicContractTransactorSession) RenounceOw
 
 // SetAddress is a paid mutator transaction binding the contract method 0xca446dd9.
 //
-// Solidity: function setAddress(_key bytes32, _value address) returns()
+// Solidity: function setAddress(bytes32 _key, address _value) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetAddress(opts *bind.TransactOpts, _key [32]byte, _value common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setAddress", _key, _value)
 }
 
 // SetAddress is a paid mutator transaction binding the contract method 0xca446dd9.
 //
-// Solidity: function setAddress(_key bytes32, _value address) returns()
+// Solidity: function setAddress(bytes32 _key, address _value) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetAddress(_key [32]byte, _value common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetAddress(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetAddress is a paid mutator transaction binding the contract method 0xca446dd9.
 //
-// Solidity: function setAddress(_key bytes32, _value address) returns()
+// Solidity: function setAddress(bytes32 _key, address _value) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetAddress(_key [32]byte, _value common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetAddress(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetBool is a paid mutator transaction binding the contract method 0xabfdcced.
 //
-// Solidity: function setBool(_key bytes32, _value bool) returns()
+// Solidity: function setBool(bytes32 _key, bool _value) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetBool(opts *bind.TransactOpts, _key [32]byte, _value bool) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setBool", _key, _value)
 }
 
 // SetBool is a paid mutator transaction binding the contract method 0xabfdcced.
 //
-// Solidity: function setBool(_key bytes32, _value bool) returns()
+// Solidity: function setBool(bytes32 _key, bool _value) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetBool(_key [32]byte, _value bool) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetBool(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetBool is a paid mutator transaction binding the contract method 0xabfdcced.
 //
-// Solidity: function setBool(_key bytes32, _value bool) returns()
+// Solidity: function setBool(bytes32 _key, bool _value) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetBool(_key [32]byte, _value bool) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetBool(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetBytes is a paid mutator transaction binding the contract method 0x2e28d084.
 //
-// Solidity: function setBytes(_key bytes32, _value bytes) returns()
+// Solidity: function setBytes(bytes32 _key, bytes _value) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetBytes(opts *bind.TransactOpts, _key [32]byte, _value []byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setBytes", _key, _value)
 }
 
 // SetBytes is a paid mutator transaction binding the contract method 0x2e28d084.
 //
-// Solidity: function setBytes(_key bytes32, _value bytes) returns()
+// Solidity: function setBytes(bytes32 _key, bytes _value) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetBytes(_key [32]byte, _value []byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetBytes(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetBytes is a paid mutator transaction binding the contract method 0x2e28d084.
 //
-// Solidity: function setBytes(_key bytes32, _value bytes) returns()
+// Solidity: function setBytes(bytes32 _key, bytes _value) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetBytes(_key [32]byte, _value []byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetBytes(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetIPFSHash is a paid mutator transaction binding the contract method 0x6bfc8bb5.
 //
-// Solidity: function setIPFSHash(_key bytes32, _value string) returns()
+// Solidity: function setIPFSHash(bytes32 _key, string _value) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetIPFSHash(opts *bind.TransactOpts, _key [32]byte, _value string) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setIPFSHash", _key, _value)
 }
 
 // SetIPFSHash is a paid mutator transaction binding the contract method 0x6bfc8bb5.
 //
-// Solidity: function setIPFSHash(_key bytes32, _value string) returns()
+// Solidity: function setIPFSHash(bytes32 _key, string _value) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetIPFSHash(_key [32]byte, _value string) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetIPFSHash(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetIPFSHash is a paid mutator transaction binding the contract method 0x6bfc8bb5.
 //
-// Solidity: function setIPFSHash(_key bytes32, _value string) returns()
+// Solidity: function setIPFSHash(bytes32 _key, string _value) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetIPFSHash(_key [32]byte, _value string) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetIPFSHash(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetInt is a paid mutator transaction binding the contract method 0x3e49bed0.
 //
-// Solidity: function setInt(_key bytes32, _value int256) returns()
+// Solidity: function setInt(bytes32 _key, int256 _value) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetInt(opts *bind.TransactOpts, _key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setInt", _key, _value)
 }
 
 // SetInt is a paid mutator transaction binding the contract method 0x3e49bed0.
 //
-// Solidity: function setInt(_key bytes32, _value int256) returns()
+// Solidity: function setInt(bytes32 _key, int256 _value) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetInt(_key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetInt(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetInt is a paid mutator transaction binding the contract method 0x3e49bed0.
 //
-// Solidity: function setInt(_key bytes32, _value int256) returns()
+// Solidity: function setInt(bytes32 _key, int256 _value) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetInt(_key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetInt(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetPrivateData is a paid mutator transaction binding the contract method 0x215f8667.
 //
-// Solidity: function setPrivateData(_key bytes32, _dataIPFSHash string, _keyHash bytes32) returns()
+// Solidity: function setPrivateData(bytes32 _key, string _dataIPFSHash, bytes32 _keyHash) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetPrivateData(opts *bind.TransactOpts, _key [32]byte, _dataIPFSHash string, _keyHash [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setPrivateData", _key, _dataIPFSHash, _keyHash)
 }
 
 // SetPrivateData is a paid mutator transaction binding the contract method 0x215f8667.
 //
-// Solidity: function setPrivateData(_key bytes32, _dataIPFSHash string, _keyHash bytes32) returns()
+// Solidity: function setPrivateData(bytes32 _key, string _dataIPFSHash, bytes32 _keyHash) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetPrivateData(_key [32]byte, _dataIPFSHash string, _keyHash [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetPrivateData(&_PassportLogicContract.TransactOpts, _key, _dataIPFSHash, _keyHash)
 }
 
 // SetPrivateData is a paid mutator transaction binding the contract method 0x215f8667.
 //
-// Solidity: function setPrivateData(_key bytes32, _dataIPFSHash string, _keyHash bytes32) returns()
+// Solidity: function setPrivateData(bytes32 _key, string _dataIPFSHash, bytes32 _keyHash) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetPrivateData(_key [32]byte, _dataIPFSHash string, _keyHash [32]byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetPrivateData(&_PassportLogicContract.TransactOpts, _key, _dataIPFSHash, _keyHash)
 }
 
 // SetString is a paid mutator transaction binding the contract method 0x6e899550.
 //
-// Solidity: function setString(_key bytes32, _value string) returns()
+// Solidity: function setString(bytes32 _key, string _value) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetString(opts *bind.TransactOpts, _key [32]byte, _value string) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setString", _key, _value)
 }
 
 // SetString is a paid mutator transaction binding the contract method 0x6e899550.
 //
-// Solidity: function setString(_key bytes32, _value string) returns()
+// Solidity: function setString(bytes32 _key, string _value) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetString(_key [32]byte, _value string) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetString(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetString is a paid mutator transaction binding the contract method 0x6e899550.
 //
-// Solidity: function setString(_key bytes32, _value string) returns()
+// Solidity: function setString(bytes32 _key, string _value) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetString(_key [32]byte, _value string) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetString(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetTxDataBlockNumber is a paid mutator transaction binding the contract method 0x5b2a372d.
 //
-// Solidity: function setTxDataBlockNumber(_key bytes32, _data bytes) returns()
+// Solidity: function setTxDataBlockNumber(bytes32 _key, bytes _data) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetTxDataBlockNumber(opts *bind.TransactOpts, _key [32]byte, _data []byte) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setTxDataBlockNumber", _key, _data)
 }
 
 // SetTxDataBlockNumber is a paid mutator transaction binding the contract method 0x5b2a372d.
 //
-// Solidity: function setTxDataBlockNumber(_key bytes32, _data bytes) returns()
+// Solidity: function setTxDataBlockNumber(bytes32 _key, bytes _data) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetTxDataBlockNumber(_key [32]byte, _data []byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetTxDataBlockNumber(&_PassportLogicContract.TransactOpts, _key, _data)
 }
 
 // SetTxDataBlockNumber is a paid mutator transaction binding the contract method 0x5b2a372d.
 //
-// Solidity: function setTxDataBlockNumber(_key bytes32, _data bytes) returns()
+// Solidity: function setTxDataBlockNumber(bytes32 _key, bytes _data) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetTxDataBlockNumber(_key [32]byte, _data []byte) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetTxDataBlockNumber(&_PassportLogicContract.TransactOpts, _key, _data)
 }
 
 // SetUint is a paid mutator transaction binding the contract method 0xe2a4853a.
 //
-// Solidity: function setUint(_key bytes32, _value uint256) returns()
+// Solidity: function setUint(bytes32 _key, uint256 _value) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetUint(opts *bind.TransactOpts, _key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setUint", _key, _value)
 }
 
 // SetUint is a paid mutator transaction binding the contract method 0xe2a4853a.
 //
-// Solidity: function setUint(_key bytes32, _value uint256) returns()
+// Solidity: function setUint(bytes32 _key, uint256 _value) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetUint(_key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetUint(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetUint is a paid mutator transaction binding the contract method 0xe2a4853a.
 //
-// Solidity: function setUint(_key bytes32, _value uint256) returns()
+// Solidity: function setUint(bytes32 _key, uint256 _value) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetUint(_key [32]byte, _value *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetUint(&_PassportLogicContract.TransactOpts, _key, _value)
 }
 
 // SetWhitelistOnlyPermission is a paid mutator transaction binding the contract method 0x2b42a89a.
 //
-// Solidity: function setWhitelistOnlyPermission(_onlyWhitelist bool) returns()
+// Solidity: function setWhitelistOnlyPermission(bool _onlyWhitelist) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) SetWhitelistOnlyPermission(opts *bind.TransactOpts, _onlyWhitelist bool) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "setWhitelistOnlyPermission", _onlyWhitelist)
 }
 
 // SetWhitelistOnlyPermission is a paid mutator transaction binding the contract method 0x2b42a89a.
 //
-// Solidity: function setWhitelistOnlyPermission(_onlyWhitelist bool) returns()
+// Solidity: function setWhitelistOnlyPermission(bool _onlyWhitelist) returns()
 func (_PassportLogicContract *PassportLogicContractSession) SetWhitelistOnlyPermission(_onlyWhitelist bool) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetWhitelistOnlyPermission(&_PassportLogicContract.TransactOpts, _onlyWhitelist)
 }
 
 // SetWhitelistOnlyPermission is a paid mutator transaction binding the contract method 0x2b42a89a.
 //
-// Solidity: function setWhitelistOnlyPermission(_onlyWhitelist bool) returns()
+// Solidity: function setWhitelistOnlyPermission(bool _onlyWhitelist) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) SetWhitelistOnlyPermission(_onlyWhitelist bool) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.SetWhitelistOnlyPermission(&_PassportLogicContract.TransactOpts, _onlyWhitelist)
 }
 
 // TimeoutPrivateDataExchange is a paid mutator transaction binding the contract method 0x08c50498.
 //
-// Solidity: function timeoutPrivateDataExchange(_exchangeIdx uint256) returns()
+// Solidity: function timeoutPrivateDataExchange(uint256 _exchangeIdx) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) TimeoutPrivateDataExchange(opts *bind.TransactOpts, _exchangeIdx *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "timeoutPrivateDataExchange", _exchangeIdx)
 }
 
 // TimeoutPrivateDataExchange is a paid mutator transaction binding the contract method 0x08c50498.
 //
-// Solidity: function timeoutPrivateDataExchange(_exchangeIdx uint256) returns()
+// Solidity: function timeoutPrivateDataExchange(uint256 _exchangeIdx) returns()
 func (_PassportLogicContract *PassportLogicContractSession) TimeoutPrivateDataExchange(_exchangeIdx *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.TimeoutPrivateDataExchange(&_PassportLogicContract.TransactOpts, _exchangeIdx)
 }
 
 // TimeoutPrivateDataExchange is a paid mutator transaction binding the contract method 0x08c50498.
 //
-// Solidity: function timeoutPrivateDataExchange(_exchangeIdx uint256) returns()
+// Solidity: function timeoutPrivateDataExchange(uint256 _exchangeIdx) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) TimeoutPrivateDataExchange(_exchangeIdx *big.Int) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.TimeoutPrivateDataExchange(&_PassportLogicContract.TransactOpts, _exchangeIdx)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
 //
-// Solidity: function transferOwnership(newOwner address) returns()
+// Solidity: function transferOwnership(address newOwner) returns()
 func (_PassportLogicContract *PassportLogicContractTransactor) TransferOwnership(opts *bind.TransactOpts, newOwner common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.contract.Transact(opts, "transferOwnership", newOwner)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
 //
-// Solidity: function transferOwnership(newOwner address) returns()
+// Solidity: function transferOwnership(address newOwner) returns()
 func (_PassportLogicContract *PassportLogicContractSession) TransferOwnership(newOwner common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.TransferOwnership(&_PassportLogicContract.TransactOpts, newOwner)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
 //
-// Solidity: function transferOwnership(newOwner address) returns()
+// Solidity: function transferOwnership(address newOwner) returns()
 func (_PassportLogicContract *PassportLogicContractTransactorSession) TransferOwnership(newOwner common.Address) (*types.Transaction, error) {
 	return _PassportLogicContract.Contract.TransferOwnership(&_PassportLogicContract.TransactOpts, newOwner)
 }
@@ -1515,7 +1515,7 @@ type PassportLogicContractAddressDeleted struct {
 
 // FilterAddressDeleted is a free log retrieval operation binding the contract event 0xed9474c4702ee9da4d0d2085840fafed5912b8e13daf1d6ea341ebe98803aec2.
 //
-// Solidity: e AddressDeleted(factProvider indexed address, key indexed bytes32)
+// Solidity: event AddressDeleted(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterAddressDeleted(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractAddressDeletedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -1536,7 +1536,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterAddressDelete
 
 // WatchAddressDeleted is a free log subscription operation binding the contract event 0xed9474c4702ee9da4d0d2085840fafed5912b8e13daf1d6ea341ebe98803aec2.
 //
-// Solidity: e AddressDeleted(factProvider indexed address, key indexed bytes32)
+// Solidity: event AddressDeleted(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchAddressDeleted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractAddressDeleted, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -1656,7 +1656,7 @@ type PassportLogicContractAddressUpdated struct {
 
 // FilterAddressUpdated is a free log retrieval operation binding the contract event 0x8e7e6ab6c4613205e833e1faf5415d78dd10130a8828f729c08036e2a7a62770.
 //
-// Solidity: e AddressUpdated(factProvider indexed address, key indexed bytes32)
+// Solidity: event AddressUpdated(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterAddressUpdated(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractAddressUpdatedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -1677,7 +1677,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterAddressUpdate
 
 // WatchAddressUpdated is a free log subscription operation binding the contract event 0x8e7e6ab6c4613205e833e1faf5415d78dd10130a8828f729c08036e2a7a62770.
 //
-// Solidity: e AddressUpdated(factProvider indexed address, key indexed bytes32)
+// Solidity: event AddressUpdated(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchAddressUpdated(opts *bind.WatchOpts, sink chan<- *PassportLogicContractAddressUpdated, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -1797,7 +1797,7 @@ type PassportLogicContractBoolDeleted struct {
 
 // FilterBoolDeleted is a free log retrieval operation binding the contract event 0x191bd7fc1f22ce6b74b7d7e42126f0ed225b109728607c99971de9e78b0db6eb.
 //
-// Solidity: e BoolDeleted(factProvider indexed address, key indexed bytes32)
+// Solidity: event BoolDeleted(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterBoolDeleted(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractBoolDeletedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -1818,7 +1818,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterBoolDeleted(o
 
 // WatchBoolDeleted is a free log subscription operation binding the contract event 0x191bd7fc1f22ce6b74b7d7e42126f0ed225b109728607c99971de9e78b0db6eb.
 //
-// Solidity: e BoolDeleted(factProvider indexed address, key indexed bytes32)
+// Solidity: event BoolDeleted(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchBoolDeleted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractBoolDeleted, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -1938,7 +1938,7 @@ type PassportLogicContractBoolUpdated struct {
 
 // FilterBoolUpdated is a free log retrieval operation binding the contract event 0x68cc3496efaac4c1f2c0cd52da916138f6c5fc541992f05d97423a89b6914ae5.
 //
-// Solidity: e BoolUpdated(factProvider indexed address, key indexed bytes32)
+// Solidity: event BoolUpdated(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterBoolUpdated(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractBoolUpdatedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -1959,7 +1959,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterBoolUpdated(o
 
 // WatchBoolUpdated is a free log subscription operation binding the contract event 0x68cc3496efaac4c1f2c0cd52da916138f6c5fc541992f05d97423a89b6914ae5.
 //
-// Solidity: e BoolUpdated(factProvider indexed address, key indexed bytes32)
+// Solidity: event BoolUpdated(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchBoolUpdated(opts *bind.WatchOpts, sink chan<- *PassportLogicContractBoolUpdated, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -2079,7 +2079,7 @@ type PassportLogicContractBytesDeleted struct {
 
 // FilterBytesDeleted is a free log retrieval operation binding the contract event 0x0eaf95ab41777ff88e28181b1c43418524616bcef6d37c3b216015b5548cb108.
 //
-// Solidity: e BytesDeleted(factProvider indexed address, key indexed bytes32)
+// Solidity: event BytesDeleted(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterBytesDeleted(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractBytesDeletedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -2100,7 +2100,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterBytesDeleted(
 
 // WatchBytesDeleted is a free log subscription operation binding the contract event 0x0eaf95ab41777ff88e28181b1c43418524616bcef6d37c3b216015b5548cb108.
 //
-// Solidity: e BytesDeleted(factProvider indexed address, key indexed bytes32)
+// Solidity: event BytesDeleted(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchBytesDeleted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractBytesDeleted, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -2220,7 +2220,7 @@ type PassportLogicContractBytesUpdated struct {
 
 // FilterBytesUpdated is a free log retrieval operation binding the contract event 0xee56af66250a5cbba377132a356dc403d520776e30969594927024c44af8440b.
 //
-// Solidity: e BytesUpdated(factProvider indexed address, key indexed bytes32)
+// Solidity: event BytesUpdated(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterBytesUpdated(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractBytesUpdatedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -2241,7 +2241,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterBytesUpdated(
 
 // WatchBytesUpdated is a free log subscription operation binding the contract event 0xee56af66250a5cbba377132a356dc403d520776e30969594927024c44af8440b.
 //
-// Solidity: e BytesUpdated(factProvider indexed address, key indexed bytes32)
+// Solidity: event BytesUpdated(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchBytesUpdated(opts *bind.WatchOpts, sink chan<- *PassportLogicContractBytesUpdated, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -2361,7 +2361,7 @@ type PassportLogicContractIPFSHashDeleted struct {
 
 // FilterIPFSHashDeleted is a free log retrieval operation binding the contract event 0x140278d2322b9671bf293aea878e7717c46d5b7cd955e3e426ee67e01b901654.
 //
-// Solidity: e IPFSHashDeleted(factProvider indexed address, key indexed bytes32)
+// Solidity: event IPFSHashDeleted(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterIPFSHashDeleted(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractIPFSHashDeletedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -2382,7 +2382,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterIPFSHashDelet
 
 // WatchIPFSHashDeleted is a free log subscription operation binding the contract event 0x140278d2322b9671bf293aea878e7717c46d5b7cd955e3e426ee67e01b901654.
 //
-// Solidity: e IPFSHashDeleted(factProvider indexed address, key indexed bytes32)
+// Solidity: event IPFSHashDeleted(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchIPFSHashDeleted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractIPFSHashDeleted, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -2502,7 +2502,7 @@ type PassportLogicContractIPFSHashUpdated struct {
 
 // FilterIPFSHashUpdated is a free log retrieval operation binding the contract event 0xdb23beee028623a85d5af1d247423ca471d20e499b131cd5e5c76277eaa2ad5b.
 //
-// Solidity: e IPFSHashUpdated(factProvider indexed address, key indexed bytes32)
+// Solidity: event IPFSHashUpdated(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterIPFSHashUpdated(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractIPFSHashUpdatedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -2523,7 +2523,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterIPFSHashUpdat
 
 // WatchIPFSHashUpdated is a free log subscription operation binding the contract event 0xdb23beee028623a85d5af1d247423ca471d20e499b131cd5e5c76277eaa2ad5b.
 //
-// Solidity: e IPFSHashUpdated(factProvider indexed address, key indexed bytes32)
+// Solidity: event IPFSHashUpdated(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchIPFSHashUpdated(opts *bind.WatchOpts, sink chan<- *PassportLogicContractIPFSHashUpdated, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -2643,7 +2643,7 @@ type PassportLogicContractIntDeleted struct {
 
 // FilterIntDeleted is a free log retrieval operation binding the contract event 0x3c3ff48e02e407eb1e78310d11b5e3f9e735263a9cafc2bcf4aa981b8ecb32a5.
 //
-// Solidity: e IntDeleted(factProvider indexed address, key indexed bytes32)
+// Solidity: event IntDeleted(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterIntDeleted(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractIntDeletedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -2664,7 +2664,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterIntDeleted(op
 
 // WatchIntDeleted is a free log subscription operation binding the contract event 0x3c3ff48e02e407eb1e78310d11b5e3f9e735263a9cafc2bcf4aa981b8ecb32a5.
 //
-// Solidity: e IntDeleted(factProvider indexed address, key indexed bytes32)
+// Solidity: event IntDeleted(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchIntDeleted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractIntDeleted, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -2784,7 +2784,7 @@ type PassportLogicContractIntUpdated struct {
 
 // FilterIntUpdated is a free log retrieval operation binding the contract event 0xdb4ad6a3ed2bdacbae02da45a5bb54192cdb7d72648674d13e08d2fc4c45ac66.
 //
-// Solidity: e IntUpdated(factProvider indexed address, key indexed bytes32)
+// Solidity: event IntUpdated(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterIntUpdated(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractIntUpdatedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -2805,7 +2805,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterIntUpdated(op
 
 // WatchIntUpdated is a free log subscription operation binding the contract event 0xdb4ad6a3ed2bdacbae02da45a5bb54192cdb7d72648674d13e08d2fc4c45ac66.
 //
-// Solidity: e IntUpdated(factProvider indexed address, key indexed bytes32)
+// Solidity: event IntUpdated(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchIntUpdated(opts *bind.WatchOpts, sink chan<- *PassportLogicContractIntUpdated, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -2924,7 +2924,7 @@ type PassportLogicContractOwnershipRenounced struct {
 
 // FilterOwnershipRenounced is a free log retrieval operation binding the contract event 0xf8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c64820.
 //
-// Solidity: e OwnershipRenounced(previousOwner indexed address)
+// Solidity: event OwnershipRenounced(address indexed previousOwner)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterOwnershipRenounced(opts *bind.FilterOpts, previousOwner []common.Address) (*PassportLogicContractOwnershipRenouncedIterator, error) {
 
 	var previousOwnerRule []interface{}
@@ -2941,7 +2941,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterOwnershipReno
 
 // WatchOwnershipRenounced is a free log subscription operation binding the contract event 0xf8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c64820.
 //
-// Solidity: e OwnershipRenounced(previousOwner indexed address)
+// Solidity: event OwnershipRenounced(address indexed previousOwner)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchOwnershipRenounced(opts *bind.WatchOpts, sink chan<- *PassportLogicContractOwnershipRenounced, previousOwner []common.Address) (event.Subscription, error) {
 
 	var previousOwnerRule []interface{}
@@ -3057,7 +3057,7 @@ type PassportLogicContractOwnershipTransferred struct {
 
 // FilterOwnershipTransferred is a free log retrieval operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
 //
-// Solidity: e OwnershipTransferred(previousOwner indexed address, newOwner indexed address)
+// Solidity: event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterOwnershipTransferred(opts *bind.FilterOpts, previousOwner []common.Address, newOwner []common.Address) (*PassportLogicContractOwnershipTransferredIterator, error) {
 
 	var previousOwnerRule []interface{}
@@ -3078,7 +3078,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterOwnershipTran
 
 // WatchOwnershipTransferred is a free log subscription operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
 //
-// Solidity: e OwnershipTransferred(previousOwner indexed address, newOwner indexed address)
+// Solidity: event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchOwnershipTransferred(opts *bind.WatchOpts, sink chan<- *PassportLogicContractOwnershipTransferred, previousOwner []common.Address, newOwner []common.Address) (event.Subscription, error) {
 
 	var previousOwnerRule []interface{}
@@ -3198,7 +3198,7 @@ type PassportLogicContractPrivateDataDeleted struct {
 
 // FilterPrivateDataDeleted is a free log retrieval operation binding the contract event 0x25e5b7d51c31a9c5ccb88759f5d30bbd5cac7eb300c5cb2498574f56463a6d37.
 //
-// Solidity: e PrivateDataDeleted(factProvider indexed address, key indexed bytes32)
+// Solidity: event PrivateDataDeleted(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterPrivateDataDeleted(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractPrivateDataDeletedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -3219,7 +3219,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterPrivateDataDe
 
 // WatchPrivateDataDeleted is a free log subscription operation binding the contract event 0x25e5b7d51c31a9c5ccb88759f5d30bbd5cac7eb300c5cb2498574f56463a6d37.
 //
-// Solidity: e PrivateDataDeleted(factProvider indexed address, key indexed bytes32)
+// Solidity: event PrivateDataDeleted(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchPrivateDataDeleted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractPrivateDataDeleted, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -3340,7 +3340,7 @@ type PassportLogicContractPrivateDataExchangeAccepted struct {
 
 // FilterPrivateDataExchangeAccepted is a free log retrieval operation binding the contract event 0x843dda373d0d243dce80a6cd203b9cbba8576d036c7eb937f9de36ebe6e8b023.
 //
-// Solidity: e PrivateDataExchangeAccepted(exchangeIdx indexed uint256, dataRequester indexed address, passportOwner indexed address)
+// Solidity: event PrivateDataExchangeAccepted(uint256 indexed exchangeIdx, address indexed dataRequester, address indexed passportOwner)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterPrivateDataExchangeAccepted(opts *bind.FilterOpts, exchangeIdx []*big.Int, dataRequester []common.Address, passportOwner []common.Address) (*PassportLogicContractPrivateDataExchangeAcceptedIterator, error) {
 
 	var exchangeIdxRule []interface{}
@@ -3365,7 +3365,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterPrivateDataEx
 
 // WatchPrivateDataExchangeAccepted is a free log subscription operation binding the contract event 0x843dda373d0d243dce80a6cd203b9cbba8576d036c7eb937f9de36ebe6e8b023.
 //
-// Solidity: e PrivateDataExchangeAccepted(exchangeIdx indexed uint256, dataRequester indexed address, passportOwner indexed address)
+// Solidity: event PrivateDataExchangeAccepted(uint256 indexed exchangeIdx, address indexed dataRequester, address indexed passportOwner)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchPrivateDataExchangeAccepted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractPrivateDataExchangeAccepted, exchangeIdx []*big.Int, dataRequester []common.Address, passportOwner []common.Address) (event.Subscription, error) {
 
 	var exchangeIdxRule []interface{}
@@ -3488,7 +3488,7 @@ type PassportLogicContractPrivateDataExchangeClosed struct {
 
 // FilterPrivateDataExchangeClosed is a free log retrieval operation binding the contract event 0x5d1a7ae2ffda31cae15ed5129d32260ef2a270a21325f536f7954ed297e52c8e.
 //
-// Solidity: e PrivateDataExchangeClosed(exchangeIdx indexed uint256)
+// Solidity: event PrivateDataExchangeClosed(uint256 indexed exchangeIdx)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterPrivateDataExchangeClosed(opts *bind.FilterOpts, exchangeIdx []*big.Int) (*PassportLogicContractPrivateDataExchangeClosedIterator, error) {
 
 	var exchangeIdxRule []interface{}
@@ -3505,7 +3505,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterPrivateDataEx
 
 // WatchPrivateDataExchangeClosed is a free log subscription operation binding the contract event 0x5d1a7ae2ffda31cae15ed5129d32260ef2a270a21325f536f7954ed297e52c8e.
 //
-// Solidity: e PrivateDataExchangeClosed(exchangeIdx indexed uint256)
+// Solidity: event PrivateDataExchangeClosed(uint256 indexed exchangeIdx)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchPrivateDataExchangeClosed(opts *bind.WatchOpts, sink chan<- *PassportLogicContractPrivateDataExchangeClosed, exchangeIdx []*big.Int) (event.Subscription, error) {
 
 	var exchangeIdxRule []interface{}
@@ -3622,7 +3622,7 @@ type PassportLogicContractPrivateDataExchangeDisputed struct {
 
 // FilterPrivateDataExchangeDisputed is a free log retrieval operation binding the contract event 0x540941e0fc2370abde0bfa6ddbb49188469597e518416fa24327f39469c9b2ec.
 //
-// Solidity: e PrivateDataExchangeDisputed(exchangeIdx indexed uint256, successful indexed bool, cheater indexed address)
+// Solidity: event PrivateDataExchangeDisputed(uint256 indexed exchangeIdx, bool indexed successful, address indexed cheater)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterPrivateDataExchangeDisputed(opts *bind.FilterOpts, exchangeIdx []*big.Int, successful []bool, cheater []common.Address) (*PassportLogicContractPrivateDataExchangeDisputedIterator, error) {
 
 	var exchangeIdxRule []interface{}
@@ -3647,7 +3647,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterPrivateDataEx
 
 // WatchPrivateDataExchangeDisputed is a free log subscription operation binding the contract event 0x540941e0fc2370abde0bfa6ddbb49188469597e518416fa24327f39469c9b2ec.
 //
-// Solidity: e PrivateDataExchangeDisputed(exchangeIdx indexed uint256, successful indexed bool, cheater indexed address)
+// Solidity: event PrivateDataExchangeDisputed(uint256 indexed exchangeIdx, bool indexed successful, address indexed cheater)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchPrivateDataExchangeDisputed(opts *bind.WatchOpts, sink chan<- *PassportLogicContractPrivateDataExchangeDisputed, exchangeIdx []*big.Int, successful []bool, cheater []common.Address) (event.Subscription, error) {
 
 	var exchangeIdxRule []interface{}
@@ -3772,7 +3772,7 @@ type PassportLogicContractPrivateDataExchangeProposed struct {
 
 // FilterPrivateDataExchangeProposed is a free log retrieval operation binding the contract event 0xabe53237e9ea366da7fa5507ac62db22bd446d6b66bcff4a6d6c1b11e9af1983.
 //
-// Solidity: e PrivateDataExchangeProposed(exchangeIdx indexed uint256, dataRequester indexed address, passportOwner indexed address)
+// Solidity: event PrivateDataExchangeProposed(uint256 indexed exchangeIdx, address indexed dataRequester, address indexed passportOwner)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterPrivateDataExchangeProposed(opts *bind.FilterOpts, exchangeIdx []*big.Int, dataRequester []common.Address, passportOwner []common.Address) (*PassportLogicContractPrivateDataExchangeProposedIterator, error) {
 
 	var exchangeIdxRule []interface{}
@@ -3797,7 +3797,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterPrivateDataEx
 
 // WatchPrivateDataExchangeProposed is a free log subscription operation binding the contract event 0xabe53237e9ea366da7fa5507ac62db22bd446d6b66bcff4a6d6c1b11e9af1983.
 //
-// Solidity: e PrivateDataExchangeProposed(exchangeIdx indexed uint256, dataRequester indexed address, passportOwner indexed address)
+// Solidity: event PrivateDataExchangeProposed(uint256 indexed exchangeIdx, address indexed dataRequester, address indexed passportOwner)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchPrivateDataExchangeProposed(opts *bind.WatchOpts, sink chan<- *PassportLogicContractPrivateDataExchangeProposed, exchangeIdx []*big.Int, dataRequester []common.Address, passportOwner []common.Address) (event.Subscription, error) {
 
 	var exchangeIdxRule []interface{}
@@ -3921,7 +3921,7 @@ type PassportLogicContractPrivateDataUpdated struct {
 
 // FilterPrivateDataUpdated is a free log retrieval operation binding the contract event 0x1bd7e914e13f7cf5c918a20e77d8191f4851771f8c9425e85ec118fa3e2e33e7.
 //
-// Solidity: e PrivateDataUpdated(factProvider indexed address, key indexed bytes32)
+// Solidity: event PrivateDataUpdated(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterPrivateDataUpdated(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractPrivateDataUpdatedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -3942,7 +3942,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterPrivateDataUp
 
 // WatchPrivateDataUpdated is a free log subscription operation binding the contract event 0x1bd7e914e13f7cf5c918a20e77d8191f4851771f8c9425e85ec118fa3e2e33e7.
 //
-// Solidity: e PrivateDataUpdated(factProvider indexed address, key indexed bytes32)
+// Solidity: event PrivateDataUpdated(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchPrivateDataUpdated(opts *bind.WatchOpts, sink chan<- *PassportLogicContractPrivateDataUpdated, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -4062,7 +4062,7 @@ type PassportLogicContractStringDeleted struct {
 
 // FilterStringDeleted is a free log retrieval operation binding the contract event 0x491a0e0281af9fc88ff024cffc24db22eddd4f826cb30d84936592967dc9237c.
 //
-// Solidity: e StringDeleted(factProvider indexed address, key indexed bytes32)
+// Solidity: event StringDeleted(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterStringDeleted(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractStringDeletedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -4083,7 +4083,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterStringDeleted
 
 // WatchStringDeleted is a free log subscription operation binding the contract event 0x491a0e0281af9fc88ff024cffc24db22eddd4f826cb30d84936592967dc9237c.
 //
-// Solidity: e StringDeleted(factProvider indexed address, key indexed bytes32)
+// Solidity: event StringDeleted(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchStringDeleted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractStringDeleted, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -4203,7 +4203,7 @@ type PassportLogicContractStringUpdated struct {
 
 // FilterStringUpdated is a free log retrieval operation binding the contract event 0x43e6b7e3323b4598401023341c086c07c3ff5577f594b5aab9c065f2c3c9d590.
 //
-// Solidity: e StringUpdated(factProvider indexed address, key indexed bytes32)
+// Solidity: event StringUpdated(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterStringUpdated(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractStringUpdatedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -4224,7 +4224,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterStringUpdated
 
 // WatchStringUpdated is a free log subscription operation binding the contract event 0x43e6b7e3323b4598401023341c086c07c3ff5577f594b5aab9c065f2c3c9d590.
 //
-// Solidity: e StringUpdated(factProvider indexed address, key indexed bytes32)
+// Solidity: event StringUpdated(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchStringUpdated(opts *bind.WatchOpts, sink chan<- *PassportLogicContractStringUpdated, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -4344,7 +4344,7 @@ type PassportLogicContractTxDataDeleted struct {
 
 // FilterTxDataDeleted is a free log retrieval operation binding the contract event 0x9b9532c8ba5879554dee7c3e9374bd26dbfb2f79cf7f247bcf90648fc81fc164.
 //
-// Solidity: e TxDataDeleted(factProvider indexed address, key indexed bytes32)
+// Solidity: event TxDataDeleted(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterTxDataDeleted(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractTxDataDeletedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -4365,7 +4365,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterTxDataDeleted
 
 // WatchTxDataDeleted is a free log subscription operation binding the contract event 0x9b9532c8ba5879554dee7c3e9374bd26dbfb2f79cf7f247bcf90648fc81fc164.
 //
-// Solidity: e TxDataDeleted(factProvider indexed address, key indexed bytes32)
+// Solidity: event TxDataDeleted(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchTxDataDeleted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractTxDataDeleted, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -4485,7 +4485,7 @@ type PassportLogicContractTxDataUpdated struct {
 
 // FilterTxDataUpdated is a free log retrieval operation binding the contract event 0xcbde9cd310365ff3de3ad9cb44ed688d8880c7b1d15df733a73880fb84d032de.
 //
-// Solidity: e TxDataUpdated(factProvider indexed address, key indexed bytes32)
+// Solidity: event TxDataUpdated(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterTxDataUpdated(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractTxDataUpdatedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -4506,7 +4506,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterTxDataUpdated
 
 // WatchTxDataUpdated is a free log subscription operation binding the contract event 0xcbde9cd310365ff3de3ad9cb44ed688d8880c7b1d15df733a73880fb84d032de.
 //
-// Solidity: e TxDataUpdated(factProvider indexed address, key indexed bytes32)
+// Solidity: event TxDataUpdated(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchTxDataUpdated(opts *bind.WatchOpts, sink chan<- *PassportLogicContractTxDataUpdated, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -4626,7 +4626,7 @@ type PassportLogicContractUintDeleted struct {
 
 // FilterUintDeleted is a free log retrieval operation binding the contract event 0xd5f853f7aaba549b5a46be1de24cac4c20e716b4c603d24b2b0b7b5d97ca1c4d.
 //
-// Solidity: e UintDeleted(factProvider indexed address, key indexed bytes32)
+// Solidity: event UintDeleted(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterUintDeleted(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractUintDeletedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -4647,7 +4647,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterUintDeleted(o
 
 // WatchUintDeleted is a free log subscription operation binding the contract event 0xd5f853f7aaba549b5a46be1de24cac4c20e716b4c603d24b2b0b7b5d97ca1c4d.
 //
-// Solidity: e UintDeleted(factProvider indexed address, key indexed bytes32)
+// Solidity: event UintDeleted(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchUintDeleted(opts *bind.WatchOpts, sink chan<- *PassportLogicContractUintDeleted, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -4767,7 +4767,7 @@ type PassportLogicContractUintUpdated struct {
 
 // FilterUintUpdated is a free log retrieval operation binding the contract event 0xff76cb7634629f8d05011ab2a58380dfc0743157a70ba4173f866e113eca75c0.
 //
-// Solidity: e UintUpdated(factProvider indexed address, key indexed bytes32)
+// Solidity: event UintUpdated(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterUintUpdated(opts *bind.FilterOpts, factProvider []common.Address, key [][32]byte) (*PassportLogicContractUintUpdatedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -4788,7 +4788,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterUintUpdated(o
 
 // WatchUintUpdated is a free log subscription operation binding the contract event 0xff76cb7634629f8d05011ab2a58380dfc0743157a70ba4173f866e113eca75c0.
 //
-// Solidity: e UintUpdated(factProvider indexed address, key indexed bytes32)
+// Solidity: event UintUpdated(address indexed factProvider, bytes32 indexed key)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchUintUpdated(opts *bind.WatchOpts, sink chan<- *PassportLogicContractUintUpdated, factProvider []common.Address, key [][32]byte) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -4907,7 +4907,7 @@ type PassportLogicContractWhitelistFactProviderAdded struct {
 
 // FilterWhitelistFactProviderAdded is a free log retrieval operation binding the contract event 0xff8ac5f0e9cdc8f7ffbbc29ab1301ee649cf01cf7a6a9265a2d90587612c4175.
 //
-// Solidity: e WhitelistFactProviderAdded(factProvider indexed address)
+// Solidity: event WhitelistFactProviderAdded(address indexed factProvider)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterWhitelistFactProviderAdded(opts *bind.FilterOpts, factProvider []common.Address) (*PassportLogicContractWhitelistFactProviderAddedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -4924,7 +4924,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterWhitelistFact
 
 // WatchWhitelistFactProviderAdded is a free log subscription operation binding the contract event 0xff8ac5f0e9cdc8f7ffbbc29ab1301ee649cf01cf7a6a9265a2d90587612c4175.
 //
-// Solidity: e WhitelistFactProviderAdded(factProvider indexed address)
+// Solidity: event WhitelistFactProviderAdded(address indexed factProvider)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchWhitelistFactProviderAdded(opts *bind.WatchOpts, sink chan<- *PassportLogicContractWhitelistFactProviderAdded, factProvider []common.Address) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -5039,7 +5039,7 @@ type PassportLogicContractWhitelistFactProviderRemoved struct {
 
 // FilterWhitelistFactProviderRemoved is a free log retrieval operation binding the contract event 0x5bf47f016603dfff957e6086bd9a350212686e8f1d9208b3db47c5a3107c7878.
 //
-// Solidity: e WhitelistFactProviderRemoved(factProvider indexed address)
+// Solidity: event WhitelistFactProviderRemoved(address indexed factProvider)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterWhitelistFactProviderRemoved(opts *bind.FilterOpts, factProvider []common.Address) (*PassportLogicContractWhitelistFactProviderRemovedIterator, error) {
 
 	var factProviderRule []interface{}
@@ -5056,7 +5056,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterWhitelistFact
 
 // WatchWhitelistFactProviderRemoved is a free log subscription operation binding the contract event 0x5bf47f016603dfff957e6086bd9a350212686e8f1d9208b3db47c5a3107c7878.
 //
-// Solidity: e WhitelistFactProviderRemoved(factProvider indexed address)
+// Solidity: event WhitelistFactProviderRemoved(address indexed factProvider)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchWhitelistFactProviderRemoved(opts *bind.WatchOpts, sink chan<- *PassportLogicContractWhitelistFactProviderRemoved, factProvider []common.Address) (event.Subscription, error) {
 
 	var factProviderRule []interface{}
@@ -5171,7 +5171,7 @@ type PassportLogicContractWhitelistOnlyPermissionSet struct {
 
 // FilterWhitelistOnlyPermissionSet is a free log retrieval operation binding the contract event 0x6e1eb3fa845047cf9d5fd1deb1b7770b4e26163dd4d88cefb14fe7964a700595.
 //
-// Solidity: e WhitelistOnlyPermissionSet(onlyWhitelist indexed bool)
+// Solidity: event WhitelistOnlyPermissionSet(bool indexed onlyWhitelist)
 func (_PassportLogicContract *PassportLogicContractFilterer) FilterWhitelistOnlyPermissionSet(opts *bind.FilterOpts, onlyWhitelist []bool) (*PassportLogicContractWhitelistOnlyPermissionSetIterator, error) {
 
 	var onlyWhitelistRule []interface{}
@@ -5188,7 +5188,7 @@ func (_PassportLogicContract *PassportLogicContractFilterer) FilterWhitelistOnly
 
 // WatchWhitelistOnlyPermissionSet is a free log subscription operation binding the contract event 0x6e1eb3fa845047cf9d5fd1deb1b7770b4e26163dd4d88cefb14fe7964a700595.
 //
-// Solidity: e WhitelistOnlyPermissionSet(onlyWhitelist indexed bool)
+// Solidity: event WhitelistOnlyPermissionSet(bool indexed onlyWhitelist)
 func (_PassportLogicContract *PassportLogicContractFilterer) WatchWhitelistOnlyPermissionSet(opts *bind.WatchOpts, sink chan<- *PassportLogicContractWhitelistOnlyPermissionSet, onlyWhitelist []bool) (event.Subscription, error) {
 
 	var onlyWhitelistRule []interface{}

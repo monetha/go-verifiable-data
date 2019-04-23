@@ -242,7 +242,7 @@ func (_PassportLogicRegistryContract *PassportLogicRegistryContractCallerSession
 
 // GetPassportLogic is a free data retrieval call binding the contract method 0x9a1295d9.
 //
-// Solidity: function getPassportLogic(_version string) constant returns(address)
+// Solidity: function getPassportLogic(string _version) constant returns(address)
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractCaller) GetPassportLogic(opts *bind.CallOpts, _version string) (common.Address, error) {
 	var (
 		ret0 = new(common.Address)
@@ -254,14 +254,14 @@ func (_PassportLogicRegistryContract *PassportLogicRegistryContractCaller) GetPa
 
 // GetPassportLogic is a free data retrieval call binding the contract method 0x9a1295d9.
 //
-// Solidity: function getPassportLogic(_version string) constant returns(address)
+// Solidity: function getPassportLogic(string _version) constant returns(address)
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractSession) GetPassportLogic(_version string) (common.Address, error) {
 	return _PassportLogicRegistryContract.Contract.GetPassportLogic(&_PassportLogicRegistryContract.CallOpts, _version)
 }
 
 // GetPassportLogic is a free data retrieval call binding the contract method 0x9a1295d9.
 //
-// Solidity: function getPassportLogic(_version string) constant returns(address)
+// Solidity: function getPassportLogic(string _version) constant returns(address)
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractCallerSession) GetPassportLogic(_version string) (common.Address, error) {
 	return _PassportLogicRegistryContract.Contract.GetPassportLogic(&_PassportLogicRegistryContract.CallOpts, _version)
 }
@@ -294,7 +294,7 @@ func (_PassportLogicRegistryContract *PassportLogicRegistryContractCallerSession
 
 // TokenFallback is a free data retrieval call binding the contract method 0xc0ee0b8a.
 //
-// Solidity: function tokenFallback(_from address, _value uint256, _data bytes) constant returns()
+// Solidity: function tokenFallback(address _from, uint256 _value, bytes _data) constant returns()
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractCaller) TokenFallback(opts *bind.CallOpts, _from common.Address, _value *big.Int, _data []byte) error {
 	var ()
 	out := &[]interface{}{}
@@ -304,35 +304,35 @@ func (_PassportLogicRegistryContract *PassportLogicRegistryContractCaller) Token
 
 // TokenFallback is a free data retrieval call binding the contract method 0xc0ee0b8a.
 //
-// Solidity: function tokenFallback(_from address, _value uint256, _data bytes) constant returns()
+// Solidity: function tokenFallback(address _from, uint256 _value, bytes _data) constant returns()
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractSession) TokenFallback(_from common.Address, _value *big.Int, _data []byte) error {
 	return _PassportLogicRegistryContract.Contract.TokenFallback(&_PassportLogicRegistryContract.CallOpts, _from, _value, _data)
 }
 
 // TokenFallback is a free data retrieval call binding the contract method 0xc0ee0b8a.
 //
-// Solidity: function tokenFallback(_from address, _value uint256, _data bytes) constant returns()
+// Solidity: function tokenFallback(address _from, uint256 _value, bytes _data) constant returns()
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractCallerSession) TokenFallback(_from common.Address, _value *big.Int, _data []byte) error {
 	return _PassportLogicRegistryContract.Contract.TokenFallback(&_PassportLogicRegistryContract.CallOpts, _from, _value, _data)
 }
 
 // AddPassportLogic is a paid mutator transaction binding the contract method 0xc7c40fbb.
 //
-// Solidity: function addPassportLogic(_version string, _implementation address) returns()
+// Solidity: function addPassportLogic(string _version, address _implementation) returns()
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractTransactor) AddPassportLogic(opts *bind.TransactOpts, _version string, _implementation common.Address) (*types.Transaction, error) {
 	return _PassportLogicRegistryContract.contract.Transact(opts, "addPassportLogic", _version, _implementation)
 }
 
 // AddPassportLogic is a paid mutator transaction binding the contract method 0xc7c40fbb.
 //
-// Solidity: function addPassportLogic(_version string, _implementation address) returns()
+// Solidity: function addPassportLogic(string _version, address _implementation) returns()
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractSession) AddPassportLogic(_version string, _implementation common.Address) (*types.Transaction, error) {
 	return _PassportLogicRegistryContract.Contract.AddPassportLogic(&_PassportLogicRegistryContract.TransactOpts, _version, _implementation)
 }
 
 // AddPassportLogic is a paid mutator transaction binding the contract method 0xc7c40fbb.
 //
-// Solidity: function addPassportLogic(_version string, _implementation address) returns()
+// Solidity: function addPassportLogic(string _version, address _implementation) returns()
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractTransactorSession) AddPassportLogic(_version string, _implementation common.Address) (*types.Transaction, error) {
 	return _PassportLogicRegistryContract.Contract.AddPassportLogic(&_PassportLogicRegistryContract.TransactOpts, _version, _implementation)
 }
@@ -360,21 +360,21 @@ func (_PassportLogicRegistryContract *PassportLogicRegistryContractTransactorSes
 
 // ReclaimToken is a paid mutator transaction binding the contract method 0x17ffc320.
 //
-// Solidity: function reclaimToken(_token address) returns()
+// Solidity: function reclaimToken(address _token) returns()
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractTransactor) ReclaimToken(opts *bind.TransactOpts, _token common.Address) (*types.Transaction, error) {
 	return _PassportLogicRegistryContract.contract.Transact(opts, "reclaimToken", _token)
 }
 
 // ReclaimToken is a paid mutator transaction binding the contract method 0x17ffc320.
 //
-// Solidity: function reclaimToken(_token address) returns()
+// Solidity: function reclaimToken(address _token) returns()
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractSession) ReclaimToken(_token common.Address) (*types.Transaction, error) {
 	return _PassportLogicRegistryContract.Contract.ReclaimToken(&_PassportLogicRegistryContract.TransactOpts, _token)
 }
 
 // ReclaimToken is a paid mutator transaction binding the contract method 0x17ffc320.
 //
-// Solidity: function reclaimToken(_token address) returns()
+// Solidity: function reclaimToken(address _token) returns()
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractTransactorSession) ReclaimToken(_token common.Address) (*types.Transaction, error) {
 	return _PassportLogicRegistryContract.Contract.ReclaimToken(&_PassportLogicRegistryContract.TransactOpts, _token)
 }
@@ -402,42 +402,42 @@ func (_PassportLogicRegistryContract *PassportLogicRegistryContractTransactorSes
 
 // SetCurrentPassportLogic is a paid mutator transaction binding the contract method 0x593efdf1.
 //
-// Solidity: function setCurrentPassportLogic(_version string) returns()
+// Solidity: function setCurrentPassportLogic(string _version) returns()
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractTransactor) SetCurrentPassportLogic(opts *bind.TransactOpts, _version string) (*types.Transaction, error) {
 	return _PassportLogicRegistryContract.contract.Transact(opts, "setCurrentPassportLogic", _version)
 }
 
 // SetCurrentPassportLogic is a paid mutator transaction binding the contract method 0x593efdf1.
 //
-// Solidity: function setCurrentPassportLogic(_version string) returns()
+// Solidity: function setCurrentPassportLogic(string _version) returns()
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractSession) SetCurrentPassportLogic(_version string) (*types.Transaction, error) {
 	return _PassportLogicRegistryContract.Contract.SetCurrentPassportLogic(&_PassportLogicRegistryContract.TransactOpts, _version)
 }
 
 // SetCurrentPassportLogic is a paid mutator transaction binding the contract method 0x593efdf1.
 //
-// Solidity: function setCurrentPassportLogic(_version string) returns()
+// Solidity: function setCurrentPassportLogic(string _version) returns()
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractTransactorSession) SetCurrentPassportLogic(_version string) (*types.Transaction, error) {
 	return _PassportLogicRegistryContract.Contract.SetCurrentPassportLogic(&_PassportLogicRegistryContract.TransactOpts, _version)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
 //
-// Solidity: function transferOwnership(_newOwner address) returns()
+// Solidity: function transferOwnership(address _newOwner) returns()
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractTransactor) TransferOwnership(opts *bind.TransactOpts, _newOwner common.Address) (*types.Transaction, error) {
 	return _PassportLogicRegistryContract.contract.Transact(opts, "transferOwnership", _newOwner)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
 //
-// Solidity: function transferOwnership(_newOwner address) returns()
+// Solidity: function transferOwnership(address _newOwner) returns()
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractSession) TransferOwnership(_newOwner common.Address) (*types.Transaction, error) {
 	return _PassportLogicRegistryContract.Contract.TransferOwnership(&_PassportLogicRegistryContract.TransactOpts, _newOwner)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
 //
-// Solidity: function transferOwnership(_newOwner address) returns()
+// Solidity: function transferOwnership(address _newOwner) returns()
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractTransactorSession) TransferOwnership(_newOwner common.Address) (*types.Transaction, error) {
 	return _PassportLogicRegistryContract.Contract.TransferOwnership(&_PassportLogicRegistryContract.TransactOpts, _newOwner)
 }
@@ -518,7 +518,7 @@ type PassportLogicRegistryContractCurrentPassportLogicSet struct {
 
 // FilterCurrentPassportLogicSet is a free log retrieval operation binding the contract event 0x4e366bf178b123bb29442cddeceedf743c23cbb40cffa5f577217fe2c54a0b19.
 //
-// Solidity: e CurrentPassportLogicSet(version string, implementation address)
+// Solidity: event CurrentPassportLogicSet(string version, address implementation)
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractFilterer) FilterCurrentPassportLogicSet(opts *bind.FilterOpts) (*PassportLogicRegistryContractCurrentPassportLogicSetIterator, error) {
 
 	logs, sub, err := _PassportLogicRegistryContract.contract.FilterLogs(opts, "CurrentPassportLogicSet")
@@ -530,7 +530,7 @@ func (_PassportLogicRegistryContract *PassportLogicRegistryContractFilterer) Fil
 
 // WatchCurrentPassportLogicSet is a free log subscription operation binding the contract event 0x4e366bf178b123bb29442cddeceedf743c23cbb40cffa5f577217fe2c54a0b19.
 //
-// Solidity: e CurrentPassportLogicSet(version string, implementation address)
+// Solidity: event CurrentPassportLogicSet(string version, address implementation)
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractFilterer) WatchCurrentPassportLogicSet(opts *bind.WatchOpts, sink chan<- *PassportLogicRegistryContractCurrentPassportLogicSet) (event.Subscription, error) {
 
 	logs, sub, err := _PassportLogicRegistryContract.contract.WatchLogs(opts, "CurrentPassportLogicSet")
@@ -640,7 +640,7 @@ type PassportLogicRegistryContractOwnershipRenounced struct {
 
 // FilterOwnershipRenounced is a free log retrieval operation binding the contract event 0xf8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c64820.
 //
-// Solidity: e OwnershipRenounced(previousOwner indexed address)
+// Solidity: event OwnershipRenounced(address indexed previousOwner)
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractFilterer) FilterOwnershipRenounced(opts *bind.FilterOpts, previousOwner []common.Address) (*PassportLogicRegistryContractOwnershipRenouncedIterator, error) {
 
 	var previousOwnerRule []interface{}
@@ -657,7 +657,7 @@ func (_PassportLogicRegistryContract *PassportLogicRegistryContractFilterer) Fil
 
 // WatchOwnershipRenounced is a free log subscription operation binding the contract event 0xf8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c64820.
 //
-// Solidity: e OwnershipRenounced(previousOwner indexed address)
+// Solidity: event OwnershipRenounced(address indexed previousOwner)
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractFilterer) WatchOwnershipRenounced(opts *bind.WatchOpts, sink chan<- *PassportLogicRegistryContractOwnershipRenounced, previousOwner []common.Address) (event.Subscription, error) {
 
 	var previousOwnerRule []interface{}
@@ -773,7 +773,7 @@ type PassportLogicRegistryContractOwnershipTransferred struct {
 
 // FilterOwnershipTransferred is a free log retrieval operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
 //
-// Solidity: e OwnershipTransferred(previousOwner indexed address, newOwner indexed address)
+// Solidity: event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractFilterer) FilterOwnershipTransferred(opts *bind.FilterOpts, previousOwner []common.Address, newOwner []common.Address) (*PassportLogicRegistryContractOwnershipTransferredIterator, error) {
 
 	var previousOwnerRule []interface{}
@@ -794,7 +794,7 @@ func (_PassportLogicRegistryContract *PassportLogicRegistryContractFilterer) Fil
 
 // WatchOwnershipTransferred is a free log subscription operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
 //
-// Solidity: e OwnershipTransferred(previousOwner indexed address, newOwner indexed address)
+// Solidity: event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractFilterer) WatchOwnershipTransferred(opts *bind.WatchOpts, sink chan<- *PassportLogicRegistryContractOwnershipTransferred, previousOwner []common.Address, newOwner []common.Address) (event.Subscription, error) {
 
 	var previousOwnerRule []interface{}
@@ -914,7 +914,7 @@ type PassportLogicRegistryContractPassportLogicAdded struct {
 
 // FilterPassportLogicAdded is a free log retrieval operation binding the contract event 0x7471eb04045ae72adb2fb73deb1e873113901110dd66dbde715232f2495a0cd8.
 //
-// Solidity: e PassportLogicAdded(version string, implementation address)
+// Solidity: event PassportLogicAdded(string version, address implementation)
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractFilterer) FilterPassportLogicAdded(opts *bind.FilterOpts) (*PassportLogicRegistryContractPassportLogicAddedIterator, error) {
 
 	logs, sub, err := _PassportLogicRegistryContract.contract.FilterLogs(opts, "PassportLogicAdded")
@@ -926,7 +926,7 @@ func (_PassportLogicRegistryContract *PassportLogicRegistryContractFilterer) Fil
 
 // WatchPassportLogicAdded is a free log subscription operation binding the contract event 0x7471eb04045ae72adb2fb73deb1e873113901110dd66dbde715232f2495a0cd8.
 //
-// Solidity: e PassportLogicAdded(version string, implementation address)
+// Solidity: event PassportLogicAdded(string version, address implementation)
 func (_PassportLogicRegistryContract *PassportLogicRegistryContractFilterer) WatchPassportLogicAdded(opts *bind.WatchOpts, sink chan<- *PassportLogicRegistryContractPassportLogicAdded) (event.Subscription, error) {
 
 	logs, sub, err := _PassportLogicRegistryContract.contract.WatchLogs(opts, "PassportLogicAdded")
