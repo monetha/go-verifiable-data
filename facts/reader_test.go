@@ -438,6 +438,61 @@ func TestReader_ReadIPFSHash(t *testing.T) {
 	})
 }
 
+func TestReader_ReadPrivateData(t *testing.T) {
+	tests := []struct {
+		name string
+		key  [32]byte
+		data *facts.PrivateData
+	}{
+		{"test 1", [32]byte{}, &facts.PrivateData{DataIPFSHash: "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j", DataKeyHash: [32]byte{1, 2, 3}}},
+		{"test 2", [32]byte{9, 8, 7, 6}, &facts.PrivateData{DataIPFSHash: "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j", DataKeyHash: [32]byte{1, 2, 3}}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ctx := context.Background()
+
+			passportAddress, factProviderSession := createPassportAndFactProviderSession(ctx, t)
+
+			e := factProviderSession.Eth
+			factProviderAddress := factProviderSession.TransactOpts.From
+
+			_, err := facts.NewProvider(factProviderSession).WritePrivateData(ctx, passportAddress, tt.key, tt.data)
+			if err != nil {
+				t.Errorf("Provider.WritePrivateData() error = %v", err)
+			}
+
+			readData, err := facts.NewReader(e).ReadPrivateData(ctx, passportAddress, factProviderAddress, tt.key)
+			if err != nil {
+				t.Errorf("Reader.ReadPrivateData() error = %v", err)
+			}
+
+			if tt.data.DataIPFSHash != readData.DataIPFSHash {
+				t.Errorf("Expected data IPFS hash = %v, read data IPFS hash = %v", tt.data.DataIPFSHash, readData.DataIPFSHash)
+			}
+
+			if tt.data.DataKeyHash != readData.DataKeyHash {
+				t.Errorf("Expected data key hash = %v, read data key hash = %v", tt.data.DataKeyHash, readData.DataKeyHash)
+			}
+		})
+	}
+
+	t.Run("reading non existing key value", func(t *testing.T) {
+		ctx := context.Background()
+
+		passportAddress, factProviderSession := createPassportAndFactProviderSession(ctx, t)
+
+		e := factProviderSession.Eth
+		factProviderAddress := factProviderSession.TransactOpts.From
+
+		key := [32]byte{1, 2, 3}
+
+		_, err := facts.NewReader(e).ReadPrivateData(ctx, passportAddress, factProviderAddress, key)
+		if err != ethereum.NotFound {
+			t.Errorf("Reader.ReadPrivateData() expecting error = %v, got error = %v", ethereum.NotFound, err)
+		}
+	})
+}
+
 func TestReader_ReadOwnerPublicKey(t *testing.T) {
 	ctx := context.Background()
 

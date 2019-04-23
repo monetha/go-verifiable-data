@@ -274,6 +274,31 @@ func (r *Reader) ReadIPFSHash(ctx context.Context, passport common.Address, fact
 	return res.Value, nil
 }
 
+// ReadPrivateData reads the private data from the specific key of the given data provider.
+// `ethereum.NotFound` error returned in case no value exists for the given key.
+func (r *Reader) ReadPrivateData(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (*PrivateData, error) {
+	backend := r.Backend
+
+	var res struct {
+		Success      bool
+		DataIPFSHash string
+		DataKeyHash  [32]byte
+	}
+
+	(*eth.Eth)(r).Log("Getting IPFS private data", "fact_provider", factProvider, "key", key)
+	res, err := contracts.InitPassportLogicContract(passport, backend).GetPrivateData(&bind.CallOpts{Context: ctx}, factProvider, key)
+	if err != nil {
+		return nil, fmt.Errorf("facts: GetPrivateData: %v", err)
+	}
+	// check if block number exists for the key
+	if !res.Success {
+		// no data
+		return nil, ethereum.NotFound
+	}
+
+	return &PrivateData{DataIPFSHash: res.DataIPFSHash, DataKeyHash: res.DataKeyHash}, nil
+}
+
 // ReadOwnerPublicKey reads the Ethereum public key of the passport owner. Owner must claim ownership of the passport,
 // before this method can be invoked.
 func (r *Reader) ReadOwnerPublicKey(ctx context.Context, passport common.Address) (pk *ecdsa.PublicKey, err error) {
