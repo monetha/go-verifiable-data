@@ -138,8 +138,6 @@ func main() {
 		if factBool, err = strconv.ParseBool(boolStr); err != nil {
 			utils.Fatalf("invalid fact bool: %v", boolStr)
 		}
-	default:
-		utils.Fatalf("fact type %v is not supported yet", factType.String())
 	}
 
 	passportAddress := passportAddr.GetValue()
