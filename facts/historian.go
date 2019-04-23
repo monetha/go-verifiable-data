@@ -351,8 +351,8 @@ type (
 		Hash         string
 	}
 
-	// WritePrivateDataHistoryItem holds parameters of WritePrivateData call
-	WritePrivateDataHistoryItem struct {
+	// WritePrivateDataHashesHistoryItem holds parameters of WritePrivateDataHashes call
+	WritePrivateDataHashesHistoryItem struct {
 		FactProvider common.Address
 		Key          [32]byte
 		DataIPFSHash string
@@ -512,8 +512,8 @@ func (h *Historian) GetHistoryItemOfWriteIPFSHash(ctx context.Context, passport 
 	}, nil
 }
 
-// GetHistoryItemOfWritePrivateData returns the private data value that was set in the given transaction.
-func (h *Historian) GetHistoryItemOfWritePrivateData(ctx context.Context, passport common.Address, txHash common.Hash) (*WritePrivateDataHistoryItem, error) {
+// GetHistoryItemOfWritePrivateDataHashes returns the private data value that was set in the given transaction.
+func (h *Historian) GetHistoryItemOfWritePrivateDataHashes(ctx context.Context, passport common.Address, txHash common.Hash) (*WritePrivateDataHashesHistoryItem, error) {
 	from, txData, err := h.getTransactionSenderData(ctx, txHash)
 	if err != nil {
 		return nil, err
@@ -524,7 +524,7 @@ func (h *Historian) GetHistoryItemOfWritePrivateData(ctx context.Context, passpo
 		return nil, err
 	}
 
-	return &WritePrivateDataHistoryItem{
+	return &WritePrivateDataHashesHistoryItem{
 		FactProvider: from,
 		Key:          params.Key,
 		DataIPFSHash: params.DataIPFSHash,

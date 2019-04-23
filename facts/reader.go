@@ -274,9 +274,9 @@ func (r *Reader) ReadIPFSHash(ctx context.Context, passport common.Address, fact
 	return res.Value, nil
 }
 
-// ReadPrivateData reads the private data from the specific key of the given data provider.
+// ReadPrivateDataHashes reads the private data from the specific key of the given data provider.
 // `ethereum.NotFound` error returned in case no value exists for the given key.
-func (r *Reader) ReadPrivateData(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (*PrivateData, error) {
+func (r *Reader) ReadPrivateDataHashes(ctx context.Context, passport common.Address, factProvider common.Address, key [32]byte) (*PrivateData, error) {
 	backend := r.Backend
 
 	var res struct {

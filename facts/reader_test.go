@@ -456,14 +456,14 @@ func TestReader_ReadPrivateData(t *testing.T) {
 			e := factProviderSession.Eth
 			factProviderAddress := factProviderSession.TransactOpts.From
 
-			_, err := facts.NewProvider(factProviderSession).WritePrivateData(ctx, passportAddress, tt.key, tt.data)
+			_, err := facts.NewProvider(factProviderSession).WritePrivateDataHashes(ctx, passportAddress, tt.key, tt.data)
 			if err != nil {
-				t.Errorf("Provider.WritePrivateData() error = %v", err)
+				t.Errorf("Provider.WritePrivateDataHashes() error = %v", err)
 			}
 
-			readData, err := facts.NewReader(e).ReadPrivateData(ctx, passportAddress, factProviderAddress, tt.key)
+			readData, err := facts.NewReader(e).ReadPrivateDataHashes(ctx, passportAddress, factProviderAddress, tt.key)
 			if err != nil {
-				t.Errorf("Reader.ReadPrivateData() error = %v", err)
+				t.Errorf("Reader.ReadPrivateDataHashes() error = %v", err)
 			}
 
 			if tt.data.DataIPFSHash != readData.DataIPFSHash {
@@ -486,9 +486,9 @@ func TestReader_ReadPrivateData(t *testing.T) {
 
 		key := [32]byte{1, 2, 3}
 
-		_, err := facts.NewReader(e).ReadPrivateData(ctx, passportAddress, factProviderAddress, key)
+		_, err := facts.NewReader(e).ReadPrivateDataHashes(ctx, passportAddress, factProviderAddress, key)
 		if err != ethereum.NotFound {
-			t.Errorf("Reader.ReadPrivateData() expecting error = %v, got error = %v", ethereum.NotFound, err)
+			t.Errorf("Reader.ReadPrivateDataHashes() expecting error = %v, got error = %v", ethereum.NotFound, err)
 		}
 	})
 }

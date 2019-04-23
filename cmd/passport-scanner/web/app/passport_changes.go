@@ -227,9 +227,9 @@ func (f *passportChangesGetter) GetHistoryItemAsync(passportAddress common.Addre
 			})
 
 		case data.PrivateData:
-			hi, err := historian.GetHistoryItemOfWritePrivateData(ctx, passportAddress, txHash)
+			hi, err := historian.GetHistoryItemOfWritePrivateDataHashes(ctx, passportAddress, txHash)
 			if err != nil {
-				return fmt.Errorf("Historian.GetHistoryItemOfWritePrivateData(): %v", err)
+				return fmt.Errorf("Historian.GetHistoryItemOfWritePrivateDataHashes(): %v", err)
 			}
 			buf.WriteString(hi.DataIPFSHash)
 			onNext(&historyItem{
