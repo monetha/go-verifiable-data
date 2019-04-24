@@ -25,7 +25,6 @@ import (
 	"github.com/monetha/reputation-go-sdk/eth"
 	"github.com/monetha/reputation-go-sdk/eth/backend"
 	"github.com/monetha/reputation-go-sdk/facts"
-	"github.com/monetha/reputation-go-sdk/ipfs"
 	"github.com/monetha/reputation-go-sdk/types/data"
 )
 
@@ -215,11 +214,10 @@ func main() {
 		cmdutils.CheckErr(ignoreHash(provider.WriteBool(ctx, passportAddress, factKey, factBool)), "WriteBool")
 	case data.IPFS:
 		log.Warn("Uploading data to IPFS...", "url", *ipfsURL)
-		fs, err := ipfs.New(*ipfsURL)
-		cmdutils.CheckErr(err, "IPFS.New")
+		w, err := facts.NewIPFSDataWriter(factProviderSession, *ipfsURL)
+		cmdutils.CheckErr(err, "facts.NewIPFSDataWriter")
 
-		_, err = facts.NewIPFSDataWriter(factProviderSession, provider, fs).
-			WriteIPFSData(ctx, passportAddress, factKey, os.Stdin)
+		_, err = w.WriteIPFSData(ctx, passportAddress, factKey, os.Stdin)
 		cmdutils.CheckErr(err, "writing IPFS data")
 	default:
 		cmdutils.CheckErr(fmt.Errorf("unsupported fact type: %v", factType.String()), "writing by type")
