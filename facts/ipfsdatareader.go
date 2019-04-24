@@ -51,7 +51,11 @@ func (p *IPFSDataReader) ReadIPFSData(
 }
 
 // ReadHistoryIPFSData reads IPFS hash from transaction and then retrieves data from IPFS
-func (p *IPFSDataReader) ReadHistoryIPFSData(ctx context.Context, passportAddress common.Address, txHash common.Hash) (io.ReadCloser, error) {
+func (p *IPFSDataReader) ReadHistoryIPFSData(
+	ctx context.Context,
+	passportAddress common.Address,
+	txHash common.Hash,
+) (io.ReadCloser, error) {
 	hi, err := NewHistorian(p.e).GetHistoryItemOfWriteIPFSHash(ctx, passportAddress, txHash)
 	if err != nil {
 		return nil, errors.Wrap(err, "reading IPFS hash from Ethereum transaction parameters")
