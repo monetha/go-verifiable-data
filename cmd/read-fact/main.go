@@ -22,7 +22,6 @@ import (
 	"github.com/monetha/reputation-go-sdk/eth"
 	"github.com/monetha/reputation-go-sdk/eth/backend"
 	"github.com/monetha/reputation-go-sdk/facts"
-	"github.com/monetha/reputation-go-sdk/ipfs"
 	"github.com/monetha/reputation-go-sdk/types/data"
 )
 
@@ -211,16 +210,12 @@ func main() {
 		cmdutils.CheckErr(err, "ReadBool")
 		fileOp = writeString(strconv.FormatBool(data))
 	case data.IPFS:
-		hash, err := factReader.ReadIPFSHash(ctx, passportAddress, factProviderAddress, factKey)
+		r, err := facts.NewIPFSDataReader(e, *ipfsURL)
+		cmdutils.CheckErr(err, "facts.NewIPFSDataReader")
 
-		log.Warn("Reading from IPFS...", "hash", hash)
-		cmdutils.CheckErr(err, "ReadIPFSHash")
+		rc, err := r.ReadIPFSData(ctx, passportAddress, factProviderAddress, factKey)
+		cmdutils.CheckErr(err, "IPFSDataReader.ReadIPFSData")
 
-		fs, err := ipfs.New(*ipfsURL)
-		cmdutils.CheckErr(err, "IPFS.New")
-
-		rc, err := fs.Cat(ctx, hash)
-		cmdutils.CheckErr(err, "IPFS.Cat")
 		fileOp = writeReader(rc)
 	default:
 		cmdutils.CheckErr(fmt.Errorf("unsupported fact type: %v", factType.String()), "reading by type")

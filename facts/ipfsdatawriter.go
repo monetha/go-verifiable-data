@@ -12,8 +12,8 @@ import (
 
 // IPFSDataWriter writes data to IPFS and stores IPFS hash to Ethereum storage
 type IPFSDataWriter struct {
-	provider *Provider
-	fs       *ipfs.IPFS
+	s  *eth.Session
+	fs *ipfs.IPFS
 }
 
 // NewIPFSDataWriter creates new instance of IPFSDataWriter
@@ -23,8 +23,8 @@ func NewIPFSDataWriter(s *eth.Session, ipfsURL string) (*IPFSDataWriter, error) 
 		return nil, errors.Wrap(err, "creating instance of IPFS")
 	}
 	return &IPFSDataWriter{
-		provider: NewProvider(s),
-		fs:       fs,
+		s:  s,
+		fs: fs,
 	}, nil
 }
 
@@ -37,7 +37,12 @@ type WriteIPFSDataResult struct {
 }
 
 // WriteIPFSData writes data to IPFS and stores IPFS hash to Ethereum network
-func (p *IPFSDataWriter) WriteIPFSData(ctx context.Context, passportAddress common.Address, key [32]byte, r io.Reader) (*WriteIPFSDataResult, error) {
+func (p *IPFSDataWriter) WriteIPFSData(
+	ctx context.Context,
+	passportAddress common.Address,
+	factKey [32]byte,
+	r io.Reader,
+) (*WriteIPFSDataResult, error) {
 	addResult, err := p.fs.Add(ctx, r)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add reader content to IPFS")
@@ -46,7 +51,7 @@ func (p *IPFSDataWriter) WriteIPFSData(ctx context.Context, passportAddress comm
 	ipfsHash := addResult.Hash
 	p.log("Data successfully uploaded to IPFS...", "txHash", ipfsHash)
 
-	txHash, err := p.provider.WriteIPFSHash(ctx, passportAddress, key, ipfsHash)
+	txHash, err := NewProvider(p.s).WriteIPFSHash(ctx, passportAddress, factKey, ipfsHash)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to write IPFS hash")
 	}
@@ -58,5 +63,5 @@ func (p *IPFSDataWriter) WriteIPFSData(ctx context.Context, passportAddress comm
 }
 
 func (p *IPFSDataWriter) log(msg string, ctx ...interface{}) {
-	p.provider.Log(msg, ctx...)
+	p.s.Log(msg, ctx...)
 }
