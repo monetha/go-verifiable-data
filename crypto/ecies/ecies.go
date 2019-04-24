@@ -262,6 +262,35 @@ func Encrypt(rand io.Reader, pub *ecdsa.PublicKey, msg, s1, s2 []byte) (ct []byt
 	return e.Encrypt(rand, pub, msg, s1, s2)
 }
 
+// MarshalPublicKey converts public key into the uncompressed form specified in section 4.3.6 of ANSI X9.62.
+func MarshalPublicKey(k *ecdsa.PublicKey) []byte {
+	return elliptic.Marshal(k.Curve, k.X, k.Y)
+}
+
+// UnmarshalPublicKey converts a point, serialized by MarshalPublicKey, into a public key.
+// It is an error if the point is not in uncompressed form or is not on the curve.
+func UnmarshalPublicKey(curve elliptic.Curve, b []byte, k *ecdsa.PublicKey) error {
+	if len(b) == 0 {
+		return ErrInvalidMessage
+	}
+
+	x, y := elliptic.Unmarshal(curve, b)
+	if x == nil {
+		return ErrInvalidPublicKey
+	}
+	if !curve.IsOnCurve(x, y) {
+		return ErrInvalidCurve
+	}
+
+	*k = ecdsa.PublicKey{
+		Curve: curve,
+		X:     x,
+		Y:     y,
+	}
+
+	return nil
+}
+
 // CipherText holds parts of encrypted message
 type CipherText struct {
 	EphemeralPublicKey *ecdsa.PublicKey
@@ -271,11 +300,10 @@ type CipherText struct {
 // Marshal converts parts of encrypted message into byte slice.
 func (ct *CipherText) Marshal() ([]byte, error) {
 	ephPub := ct.EphemeralPublicKey
-	curve := ephPub.Curve
 	encMsg := ct.EncryptedMessage
 	msgHmac := ct.HMAC
 
-	ephPubBs := elliptic.Marshal(curve, ephPub.X, ephPub.Y)
+	ephPubBs := MarshalPublicKey(ephPub)
 	ctBs := make([]byte, len(ephPubBs)+len(encMsg)+len(msgHmac))
 	copy(ctBs, ephPubBs)
 	copy(ctBs[len(ephPubBs):], encMsg)
@@ -312,19 +340,12 @@ func (ct *CipherText) Unmarshal(b []byte, curve elliptic.Curve, hashSize int) er
 
 	ephPubBs := b[:rLen]
 
-	x, y := elliptic.Unmarshal(curve, ephPubBs)
-	if x == nil {
-		return ErrInvalidPublicKey
-	}
-	if !curve.IsOnCurve(x, y) {
-		return ErrInvalidCurve
+	pubKey := &ecdsa.PublicKey{}
+	if err := UnmarshalPublicKey(curve, ephPubBs, pubKey); err != nil {
+		return err
 	}
 
-	ct.EphemeralPublicKey = &ecdsa.PublicKey{
-		Curve: curve,
-		X:     x,
-		Y:     y,
-	}
+	ct.EphemeralPublicKey = pubKey
 	ct.EncryptedAuthenticatedMessage = &EncryptedAuthenticatedMessage{
 		EncryptedMessage: b[mStart:mEnd],
 		HMAC:             b[mEnd:],
