@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -88,6 +89,22 @@ func (f *IPFS) Cat(ctx context.Context, path string) (io.ReadCloser, error) {
 	}
 
 	return resp.Output, nil
+}
+
+// CatBytes returns the content bytes at the given path.
+func (f *IPFS) CatBytes(ctx context.Context, path string) (bs []byte, err error) {
+	rc, err := f.Cat(ctx, path)
+	if err != nil {
+		return
+	}
+	defer func() {
+		if cErr := rc.Close(); cErr != nil && err == nil {
+			err = cErr
+		}
+	}()
+
+	bs, err = ioutil.ReadAll(rc)
+	return
 }
 
 type dagNode struct {

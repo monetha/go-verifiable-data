@@ -2,7 +2,6 @@ package ipfs_test
 
 import (
 	"context"
-	"io"
 	"net/http"
 	"strings"
 	"testing"
@@ -35,27 +34,11 @@ func TestIPFS_Cat(t *testing.T) {
 	}
 	t.Logf("Hash: %v", addResult.Hash)
 
-	rd, err := fs.Cat(ctx, addResult.Hash)
+	bs, err := fs.CatBytes(ctx, addResult.Hash)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	actualStr, err := copyToString(rd)
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	actualStr := string(bs)
 	is.Equal(expectedStr, actualStr)
-}
-
-func copyToString(r io.Reader) (res string, err error) {
-	if c, ok := r.(io.Closer); ok {
-		defer func() { _ = c.Close() }()
-	}
-
-	var sb strings.Builder
-	if _, err = io.Copy(&sb, r); err == nil {
-		res = sb.String()
-	}
-	return
 }

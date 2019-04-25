@@ -66,15 +66,12 @@ func ExampleIPFS_DagPutLinks() {
 	}
 	fmt.Printf("rootdir: Hash: %v\n", rootDir.String())
 
-	rc, err := c.Cat(ctx, rootDir.String()+"/subdir/file1.txt")
+	rc, err := c.CatBytes(ctx, rootDir.String()+"/subdir/file1.txt")
 	if err != nil {
 		panic(err)
 	}
 
-	file1Content, err := copyToString(rc)
-	if err != nil {
-		panic(err)
-	}
+	file1Content := string(rc)
 	fmt.Println(file1Content)
 
 	// Output:
