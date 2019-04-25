@@ -26,7 +26,7 @@ func NewPrivateDataWriter(s *eth.Session, ipfsURL string) (*PrivateDataWriter, e
 	if err != nil {
 		return nil, errors.Wrap(err, "creating instance of IPFS")
 	}
-	return newPrivateDatatWriter(s, fs), nil
+	return newPrivateDataWriter(s, fs), nil
 }
 
 // NewPrivateDataWriterWithClient creates new instance of PrivateDataWriter using provided http client
@@ -35,10 +35,10 @@ func NewPrivateDataWriterWithClient(s *eth.Session, ipfsURL string, c *http.Clie
 	if err != nil {
 		return nil, errors.Wrap(err, "creating instance of IPFS")
 	}
-	return newPrivateDatatWriter(s, fs), nil
+	return newPrivateDataWriter(s, fs), nil
 }
 
-func newPrivateDatatWriter(s *eth.Session, fs *ipfs.IPFS) *PrivateDataWriter {
+func newPrivateDataWriter(s *eth.Session, fs *ipfs.IPFS) *PrivateDataWriter {
 	return &PrivateDataWriter{
 		s:  s,
 		fs: fs,
