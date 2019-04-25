@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"io"
+	"net/http"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -25,10 +26,23 @@ func NewPrivateDataWriter(s *eth.Session, ipfsURL string) (*PrivateDataWriter, e
 	if err != nil {
 		return nil, errors.Wrap(err, "creating instance of IPFS")
 	}
+	return newPrivateDatatWriter(s, fs), nil
+}
+
+// NewPrivateDataWriterWithClient creates new instance of PrivateDataWriter using provided http client
+func NewPrivateDataWriterWithClient(s *eth.Session, ipfsURL string, c *http.Client) (*PrivateDataWriter, error) {
+	fs, err := ipfs.NewWithClient(ipfsURL, c)
+	if err != nil {
+		return nil, errors.Wrap(err, "creating instance of IPFS")
+	}
+	return newPrivateDatatWriter(s, fs), nil
+}
+
+func newPrivateDatatWriter(s *eth.Session, fs *ipfs.IPFS) *PrivateDataWriter {
 	return &PrivateDataWriter{
 		s:  s,
 		fs: fs,
-	}, nil
+	}
 }
 
 // WritePrivateDataResult holds result of invoking WritePrivateData
