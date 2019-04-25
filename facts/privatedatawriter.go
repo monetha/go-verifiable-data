@@ -46,10 +46,12 @@ func newPrivateDataWriter(s *eth.Session, fs *ipfs.IPFS) *PrivateDataWriter {
 
 // WritePrivateDataResult holds result of invoking WritePrivateData
 type WritePrivateDataResult struct {
-	// SecretKeyringMaterial are bytes of secret keyring material
-	SecretKeyringMaterial []byte
 	// DataIPFSHash is IPFS hash of encrypted private data bundle
 	DataIPFSHash string
+	// DataKey is secret key that was used to encrypt the data
+	DataKey []byte
+	// DataKeyHash is hash of secret key
+	DataKeyHash [32]byte
 	// TransactionHash is hash of storing IPFS hashes transaction in Ethereum network
 	TransactionHash common.Hash
 }
@@ -125,8 +127,9 @@ func (w *PrivateDataWriter) WritePrivateData(
 	}
 
 	return &WritePrivateDataResult{
-		SecretKeyringMaterial: skmBytes,
-		DataIPFSHash:          cid.String(),
-		TransactionHash:       txHash,
+		DataIPFSHash:    cid.String(),
+		DataKey:         skmBytes,
+		DataKeyHash:     skmHash,
+		TransactionHash: txHash,
 	}, nil
 }

@@ -16,8 +16,8 @@ import (
 )
 
 var (
-	// ErrDerivedSecretKeyringMaterialIsInvalid returned when hash of derived secret keyring material does not match hash from fact provider
-	ErrDerivedSecretKeyringMaterialIsInvalid = errors.New("facts: derived secret keyring material is invalid")
+	// ErrDerivedSecretKeyIsInvalid returned when hash of derived secret key does not match hash from fact provider
+	ErrDerivedSecretKeyIsInvalid = errors.New("facts: derived secret key is invalid")
 )
 
 // PrivateDataReader allows to decrypt private data
@@ -64,7 +64,7 @@ func (r *PrivateDataReader) ReadPrivateData(
 		return nil, errors.Wrap(err, "failed to read private data hashes from Ethereum network")
 	}
 
-	secretKey, err := r.DecryptSecretKey(ctx, passportOwnerPrivateKey, factProviderHashes, passportAddress, factProviderAddress, factKey)
+	secretKey, err := r.decryptSecretKey(ctx, passportOwnerPrivateKey, factProviderHashes, passportAddress, factProviderAddress, factKey)
 	if err != nil {
 		return nil, err
 	}
@@ -72,9 +72,26 @@ func (r *PrivateDataReader) ReadPrivateData(
 	return r.DecryptPrivateData(ctx, factProviderHashes.DataIPFSHash, secretKey, passportOwnerPrivateKey.Curve)
 }
 
-// DecryptSecretKey reads ephemeral public key from IPFS and derives secret keyring material using passport owner private key.
-// It returns ErrDerivedSecretKeyringMaterialIsInvalid error when hash of decrypted secret keyring material does not match data key hash from fact provider.
-func (r *PrivateDataReader) DecryptSecretKey(
+// ReadSecretKey reads hashes from Ethereum network, then reads public key from IPFS and derives secret key using passport owner private key.
+// It returns ErrDerivedSecretKeyIsInvalid error when hash of decrypted secret key does not match data key hash from fact provider.
+func (r *PrivateDataReader) ReadSecretKey(
+	ctx context.Context,
+	passportOwnerPrivateKey *ecdsa.PrivateKey,
+	passportAddress common.Address,
+	factProviderAddress common.Address,
+	factKey [32]byte,
+) ([]byte, error) {
+	factProviderHashes, err := NewReader(r.e).ReadPrivateDataHashes(ctx, passportAddress, factProviderAddress, factKey)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to read private data hashes from Ethereum network")
+	}
+
+	return r.decryptSecretKey(ctx, passportOwnerPrivateKey, factProviderHashes, passportAddress, factProviderAddress, factKey)
+}
+
+// decryptSecretKey reads ephemeral public key from IPFS and derives secret key using passport owner private key.
+// It returns ErrDerivedSecretKeyIsInvalid error when hash of decrypted secret key does not match data key hash from fact provider.
+func (r *PrivateDataReader) decryptSecretKey(
 	ctx context.Context,
 	passportOwnerPrivateKey *ecdsa.PrivateKey,
 	factProviderHashes *PrivateDataHashes,
@@ -103,7 +120,7 @@ func (r *PrivateDataReader) DecryptSecretKey(
 	}
 
 	if subtle.ConstantTimeCompare(factProviderHashes.DataKeyHash[:], skmHash[:]) != 1 {
-		return nil, ErrDerivedSecretKeyringMaterialIsInvalid
+		return nil, ErrDerivedSecretKeyIsInvalid
 	}
 
 	return skmBytes, nil
