@@ -74,11 +74,12 @@ func (w *PrivateDataWriter) WritePrivateData(
 		return nil, errors.Wrap(err, "failed to create ECIES instance")
 	}
 
-	// using [Provider Address + Passport Address + factKey] as seed to derive secret keyring material
-	skmSeed := concatSlices(
-		w.s.TransactOpts.From.Bytes(),
-		passportAddress.Bytes(),
-		factKey[:])
+	//  create seed to derive secret keyring material
+	skmSeed := createSecretKeyringMaterialSeed(&skmSeedParams{
+		PassportAddress:     passportAddress,
+		FactProviderAddress: w.s.TransactOpts.From,
+		FactKey:             factKey,
+	})
 
 	// deriving secret keyring material
 	skm, err := ec.DeriveSecretKeyringMaterial(ownerPubKey, skmSeed)
@@ -92,8 +93,7 @@ func (w *PrivateDataWriter) WritePrivateData(
 	}
 	skmHash := crypto.Keccak256Hash(skmBytes)
 
-	encSeed := skmSeed // re-using the same seed for HMAC
-	eam, err := ec.Params().EncryptAuth(rand, skm, data, encSeed)
+	eam, err := ec.Params().EncryptAuth(rand, skm, data, nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to encrypt message")
 	}
@@ -120,9 +120,9 @@ func (w *PrivateDataWriter) WritePrivateData(
 
 	// create directory in IPFS
 	cid, err := w.fs.DagPutLinks(ctx, []ipfs.Link{
-		ephemeralPublicKeyAddResult.ToLink("public_key"),
-		encryptedMessageAddResult.ToLink("encrypted_message"),
-		messageHMACAddResult.ToLink("hmac"),
+		ephemeralPublicKeyAddResult.ToLink(ipfsPublicKeyFileName),
+		encryptedMessageAddResult.ToLink(ipfsEncryptedMessageFileName),
+		messageHMACAddResult.ToLink(ipfsMessageHMACFileName),
 	})
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create directory in IPFS")
@@ -144,12 +144,4 @@ func (w *PrivateDataWriter) WritePrivateData(
 		DataIPFSHash:          cid.String(),
 		TransactionHash:       txHash,
 	}, nil
-}
-
-func concatSlices(slices ...[]byte) []byte {
-	var tmp []byte
-	for _, s := range slices {
-		tmp = append(tmp, s...)
-	}
-	return tmp
 }
