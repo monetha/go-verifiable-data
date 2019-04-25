@@ -9,7 +9,6 @@ import (
 	"path"
 
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/monetha/reputation-go-sdk/crypto/ecies"
 	"github.com/monetha/reputation-go-sdk/eth"
 	"github.com/monetha/reputation-go-sdk/ipfs"
@@ -98,23 +97,10 @@ func (r *PrivateDataReader) DecryptSecretKey(
 		return nil, errors.Wrap(err, "failed to create ECIES instance")
 	}
 
-	cryptoSeed := createSecretKeyringMaterialSeed(&skmSeedParams{
-		PassportAddress:     passportAddress,
-		FactProviderAddress: factProviderAddress,
-		FactKey:             factKey,
-	})
-
-	skm, err := ec.DeriveSecretKeyringMaterial(pubKey, cryptoSeed)
+	_, skmBytes, skmHash, err := deriveSecretKeyringMaterial(ec, pubKey, passportAddress, factProviderAddress, factKey)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to derive secret keyring material")
+		return nil, err
 	}
-	skm.MACKey = skm.MACKey[:len(skm.EncryptionKey)]
-
-	skmBytes := make([]byte, len(skm.MACKey)+len(skm.EncryptionKey))
-	copy(skmBytes, skm.EncryptionKey)
-	copy(skmBytes[len(skm.EncryptionKey):], skm.MACKey)
-
-	skmHash := crypto.Keccak256Hash(skmBytes)
 
 	if subtle.ConstantTimeCompare(factProviderHashes.DataKeyHash[:], skmHash[:]) != 1 {
 		return nil, ErrDerivedSecretKeyringMaterialIsInvalid
@@ -136,10 +122,7 @@ func (r *PrivateDataReader) DecryptPrivateData(
 		curve = ecies.DefaultCurve
 	}
 
-	skm := &ecies.SecretKeyringMaterial{
-		EncryptionKey: secretKey[:len(secretKey)/2],
-		MACKey:        secretKey[len(secretKey)/2:],
-	}
+	skm := unmarshalSecretKeyringMaterial(secretKey)
 
 	encryptedMessage, err := r.fs.CatBytes(ctx, path.Join(dataIPFSHash, ipfsEncryptedMessageFileName))
 	if err != nil {

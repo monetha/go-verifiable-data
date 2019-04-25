@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/monetha/reputation-go-sdk/crypto/ecies"
 	"github.com/monetha/reputation-go-sdk/eth"
 	"github.com/monetha/reputation-go-sdk/ipfs"
@@ -74,25 +73,10 @@ func (w *PrivateDataWriter) WritePrivateData(
 		return nil, errors.Wrap(err, "failed to create ECIES instance")
 	}
 
-	//  create seed to derive secret keyring material
-	skmSeed := createSecretKeyringMaterialSeed(&skmSeedParams{
-		PassportAddress:     passportAddress,
-		FactProviderAddress: w.s.TransactOpts.From,
-		FactKey:             factKey,
-	})
-
-	// deriving secret keyring material
-	skm, err := ec.DeriveSecretKeyringMaterial(ownerPubKey, skmSeed)
+	skm, skmBytes, skmHash, err := deriveSecretKeyringMaterial(ec, ownerPubKey, passportAddress, w.s.TransactOpts.From, factKey)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to derive secret keyring material")
+		return nil, err
 	}
-	skm.MACKey = skm.MACKey[:len(skm.EncryptionKey)]
-
-	skmBytes := make([]byte, len(skm.MACKey)+len(skm.EncryptionKey))
-	copy(skmBytes, skm.EncryptionKey)
-	copy(skmBytes[len(skm.EncryptionKey):], skm.MACKey)
-
-	skmHash := crypto.Keccak256Hash(skmBytes)
 
 	eam, err := ec.Params().EncryptAuth(rand, skm, data, nil)
 	if err != nil {
