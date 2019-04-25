@@ -3,7 +3,7 @@ package facts
 import (
 	"bytes"
 	"context"
-	"crypto/rand"
+	"io"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -42,20 +42,20 @@ type WritePrivateDataResult struct {
 }
 
 // WritePrivateData encrypts private data, adds encrypted content to IPFS and then writes hashes of encrypted data to passport in Ethereum network.
+// `rand` - used to generate random encryption key (use rand.Reader from "crypto/rand" package in real application)
 func (w *PrivateDataWriter) WritePrivateData(
 	ctx context.Context,
 	passportAddress common.Address,
 	factKey [32]byte,
 	data []byte,
+	rand io.Reader,
 ) (*WritePrivateDataResult, error) {
 	ownerPubKey, err := NewReader(w.s.Eth).ReadOwnerPublicKey(ctx, passportAddress)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to read owner public key")
 	}
 
-	randReader := rand.Reader
-
-	ec, err := ecies.NewGenerate(ownerPubKey.Curve, randReader)
+	ec, err := ecies.NewGenerate(ownerPubKey.Curve, rand)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create ECIES instance")
 	}
@@ -79,7 +79,7 @@ func (w *PrivateDataWriter) WritePrivateData(
 	skmHash := crypto.Keccak256Hash(skmBytes)
 
 	encSeed := skmSeed // re-using the same seed for HMAC
-	eam, err := ec.Params().EncryptAuth(randReader, skm, data, encSeed)
+	eam, err := ec.Params().EncryptAuth(rand, skm, data, encSeed)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to encrypt message")
 	}
