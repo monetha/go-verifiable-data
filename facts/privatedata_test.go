@@ -11,6 +11,12 @@ import (
 	"github.com/monetha/reputation-go-sdk/facts"
 )
 
+var (
+	ipfsURL  = "https://ipfs.infura.io:5001"
+	factKey  = [32]byte{1, 2, 3, 4, 5, 6, 7, 8, 9}
+	factData = []byte("this is a secret message")
+)
+
 func TestNewPrivateData_ReadPrivateData(t *testing.T) {
 	// start http recorder
 	r, err := recorder.New("fixtures/private-data-write-read")
@@ -20,8 +26,6 @@ func TestNewPrivateData_ReadPrivateData(t *testing.T) {
 	defer func() { _ = r.Stop() }() // Make sure recorder is stopped once done with it
 	c := &http.Client{Transport: r}
 
-	ipfsURL := "https://ipfs.infura.io:5001"
-
 	ctx := context.Background()
 	rnd := rand.New(rand.NewSource(1))
 
@@ -29,8 +33,6 @@ func TestNewPrivateData_ReadPrivateData(t *testing.T) {
 
 	passportAddress := pa.PassportAddress
 	factProviderAddress := pa.FactProviderAddress
-	factKey := [32]byte{1, 2, 3, 4, 5, 6, 7, 8, 9}
-	data := []byte("this is a secret message")
 
 	wr, err := facts.NewPrivateDataWriterWithClient(pa.FactProviderSession(), ipfsURL, c)
 	if err != nil {
@@ -42,7 +44,7 @@ func TestNewPrivateData_ReadPrivateData(t *testing.T) {
 		t.Fatalf("facts.NewPrivateDataReaderWithClient: %v", err)
 	}
 
-	_, err = wr.WritePrivateData(ctx, passportAddress, factKey, data, rnd)
+	_, err = wr.WritePrivateData(ctx, passportAddress, factKey, factData, rnd)
 	if err != nil {
 		t.Fatalf("WritePrivateData: %v", err)
 	}
@@ -52,8 +54,8 @@ func TestNewPrivateData_ReadPrivateData(t *testing.T) {
 		t.Fatalf("ReadPrivateData: %v", err)
 	}
 
-	if bytes.Compare(data, decryptedData) != 0 {
-		t.Errorf("wanted data %v, but got %v", data, decryptedData)
+	if bytes.Compare(factData, decryptedData) != 0 {
+		t.Errorf("wanted data %v, but got %v", factData, decryptedData)
 	}
 }
 
@@ -66,8 +68,6 @@ func TestNewPrivateData_ReadSecretKey(t *testing.T) {
 	defer func() { _ = r.Stop() }() // Make sure recorder is stopped once done with it
 	c := &http.Client{Transport: r}
 
-	ipfsURL := "https://ipfs.infura.io:5001"
-
 	ctx := context.Background()
 	rnd := rand.New(rand.NewSource(1))
 
@@ -75,8 +75,6 @@ func TestNewPrivateData_ReadSecretKey(t *testing.T) {
 
 	passportAddress := pa.PassportAddress
 	factProviderAddress := pa.FactProviderAddress
-	factKey := [32]byte{1, 2, 3, 4, 5, 6, 7, 8, 9}
-	data := []byte("this is a secret message")
 
 	wr, err := facts.NewPrivateDataWriterWithClient(pa.FactProviderSession(), ipfsURL, c)
 	if err != nil {
@@ -88,7 +86,7 @@ func TestNewPrivateData_ReadSecretKey(t *testing.T) {
 		t.Fatalf("facts.NewPrivateDataReaderWithClient: %v", err)
 	}
 
-	wpdRes, err := wr.WritePrivateData(ctx, passportAddress, factKey, data, rnd)
+	wpdRes, err := wr.WritePrivateData(ctx, passportAddress, factKey, factData, rnd)
 	if err != nil {
 		t.Fatalf("WritePrivateData: %v", err)
 	}
@@ -99,6 +97,6 @@ func TestNewPrivateData_ReadSecretKey(t *testing.T) {
 	}
 
 	if bytes.Compare(wpdRes.DataKey, secretKey) != 0 {
-		t.Errorf("wanted data %v, but got %v", data, secretKey)
+		t.Errorf("wanted secret key %v, but got %v", wpdRes.DataKey, secretKey)
 	}
 }
