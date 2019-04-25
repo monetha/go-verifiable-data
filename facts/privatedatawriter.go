@@ -86,11 +86,12 @@ func (w *PrivateDataWriter) WritePrivateData(
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to derive secret keyring material")
 	}
+	skm.MACKey = skm.MACKey[:len(skm.EncryptionKey)]
 
-	skmBytes, err := skm.Marshal()
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to marshal secret keyring material")
-	}
+	skmBytes := make([]byte, len(skm.MACKey)+len(skm.EncryptionKey))
+	copy(skmBytes, skm.EncryptionKey)
+	copy(skmBytes[len(skm.EncryptionKey):], skm.MACKey)
+
 	skmHash := crypto.Keccak256Hash(skmBytes)
 
 	eam, err := ec.Params().EncryptAuth(rand, skm, data, nil)

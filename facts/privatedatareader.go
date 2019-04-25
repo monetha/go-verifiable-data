@@ -108,11 +108,12 @@ func (r *PrivateDataReader) DecryptSecretKey(
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to derive secret keyring material")
 	}
+	skm.MACKey = skm.MACKey[:len(skm.EncryptionKey)]
 
-	skmBytes, err := skm.Marshal()
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to marshal secret keyring material")
-	}
+	skmBytes := make([]byte, len(skm.MACKey)+len(skm.EncryptionKey))
+	copy(skmBytes, skm.EncryptionKey)
+	copy(skmBytes[len(skm.EncryptionKey):], skm.MACKey)
+
 	skmHash := crypto.Keccak256Hash(skmBytes)
 
 	if subtle.ConstantTimeCompare(factProviderHashes.DataKeyHash[:], skmHash[:]) != 1 {
@@ -135,9 +136,9 @@ func (r *PrivateDataReader) DecryptPrivateData(
 		curve = ecies.DefaultCurve
 	}
 
-	skm := &ecies.SecretKeyringMaterial{}
-	if err := skm.Unmarshal(secretKey); err != nil {
-		return nil, errors.Wrap(err, "failed to parse secret keyring material")
+	skm := &ecies.SecretKeyringMaterial{
+		EncryptionKey: secretKey[:len(secretKey)/2],
+		MACKey:        secretKey[len(secretKey)/2:],
 	}
 
 	encryptedMessage, err := r.fs.CatBytes(ctx, path.Join(dataIPFSHash, ipfsEncryptedMessageFileName))

@@ -42,7 +42,6 @@ import (
 	"crypto/sha256"
 	"crypto/sha512"
 	"crypto/subtle"
-	"errors"
 	"hash"
 	"io"
 
@@ -52,48 +51,12 @@ import (
 var (
 	// DefaultCurve is an instance of the secp256k1 curve
 	DefaultCurve = ethcrypto.S256()
-
-	// ErrEncryptionKeyMACKeyLengthsMustBeTheSame returned when EncryptionKey and MACKey lengths don't match
-	ErrEncryptionKeyMACKeyLengthsMustBeTheSame = errors.New("EncryptionKey and MACKey lengths must match")
 )
 
 // SecretKeyringMaterial hold the encryption key and MAC key
 type SecretKeyringMaterial struct {
 	EncryptionKey []byte
 	MACKey        []byte
-}
-
-// Marshal converts secret keyring material into byte slice
-func (skm *SecretKeyringMaterial) Marshal() ([]byte, error) {
-	if len(skm.EncryptionKey) != len(skm.MACKey) {
-		return nil, ErrEncryptionKeyMACKeyLengthsMustBeTheSame
-	}
-
-	bs := make([]byte, len(skm.EncryptionKey)+len(skm.MACKey))
-	copy(bs, skm.EncryptionKey)
-	copy(bs[len(skm.EncryptionKey):], skm.MACKey)
-
-	return bs, nil
-}
-
-// Unmarshal restores secret keyring material from byte slice
-func (skm *SecretKeyringMaterial) Unmarshal(bs []byte) error {
-	if len(bs)%2 != 0 {
-		return ErrEncryptionKeyMACKeyLengthsMustBeTheSame
-	}
-
-	keyLen := len(bs) / 2
-
-	encryptionKey := make([]byte, keyLen)
-	copy(encryptionKey, bs)
-
-	macKey := make([]byte, keyLen)
-	copy(macKey, bs[keyLen:])
-
-	skm.EncryptionKey = encryptionKey
-	skm.MACKey = macKey
-
-	return nil
 }
 
 // EncryptedAuthenticatedMessage holds the encrypted message and HMAC
