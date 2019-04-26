@@ -16,8 +16,10 @@ import (
 )
 
 var (
-	// ErrDerivedSecretKeyIsInvalid returned when hash of derived secret key does not match hash from fact provider
-	ErrDerivedSecretKeyIsInvalid = errors.New("facts: derived secret key is invalid")
+	// ErrInvalidPassportOwnerKey returned when passport owner key is invalid
+	ErrInvalidPassportOwnerKey = errors.New("facts: passport owner key is invalid")
+	// ErrInvalidSecretKey returned when data decryption secret key is invalid
+	ErrInvalidSecretKey = errors.New("facts: secret key to decrypt data is invalid")
 )
 
 // PrivateDataReader allows to decrypt private data
@@ -73,7 +75,7 @@ func (r *PrivateDataReader) ReadPrivateData(
 }
 
 // ReadSecretKey reads hashes from Ethereum network, then reads public key from IPFS and derives secret key using passport owner private key.
-// It returns ErrDerivedSecretKeyIsInvalid error when hash of decrypted secret key does not match data key hash from fact provider.
+// It returns ErrInvalidPassportOwnerKey error when hash of decrypted secret key does not match data key hash from fact provider.
 func (r *PrivateDataReader) ReadSecretKey(
 	ctx context.Context,
 	passportOwnerPrivateKey *ecdsa.PrivateKey,
@@ -90,7 +92,7 @@ func (r *PrivateDataReader) ReadSecretKey(
 }
 
 // decryptSecretKey reads ephemeral public key from IPFS and derives secret key using passport owner private key.
-// It returns ErrDerivedSecretKeyIsInvalid error when hash of decrypted secret key does not match data key hash from fact provider.
+// It returns ErrInvalidPassportOwnerKey error when hash of decrypted secret key does not match data key hash from fact provider.
 func (r *PrivateDataReader) decryptSecretKey(
 	ctx context.Context,
 	passportOwnerPrivateKey *ecdsa.PrivateKey,
@@ -122,7 +124,7 @@ func (r *PrivateDataReader) decryptSecretKey(
 	}
 
 	if subtle.ConstantTimeCompare(factProviderHashes.DataKeyHash[:], skmHash[:]) != 1 {
-		return nil, ErrDerivedSecretKeyIsInvalid
+		return nil, ErrInvalidPassportOwnerKey
 	}
 
 	return skmBytes, nil
@@ -157,11 +159,16 @@ func (r *PrivateDataReader) DecryptPrivateData(
 		return nil, errors.Wrap(err, "failed to get message HMAC from IPFS")
 	}
 
-	return ecies.ParamsFromCurve(curve).
+	decryptedData, err := ecies.ParamsFromCurve(curve).
 		DecryptAuth(skm, &ecies.EncryptedAuthenticatedMessage{
 			EncryptedMessage: encryptedMessage,
 			HMAC:             hmac,
 		}, nil)
+	if err == ecies.ErrInvalidMessage {
+		return nil, ErrInvalidSecretKey
+	}
+
+	return decryptedData, nil
 }
 
 // ReadHistoryPrivateData decrypts secret key and then decrypts private data using decrypted secret key from specific Ethereum transaction

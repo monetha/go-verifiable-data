@@ -74,6 +74,20 @@ func TestPrivateData(t *testing.T) {
 		})
 	})
 
+	t.Run("ReadPrivateData with invalid passport owner key", func(t *testing.T) {
+		arrangeActAssert(func(
+			ctx context.Context,
+			pa *passportWithActors,
+			rd *facts.PrivateDataReader,
+			wpdRes *facts.WritePrivateDataResult,
+		) {
+			_, err := rd.ReadPrivateData(ctx, pa.FactProviderKey, pa.PassportAddress, pa.FactProviderAddress, factKey)
+			if err != facts.ErrInvalidPassportOwnerKey {
+				t.Errorf("ReadPrivateData: expected error %v, but got %v", facts.ErrInvalidPassportOwnerKey, err)
+			}
+		})
+	})
+
 	t.Run("ReadSecretKey", func(t *testing.T) {
 		arrangeActAssert(func(
 			ctx context.Context,
@@ -88,6 +102,20 @@ func TestPrivateData(t *testing.T) {
 
 			if bytes.Compare(wpdRes.DataKey, secretKey) != 0 {
 				t.Errorf("wanted secret key %v, but got %v", wpdRes.DataKey, secretKey)
+			}
+		})
+	})
+
+	t.Run("ReadSecretKey with invalid passport owner key", func(t *testing.T) {
+		arrangeActAssert(func(
+			ctx context.Context,
+			pa *passportWithActors,
+			rd *facts.PrivateDataReader,
+			wpdRes *facts.WritePrivateDataResult,
+		) {
+			_, err := rd.ReadSecretKey(ctx, pa.FactProviderKey, pa.PassportAddress, pa.FactProviderAddress, factKey)
+			if err != facts.ErrInvalidPassportOwnerKey {
+				t.Errorf("ReadPrivateData: expected error %v, but got %v", facts.ErrInvalidPassportOwnerKey, err)
 			}
 		})
 	})
@@ -110,6 +138,24 @@ func TestPrivateData(t *testing.T) {
 		})
 	})
 
+	t.Run("DecryptPrivateData with invalid secret data key", func(t *testing.T) {
+		arrangeActAssert(func(
+			ctx context.Context,
+			pa *passportWithActors,
+			rd *facts.PrivateDataReader,
+			wpdRes *facts.WritePrivateDataResult,
+		) {
+			invalidDataKey := make([]byte, len(wpdRes.DataKey))
+			for idx, value := range wpdRes.DataKey {
+				invalidDataKey[idx] = ^value
+			}
+			_, err := rd.DecryptPrivateData(ctx, wpdRes.DataIPFSHash, invalidDataKey, nil)
+			if err != facts.ErrInvalidSecretKey {
+				t.Errorf("ReadPrivateData: expected error %v, but got %v", facts.ErrInvalidSecretKey, err)
+			}
+		})
+	})
+
 	t.Run("ReadHistoryPrivateData", func(t *testing.T) {
 		arrangeActAssert(func(
 			ctx context.Context,
@@ -124,6 +170,20 @@ func TestPrivateData(t *testing.T) {
 
 			if bytes.Compare(factData, decryptedData) != 0 {
 				t.Errorf("wanted data %v, but got %v", factData, decryptedData)
+			}
+		})
+	})
+
+	t.Run("ReadHistoryPrivateData with invalid passport owner key", func(t *testing.T) {
+		arrangeActAssert(func(
+			ctx context.Context,
+			pa *passportWithActors,
+			rd *facts.PrivateDataReader,
+			wpdRes *facts.WritePrivateDataResult,
+		) {
+			_, err := rd.ReadHistoryPrivateData(ctx, pa.FactProviderKey, pa.PassportAddress, wpdRes.TransactionHash)
+			if err != facts.ErrInvalidPassportOwnerKey {
+				t.Errorf("ReadPrivateData: expected error %v, but got %v", facts.ErrInvalidPassportOwnerKey, err)
 			}
 		})
 	})
