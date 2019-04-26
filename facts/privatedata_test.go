@@ -14,8 +14,8 @@ import (
 func TestPrivateData(t *testing.T) {
 	arrangeActAssert := func(actsAssert func(
 		ctx context.Context,
-		rd *facts.PrivateDataReader,
 		pa *passportWithActors,
+		rd *facts.PrivateDataReader,
 		wpdRes *facts.WritePrivateDataResult,
 	)) {
 		// start http recorder
@@ -46,14 +46,14 @@ func TestPrivateData(t *testing.T) {
 			t.Fatalf("WritePrivateData: %v", err)
 		}
 
-		actsAssert(ctx, rd, pa, wpdRes)
+		actsAssert(ctx, pa, rd, wpdRes)
 	}
 
 	t.Run("ReadPrivateData", func(t *testing.T) {
 		arrangeActAssert(func(
 			ctx context.Context,
-			rd *facts.PrivateDataReader,
 			pa *passportWithActors,
+			rd *facts.PrivateDataReader,
 			wpdRes *facts.WritePrivateDataResult,
 		) {
 			decryptedData, err := rd.ReadPrivateData(ctx, pa.PassportOwnerKey, pa.PassportAddress, pa.FactProviderAddress, factKey)
@@ -70,8 +70,8 @@ func TestPrivateData(t *testing.T) {
 	t.Run("ReadSecretKey", func(t *testing.T) {
 		arrangeActAssert(func(
 			ctx context.Context,
-			rd *facts.PrivateDataReader,
 			pa *passportWithActors,
+			rd *facts.PrivateDataReader,
 			wpdRes *facts.WritePrivateDataResult,
 		) {
 			secretKey, err := rd.ReadSecretKey(ctx, pa.PassportOwnerKey, pa.PassportAddress, pa.FactProviderAddress, factKey)
@@ -88,8 +88,8 @@ func TestPrivateData(t *testing.T) {
 	t.Run("DecryptPrivateData", func(t *testing.T) {
 		arrangeActAssert(func(
 			ctx context.Context,
-			rd *facts.PrivateDataReader,
 			pa *passportWithActors,
+			rd *facts.PrivateDataReader,
 			wpdRes *facts.WritePrivateDataResult,
 		) {
 			decryptedData, err := rd.DecryptPrivateData(ctx, wpdRes.DataIPFSHash, wpdRes.DataKey, nil)
@@ -106,8 +106,8 @@ func TestPrivateData(t *testing.T) {
 	t.Run("ReadHistoryPrivateData", func(t *testing.T) {
 		arrangeActAssert(func(
 			ctx context.Context,
-			rd *facts.PrivateDataReader,
 			pa *passportWithActors,
+			rd *facts.PrivateDataReader,
 			wpdRes *facts.WritePrivateDataResult,
 		) {
 			decryptedData, err := rd.ReadHistoryPrivateData(ctx, pa.PassportOwnerKey, pa.PassportAddress, wpdRes.TransactionHash)
