@@ -9,16 +9,14 @@ import (
 	"testing"
 
 	"github.com/dnaeon/go-vcr/recorder"
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/monetha/reputation-go-sdk/facts"
 )
 
 func TestIPFSData(t *testing.T) {
 	arrangeActAssert := func(actAssert func(
 		ctx context.Context,
+		pa *passportWithActors,
 		rd *facts.IPFSDataReader,
-		passportAddress common.Address,
-		factProviderAddress common.Address,
 		wRes *facts.WriteIPFSDataResult,
 	)) {
 		// start http recorder
@@ -35,9 +33,6 @@ func TestIPFSData(t *testing.T) {
 
 		pa := newPassportWithActors(ctx, t, rnd)
 
-		passportAddress := pa.PassportAddress
-		factProviderAddress := pa.FactProviderAddress
-
 		wr, err := facts.NewIPFSDataWriterWithClient(pa.FactProviderSession(), ipfsURL, c)
 		if err != nil {
 			t.Fatalf("facts.NewIPFSDataWriterWithClient: %v", err)
@@ -48,23 +43,22 @@ func TestIPFSData(t *testing.T) {
 			t.Fatalf("facts.NewIPFSDataReaderWithClient: %v", err)
 		}
 
-		wRes, err := wr.WriteIPFSData(ctx, passportAddress, factKey, bytes.NewReader(factData))
+		wRes, err := wr.WriteIPFSData(ctx, pa.PassportAddress, factKey, bytes.NewReader(factData))
 		if err != nil {
 			t.Fatalf("WriteIPFSData: %v", err)
 		}
 
-		actAssert(ctx, rd, passportAddress, factProviderAddress, wRes)
+		actAssert(ctx, pa, rd, wRes)
 	}
 
 	t.Run("ReadIPFSData", func(t *testing.T) {
 		arrangeActAssert(func(
 			ctx context.Context,
+			pa *passportWithActors,
 			rd *facts.IPFSDataReader,
-			passportAddress common.Address,
-			factProviderAddress common.Address,
 			wRes *facts.WriteIPFSDataResult,
 		) {
-			dr, err := rd.ReadIPFSData(ctx, passportAddress, factProviderAddress, factKey)
+			dr, err := rd.ReadIPFSData(ctx, pa.PassportAddress, pa.FactProviderAddress, factKey)
 			if err != nil {
 				t.Fatalf("ReadIPFSData: %v", err)
 			}
@@ -88,12 +82,11 @@ func TestIPFSData(t *testing.T) {
 	t.Run("ReadHistoryIPFSData", func(t *testing.T) {
 		arrangeActAssert(func(
 			ctx context.Context,
+			pa *passportWithActors,
 			rd *facts.IPFSDataReader,
-			passportAddress common.Address,
-			factProviderAddress common.Address,
 			wRes *facts.WriteIPFSDataResult,
 		) {
-			dr, err := rd.ReadHistoryIPFSData(ctx, passportAddress, wRes.TransactionHash)
+			dr, err := rd.ReadHistoryIPFSData(ctx, pa.PassportAddress, wRes.TransactionHash)
 			if err != nil {
 				t.Fatalf("ReadIPFSData: %v", err)
 			}
