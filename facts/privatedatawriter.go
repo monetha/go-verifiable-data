@@ -90,21 +90,28 @@ func (w *PrivateDataWriter) WritePrivateData(
 	encryptedMessage := eam.EncryptedMessage
 	messageHMAC := eam.HMAC
 
+	w.log("Writing ephemeral public key to IPFS...")
 	ephemeralPublicKeyAddResult, err := w.fs.Add(ctx, bytes.NewReader(ephemeralPublicKey))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add ephemeral public key to IPFS")
 	}
+	w.log("Ephemeral public key added to IPFS", "hash", ephemeralPublicKeyAddResult.Hash, "size", ephemeralPublicKeyAddResult.Size)
 
+	w.log("Writing encrypted message to IPFS...")
 	encryptedMessageAddResult, err := w.fs.Add(ctx, bytes.NewReader(encryptedMessage))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add encrypted message to IPFS")
 	}
+	w.log("Encrypted message added to IPFS", "hash", encryptedMessageAddResult.Hash, "size", encryptedMessageAddResult.Size)
 
+	w.log("Writing message HMAC to IPFS...")
 	messageHMACAddResult, err := w.fs.Add(ctx, bytes.NewReader(messageHMAC))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add HMAC to IPFS")
 	}
+	w.log("Message HMAC added to IPFS", "hash", messageHMACAddResult.Hash, "size", messageHMACAddResult.Size)
 
+	w.log("Creating directory in IPFS...")
 	// create directory in IPFS
 	cid, err := w.fs.DagPutLinks(ctx, []ipfs.Link{
 		ephemeralPublicKeyAddResult.ToLink(ipfsPublicKeyFileName),
@@ -114,22 +121,29 @@ func (w *PrivateDataWriter) WritePrivateData(
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create directory in IPFS")
 	}
+	dataIPFSHash := cid.String()
+	w.log("Directory created in IPFS", "hash", dataIPFSHash)
 
 	// write hashes to Ethereum
 	privateDataHashes := &PrivateDataHashes{
-		DataIPFSHash: cid.String(),
+		DataIPFSHash: dataIPFSHash,
 		DataKeyHash:  skmHash,
 	}
 
+	w.log("Writing private data hashes to Ethereum", "passport", passportAddress, "fact_key", factKey, "ipfs_hash", dataIPFSHash, "data_key_hash", skmHash)
 	txHash, err := NewProvider(w.s).WritePrivateDataHashes(ctx, passportAddress, factKey, privateDataHashes)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to write private data hashes to Ethereum network")
 	}
 
 	return &WritePrivateDataResult{
-		DataIPFSHash:    cid.String(),
+		DataIPFSHash:    dataIPFSHash,
 		DataKey:         skmBytes,
 		DataKeyHash:     skmHash,
 		TransactionHash: txHash,
 	}, nil
+}
+
+func (w *PrivateDataWriter) log(msg string, ctx ...interface{}) {
+	w.s.Log(msg, ctx...)
 }
