@@ -73,5 +73,8 @@ func (p *IPFSDataReader) ReadHistoryIPFSData(
 }
 
 func (p *IPFSDataReader) log(msg string, ctx ...interface{}) {
-	p.e.LogFun(msg, ctx...)
+	lf := p.e.LogFun
+	if lf != nil {
+		lf(msg, ctx...)
+	}
 }
