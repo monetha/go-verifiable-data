@@ -163,9 +163,6 @@ func main() {
 
 	historian := facts.NewHistorian(e)
 
-	it, err := historian.FilterChanges(&facts.ChangesFilterOpts{Context: ctx}, passportAddress)
-	cmdutils.CheckErr(err, "FilterChanges")
-
 	f, err := os.Create(*fileName)
 	cmdutils.CheckErr(err, "Create file")
 	defer func() { _ = f.Close() }()
@@ -217,6 +214,9 @@ func main() {
 
 		cmdutils.CheckErr(fileOp(f), "Write to file")
 	} else {
+		it, err := historian.FilterChanges(&facts.ChangesFilterOpts{Context: ctx}, passportAddress)
+		cmdutils.CheckErr(err, "FilterChanges")
+
 		// read the whole history
 		_, err = f.WriteString("fact_provider,key,data_type,change_type,block_number,tx_hash\n")
 		cmdutils.CheckErr(err, "WriteString to file")
