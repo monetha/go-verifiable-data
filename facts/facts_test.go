@@ -18,6 +18,13 @@ import (
 	"github.com/monetha/reputation-go-sdk/eth/backend"
 )
 
+var (
+	ipfsURL  = "https://ipfs.infura.io:5001"
+	randSeed = int64(1)
+	factKey  = [32]byte{1, 2, 3, 4, 5, 6, 7, 8, 9}
+	factData = []byte("this is a secret message")
+)
+
 func bigInt(x int64) *big.Int             { return big.NewInt(x) }
 func exp(x *big.Int, y *big.Int) *big.Int { return new(big.Int).Exp(x, y, nil) }
 func sub(x *big.Int, y *big.Int) *big.Int { return new(big.Int).Sub(x, y) }

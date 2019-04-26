@@ -3,6 +3,7 @@ package facts
 import (
 	"context"
 	"io"
+	"net/http"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/monetha/reputation-go-sdk/eth"
@@ -22,10 +23,23 @@ func NewIPFSDataReader(e *eth.Eth, ipfsURL string) (*IPFSDataReader, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "creating instance of IPFS")
 	}
+	return newIPFSDataReader(e, fs), nil
+}
+
+// NewIPFSDataReaderWithClient creates new instance of IPFSDataReader using provided http client
+func NewIPFSDataReaderWithClient(e *eth.Eth, ipfsURL string, c *http.Client) (*IPFSDataReader, error) {
+	fs, err := ipfs.NewWithClient(ipfsURL, c)
+	if err != nil {
+		return nil, errors.Wrap(err, "creating instance of IPFS")
+	}
+	return newIPFSDataReader(e, fs), nil
+}
+
+func newIPFSDataReader(e *eth.Eth, fs *ipfs.IPFS) *IPFSDataReader {
 	return &IPFSDataReader{
 		e:  e,
 		fs: fs,
-	}, nil
+	}
 }
 
 // ReadIPFSData reads IPFS hash from Ethereum network and then retrieves data from IPFS

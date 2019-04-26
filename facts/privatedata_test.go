@@ -11,13 +11,6 @@ import (
 	"github.com/monetha/reputation-go-sdk/facts"
 )
 
-var (
-	ipfsURL  = "https://ipfs.infura.io:5001"
-	randSeed = int64(1)
-	factKey  = [32]byte{1, 2, 3, 4, 5, 6, 7, 8, 9}
-	factData = []byte("this is a secret message")
-)
-
 func TestNewPrivateData_ReadPrivateData(t *testing.T) {
 	// start http recorder
 	r, err := recorder.New("fixtures/private-data-write-read")
