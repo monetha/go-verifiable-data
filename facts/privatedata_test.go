@@ -12,7 +12,7 @@ import (
 )
 
 func TestPrivateData(t *testing.T) {
-	arrangeActAssert := func(actsAssert func(
+	arrangeActAssert := func(actAssert func(
 		ctx context.Context,
 		pa *passportWithActors,
 		rd *facts.PrivateDataReader,
@@ -46,7 +46,7 @@ func TestPrivateData(t *testing.T) {
 			t.Fatalf("WritePrivateData: %v", err)
 		}
 
-		actsAssert(ctx, pa, rd, wpdRes)
+		actAssert(ctx, pa, rd, wpdRes)
 	}
 
 	t.Run("ReadPrivateData", func(t *testing.T) {
