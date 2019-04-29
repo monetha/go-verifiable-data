@@ -28,29 +28,12 @@ import (
 	"github.com/monetha/reputation-go-sdk/types/data"
 )
 
-var (
-	factTypes  = make(map[string]data.Type)
-	factSetStr string
-)
-
-func init() {
-	keys := make([]string, 0, len(data.TypeValues()))
-
-	for _, key := range data.TypeValues() {
-		keyStr := strings.ToLower(key.String())
-		factTypes[keyStr] = key
-		keys = append(keys, keyStr)
-	}
-
-	factSetStr = strings.Join(keys, ", ")
-}
-
 func main() {
 	var (
 		backendURL   = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
 		passportAddr = cmdutils.AddressVar("passportaddr", common.Address{}, "Ethereum address of passport contract")
 		factKeyStr   = flag.String("fkey", "", "the key of the fact (max. 32 bytes)")
-		factTypeStr  = flag.String("ftype", "", fmt.Sprintf("the data type of fact (%v)", factSetStr))
+		factTypeVar  = cmdutils.DataTypeFlagVar("ftype", data.TxData, fmt.Sprintf("the data type of fact (%v)", cmdutils.DataTypeSetStr()))
 		ownerKeyFile = flag.String("ownerkey", "", "fact provider private key filename")
 		ownerKeyHex  = cmdutils.PrivateKeyFlagVar("ownerkeyhex", nil, "fact provider private key as hex")
 		ipfsURL      = flag.String("ipfsurl", "https://ipfs.infura.io:5001", "IPFS node address")
@@ -59,8 +42,6 @@ func main() {
 
 		factProviderKey *ecdsa.PrivateKey
 		factKey         [32]byte
-		knownFactType   bool
-		factType        data.Type
 		factBytes       []byte
 		factString      string
 		factAddress     common.Address
@@ -79,17 +60,13 @@ func main() {
 	glogger.Vmodule(*vmodule)
 	log.Root().SetHandler(glogger)
 
-	factType, knownFactType = factTypes[*factTypeStr]
-
 	switch {
 	case !passportAddr.IsSet() && *backendURL != "":
 		utils.Fatalf("Use -passportaddr to specify an address of passport contract")
 	case *factKeyStr == "":
 		utils.Fatalf("Use -fkey to specify the key of the fact")
-	case *factTypeStr == "":
+	case !factTypeVar.IsSet():
 		utils.Fatalf("Use -ftype to specify the data type of fact")
-	case !knownFactType:
-		utils.Fatalf("Unsupported data type of fact '%v', use one of: %v", *factTypeStr, factSetStr)
 	case *ownerKeyFile == "" && !ownerKeyHex.IsSet():
 		utils.Fatalf("Use -ownerkey or -ownerkeyhex to specify a private key of fact provider")
 	case *ownerKeyFile != "" && ownerKeyHex.IsSet():
@@ -109,6 +86,7 @@ func main() {
 	}
 
 	// parse fact data
+	factType := factTypeVar.GetValue()
 	switch {
 	case factType == data.TxData || factType == data.Bytes:
 		if factBytes, err = ioutil.ReadAll(os.Stdin); err != nil {
