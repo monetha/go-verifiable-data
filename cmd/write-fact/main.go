@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"crypto/ecdsa"
 	"crypto/rand"
+	"encoding/hex"
 	"flag"
 	"fmt"
 	"io"
@@ -125,16 +126,22 @@ func main() {
 
 	ctx := cmdutils.CreateCtrlCContext()
 
+	randReader := rand.Reader
 	var (
 		e *eth.Eth
 	)
 	if *backendURL == "" {
-		monethaKey, err := crypto.GenerateKey()
+		// use deterministic "random" numbers in simulated environment
+		randReader = cmdutils.NewMathRand(1)
+
+		monethaKey, err := cmdutils.GenerateKey(randReader)
 		cmdutils.CheckErr(err, "generating key")
+		log.Warn("monetha admin key generated", "secret_key", hex.EncodeToString(crypto.FromECDSA(monethaKey)))
 		monethaAddress := bind.NewKeyedTransactor(monethaKey).From
 
-		passportOwnerKey, err := crypto.GenerateKey()
+		passportOwnerKey, err := cmdutils.GenerateKey(randReader)
 		cmdutils.CheckErr(err, "generating key")
+		log.Warn("passport owner key generated", "secret_key", hex.EncodeToString(crypto.FromECDSA(passportOwnerKey)))
 		passportOwnerAddress := bind.NewKeyedTransactor(passportOwnerKey).From
 
 		alloc := core.GenesisAlloc{
@@ -203,7 +210,7 @@ func main() {
 		wr, err := facts.NewPrivateDataWriter(factProviderSession, *ipfsURL)
 		cmdutils.CheckErr(err, "facts.NewPrivateDataWriter")
 
-		res, err := wr.WritePrivateData(ctx, passportAddress, factKey, factBytes, rand.Reader)
+		res, err := wr.WritePrivateData(ctx, passportAddress, factKey, factBytes, randReader)
 		cmdutils.CheckErr(err, "writing private data")
 
 		if *dataKeyFileName != "" {
