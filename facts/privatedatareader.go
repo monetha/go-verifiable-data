@@ -53,7 +53,7 @@ func newPrivateDataReader(e *eth.Eth, fs *ipfs.IPFS) *PrivateDataReader {
 	}
 }
 
-// ReadPrivateData decrypts secret key and then decrypts private data using decrypted secret key
+// ReadPrivateData decrypts secret key using passport owner key and then decrypts private data using decrypted secret key
 func (r *PrivateDataReader) ReadPrivateData(
 	ctx context.Context,
 	passportOwnerPrivateKey *ecdsa.PrivateKey,
@@ -72,6 +72,22 @@ func (r *PrivateDataReader) ReadPrivateData(
 	}
 
 	return r.DecryptPrivateData(ctx, factProviderHashes.DataIPFSHash, secretKey, passportOwnerPrivateKey.Curve)
+}
+
+// ReadPrivateDataUsingSecretKey decrypts private data using secret key
+func (r *PrivateDataReader) ReadPrivateDataUsingSecretKey(
+	ctx context.Context,
+	secretKey []byte,
+	passportAddress common.Address,
+	factProviderAddress common.Address,
+	factKey [32]byte,
+) ([]byte, error) {
+	factProviderHashes, err := r.readPrivateDataHashes(ctx, passportAddress, factProviderAddress, factKey)
+	if err != nil {
+		return nil, err
+	}
+
+	return r.DecryptPrivateData(ctx, factProviderHashes.DataIPFSHash, secretKey, nil)
 }
 
 // ReadSecretKey reads hashes from Ethereum network, then reads public key from IPFS and derives secret key using passport owner private key.

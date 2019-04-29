@@ -144,6 +144,9 @@ func main() {
 		log.Warn("passport owner key generated", "secret_key", hex.EncodeToString(crypto.FromECDSA(passportOwnerKey)))
 		passportOwnerAddress := bind.NewKeyedTransactor(passportOwnerKey).From
 
+		// dummy call to match the number of GenerateKey calls as in the read-fact cmd utility
+		_, _ = cmdutils.GenerateKey(randReader)
+
 		alloc := core.GenesisAlloc{
 			monethaAddress:       {Balance: big.NewInt(deployer.PassportFactoryGasLimit)},
 			passportOwnerAddress: {Balance: big.NewInt(deployer.PassportGasLimit)},
