@@ -52,7 +52,7 @@ func main() {
 		factKeyStr   = flag.String("fkey", "", "the key of the fact (max. 32 bytes)")
 		factTypeStr  = flag.String("ftype", "", fmt.Sprintf("the data type of fact (%v)", factSetStr))
 		ownerKeyFile = flag.String("ownerkey", "", "fact provider private key filename")
-		ownerKeyHex  = flag.String("ownerkeyhex", "", "fact provider private key as hex (for testing)")
+		ownerKeyHex  = cmdutils.PrivateKeyFlagVar("ownerkeyhex", nil, "fact provider private key as hex")
 		ipfsURL      = flag.String("ipfsurl", "https://ipfs.infura.io:5001", "IPFS node address")
 		verbosity    = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
 		vmodule      = flag.String("vmodule", "", "log verbosity pattern")
@@ -90,18 +90,16 @@ func main() {
 		utils.Fatalf("Use -ftype to specify the data type of fact")
 	case !knownFactType:
 		utils.Fatalf("Unsupported data type of fact '%v', use one of: %v", *factTypeStr, factSetStr)
-	case *ownerKeyFile == "" && *ownerKeyHex == "":
+	case *ownerKeyFile == "" && !ownerKeyHex.IsSet():
 		utils.Fatalf("Use -ownerkey or -ownerkeyhex to specify a private key of fact provider")
-	case *ownerKeyFile != "" && *ownerKeyHex != "":
+	case *ownerKeyFile != "" && ownerKeyHex.IsSet():
 		utils.Fatalf("Options -ownerkey or -ownerkeyhex are mutually exclusive")
 	case *ownerKeyFile != "":
 		if factProviderKey, err = crypto.LoadECDSA(*ownerKeyFile); err != nil {
 			utils.Fatalf("-ownerkey: %v", err)
 		}
-	case *ownerKeyHex != "":
-		if factProviderKey, err = crypto.HexToECDSA(*ownerKeyHex); err != nil {
-			utils.Fatalf("-ownerkeyhex: %v", err)
-		}
+	case ownerKeyHex.IsSet():
+		factProviderKey = ownerKeyHex.GetValue()
 	}
 
 	if factKeyBytes := []byte(*factKeyStr); len(factKeyBytes) <= 32 {

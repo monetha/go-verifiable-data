@@ -2,6 +2,8 @@ package cmdutils
 
 import (
 	"context"
+	"crypto/ecdsa"
+	"encoding/hex"
 	"flag"
 	"fmt"
 	"os"
@@ -10,6 +12,7 @@ import (
 	"syscall"
 
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/reputation-go-sdk/eth"
 )
@@ -111,7 +114,7 @@ func (f *AddressFlag) IsSet() bool {
 	return f.set
 }
 
-// GetValue retruns flag value
+// GetValue returns flag value
 func (f *AddressFlag) GetValue() common.Address {
 	return f.value
 }
@@ -147,7 +150,7 @@ func (f *HashFlag) IsSet() bool {
 	return f.set
 }
 
-// GetValue retruns flag value
+// GetValue returns flag value
 func (f *HashFlag) GetValue() common.Hash {
 	return f.value
 }
@@ -156,6 +159,42 @@ func (f *HashFlag) GetValue() common.Hash {
 // The argument value is the default value of the flag.
 func HashVar(name string, value common.Hash, usage string) *HashFlag {
 	v := &HashFlag{value: value}
+	flag.Var(v, name, usage)
+	return v
+}
+
+// PrivateKeyFlag holds flag value and indicator if it was set from command line
+type PrivateKeyFlag struct {
+	set   bool
+	value *ecdsa.PrivateKey
+}
+
+// String returns string representation of the value
+func (f *PrivateKeyFlag) String() string {
+	return hex.EncodeToString(crypto.FromECDSA(f.value))
+}
+
+// Set sets value from string representation
+func (f *PrivateKeyFlag) Set(s string) (err error) {
+	f.value, err = crypto.HexToECDSA(s)
+	f.set = true
+	return
+}
+
+// IsSet returns true if value was set from command line
+func (f *PrivateKeyFlag) IsSet() bool {
+	return f.set
+}
+
+// GetValue returns flag value
+func (f *PrivateKeyFlag) GetValue() *ecdsa.PrivateKey {
+	return f.value
+}
+
+// PrivateKeyFlagVar defines a private key flag with specified name, default value, and usage string.
+// The argument value is the default value of the flag.
+func PrivateKeyFlagVar(name string, value *ecdsa.PrivateKey, usage string) *PrivateKeyFlag {
+	v := &PrivateKeyFlag{value: value}
 	flag.Var(v, name, usage)
 	return v
 }
