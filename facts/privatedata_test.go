@@ -88,6 +88,42 @@ func TestPrivateData(t *testing.T) {
 		})
 	})
 
+	t.Run("ReadPrivateDataUsingSecretKey", func(t *testing.T) {
+		arrangeActAssert(func(
+			ctx context.Context,
+			pa *passportWithActors,
+			rd *facts.PrivateDataReader,
+			wpdRes *facts.WritePrivateDataResult,
+		) {
+			decryptedData, err := rd.ReadPrivateDataUsingSecretKey(ctx, wpdRes.DataKey, pa.PassportAddress, pa.FactProviderAddress, factKey)
+			if err != nil {
+				t.Fatalf("ReadPrivateDataUsingSecretKey: %v", err)
+			}
+
+			if bytes.Compare(factData, decryptedData) != 0 {
+				t.Errorf("wanted data %v, but got %v", factData, decryptedData)
+			}
+		})
+	})
+
+	t.Run("ReadPrivateDataUsingSecretKey with invalid secret data key", func(t *testing.T) {
+		arrangeActAssert(func(
+			ctx context.Context,
+			pa *passportWithActors,
+			rd *facts.PrivateDataReader,
+			wpdRes *facts.WritePrivateDataResult,
+		) {
+			invalidDataKey := make([]byte, len(wpdRes.DataKey))
+			for idx, value := range wpdRes.DataKey {
+				invalidDataKey[idx] = ^value
+			}
+			_, err := rd.ReadPrivateDataUsingSecretKey(ctx, invalidDataKey, pa.PassportAddress, pa.FactProviderAddress, factKey)
+			if err != facts.ErrInvalidSecretKey {
+				t.Errorf("ReadPrivateData: expected error %v, but got %v", facts.ErrInvalidSecretKey, err)
+			}
+		})
+	})
+
 	t.Run("ReadSecretKey", func(t *testing.T) {
 		arrangeActAssert(func(
 			ctx context.Context,
