@@ -31,15 +31,16 @@ import (
 
 func main() {
 	var (
-		backendURL   = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
-		passportAddr = cmdutils.AddressVar("passportaddr", common.Address{}, "Ethereum address of passport contract")
-		factKeyStr   = flag.String("fkey", "", "the key of the fact (max. 32 bytes)")
-		factTypeVar  = cmdutils.DataTypeFlagVar("ftype", data.TxData, fmt.Sprintf("the data type of fact (%v)", cmdutils.DataTypeSetStr()))
-		ownerKeyFile = flag.String("ownerkey", "", "fact provider private key filename")
-		ownerKeyHex  = cmdutils.PrivateKeyFlagVar("ownerkeyhex", nil, "fact provider private key as hex")
-		ipfsURL      = flag.String("ipfsurl", "https://ipfs.infura.io:5001", "IPFS node address")
-		verbosity    = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
-		vmodule      = flag.String("vmodule", "", "log verbosity pattern")
+		backendURL      = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
+		passportAddr    = cmdutils.AddressVar("passportaddr", common.Address{}, "Ethereum address of passport contract")
+		factKeyStr      = flag.String("fkey", "", "the key of the fact (max. 32 bytes)")
+		factTypeVar     = cmdutils.DataTypeFlagVar("ftype", data.TxData, fmt.Sprintf("the data type of fact (%v)", cmdutils.DataTypeSetStr()))
+		ownerKeyFile    = flag.String("ownerkey", "", "fact provider private key filename")
+		ownerKeyHex     = cmdutils.PrivateKeyFlagVar("ownerkeyhex", nil, "fact provider private key as hex")
+		ipfsURL         = flag.String("ipfsurl", "https://ipfs.infura.io:5001", "IPFS node address")
+		dataKeyFileName = flag.String("datakeyfile", "", "save data encryption key to the specified file (only for privatedata data type)")
+		verbosity       = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
+		vmodule         = flag.String("vmodule", "", "log verbosity pattern")
 
 		factProviderKey *ecdsa.PrivateKey
 		factKey         [32]byte
@@ -72,6 +73,8 @@ func main() {
 		utils.Fatalf("Use -ownerkey or -ownerkeyhex to specify a private key of fact provider")
 	case *ownerKeyFile != "" && ownerKeyHex.IsSet():
 		utils.Fatalf("Options -ownerkey or -ownerkeyhex are mutually exclusive")
+	case *dataKeyFileName != "" && factTypeVar.GetValue() != data.PrivateData:
+		utils.Fatalf("Use -datakeyfile only with -ftype privatedata")
 	case *ownerKeyFile != "":
 		if factProviderKey, err = crypto.LoadECDSA(*ownerKeyFile); err != nil {
 			utils.Fatalf("-ownerkey: %v", err)
@@ -200,8 +203,13 @@ func main() {
 		wr, err := facts.NewPrivateDataWriter(factProviderSession, *ipfsURL)
 		cmdutils.CheckErr(err, "facts.NewPrivateDataWriter")
 
-		_, err = wr.WritePrivateData(ctx, passportAddress, factKey, factBytes, rand.Reader)
+		res, err := wr.WritePrivateData(ctx, passportAddress, factKey, factBytes, rand.Reader)
 		cmdutils.CheckErr(err, "writing private data")
+
+		if *dataKeyFileName != "" {
+			log.Warn("Writing data encryption key to file", "file_name", *dataKeyFileName)
+			cmdutils.CheckErr(ioutil.WriteFile(*dataKeyFileName, res.DataKey, 0400), "writing data encryption key to file")
+		}
 	default:
 		cmdutils.CheckErr(fmt.Errorf("unsupported fact type: %v", factType.String()), "writing by type")
 	}
