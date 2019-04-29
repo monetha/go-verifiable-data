@@ -2,18 +2,18 @@
 version: 1
 interactions:
 - request:
-    body: "--f594e94c65fad28df78a28aad46dc7ab0e28a2021017846bbefc8a335745\r\nContent-Disposition:
+    body: "--d9b2eb71e13736247cab92f45f08829d24336631c87f2e91772eb323554f\r\nContent-Disposition:
       form-data; name=\"file\"; filename=\"\"\r\nContent-Type: application/octet-stream\r\n\r\nthis
-      is a secret message\r\n--f594e94c65fad28df78a28aad46dc7ab0e28a2021017846bbefc8a335745--\r\n"
+      is a public message\r\n--d9b2eb71e13736247cab92f45f08829d24336631c87f2e91772eb323554f--\r\n"
     form: {}
     headers:
       Content-Type:
-      - multipart/form-data; boundary=f594e94c65fad28df78a28aad46dc7ab0e28a2021017846bbefc8a335745
+      - multipart/form-data; boundary=d9b2eb71e13736247cab92f45f08829d24336631c87f2e91772eb323554f
     url: https://ipfs.infura.io:5001/api/v0/add?encoding=json&pin=true&progress=false&stream-channels=true
     method: POST
   response:
     body: |
-      {"Name":"QmS5v4G3RFWBXasUERYxDBS5fYW3pxKRP4XNcFzCdhqgEB","Hash":"QmS5v4G3RFWBXasUERYxDBS5fYW3pxKRP4XNcFzCdhqgEB","Size":"32"}
+      {"Name":"QmbzRyGiK58U7MdEAEc3z3XpFJ8iqAjza6i97Zspirj5MQ","Hash":"QmbzRyGiK58U7MdEAEc3z3XpFJ8iqAjza6i97Zspirj5MQ","Size":"32"}
     headers:
       Access-Control-Allow-Headers:
       - X-Stream-Output, X-Chunked-Output, X-Content-Length
@@ -22,7 +22,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 26 Apr 2019 10:38:32 GMT
+      - Mon, 29 Apr 2019 09:30:16 GMT
       Server:
       - nginx
       Vary:
@@ -36,10 +36,10 @@ interactions:
     body: ""
     form: {}
     headers: {}
-    url: https://ipfs.infura.io:5001/api/v0/cat?arg=QmS5v4G3RFWBXasUERYxDBS5fYW3pxKRP4XNcFzCdhqgEB&encoding=json&stream-channels=true
+    url: https://ipfs.infura.io:5001/api/v0/cat?arg=QmbzRyGiK58U7MdEAEc3z3XpFJ8iqAjza6i97Zspirj5MQ&encoding=json&stream-channels=true
     method: POST
   response:
-    body: this is a secret message
+    body: this is a public message
     headers:
       Access-Control-Allow-Headers:
       - X-Stream-Output, X-Chunked-Output, X-Content-Length
@@ -48,7 +48,7 @@ interactions:
       Content-Type:
       - text/plain
       Date:
-      - Fri, 26 Apr 2019 10:38:32 GMT
+      - Mon, 29 Apr 2019 09:30:16 GMT
       Server:
       - nginx
       Vary:

@@ -17,7 +17,7 @@ func TestIPFSData(t *testing.T) {
 		ipfsURL  = "https://ipfs.infura.io:5001"
 		randSeed = int64(1)
 		factKey  = [32]byte{1, 2, 3, 4, 5, 6, 7, 8, 9}
-		factData = []byte("this is a secret message")
+		factData = []byte("this is a public message")
 	)
 
 	arrangeActAssert := func(actAssert func(
