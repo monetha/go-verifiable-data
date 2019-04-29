@@ -130,7 +130,7 @@ func (w *PrivateDataWriter) WritePrivateData(
 		DataKeyHash:  skmHash,
 	}
 
-	w.log("Writing private data hashes to Ethereum", "passport", passportAddress, "fact_key", factKey, "ipfs_hash", dataIPFSHash, "data_key_hash", skmHash)
+	w.log("Writing private data hashes to Ethereum", "passport", passportAddress, "fact_key", factKey, "ipfs_hash", dataIPFSHash, "data_key_hash", skmHash.String())
 	txHash, err := NewProvider(w.s).WritePrivateDataHashes(ctx, passportAddress, factKey, privateDataHashes)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to write private data hashes to Ethereum network")

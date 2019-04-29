@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"crypto/ecdsa"
+	"crypto/rand"
 	"flag"
 	"fmt"
 	"io"
@@ -88,7 +89,7 @@ func main() {
 	// parse fact data
 	factType := factTypeVar.GetValue()
 	switch {
-	case factType == data.TxData || factType == data.Bytes:
+	case factType == data.TxData || factType == data.Bytes || factType == data.PrivateData:
 		if factBytes, err = ioutil.ReadAll(os.Stdin); err != nil {
 			utils.Fatalf("failed to read fact bytes: %v", err)
 		}
@@ -195,6 +196,12 @@ func main() {
 
 		_, err = w.WriteIPFSData(ctx, passportAddress, factKey, os.Stdin)
 		cmdutils.CheckErr(err, "writing IPFS data")
+	case data.PrivateData:
+		wr, err := facts.NewPrivateDataWriter(factProviderSession, *ipfsURL)
+		cmdutils.CheckErr(err, "facts.NewPrivateDataWriter")
+
+		_ ,err = wr.WritePrivateData(ctx, passportAddress, factKey, factBytes, rand.Reader)
+		cmdutils.CheckErr(err, "writing private data")
 	default:
 		cmdutils.CheckErr(fmt.Errorf("unsupported fact type: %v", factType.String()), "writing by type")
 	}
