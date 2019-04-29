@@ -223,7 +223,7 @@ func DataTypeSetStr() string {
 	return dataTypeSetStr
 }
 
-// PrivateKeyFlag holds flag value and indicator if it was set from command line
+// DataTypeFlag holds flag value and indicator if it was set from command line
 type DataTypeFlag struct {
 	set   bool
 	value data.Type
