@@ -200,7 +200,7 @@ func main() {
 		wr, err := facts.NewPrivateDataWriter(factProviderSession, *ipfsURL)
 		cmdutils.CheckErr(err, "facts.NewPrivateDataWriter")
 
-		_ ,err = wr.WritePrivateData(ctx, passportAddress, factKey, factBytes, rand.Reader)
+		_, err = wr.WritePrivateData(ctx, passportAddress, factKey, factBytes, rand.Reader)
 		cmdutils.CheckErr(err, "writing private data")
 	default:
 		cmdutils.CheckErr(fmt.Errorf("unsupported fact type: %v", factType.String()), "writing by type")
