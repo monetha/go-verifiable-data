@@ -45,7 +45,7 @@ lint:
 
 .PHONY: test
 test:
-	go test -count=1 -tags=dev -timeout 60s -race -v $(PKGS)
+	go test -count=1 -tags=dev -timeout 60s -v $(PKGS)
 
 .PHONY: bench
 BENCH ?= .
@@ -55,7 +55,7 @@ bench:
 .PHONY: cover
 cover:
 	mkdir -p ./${ARTIFACTS_DIR}/.cover
-	go test -count=1 -race -coverprofile=./${ARTIFACTS_DIR}/.cover/cover.out -covermode=atomic -coverpkg=./... $(PKGS_NO_CMDS)
+	go test -count=1 -coverprofile=./${ARTIFACTS_DIR}/.cover/cover.out -covermode=atomic -coverpkg=./... $(PKGS_NO_CMDS)
 	go tool cover -func=./${ARTIFACTS_DIR}/.cover/cover.out
 	go tool cover -html=./${ARTIFACTS_DIR}/.cover/cover.out -o ./${ARTIFACTS_DIR}/cover.html
 
