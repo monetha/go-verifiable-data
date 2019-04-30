@@ -67,7 +67,7 @@ func (c *ContractLogFilterer) FilterLogs(opts *bind.FilterOpts, names []string, 
 	if err != nil {
 		return nil, nil, err
 	}
-	sub, err := event.NewSubscription(func(quit <-chan struct{}) error {
+	sub := event.NewSubscription(func(quit <-chan struct{}) error {
 		for _, log := range buff {
 			select {
 			case logs <- log:
@@ -76,11 +76,8 @@ func (c *ContractLogFilterer) FilterLogs(opts *bind.FilterOpts, names []string, 
 			}
 		}
 		return nil
-	}), nil
+	})
 
-	if err != nil {
-		return nil, nil, err
-	}
 	return logs, sub, nil
 }
 
