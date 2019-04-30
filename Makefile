@@ -2,8 +2,8 @@ SHELL := bash
 PACKAGE_NAME := github.com/monetha/reputation-go-sdk
 ARTIFACTS_DIR := $(if $(ARTIFACTS_DIR),$(ARTIFACTS_DIR),bin)
 
-PKGS ?= $(shell glide novendor | grep -v ./internal/)
-PKGS_NO_CMDS ?= $(shell glide novendor | grep -Ev './internal/|./cmd/')
+PKGS ?= $(shell go list ./...)
+PKGS_NO_CMDS ?= $(shell go list ./... | grep -v $(PACKAGE_NAME)/cmd)
 BENCH_FLAGS ?= -benchmem
 
 VERSION := $(if $(TRAVIS_TAG),$(TRAVIS_TAG),$(if $(TRAVIS_BRANCH),$(TRAVIS_BRANCH),development_in_$(shell git rev-parse --abbrev-ref HEAD)))
