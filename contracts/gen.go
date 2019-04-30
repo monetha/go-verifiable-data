@@ -1,6 +1,5 @@
 package contracts
 
-//go:generate go install ../vendor/github.com/ethereum/go-ethereum/cmd/abigen
 //go:generate abigen --abi ./code/IPassportLogic.abi --out IPassportLogic.go --pkg contracts --type IPassportLogicContract
 //go:generate abigen --abi ./code/IPassportLogicRegistry.abi --out IPassportLogicRegistry.go --pkg contracts --type IPassportLogicRegistryContract
 //go:generate abigen --abi ./code/Passport.abi --bin ./code/Passport.bin --out Passport.go --pkg contracts --type PassportContract
