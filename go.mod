@@ -24,6 +24,7 @@ require (
 	github.com/huin/goupnp v1.0.0 // indirect
 	github.com/influxdata/influxdb v1.7.6 // indirect
 	github.com/jackpal/go-nat-pmp v1.0.1 // indirect
+	github.com/jessevdk/go-flags v1.4.0
 	github.com/karalabe/hid v0.0.0-20181128192157-d815e0c1a2e2 // indirect
 	github.com/mattn/go-colorable v0.1.1 // indirect
 	github.com/mattn/go-isatty v0.0.7 // indirect
