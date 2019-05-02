@@ -200,19 +200,37 @@ func (r *PrivateDataReader) ReadHistoryPrivateData(
 		return nil, errors.Wrap(err, "failed to get history item of private data hash saving transaction")
 	}
 
-	factProviderHashes := &PrivateDataHashes{
-		DataIPFSHash: hi.DataIPFSHash,
-		DataKeyHash:  hi.DataKeyHash,
-	}
-	factProviderAddress := hi.FactProvider
-	factKey := hi.Key
-
-	secretKey, err := r.decryptSecretKey(ctx, passportOwnerPrivateKey, factProviderHashes, passportAddress, factProviderAddress, factKey)
+	secretKey, err := r.decryptSecretKey(ctx,
+		passportOwnerPrivateKey,
+		&PrivateDataHashes{
+			DataIPFSHash: hi.DataIPFSHash,
+			DataKeyHash:  hi.DataKeyHash,
+		},
+		passportAddress,
+		hi.FactProvider,
+		hi.Key,
+	)
 	if err != nil {
 		return nil, err
 	}
 
-	return r.DecryptPrivateData(ctx, factProviderHashes.DataIPFSHash, secretKey, passportOwnerPrivateKey.Curve)
+	return r.DecryptPrivateData(ctx, hi.DataIPFSHash, secretKey, passportOwnerPrivateKey.Curve)
+}
+
+// ReadHistoryPrivateDataUsingSecretKey decrypts private data using decrypted secret key from specific Ethereum transaction
+func (r *PrivateDataReader) ReadHistoryPrivateDataUsingSecretKey(
+	ctx context.Context,
+	secretKey []byte,
+	passportAddress common.Address,
+	txHash common.Hash,
+) ([]byte, error) {
+	r.log("Reading data hashes from Ethereum transaction", "passport", passportAddress, "tx_hash", txHash)
+	hi, err := NewHistorian(r.e).GetHistoryItemOfWritePrivateDataHashes(ctx, passportAddress, txHash)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get history item of private data hash saving transaction")
+	}
+
+	return r.DecryptPrivateData(ctx, hi.DataIPFSHash, secretKey, nil)
 }
 
 func (r *PrivateDataReader) readPrivateDataHashes(
