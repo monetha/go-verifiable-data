@@ -2,7 +2,6 @@ package main
 
 import (
 	"crypto/ecdsa"
-	"encoding/hex"
 	"flag"
 	"fmt"
 	"io"
@@ -104,21 +103,15 @@ func main() {
 	)
 	if *backendURL == "" {
 		// use deterministic "random" numbers in simulated environment
-		randReader := cmdutils.NewMathRand(1)
+		randReader := cmdutils.NewMathRandFixedSeed()
 
-		monethaKey, err := cmdutils.GenerateKey(randReader)
-		cmdutils.CheckErr(err, "generating key")
-		log.Warn("monetha admin key generated", "secret_key", hex.EncodeToString(crypto.FromECDSA(monethaKey)))
+		monethaKey := cmdutils.TestMonethaAdminKey
 		monethaAddress := bind.NewKeyedTransactor(monethaKey).From
 
-		passportOwnerKey, err := cmdutils.GenerateKey(randReader)
-		cmdutils.CheckErr(err, "generating key")
-		log.Warn("passport owner key generated", "secret_key", hex.EncodeToString(crypto.FromECDSA(passportOwnerKey)))
+		passportOwnerKey := cmdutils.TestPassportOwnerKey
 		passportOwnerAddress := bind.NewKeyedTransactor(passportOwnerKey).From
 
-		factProviderKey, err := cmdutils.GenerateKey(randReader)
-		cmdutils.CheckErr(err, "generating key")
-		log.Warn("fact provider key generated", "secret_key", hex.EncodeToString(crypto.FromECDSA(factProviderKey)))
+		factProviderKey := cmdutils.TestFactProviderKey
 		factProviderAddress := bind.NewKeyedTransactor(factProviderKey).From
 
 		alloc := core.GenesisAlloc{

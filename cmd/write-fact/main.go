@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"crypto/ecdsa"
 	"crypto/rand"
-	"encoding/hex"
 	"flag"
 	"fmt"
 	"io"
@@ -132,20 +131,13 @@ func main() {
 	)
 	if *backendURL == "" {
 		// use deterministic "random" numbers in simulated environment
-		randReader = cmdutils.NewMathRand(1)
+		randReader = cmdutils.NewMathRandFixedSeed()
 
-		monethaKey, err := cmdutils.GenerateKey(randReader)
-		cmdutils.CheckErr(err, "generating key")
-		log.Warn("monetha admin key generated", "secret_key", hex.EncodeToString(crypto.FromECDSA(monethaKey)))
+		monethaKey := cmdutils.TestMonethaAdminKey
 		monethaAddress := bind.NewKeyedTransactor(monethaKey).From
 
-		passportOwnerKey, err := cmdutils.GenerateKey(randReader)
-		cmdutils.CheckErr(err, "generating key")
-		log.Warn("passport owner key generated", "secret_key", hex.EncodeToString(crypto.FromECDSA(passportOwnerKey)))
+		passportOwnerKey := cmdutils.TestPassportOwnerKey
 		passportOwnerAddress := bind.NewKeyedTransactor(passportOwnerKey).From
-
-		// dummy call to match the number of GenerateKey calls as in the read-fact cmd utility
-		_, _ = cmdutils.GenerateKey(randReader)
 
 		alloc := core.GenesisAlloc{
 			monethaAddress:       {Balance: big.NewInt(deployer.PassportFactoryGasLimit)},
