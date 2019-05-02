@@ -35,7 +35,7 @@ func main() {
 	)
 	flag.Parse()
 
-	if cmd.PrintVersion() {
+	if cmd.HasPrintedVersion() {
 		return
 	}
 

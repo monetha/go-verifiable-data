@@ -46,7 +46,7 @@ func main() {
 		privateDataSecretKey []byte
 	)
 	flag.Parse()
-	if cmd.PrintVersion() {
+	if cmd.HasPrintedVersion() {
 		return
 	}
 
