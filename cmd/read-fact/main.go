@@ -56,7 +56,7 @@ func main() {
 
 	glogger := log.NewGlogHandler(log.StreamHandler(os.Stderr, log.TerminalFormat(false)))
 	glogger.Verbosity(log.Lvl(*verbosity))
-	glogger.Vmodule(*vmodule)
+	_ = glogger.Vmodule(*vmodule)
 	log.Root().SetHandler(glogger)
 
 	switch {
@@ -211,33 +211,33 @@ func main() {
 	factType := factTypeVar.GetValue()
 	switch factType {
 	case data.TxData:
-		data, err := factReader.ReadTxData(ctx, passportAddress, factProviderAddress, factKey)
+		dataBytes, err := factReader.ReadTxData(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadTxData")
-		fileOp = writeBytes(data)
+		fileOp = writeBytes(dataBytes)
 	case data.String:
-		data, err := factReader.ReadString(ctx, passportAddress, factProviderAddress, factKey)
+		dataBytes, err := factReader.ReadString(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadString")
-		fileOp = writeString(data)
+		fileOp = writeString(dataBytes)
 	case data.Bytes:
-		data, err := factReader.ReadBytes(ctx, passportAddress, factProviderAddress, factKey)
+		dataBytes, err := factReader.ReadBytes(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadBytes")
-		fileOp = writeBytes(data)
+		fileOp = writeBytes(dataBytes)
 	case data.Address:
-		data, err := factReader.ReadAddress(ctx, passportAddress, factProviderAddress, factKey)
+		addressVal, err := factReader.ReadAddress(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadAddress")
-		fileOp = writeString(data.String())
+		fileOp = writeString(addressVal.String())
 	case data.Uint:
-		data, err := factReader.ReadUint(ctx, passportAddress, factProviderAddress, factKey)
+		uintVal, err := factReader.ReadUint(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadUint")
-		fileOp = writeString(data.String())
+		fileOp = writeString(uintVal.String())
 	case data.Int:
-		data, err := factReader.ReadInt(ctx, passportAddress, factProviderAddress, factKey)
+		intVal, err := factReader.ReadInt(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadInt")
-		fileOp = writeString(data.String())
+		fileOp = writeString(intVal.String())
 	case data.Bool:
-		data, err := factReader.ReadBool(ctx, passportAddress, factProviderAddress, factKey)
+		dataBytes, err := factReader.ReadBool(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadBool")
-		fileOp = writeString(strconv.FormatBool(data))
+		fileOp = writeString(strconv.FormatBool(dataBytes))
 	case data.IPFS:
 		r, err := facts.NewIPFSDataReader(e, *ipfsURL)
 		cmdutils.CheckErr(err, "facts.NewIPFSDataReader")
@@ -269,7 +269,7 @@ func main() {
 
 	f, err := os.Create(*fileName)
 	cmdutils.CheckErr(err, "Create file")
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	cmdutils.CheckErr(fileOp(f), "Write to file")
 
