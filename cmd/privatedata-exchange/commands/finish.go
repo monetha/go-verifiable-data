@@ -1,10 +1,10 @@
 package commands
 
 import (
-	"fmt"
-
-	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/monetha/reputation-go-sdk/cmd/internal/cmdutils"
 	"github.com/monetha/reputation-go-sdk/cmd/privatedata-exchange/commands/flag"
+	"github.com/monetha/reputation-go-sdk/facts"
 )
 
 // FinishCommand handles finish command
@@ -13,15 +13,30 @@ type FinishCommand struct {
 	ExchangeIndex   flag.ExchangeIndex           `long:"exchidx"      required:"true" description:"private data exchange index"`
 	EthereumKey     flag.ECDSAPrivateKeyFromFile `long:"requesterkey" required:"true" description:"data requester (or passport owner, when expired) private key filename"`
 	BackendURL      string                       `long:"backendurl"   required:"true" description:"Ethereum backend URL"`
+	Verbosity       int                          `long:"verbosity"                    description:"log verbosity (0-9)" default:"2"`
+	VModule         string                       `long:"vmodule"                      description:"log verbosity pattern"`
 }
 
 // Execute implements flags.Commander interface
 func (c *FinishCommand) Execute(args []string) error {
-	fmt.Println("Finish command execution")
-	fmt.Println("Passport address:", c.PassportAddress.AsCommonAddress().String())
-	fmt.Println("Private exchange idx:", c.ExchangeIndex.AsBigInt().String())
-	fmt.Println("Caller address:", crypto.PubkeyToAddress(c.EthereumKey.PublicKey).String())
-	fmt.Println("Backend URL:", c.BackendURL)
+	initLogging(log.Lvl(c.Verbosity), c.VModule)
+	ctx := cmdutils.CreateCtrlCContext()
+
+	e, err := newEth(c.BackendURL)
+	if err != nil {
+		return err
+	}
+
+	err = facts.NewExchangeFinisher(
+		e.NewSession(c.EthereumKey.AsECDSAPrivateKey()),
+	).FinishPrivateDataExchange(
+		ctx,
+		c.PassportAddress.AsCommonAddress(),
+		c.ExchangeIndex.AsBigInt(),
+	)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

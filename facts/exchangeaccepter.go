@@ -93,6 +93,6 @@ func (a *ExchangeAcceptor) AcceptPrivateDataExchange(ctx context.Context, passpo
 		return errors.Wrap(err, "failed to accept proposed private data exchange")
 	}
 
-	_, err = a.s.Eth.WaitForTxReceipt(ctx, tx.Hash())
+	_, err = a.s.WaitForTxReceipt(ctx, tx.Hash())
 	return err
 }
