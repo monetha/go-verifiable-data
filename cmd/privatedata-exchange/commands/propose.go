@@ -43,7 +43,7 @@ func (c *ProposeCommand) Execute(args []string) error {
 		return err
 	}
 
-	propResult, err := facts.NewExchange(
+	propResult, err := facts.NewExchangeProposer(
 		e.NewSession(c.DataRequesterKey.AsECDSAPrivateKey()),
 	).ProposePrivateDataExchange(
 		ctx,

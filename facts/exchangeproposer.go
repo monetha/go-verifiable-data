@@ -13,12 +13,12 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Exchange allows to propose/accept/finish and dispute private data exchange
-type Exchange eth.Session
+// ExchangeProposer allows to propose data exchange
+type ExchangeProposer eth.Session
 
-// NewExchange converts session to Exchange
-func NewExchange(s *eth.Session) *Exchange {
-	return (*Exchange)(s)
+// NewExchangeProposer converts session to ExchangeProposer
+func NewExchangeProposer(s *eth.Session) *ExchangeProposer {
+	return (*ExchangeProposer)(s)
 }
 
 // PrivateDataExchangeResult holds result of calling ProposePrivateDataExchange
@@ -29,7 +29,7 @@ type PrivateDataExchangeResult struct {
 }
 
 // ProposePrivateDataExchange creates private data exchange proposition
-func (e *Exchange) ProposePrivateDataExchange(
+func (e *ExchangeProposer) ProposePrivateDataExchange(
 	ctx context.Context,
 	passportAddress common.Address,
 	factProviderAddress common.Address,
