@@ -3,7 +3,6 @@ package facts
 import (
 	"context"
 	"io"
-	"net/http"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/monetha/reputation-go-sdk/eth"
@@ -18,24 +17,7 @@ type IPFSDataWriter struct {
 }
 
 // NewIPFSDataWriter creates new instance of IPFSDataWriter
-func NewIPFSDataWriter(s *eth.Session, ipfsURL string) (*IPFSDataWriter, error) {
-	fs, err := ipfs.New(ipfsURL)
-	if err != nil {
-		return nil, errors.Wrap(err, "creating instance of IPFS")
-	}
-	return newIPFSDataWriter(s, fs), nil
-}
-
-// NewIPFSDataWriterWithClient creates new instance of IPFSDataWriter using provided http client
-func NewIPFSDataWriterWithClient(s *eth.Session, ipfsURL string, c *http.Client) (*IPFSDataWriter, error) {
-	fs, err := ipfs.NewWithClient(ipfsURL, c)
-	if err != nil {
-		return nil, errors.Wrap(err, "creating instance of IPFS")
-	}
-	return newIPFSDataWriter(s, fs), nil
-}
-
-func newIPFSDataWriter(s *eth.Session, fs *ipfs.IPFS) *IPFSDataWriter {
+func NewIPFSDataWriter(s *eth.Session, fs *ipfs.IPFS) *IPFSDataWriter {
 	return &IPFSDataWriter{
 		s:  s,
 		fs: fs,

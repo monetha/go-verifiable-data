@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"io"
-	"net/http"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/monetha/reputation-go-sdk/crypto/ecies"
@@ -20,24 +19,7 @@ type PrivateDataWriter struct {
 }
 
 // NewPrivateDataWriter creates new instance of PrivateDataWriter
-func NewPrivateDataWriter(s *eth.Session, ipfsURL string) (*PrivateDataWriter, error) {
-	fs, err := ipfs.New(ipfsURL)
-	if err != nil {
-		return nil, errors.Wrap(err, "creating instance of IPFS")
-	}
-	return newPrivateDataWriter(s, fs), nil
-}
-
-// NewPrivateDataWriterWithClient creates new instance of PrivateDataWriter using provided http client
-func NewPrivateDataWriterWithClient(s *eth.Session, ipfsURL string, c *http.Client) (*PrivateDataWriter, error) {
-	fs, err := ipfs.NewWithClient(ipfsURL, c)
-	if err != nil {
-		return nil, errors.Wrap(err, "creating instance of IPFS")
-	}
-	return newPrivateDataWriter(s, fs), nil
-}
-
-func newPrivateDataWriter(s *eth.Session, fs *ipfs.IPFS) *PrivateDataWriter {
+func NewPrivateDataWriter(s *eth.Session, fs *ipfs.IPFS) *PrivateDataWriter {
 	return &PrivateDataWriter{
 		s:  s,
 		fs: fs,

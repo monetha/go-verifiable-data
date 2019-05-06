@@ -26,6 +26,7 @@ import (
 	"github.com/monetha/reputation-go-sdk/eth"
 	"github.com/monetha/reputation-go-sdk/eth/backend"
 	"github.com/monetha/reputation-go-sdk/facts"
+	"github.com/monetha/reputation-go-sdk/ipfs"
 	"github.com/monetha/reputation-go-sdk/types/data"
 )
 
@@ -174,6 +175,9 @@ func main() {
 		cmdutils.CheckErr(e.UpdateSuggestedGasPrice(ctx), "SuggestGasPrice")
 	}
 
+	fs, err := ipfs.New(*ipfsURL)
+	cmdutils.CheckErr(err, "creating IPFS client")
+
 	factProviderSession := e.NewSession(factProviderKey)
 
 	// TODO: check balance
@@ -196,13 +200,12 @@ func main() {
 		cmdutils.CheckErr(ignoreHash(provider.WriteBool(ctx, passportAddress, factKey, factBool)), "WriteBool")
 	case data.IPFS:
 		log.Warn("Uploading data to IPFS...", "url", *ipfsURL)
-		w, err := facts.NewIPFSDataWriter(factProviderSession, *ipfsURL)
-		cmdutils.CheckErr(err, "facts.NewIPFSDataWriter")
+		w := facts.NewIPFSDataWriter(factProviderSession, fs)
 
 		_, err = w.WriteIPFSData(ctx, passportAddress, factKey, os.Stdin)
 		cmdutils.CheckErr(err, "writing IPFS data")
 	case data.PrivateData:
-		wr, err := facts.NewPrivateDataWriter(factProviderSession, *ipfsURL)
+		wr := facts.NewPrivateDataWriter(factProviderSession, fs)
 		cmdutils.CheckErr(err, "facts.NewPrivateDataWriter")
 
 		res, err := wr.WritePrivateData(ctx, passportAddress, factKey, factBytes, randReader)

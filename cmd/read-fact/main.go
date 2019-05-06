@@ -23,6 +23,7 @@ import (
 	"github.com/monetha/reputation-go-sdk/eth"
 	"github.com/monetha/reputation-go-sdk/eth/backend"
 	"github.com/monetha/reputation-go-sdk/facts"
+	"github.com/monetha/reputation-go-sdk/ipfs"
 	"github.com/monetha/reputation-go-sdk/types/data"
 )
 
@@ -113,6 +114,9 @@ func main() {
 
 	ctx := cmdutils.CreateCtrlCContext()
 
+	fs, err := ipfs.New(*ipfsURL)
+	cmdutils.CheckErr(err, "creating IPFS client")
+
 	var (
 		e *eth.Eth
 	)
@@ -184,8 +188,7 @@ func main() {
 		_, err = factProvider.WriteIPFSHash(ctx, passportAddress, factKey, "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j")
 		cmdutils.CheckErr(err, "WriteIPFSHash")
 
-		wr, err := facts.NewPrivateDataWriter(factProviderSession, *ipfsURL)
-		cmdutils.CheckErr(err, "facts.NewPrivateDataWriter")
+		wr := facts.NewPrivateDataWriter(factProviderSession, fs)
 
 		wpdRes, err := wr.WritePrivateData(ctx, passportAddress, factKey, []byte("this is a secret message"), randReader)
 		cmdutils.CheckErr(err, "writing private data")
@@ -232,16 +235,14 @@ func main() {
 		cmdutils.CheckErr(err, "ReadBool")
 		fileOp = writeString(strconv.FormatBool(dataBytes))
 	case data.IPFS:
-		r, err := facts.NewIPFSDataReader(e, *ipfsURL)
-		cmdutils.CheckErr(err, "facts.NewIPFSDataReader")
+		r := facts.NewIPFSDataReader(e, fs)
 
 		rc, err := r.ReadIPFSData(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "IPFSDataReader.ReadIPFSData")
 
 		fileOp = writeReader(rc)
 	case data.PrivateData:
-		rd, err := facts.NewPrivateDataReader(e, *ipfsURL)
-		cmdutils.CheckErr(err, "facts.NewPrivateDataReader")
+		rd := facts.NewPrivateDataReader(e, fs)
 
 		if passportOwnerKey != nil {
 			decryptedData, err := rd.ReadPrivateData(ctx, passportOwnerKey, passportAddress, factProviderAddress, factKey)

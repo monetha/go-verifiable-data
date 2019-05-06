@@ -5,7 +5,6 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/subtle"
-	"net/http"
 	"path"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -29,24 +28,7 @@ type PrivateDataReader struct {
 }
 
 // NewPrivateDataReader creates new instance of PrivateDataReader
-func NewPrivateDataReader(e *eth.Eth, ipfsURL string) (*PrivateDataReader, error) {
-	fs, err := ipfs.New(ipfsURL)
-	if err != nil {
-		return nil, errors.Wrap(err, "creating instance of IPFS")
-	}
-	return newPrivateDataReader(e, fs), nil
-}
-
-// NewPrivateDataReaderWithClient creates new instance of PrivateDataReader using provided http client
-func NewPrivateDataReaderWithClient(e *eth.Eth, ipfsURL string, c *http.Client) (*PrivateDataReader, error) {
-	fs, err := ipfs.NewWithClient(ipfsURL, c)
-	if err != nil {
-		return nil, errors.Wrap(err, "creating instance of IPFS")
-	}
-	return newPrivateDataReader(e, fs), nil
-}
-
-func newPrivateDataReader(e *eth.Eth, fs *ipfs.IPFS) *PrivateDataReader {
+func NewPrivateDataReader(e *eth.Eth, fs *ipfs.IPFS) *PrivateDataReader {
 	return &PrivateDataReader{
 		e:  e,
 		fs: fs,

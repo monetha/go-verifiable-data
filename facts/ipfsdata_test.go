@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/monetha/reputation-go-sdk/ipfs"
+
 	"github.com/dnaeon/go-vcr/recorder"
 	"github.com/monetha/reputation-go-sdk/facts"
 )
@@ -40,15 +42,13 @@ func TestIPFSData(t *testing.T) {
 
 		pa := newPassportWithActors(ctx, t, rnd)
 
-		wr, err := facts.NewIPFSDataWriterWithClient(pa.FactProviderSession(), ipfsURL, c)
+		fs, err := ipfs.NewWithClient(ipfsURL, c)
 		if err != nil {
-			t.Fatalf("facts.NewIPFSDataWriterWithClient: %v", err)
+			t.Fatalf("creating instance of IPFS: %v", err)
 		}
 
-		rd, err := facts.NewIPFSDataReaderWithClient(pa.Eth, ipfsURL, c)
-		if err != nil {
-			t.Fatalf("facts.NewIPFSDataReaderWithClient: %v", err)
-		}
+		wr := facts.NewIPFSDataWriter(pa.FactProviderSession(), fs)
+		rd := facts.NewIPFSDataReader(pa.Eth, fs)
 
 		wRes, err := wr.WriteIPFSData(ctx, pa.PassportAddress, factKey, bytes.NewReader(factData))
 		if err != nil {

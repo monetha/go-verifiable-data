@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/monetha/reputation-go-sdk/ipfs"
+
 	"github.com/dnaeon/go-vcr/recorder"
 	"github.com/monetha/reputation-go-sdk/facts"
 )
@@ -38,15 +40,13 @@ func TestPrivateData(t *testing.T) {
 
 		pa := newPassportWithActors(ctx, t, rnd)
 
-		wr, err := facts.NewPrivateDataWriterWithClient(pa.FactProviderSession(), ipfsURL, c)
+		fs, err := ipfs.NewWithClient(ipfsURL, c)
 		if err != nil {
-			t.Fatalf("facts.NewPrivateDataWriterWithClient: %v", err)
+			t.Fatalf("creating instance of IPFS: %v", err)
 		}
 
-		rd, err := facts.NewPrivateDataReaderWithClient(pa.Eth, ipfsURL, c)
-		if err != nil {
-			t.Fatalf("facts.NewPrivateDataReaderWithClient: %v", err)
-		}
+		wr := facts.NewPrivateDataWriter(pa.FactProviderSession(), fs)
+		rd := facts.NewPrivateDataReader(pa.Eth, fs)
 
 		wpdRes, err := wr.WritePrivateData(ctx, pa.PassportAddress, factKey, factData, rnd)
 		if err != nil {
