@@ -4,11 +4,10 @@ import (
 	"context"
 	"math/big"
 
-	"github.com/monetha/reputation-go-sdk/contracts"
-	"github.com/pkg/errors"
-
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/monetha/reputation-go-sdk/contracts"
 	"github.com/monetha/reputation-go-sdk/eth"
+	"github.com/pkg/errors"
 )
 
 // ExchangeFinisher allows to finish data exchange
