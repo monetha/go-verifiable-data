@@ -1,9 +1,6 @@
 package commands
 
 import (
-	"fmt"
-
-	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/reputation-go-sdk/cmd/internal/cmdutils"
 	"github.com/monetha/reputation-go-sdk/cmd/privatedata-exchange/commands/flag"
@@ -25,13 +22,6 @@ type AcceptCommand struct {
 
 // Execute implements flags.Commander interface
 func (c *AcceptCommand) Execute(args []string) error {
-	fmt.Println("Accept command execution")
-	fmt.Println("Passport address:", c.PassportAddress.AsCommonAddress().String())
-	fmt.Println("Private exchange idx:", c.ExchangeIndex.AsBigInt().String())
-	fmt.Println("Passport owner address:", crypto.PubkeyToAddress(c.PassportOwnerKey.PublicKey).String())
-	fmt.Println("Backend URL:", c.BackendURL)
-	fmt.Println("IPFS URL:", c.IPFSURL)
-
 	initLogging(log.Lvl(c.Verbosity), c.VModule)
 	ctx := cmdutils.CreateCtrlCContext()
 
