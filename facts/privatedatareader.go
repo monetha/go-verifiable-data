@@ -48,7 +48,7 @@ func (r *PrivateDataReader) ReadPrivateData(
 		return nil, err
 	}
 
-	secretKey, err := r.decryptSecretKey(ctx, passportOwnerPrivateKey, factProviderHashes, passportAddress, factProviderAddress, factKey)
+	secretKey, err := r.DecryptSecretKey(ctx, passportOwnerPrivateKey, factProviderHashes, passportAddress, factProviderAddress, factKey)
 	if err != nil {
 		return nil, err
 	}
@@ -86,12 +86,12 @@ func (r *PrivateDataReader) ReadSecretKey(
 		return nil, err
 	}
 
-	return r.decryptSecretKey(ctx, passportOwnerPrivateKey, factProviderHashes, passportAddress, factProviderAddress, factKey)
+	return r.DecryptSecretKey(ctx, passportOwnerPrivateKey, factProviderHashes, passportAddress, factProviderAddress, factKey)
 }
 
-// decryptSecretKey reads ephemeral public key from IPFS and derives secret key using passport owner private key.
+// DecryptSecretKey reads ephemeral public key from IPFS and derives secret key using passport owner private key.
 // It returns ErrInvalidPassportOwnerKey error when hash of decrypted secret key does not match data key hash from fact provider.
-func (r *PrivateDataReader) decryptSecretKey(
+func (r *PrivateDataReader) DecryptSecretKey(
 	ctx context.Context,
 	passportOwnerPrivateKey *ecdsa.PrivateKey,
 	factProviderHashes *PrivateDataHashes,
@@ -182,7 +182,7 @@ func (r *PrivateDataReader) ReadHistoryPrivateData(
 		return nil, errors.Wrap(err, "failed to get history item of private data hash saving transaction")
 	}
 
-	secretKey, err := r.decryptSecretKey(ctx,
+	secretKey, err := r.DecryptSecretKey(ctx,
 		passportOwnerPrivateKey,
 		&PrivateDataHashes{
 			DataIPFSHash: hi.DataIPFSHash,
