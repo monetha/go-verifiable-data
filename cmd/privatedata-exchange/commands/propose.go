@@ -1,10 +1,19 @@
 package commands
 
 import (
-	"fmt"
+	"crypto/rand"
+	"io/ioutil"
 
-	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/monetha/reputation-go-sdk/cmd/internal/cmdutils"
 	"github.com/monetha/reputation-go-sdk/cmd/privatedata-exchange/commands/flag"
+	"github.com/monetha/reputation-go-sdk/facts"
+	"github.com/pkg/errors"
+)
+
+var (
+	// ErrExchangeKeyFileExists error returned when exchange key file is already exists (to not overwrite it)
+	ErrExchangeKeyFileExists = errors.New("exchange key file already exists")
 )
 
 // ProposeCommand handles propose command
@@ -16,17 +25,43 @@ type ProposeCommand struct {
 	StakedValue      flag.EthereumWei             `long:"stake"            required:"true" description:"amount of ethers to stake (in wei)"`
 	ExchangeKeyFile  string                       `long:"exchangekey"      required:"true" description:"file name where to save the exchange key (output)"`
 	BackendURL       string                       `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
+	Verbosity        int                          `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
+	VModule          string                       `long:"vmodule"                          description:"log verbosity pattern"`
 }
 
 // Execute implements flags.Commander interface
 func (c *ProposeCommand) Execute(args []string) error {
-	fmt.Println("Propose command execution")
-	fmt.Println("Passport address:", c.PassportAddress.AsCommonAddress().String())
-	fmt.Println("Fact provider address:", c.FactProvider.AsCommonAddress().String())
-	fmt.Println("Fact key:", c.FactKey)
-	fmt.Println("Data requester address:", crypto.PubkeyToAddress(c.DataRequesterKey.PublicKey).String())
-	fmt.Println("Staked amount:", c.StakedValue.EthString(), "ETH")
-	fmt.Println("Backend URL:", c.BackendURL)
+	if fileExists(c.ExchangeKeyFile) {
+		return ErrExchangeKeyFileExists
+	}
+
+	initLogging(log.Lvl(c.Verbosity), c.VModule)
+	ctx := cmdutils.CreateCtrlCContext()
+
+	e, err := newEth(c.BackendURL)
+	if err != nil {
+		return err
+	}
+
+	propResult, err := facts.NewExchange(
+		e.NewSession(c.DataRequesterKey.AsECDSAPrivateKey()),
+	).ProposePrivateDataExchange(
+		ctx,
+		c.PassportAddress.AsCommonAddress(),
+		c.FactProvider.AsCommonAddress(),
+		c.FactKey,
+		c.StakedValue.AsBigInt(),
+		rand.Reader,
+	)
+	if err != nil {
+		return err
+	}
+	log.Warn("Private data exchange proposed", "exchange_index", propResult.ExchangeIdx.String())
+
+	log.Warn("Writing exchange key to file", "file_name", c.ExchangeKeyFile)
+	if err := ioutil.WriteFile(c.ExchangeKeyFile, propResult.ExchangeKey, 0400); err != nil {
+		return errors.Wrap(err, "failed to write exchange key")
+	}
 
 	return nil
 }
