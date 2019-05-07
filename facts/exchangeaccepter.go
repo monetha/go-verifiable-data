@@ -11,7 +11,13 @@ import (
 	"github.com/monetha/reputation-go-sdk/crypto/ecies"
 	"github.com/monetha/reputation-go-sdk/eth"
 	"github.com/monetha/reputation-go-sdk/ipfs"
+	"github.com/monetha/reputation-go-sdk/types/exchange"
 	"github.com/pkg/errors"
+)
+
+var (
+	// ErrExchangeMustBeProposed returned when private data exchange is not in Proposed state
+	ErrExchangeMustBeProposed = errors.New("private data exchange must be in Proposed state")
 )
 
 // ExchangeAcceptor allows passport owner to accept private data exchange proposition
@@ -36,14 +42,22 @@ func (a *ExchangeAcceptor) AcceptPrivateDataExchange(ctx context.Context, passpo
 
 	c := contracts.InitPassportLogicContract(passportAddress, backend)
 
-	proposedExchange, err := c.PrivateDataExchanges(nil, exchangeIdx)
+	ex, err := c.PrivateDataExchanges(nil, exchangeIdx)
 	if err != nil {
 		return errors.Wrap(err, "failed to get proposed private data exchange")
 	}
 
+	// it should be proposed
+	exState := exchange.StateType(ex.State)
+	if exState != exchange.Proposed {
+		return ErrExchangeMustBeProposed
+	}
+
+	// TODO: add expiration check
+
 	// decrypt and check hash of ExchangeKey
 	publicKey := &ecdsa.PublicKey{}
-	if err := ecies.UnmarshalPublicKey(a.passportOwnerKey.Curve, proposedExchange.EncryptedExchangeKey, publicKey); err != nil {
+	if err := ecies.UnmarshalPublicKey(a.passportOwnerKey.Curve, ex.EncryptedExchangeKey, publicKey); err != nil {
 		return errors.Wrap(err, "failed to parse encrypted exchange key")
 	}
 
@@ -52,12 +66,12 @@ func (a *ExchangeAcceptor) AcceptPrivateDataExchange(ctx context.Context, passpo
 		return errors.Wrap(err, "failed to create ECIES instance")
 	}
 
-	_, exchangeKey, exchangeKeyHash, err := deriveSecretKeyringMaterial(ec, publicKey, passportAddress, proposedExchange.FactProvider, proposedExchange.Key)
+	_, exchangeKey, exchangeKeyHash, err := deriveSecretKeyringMaterial(ec, publicKey, passportAddress, ex.FactProvider, ex.Key)
 	if err != nil {
 		return err
 	}
 
-	if subtle.ConstantTimeCompare(proposedExchange.ExchangeKeyHash[:], exchangeKeyHash[:]) != 1 {
+	if subtle.ConstantTimeCompare(ex.ExchangeKeyHash[:], exchangeKeyHash[:]) != 1 {
 		return errors.New("proposed exchange has invalid exchange key hash")
 	}
 
@@ -67,12 +81,12 @@ func (a *ExchangeAcceptor) AcceptPrivateDataExchange(ctx context.Context, passpo
 			ctx,
 			a.passportOwnerKey,
 			&PrivateDataHashes{
-				DataIPFSHash: proposedExchange.DataIPFSHash,
-				DataKeyHash:  proposedExchange.DataKeyHash,
+				DataIPFSHash: ex.DataIPFSHash,
+				DataKeyHash:  ex.DataKeyHash,
 			},
 			passportAddress,
-			proposedExchange.FactProvider,
-			proposedExchange.Key,
+			ex.FactProvider,
+			ex.Key,
 		)
 	if err != nil {
 		return errors.Wrap(err, "failed to decrypt data encryption key")
@@ -86,8 +100,9 @@ func (a *ExchangeAcceptor) AcceptPrivateDataExchange(ctx context.Context, passpo
 
 	auth := a.s.TransactOpts
 	auth.Context = ctx
-	auth.Value = proposedExchange.DataRequesterValue // stake the same amount of ETH as data requester
+	auth.Value = ex.DataRequesterValue // stake the same amount of ETH as data requester
 
+	a.s.Log("Accepting private data exchange", "exchange_index", exchangeIdx.String(), "encrypted_key", encryptedDataKey)
 	tx, err := c.AcceptPrivateDataExchange(&auth, exchangeIdx, encryptedDataKey)
 	if err != nil {
 		return errors.Wrap(err, "failed to accept proposed private data exchange")
