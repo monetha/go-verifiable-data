@@ -15,11 +15,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-var (
-	// ErrExchangeMustBeProposed returned when private data exchange is not in Proposed state
-	ErrExchangeMustBeProposed = errors.New("private data exchange must be in Proposed state")
-)
-
 // ExchangeAcceptor allows passport owner to accept private data exchange proposition
 type ExchangeAcceptor struct {
 	passportOwnerKey *ecdsa.PrivateKey
