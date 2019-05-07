@@ -16,8 +16,8 @@ var (
 	ErrDataFileExists = errors.New("private data file already exists")
 )
 
-// ReadDataCommand handles `readdata` command
-type ReadDataCommand struct {
+// ReadCommand handles `read` command
+type ReadCommand struct {
 	PassportAddress flag.EthereumAddress     `long:"passportaddr" required:"true" description:"Ethereum address of passport contract"`
 	ExchangeIndex   flag.ExchangeIndex       `long:"exchidx"      required:"true" description:"private data exchange index"`
 	ExchangeKey     flag.ExchangeKeyFromFile `long:"exchangekey"  required:"true" description:"exchange key filename"`
@@ -29,7 +29,7 @@ type ReadDataCommand struct {
 }
 
 // Execute implements flags.Commander interface
-func (c *ReadDataCommand) Execute(args []string) error {
+func (c *ReadCommand) Execute(args []string) error {
 	if fileExists(c.DataFile) {
 		return ErrDataFileExists
 	}
