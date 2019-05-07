@@ -48,7 +48,7 @@ func (f *ExchangeDisputer) DisputePrivateDataExchange(ctx context.Context, passp
 
 	// TODO: add expiration check
 
-	f.Log("Dispute private datat exchange", "exchange_index", exchangeIdx.String())
+	f.Log("Dispute private data exchange", "exchange_index", exchangeIdx.String())
 	tx, err := c.DisputePrivateDataExchange(&f.TransactOpts, exchangeIdx, exchangeKey)
 	if err != nil {
 		return errors.Wrap(err, "failed to dispute accepted private data exchange")
