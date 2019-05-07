@@ -1,10 +1,10 @@
 package commands
 
 import (
-	"fmt"
-
-	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/log"
+	"github.com/monetha/reputation-go-sdk/cmd/internal/cmdutils"
 	"github.com/monetha/reputation-go-sdk/cmd/privatedata-exchange/commands/flag"
+	"github.com/monetha/reputation-go-sdk/facts"
 )
 
 // DisputeCommand handles dispute command
@@ -14,15 +14,31 @@ type DisputeCommand struct {
 	ExchangeKey      flag.ExchangeKeyFromFile     `long:"exchangekey"  required:"true" description:"exchange key filename"`
 	DataRequesterKey flag.ECDSAPrivateKeyFromFile `long:"requesterkey" required:"true" description:"data requester private key filename"`
 	BackendURL       string                       `long:"backendurl"   required:"true" description:"Ethereum backend URL"`
+	Verbosity        int                          `long:"verbosity"                    description:"log verbosity (0-9)" default:"2"`
+	VModule          string                       `long:"vmodule"                      description:"log verbosity pattern"`
 }
 
 // Execute implements flags.Commander interface
 func (c *DisputeCommand) Execute(args []string) error {
-	fmt.Println("Dispute command execution")
-	fmt.Println("Passport address:", c.PassportAddress.AsCommonAddress().String())
-	fmt.Println("Private exchange idx:", c.ExchangeIndex.AsBigInt().String())
-	fmt.Println("Data requester address:", crypto.PubkeyToAddress(c.DataRequesterKey.PublicKey).String())
-	fmt.Println("Backend URL:", c.BackendURL)
+	initLogging(log.Lvl(c.Verbosity), c.VModule)
+	ctx := cmdutils.CreateCtrlCContext()
+
+	e, err := newEth(c.BackendURL)
+	if err != nil {
+		return err
+	}
+
+	err = facts.NewExchangeDisputer(
+		e.NewSession(c.DataRequesterKey.AsECDSAPrivateKey()),
+	).DisputePrivateDataExchange(
+		ctx,
+		c.PassportAddress.AsCommonAddress(),
+		c.ExchangeIndex.AsBigInt(),
+		c.ExchangeKey,
+	)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
