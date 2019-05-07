@@ -1,0 +1,75 @@
+package facts
+
+import (
+	"context"
+	"crypto/subtle"
+	"math/big"
+
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/monetha/reputation-go-sdk/contracts"
+	"github.com/monetha/reputation-go-sdk/eth"
+	"github.com/monetha/reputation-go-sdk/ipfs"
+	"github.com/monetha/reputation-go-sdk/types/exchange"
+	"github.com/pkg/errors"
+)
+
+var (
+	// ErrExchangeMustBeClosedOrAccepted returned when private data exchange is not in Closed or Accepted state
+	ErrExchangeMustBeClosedOrAccepted = errors.New("private data exchange must be in Closed or Accepted state")
+	// ErrInvalidExchangeKey returned when hash of exchange key does not match exchange key hash stored in private data exchange
+	ErrInvalidExchangeKey = errors.New("invalid exchange key")
+	// ErrDecryptedSecretKeyIsInvalid returned when secret key hash does not match secret key hash stored in private data exchange
+	ErrDecryptedSecretKeyIsInvalid = errors.New("decrypted data secret key is invalid, it's safe to dispute")
+)
+
+// ExchangeDataReader allows to read and decrypt private data from private data exchange
+type ExchangeDataReader struct {
+	e  *eth.Eth
+	fs *ipfs.IPFS
+}
+
+// NewExchangeDataReader creates new instance of ExchangeDataReader
+func NewExchangeDataReader(e *eth.Eth, fs *ipfs.IPFS) *ExchangeDataReader {
+	return &ExchangeDataReader{e: e, fs: fs}
+}
+
+// ReadPrivateData decrypts data secret key from private data exchange, then it reads and decrypts private data.
+func (r *ExchangeDataReader) ReadPrivateData(ctx context.Context, passportAddress common.Address, exchangeIdx *big.Int, exchangeKey [32]byte) ([]byte, error) {
+	backend := r.e.Backend
+
+	c := contracts.InitPassportLogicContract(passportAddress, backend)
+
+	// getting private data exchange by index
+	ex, err := c.PrivateDataExchanges(nil, exchangeIdx)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get private data exchange")
+	}
+
+	// it should be either closed or accepted
+	exState := exchange.StateType(ex.State)
+	if exState != exchange.Closed && exState != exchange.Accepted {
+		return nil, ErrExchangeMustBeClosedOrAccepted
+	}
+
+	// validating exchange key by comparing hashes
+	exchangeKeyHash := crypto.Keccak256Hash(exchangeKey[:])
+	if subtle.ConstantTimeCompare(ex.ExchangeKeyHash[:], exchangeKeyHash[:]) != 1 {
+		return nil, ErrInvalidExchangeKey
+	}
+
+	// decrypting secret key from private data exchange using exchange key
+	var secretDataKey [32]byte
+	for i, b := range exchangeKey {
+		secretDataKey[i] = ex.EncryptedDataKey[i] ^ b
+	}
+
+	// validating secret key by comparing hashes
+	secretDataKeyHash := crypto.Keccak256Hash(secretDataKey[:])
+	if subtle.ConstantTimeCompare(ex.DataKeyHash[:], secretDataKeyHash[:]) != 1 {
+		return nil, ErrDecryptedSecretKeyIsInvalid
+	}
+
+	return NewPrivateDataReader(r.e, r.fs).
+		DecryptPrivateData(ctx, ex.DataIPFSHash, secretDataKey[:], nil)
+}
