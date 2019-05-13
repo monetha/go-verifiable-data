@@ -2,13 +2,11 @@ package facts
 
 import (
 	"context"
-	"crypto/ecdsa"
 	"math/big"
 	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/monetha/reputation-go-sdk/contracts"
 	"github.com/monetha/reputation-go-sdk/eth"
 	"github.com/monetha/reputation-go-sdk/types/exchange"
@@ -17,21 +15,19 @@ import (
 
 // ExchangeTimeouter allows to timeout data exchange/close it after proposition has expired.
 type ExchangeTimeouter struct {
-	dataRequesterPubKey ecdsa.PublicKey
-	s                   *eth.Session
-	clock               Clock
+	s     *eth.Session
+	clock Clock
 }
 
 // NewExchangeTimeouter converts session to ExchangeTimeouter
-func NewExchangeTimeouter(e *eth.Eth, dataRequesterKey *ecdsa.PrivateKey, clock Clock) *ExchangeTimeouter {
+func NewExchangeTimeouter(s *eth.Session, clock Clock) *ExchangeTimeouter {
 	if clock == nil {
 		clock = realClock{}
 	}
 
 	return &ExchangeTimeouter{
-		dataRequesterPubKey: dataRequesterKey.PublicKey,
-		s:                   e.NewSession(dataRequesterKey),
-		clock:               clock,
+		s:     s,
+		clock: clock,
 	}
 }
 
@@ -53,8 +49,7 @@ func (f *ExchangeTimeouter) TimeoutPrivateDataExchange(ctx context.Context, pass
 	}
 
 	// only data requester can call "timeout"
-	callerAddress := crypto.PubkeyToAddress(f.dataRequesterPubKey)
-	if callerAddress != ex.DataRequester {
+	if f.s.TransactOpts.From != ex.DataRequester {
 		return ErrOnlyDataRequesterAllowedToCall
 	}
 

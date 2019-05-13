@@ -28,8 +28,7 @@ func (c *TimeoutCommand) Execute(args []string) error {
 	}
 
 	err = facts.NewExchangeTimeouter(
-		e,
-		c.DataRequesterKey.AsECDSAPrivateKey(),
+		e.NewSession(c.DataRequesterKey.AsECDSAPrivateKey()),
 		nil,
 	).TimeoutPrivateDataExchange(
 		ctx,
