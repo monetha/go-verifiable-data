@@ -92,7 +92,7 @@ func (r *Reader) ReadTxData(ctx context.Context, passport common.Address, factPr
 	(*eth.Eth)(r).Log("Getting transaction by hash", "tx_hash", txHash.Hex())
 	tx, _, err := backend.TransactionByHash(ctx, txHash)
 	if err != nil {
-		return nil, fmt.Errorf("facts: TransactionByHash(%v): %v", txHash, err)
+		return nil, fmt.Errorf("facts: TransactionByHash(%v): %v", txHash.String(), err)
 	}
 
 	params, err := txdata.ParseSetTxDataBlockNumberCallData(tx.Data())
@@ -322,7 +322,7 @@ func (r *Reader) ReadOwnerPublicKey(ctx context.Context, passport common.Address
 	(*eth.Eth)(r).Log("Getting transaction by hash", "tx_hash", txHash.Hex())
 	tx, _, err := backend.TransactionByHash(ctx, txHash)
 	if err != nil {
-		err = fmt.Errorf("facts: TransactionByHash(%v): %v", txHash, err)
+		err = fmt.Errorf("facts: TransactionByHash(%v): %v", txHash.String(), err)
 		return
 	}
 

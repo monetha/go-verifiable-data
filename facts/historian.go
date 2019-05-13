@@ -536,7 +536,7 @@ func (h *Historian) getTransactionSenderData(ctx context.Context, txHash common.
 	(*eth.Eth)(h).Log("Getting transaction by hash", "tx_hash", txHash.Hex())
 	tx, _, err := h.Backend.TransactionByHash(ctx, txHash)
 	if err != nil {
-		return common.Address{}, nil, fmt.Errorf("facts: TransactionByHash(%v): %v", txHash, err)
+		return common.Address{}, nil, fmt.Errorf("facts: TransactionByHash(%v): %v", txHash.String(), err)
 	}
 
 	from, err := types.Sender(types.NewEIP155Signer(tx.ChainId()), tx)
