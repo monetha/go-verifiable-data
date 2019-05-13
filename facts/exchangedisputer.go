@@ -5,12 +5,12 @@ import (
 	"crypto/subtle"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/monetha/reputation-go-sdk/types/exchange"
-
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/monetha/reputation-go-sdk/contracts"
 	"github.com/monetha/reputation-go-sdk/eth"
+	"github.com/monetha/reputation-go-sdk/types/exchange"
 	"github.com/pkg/errors"
 )
 
@@ -29,7 +29,7 @@ func (f *ExchangeDisputer) DisputePrivateDataExchange(ctx context.Context, passp
 	c := contracts.InitPassportLogicContract(passportAddress, backend)
 
 	// getting private data exchange by index
-	ex, err := c.PrivateDataExchanges(nil, exchangeIdx)
+	ex, err := c.PrivateDataExchanges(&bind.CallOpts{Context: ctx}, exchangeIdx)
 	if err != nil {
 		return errors.Wrap(err, "failed to get private data exchange")
 	}

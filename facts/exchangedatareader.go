@@ -5,6 +5,7 @@ import (
 	"crypto/subtle"
 	"math/big"
 
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/monetha/reputation-go-sdk/contracts"
@@ -37,7 +38,7 @@ func (r *ExchangeDataReader) ReadPrivateData(ctx context.Context, passportAddres
 	c := contracts.InitPassportLogicContract(passportAddress, backend)
 
 	// getting private data exchange by index
-	ex, err := c.PrivateDataExchanges(nil, exchangeIdx)
+	ex, err := c.PrivateDataExchanges(&bind.CallOpts{Context: ctx}, exchangeIdx)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get private data exchange")
 	}

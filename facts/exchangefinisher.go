@@ -4,6 +4,7 @@ import (
 	"context"
 	"math/big"
 
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/monetha/reputation-go-sdk/contracts"
 	"github.com/monetha/reputation-go-sdk/eth"
@@ -31,7 +32,7 @@ func (f *ExchangeFinisher) FinishPrivateDataExchange(ctx context.Context, passpo
 
 	c := contracts.InitPassportLogicContract(passportAddress, backend)
 
-	ex, err := c.PrivateDataExchanges(nil, exchangeIdx)
+	ex, err := c.PrivateDataExchanges(&bind.CallOpts{Context: ctx}, exchangeIdx)
 	if err != nil {
 		return errors.Wrap(err, "failed to get proposed private data exchange")
 	}
