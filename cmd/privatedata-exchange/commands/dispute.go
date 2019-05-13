@@ -30,6 +30,7 @@ func (c *DisputeCommand) Execute(args []string) error {
 
 	err = facts.NewExchangeDisputer(
 		e.NewSession(c.DataRequesterKey.AsECDSAPrivateKey()),
+		nil,
 	).DisputePrivateDataExchange(
 		ctx,
 		c.PassportAddress.AsCommonAddress(),

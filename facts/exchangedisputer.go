@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/subtle"
 	"math/big"
+	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -15,16 +16,23 @@ import (
 )
 
 // ExchangeDisputer allows to dispute data exchange
-type ExchangeDisputer eth.Session
+type ExchangeDisputer struct {
+	s     *eth.Session
+	clock Clock
+}
 
 // NewExchangeDisputer converts session to ExchangeDisputer
-func NewExchangeDisputer(s *eth.Session) *ExchangeDisputer {
-	return (*ExchangeDisputer)(s)
+func NewExchangeDisputer(s *eth.Session, clock Clock) *ExchangeDisputer {
+	if clock == nil {
+		clock = realClock{}
+	}
+
+	return &ExchangeDisputer{s: s, clock: clock}
 }
 
 // DisputePrivateDataExchange closes private data exchange after acceptance by dispute.
 func (f *ExchangeDisputer) DisputePrivateDataExchange(ctx context.Context, passportAddress common.Address, exchangeIdx *big.Int, exchangeKey [32]byte) error {
-	backend := f.Backend
+	backend := f.s.Backend
 
 	c := contracts.InitPassportLogicContract(passportAddress, backend)
 
@@ -36,8 +44,21 @@ func (f *ExchangeDisputer) DisputePrivateDataExchange(ctx context.Context, passp
 
 	// it should be either closed or accepted
 	exState := exchange.StateType(ex.State)
-	if exState != exchange.Closed && exState != exchange.Accepted {
-		return ErrExchangeMustBeClosedOrAccepted
+	if exState != exchange.Accepted {
+		return ErrExchangeMustBeAccepted
+	}
+
+	auth := f.s.TransactOpts
+	auth.Context = ctx
+
+	// only data requester can call "dispute"
+	if auth.From != ex.DataRequester {
+		return ErrOnlyDataRequesterAllowedToCall
+	}
+
+	// it should not be expired
+	if isExpired(ex.StateExpired, f.clock.Now().Add(1*time.Hour)) {
+		return ErrExchangeIsExpiredOrWillBeExpiredVerySoon
 	}
 
 	// validating exchange key by comparing hashes
@@ -46,14 +67,12 @@ func (f *ExchangeDisputer) DisputePrivateDataExchange(ctx context.Context, passp
 		return ErrInvalidExchangeKey
 	}
 
-	// TODO: add expiration check
-
-	f.Log("Dispute private data exchange", "exchange_index", exchangeIdx.String())
-	tx, err := c.DisputePrivateDataExchange(&f.TransactOpts, exchangeIdx, exchangeKey)
+	f.s.Log("Dispute private data exchange", "exchange_index", exchangeIdx.String())
+	tx, err := c.DisputePrivateDataExchange(&auth, exchangeIdx, exchangeKey)
 	if err != nil {
 		return errors.Wrap(err, "failed to dispute accepted private data exchange")
 	}
 
-	_, err = f.WaitForTxReceipt(ctx, tx.Hash())
+	_, err = f.s.WaitForTxReceipt(ctx, tx.Hash())
 	return err
 }
