@@ -131,7 +131,7 @@ func main() {
 		passportOwnerAddress := bind.NewKeyedTransactor(passportOwnerKey).From
 
 		factProviderKey := cmdutils.TestFactProviderKey
-		factProviderAddress := bind.NewKeyedTransactor(factProviderKey).From
+		factProviderAddress = bind.NewKeyedTransactor(factProviderKey).From
 
 		alloc := core.GenesisAlloc{
 			monethaAddress:       {Balance: big.NewInt(deployer.PassportFactoryGasLimit)},
