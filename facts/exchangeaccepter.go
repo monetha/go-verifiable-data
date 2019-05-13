@@ -5,6 +5,7 @@ import (
 	"crypto/ecdsa"
 	"crypto/subtle"
 	"math/big"
+	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -21,14 +22,19 @@ type ExchangeAcceptor struct {
 	passportOwnerKey *ecdsa.PrivateKey
 	s                *eth.Session
 	fs               *ipfs.IPFS
+	clock            Clock
 }
 
 // NewExchangeAcceptor create new instance of ExchangeAcceptor
-func NewExchangeAcceptor(e *eth.Eth, passportOwnerKey *ecdsa.PrivateKey, fs *ipfs.IPFS) *ExchangeAcceptor {
+func NewExchangeAcceptor(e *eth.Eth, passportOwnerKey *ecdsa.PrivateKey, fs *ipfs.IPFS, clock Clock) *ExchangeAcceptor {
+	if clock == nil {
+		clock = realClock{}
+	}
 	return &ExchangeAcceptor{
 		passportOwnerKey: passportOwnerKey,
 		s:                e.NewSession(passportOwnerKey),
 		fs:               fs,
+		clock:            clock,
 	}
 }
 
@@ -50,7 +56,7 @@ func (a *ExchangeAcceptor) AcceptPrivateDataExchange(ctx context.Context, passpo
 	}
 
 	// it should not be expired
-	if oneHourBeforeExpiration(ex.StateExpired) {
+	if isExpired(ex.StateExpired, a.clock.Now().Add(1*time.Hour)) {
 		return ErrExchangeIsExpired
 	}
 

@@ -17,11 +17,17 @@ var (
 	ErrInvalidExchangeKey = errors.New("invalid exchange key")
 )
 
-var oneHourSecondsInt = big.NewInt(60 * 60)
+// Clock interface is used to "mock" time.Now and time.After
+type Clock interface {
+	Now() time.Time
+	After(d time.Duration) <-chan time.Time
+}
 
-func oneHourBeforeExpiration(expirationTimestamp *big.Int) bool {
-	now := big.NewInt(time.Now().Unix())
-	nowPlusHour := now.Add(now, oneHourSecondsInt)
+type realClock struct{}
 
-	return expirationTimestamp != nil && expirationTimestamp.Cmp(nowPlusHour) == -1
+func (realClock) Now() time.Time                         { return time.Now() }
+func (realClock) After(d time.Duration) <-chan time.Time { return time.After(d) }
+
+func isExpired(expirationTimestamp *big.Int, now time.Time) bool {
+	return expirationTimestamp != nil && expirationTimestamp.Cmp(big.NewInt(now.Unix())) == -1
 }

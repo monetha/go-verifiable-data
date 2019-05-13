@@ -39,6 +39,7 @@ func (c *AcceptCommand) Execute(args []string) error {
 		e,
 		c.PassportOwnerKey.AsECDSAPrivateKey(),
 		fs,
+		nil,
 	).AcceptPrivateDataExchange(
 		ctx,
 		c.PassportAddress.AsCommonAddress(),
