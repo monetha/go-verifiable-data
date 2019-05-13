@@ -29,6 +29,7 @@ func (c *FinishCommand) Execute(args []string) error {
 
 	err = facts.NewExchangeFinisher(
 		e.NewSession(c.EthereumKey.AsECDSAPrivateKey()),
+		nil,
 	).FinishPrivateDataExchange(
 		ctx,
 		c.PassportAddress.AsCommonAddress(),
