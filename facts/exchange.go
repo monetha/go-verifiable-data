@@ -7,8 +7,10 @@ import (
 )
 
 var (
-	// ErrExchangeIsExpired returned when exchange state is expired
-	ErrExchangeIsExpired = errors.New("exchange is expired or will be expired very soon")
+	// ErrExchangeIsExpiredOrWillBeExpiredVerySoon returned when exchange state is expired or will be expired very soon
+	ErrExchangeIsExpiredOrWillBeExpiredVerySoon = errors.New("exchange is expired or will be expired very soon")
+	// ErrExchangeHasNotExpired returned when exchange has not expired
+	ErrExchangeHasNotExpired = errors.New("exchange has not expired")
 	// ErrExchangeMustBeProposed returned when private data exchange is not in Proposed state
 	ErrExchangeMustBeProposed = errors.New("private data exchange must be in Proposed state")
 	// ErrExchangeMustBeClosedOrAccepted returned when private data exchange is not in Closed or Accepted state

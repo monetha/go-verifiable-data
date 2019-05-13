@@ -3,6 +3,7 @@ package facts
 import (
 	"context"
 	"math/big"
+	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -13,16 +14,26 @@ import (
 )
 
 // ExchangeTimeouter allows to timeout data exchange/close it after proposition has expired.
-type ExchangeTimeouter eth.Session
+type ExchangeTimeouter struct {
+	s     *eth.Session
+	clock Clock
+}
 
 // NewExchangeTimeouter converts session to ExchangeTimeouter
-func NewExchangeTimeouter(s *eth.Session) *ExchangeTimeouter {
-	return (*ExchangeTimeouter)(s)
+func NewExchangeTimeouter(s *eth.Session, clock Clock) *ExchangeTimeouter {
+	if clock == nil {
+		clock = realClock{}
+	}
+
+	return &ExchangeTimeouter{
+		s:     s,
+		clock: clock,
+	}
 }
 
 // TimeoutPrivateDataExchange closes private data exchange after proposition has expired.
 func (f *ExchangeTimeouter) TimeoutPrivateDataExchange(ctx context.Context, passportAddress common.Address, exchangeIdx *big.Int) error {
-	backend := f.Backend
+	backend := f.s.Backend
 
 	c := contracts.InitPassportLogicContract(passportAddress, backend)
 
@@ -37,14 +48,17 @@ func (f *ExchangeTimeouter) TimeoutPrivateDataExchange(ctx context.Context, pass
 		return ErrExchangeMustBeProposed
 	}
 
-	// TODO: add expiration check
+	// now should be 1 minute after expiration
+	if isExpired(ex.StateExpired, f.clock.Now().Add(1*time.Minute)) {
+		return ErrExchangeHasNotExpired
+	}
 
-	f.Log("Timeout private data exchange", "exchange_index", exchangeIdx.String())
-	tx, err := c.TimeoutPrivateDataExchange(&f.TransactOpts, exchangeIdx)
+	f.s.Log("Timeout private data exchange", "exchange_index", exchangeIdx.String())
+	tx, err := c.TimeoutPrivateDataExchange(&f.s.TransactOpts, exchangeIdx)
 	if err != nil {
 		return errors.Wrap(err, "failed to close proposed private data exchange")
 	}
 
-	_, err = f.WaitForTxReceipt(ctx, tx.Hash())
+	_, err = f.s.WaitForTxReceipt(ctx, tx.Hash())
 	return err
 }

@@ -30,6 +30,7 @@ func NewExchangeAcceptor(e *eth.Eth, passportOwnerKey *ecdsa.PrivateKey, fs *ipf
 	if clock == nil {
 		clock = realClock{}
 	}
+
 	return &ExchangeAcceptor{
 		passportOwnerKey: passportOwnerKey,
 		s:                e.NewSession(passportOwnerKey),
@@ -57,7 +58,7 @@ func (a *ExchangeAcceptor) AcceptPrivateDataExchange(ctx context.Context, passpo
 
 	// it should not be expired
 	if isExpired(ex.StateExpired, a.clock.Now().Add(1*time.Hour)) {
-		return ErrExchangeIsExpired
+		return ErrExchangeIsExpiredOrWillBeExpiredVerySoon
 	}
 
 	// decrypt and check hash of ExchangeKey

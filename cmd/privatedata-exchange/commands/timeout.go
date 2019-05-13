@@ -29,6 +29,7 @@ func (c *TimeoutCommand) Execute(args []string) error {
 
 	err = facts.NewExchangeTimeouter(
 		e.NewSession(c.DataRequesterKey.AsECDSAPrivateKey()),
+		nil,
 	).TimeoutPrivateDataExchange(
 		ctx,
 		c.PassportAddress.AsCommonAddress(),
