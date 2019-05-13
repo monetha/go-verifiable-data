@@ -107,7 +107,7 @@ func (e *Eth) onlySuccessfulReceipt(tr *types.Receipt, err error) (*types.Receip
 	if tr.Status != types.ReceiptStatusSuccessful {
 		return nil, fmt.Errorf("tx failed: %+v", tr)
 	}
-	e.Log("Transaction successfully mined", "tx_hash", tr.TxHash.Hex(), "cumulative_gas_used", tr.CumulativeGasUsed)
+	e.Log("Transaction successfully mined", "tx_hash", tr.TxHash.Hex(), "gas_used", tr.GasUsed)
 	return tr, nil
 }
 
