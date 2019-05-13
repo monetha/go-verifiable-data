@@ -57,7 +57,7 @@ func (f *ExchangeTimeouter) TimeoutPrivateDataExchange(ctx context.Context, pass
 	}
 
 	// now should be 1 minute after expiration
-	if isExpired(ex.StateExpired, f.clock.Now().Add(-1*time.Minute)) {
+	if !isExpired(ex.StateExpired, f.clock.Now().Add(-1*time.Minute)) {
 		return ErrExchangeHasNotExpired
 	}
 
