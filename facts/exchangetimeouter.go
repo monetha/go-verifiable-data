@@ -48,18 +48,21 @@ func (f *ExchangeTimeouter) TimeoutPrivateDataExchange(ctx context.Context, pass
 		return ErrExchangeMustBeProposed
 	}
 
+	auth := f.s.TransactOpts
+	auth.Context = ctx
+
 	// only data requester can call "timeout"
-	if f.s.TransactOpts.From != ex.DataRequester {
+	if auth.From != ex.DataRequester {
 		return ErrOnlyDataRequesterAllowedToCall
 	}
 
 	// now should be 1 minute after expiration
-	if isExpired(ex.StateExpired, f.clock.Now().Add(1*time.Minute)) {
+	if isExpired(ex.StateExpired, f.clock.Now().Add(-1*time.Minute)) {
 		return ErrExchangeHasNotExpired
 	}
 
 	f.s.Log("Timeout private data exchange", "exchange_index", exchangeIdx.String())
-	tx, err := c.TimeoutPrivateDataExchange(&f.s.TransactOpts, exchangeIdx)
+	tx, err := c.TimeoutPrivateDataExchange(&auth, exchangeIdx)
 	if err != nil {
 		return errors.Wrap(err, "failed to close proposed private data exchange")
 	}
