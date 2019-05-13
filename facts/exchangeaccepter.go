@@ -49,7 +49,10 @@ func (a *ExchangeAcceptor) AcceptPrivateDataExchange(ctx context.Context, passpo
 		return ErrExchangeMustBeProposed
 	}
 
-	// TODO: add expiration check
+	// it should not be expired
+	if oneHourBeforeExpiration(ex.StateExpired) {
+		return ErrExchangeIsExpired
+	}
 
 	// decrypt and check hash of ExchangeKey
 	publicKey := &ecdsa.PublicKey{}
