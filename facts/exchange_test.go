@@ -10,6 +10,7 @@ import (
 	"math/rand"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/dnaeon/go-vcr/recorder"
 	"github.com/ethereum/go-ethereum/common"
@@ -35,6 +36,7 @@ func TestExchange(t *testing.T) {
 		IPFS                 *ipfs.IPFS
 		DataRequesterKey     *ecdsa.PrivateKey
 		DataRequesterAddress common.Address
+		AdjustTime           func(adjustment time.Duration)
 	}
 
 	type actAssertFun func(
@@ -68,15 +70,22 @@ func TestExchange(t *testing.T) {
 			t.Fatalf("WritePrivateData: %v", err)
 		}
 
+		clock := newClockMock()
 		actAssert(&testContext{
 			Context:              ctx,
 			T:                    t,
 			passportWithActors:   pa,
-			Clock:                newClockMock(),
+			Clock:                clock,
 			Rand:                 rnd,
 			IPFS:                 fs,
 			DataRequesterKey:     dataRequesterKey,
 			DataRequesterAddress: dataRequesterAddress,
+			AdjustTime: func(adjustment time.Duration) {
+				if err != pa.Eth.AdjustTime(adjustment) {
+					t.Fatalf("AdjustTime: %v", err)
+				}
+				clock.Add(adjustment)
+			},
 		})
 	}
 
@@ -87,6 +96,26 @@ func TestExchange(t *testing.T) {
 				ProposePrivateDataExchange(tc.Context, tc.PassportAddress, tc.FactProviderAddress, factKey, exchangeStake, tc.Rand)
 			if err != nil {
 				tc.Fatalf("ProposePrivateDataExchange: %v", err)
+			}
+		})
+	})
+
+	t.Run("data requester is able to timeout proposed private data exchange after 25 hours", func(t *testing.T) {
+		arrangeActAssert(t, "fixtures/private-data-exchange-timeout", func(tc *testContext) {
+			dataRequesterSession := tc.NewSession(tc.DataRequesterKey)
+			propRes, err := facts.
+				NewExchangeProposer(dataRequesterSession).
+				ProposePrivateDataExchange(tc.Context, tc.PassportAddress, tc.FactProviderAddress, factKey, exchangeStake, tc.Rand)
+			if err != nil {
+				tc.Fatalf("ProposePrivateDataExchange: %v", err)
+			}
+
+			tc.AdjustTime(25 * time.Hour)
+
+			if err := facts.
+				NewExchangeTimeouter(dataRequesterSession, tc.Clock).
+				TimeoutPrivateDataExchange(tc.Context, tc.PassportAddress, propRes.ExchangeIdx); err != nil {
+				tc.Errorf("TimeoutPrivateDataExchange: %v", err)
 			}
 		})
 	})

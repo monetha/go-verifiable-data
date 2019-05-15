@@ -7,6 +7,8 @@ import (
 	"math/big"
 	"time"
 
+	"github.com/ethereum/go-ethereum/accounts"
+
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -116,6 +118,25 @@ func (e *Eth) Log(msg string, ctx ...interface{}) {
 	lf := e.LogFun
 	if lf != nil {
 		lf(msg, ctx...)
+	}
+}
+
+// AdjustTime adds a time shift to the simulated clock if operation is supported by the backend,
+// otherwise accounts.ErrNotSupported error is returned.
+func (e *Eth) AdjustTime(adjustment time.Duration) error {
+	type timeAdjuster interface {
+		AdjustTime(adjustment time.Duration) error
+		Commit()
+	}
+
+	if adj, ok := e.Backend.(timeAdjuster); ok {
+		if err := adj.AdjustTime(adjustment); err != nil {
+			return err
+		}
+		adj.Commit()
+		return nil
+	} else {
+		return accounts.ErrNotSupported
 	}
 }
 
