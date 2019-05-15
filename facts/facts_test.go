@@ -8,7 +8,6 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/math"
 	"github.com/ethereum/go-ethereum/core"
@@ -40,28 +39,37 @@ func (pwa *passportWithActors) FactProviderSession() *eth.Session {
 	return pwa.NewSession(pwa.FactProviderKey)
 }
 
-func newPassportWithActors(ctx context.Context, t *testing.T, rnd io.Reader) *passportWithActors {
-	monethaKey, err := ecdsa.GenerateKey(crypto.S256(), rnd)
+func generatePrivateKey(t *testing.T, rnd io.Reader) (*ecdsa.PrivateKey, common.Address) {
+	key, err := ecdsa.GenerateKey(crypto.S256(), rnd)
 	if err != nil {
 		t.Fatalf("ecdsa.GenerateKey() error = %v", err)
 	}
-	monethaAddress := bind.NewKeyedTransactor(monethaKey).From
+	addr := crypto.PubkeyToAddress(key.PublicKey)
+	return key, addr
+}
 
-	passportOwnerKey, err := ecdsa.GenerateKey(crypto.S256(), rnd)
-	if err != nil {
-		t.Fatalf("ecdsa.GenerateKey() error = %v", err)
-	}
-	passportOwnerAddress := bind.NewKeyedTransactor(passportOwnerKey).From
+type account struct {
+	Address common.Address
+	Balance int64
+}
 
-	factProviderKey, err := ecdsa.GenerateKey(crypto.S256(), rnd)
-	if err != nil {
-		t.Fatalf("ecdsa.GenerateKey() error = %v", err)
-	}
-	factProviderAddress := bind.NewKeyedTransactor(factProviderKey).From
+func newPassportWithActors(
+	ctx context.Context,
+	t *testing.T,
+	rnd io.Reader,
+	accounts ...account,
+) *passportWithActors {
+	monethaKey, monethaAddress := generatePrivateKey(t, rnd)
+	passportOwnerKey, passportOwnerAddress := generatePrivateKey(t, rnd)
+	factProviderKey, factProviderAddress := generatePrivateKey(t, rnd)
+
 	alloc := core.GenesisAlloc{
 		monethaAddress:       {Balance: big.NewInt(deployer.PassportFactoryGasLimit)},
 		passportOwnerAddress: {Balance: big.NewInt(math.MaxInt64)},
 		factProviderAddress:  {Balance: big.NewInt(math.MaxInt64)},
+	}
+	for _, v := range accounts {
+		alloc[v.Address] = core.GenesisAccount{Balance: big.NewInt(v.Balance)}
 	}
 	sim := backend.NewSimulatedBackendExtended(alloc, 10000000)
 	sim.Commit()
