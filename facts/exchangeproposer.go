@@ -21,8 +21,8 @@ func NewExchangeProposer(s *eth.Session) *ExchangeProposer {
 	return (*ExchangeProposer)(s)
 }
 
-// PrivateDataExchangeResult holds result of calling ProposePrivateDataExchange
-type PrivateDataExchangeResult struct {
+// ProposePrivateDataExchangeResult holds result of calling ProposePrivateDataExchange
+type ProposePrivateDataExchangeResult struct {
 	ExchangeIdx     *big.Int    // exchange index
 	ExchangeKey     [32]byte    // exchange key is a key to be XORed with the secret key of private data (should be kept in secret by the data requester)
 	ExchangeKeyHash common.Hash // hash of exchange key hash
@@ -36,7 +36,7 @@ func (e *ExchangeProposer) ProposePrivateDataExchange(
 	factKey [32]byte,
 	exchangeStakeWei *big.Int,
 	rand io.Reader,
-) (*PrivateDataExchangeResult, error) {
+) (*ProposePrivateDataExchangeResult, error) {
 	backend := e.Backend
 	auth := e.TransactOpts
 	auth.Context = ctx
@@ -86,7 +86,7 @@ func (e *ExchangeProposer) ProposePrivateDataExchange(
 
 	log.Warn("PrivateDataExchangeProposed", "exchange_index", ev.ExchangeIdx.String(), "data_requester", ev.DataRequester.String(), "passport_owner", ev.PassportOwner.String())
 
-	res := &PrivateDataExchangeResult{
+	res := &ProposePrivateDataExchangeResult{
 		ExchangeIdx:     exchangeIdx,
 		ExchangeKeyHash: exchangeKeyHash,
 	}

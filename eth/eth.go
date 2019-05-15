@@ -135,9 +135,9 @@ func (e *Eth) AdjustTime(adjustment time.Duration) error {
 		}
 		adj.Commit()
 		return nil
-	} else {
-		return accounts.ErrNotSupported
 	}
+
+	return accounts.ErrNotSupported
 }
 
 // Session provides holds basic pre-configured parameters like backend, authorization, logging

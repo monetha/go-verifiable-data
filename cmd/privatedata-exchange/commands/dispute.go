@@ -28,7 +28,7 @@ func (c *DisputeCommand) Execute(args []string) error {
 		return err
 	}
 
-	err = facts.NewExchangeDisputer(
+	dispRes, err := facts.NewExchangeDisputer(
 		e.NewSession(c.DataRequesterKey.AsECDSAPrivateKey()),
 		nil,
 	).DisputePrivateDataExchange(
@@ -40,6 +40,8 @@ func (c *DisputeCommand) Execute(args []string) error {
 	if err != nil {
 		return err
 	}
+
+	log.Warn("Dispute result", "successful", dispRes.Successful, "cheater_address", dispRes.Cheater.String())
 
 	return nil
 }

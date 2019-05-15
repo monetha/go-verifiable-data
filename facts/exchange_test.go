@@ -18,7 +18,7 @@ import (
 	"github.com/monetha/reputation-go-sdk/ipfs"
 )
 
-func TestExchange(t *testing.T) {
+func TestPrivateDataExchange(t *testing.T) {
 	var (
 		ipfsURL       = "https://ipfs.infura.io:5001"
 		randSeed      = int64(1)
@@ -184,6 +184,38 @@ func TestExchange(t *testing.T) {
 				NewExchangeFinisher(tc.Eth.NewSession(tc.DataRequesterKey), tc.Clock).
 				FinishPrivateDataExchange(tc.Context, tc.PassportAddress, propRes.ExchangeIdx); err != nil {
 				tc.Fatalf("FinishPrivateDataExchange: %v", err)
+			}
+		})
+	})
+
+	t.Run("data requester is able to dispute fairly accepted private data exchange, but will be recognized as cheater", func(t *testing.T) {
+		arrangeActAssert(t, "fixtures/private-data-exchange-finish", func(tc *testContext) {
+			propRes, err := facts.
+				NewExchangeProposer(tc.NewSession(tc.DataRequesterKey)).
+				ProposePrivateDataExchange(tc.Context, tc.PassportAddress, tc.FactProviderAddress, factKey, exchangeStake, tc.Rand)
+			if err != nil {
+				tc.Fatalf("ProposePrivateDataExchange: %v", err)
+			}
+
+			if err := facts.
+				NewExchangeAcceptor(tc.Eth, tc.PassportOwnerKey, tc.IPFS, tc.Clock).
+				AcceptPrivateDataExchange(tc.Context, tc.PassportAddress, propRes.ExchangeIdx); err != nil {
+				tc.Fatalf("AcceptPrivateDataExchange: %v", err)
+			}
+
+			dispRes, err := facts.
+				NewExchangeDisputer(tc.Eth.NewSession(tc.DataRequesterKey), tc.Clock).
+				DisputePrivateDataExchange(tc.Context, tc.PassportAddress, propRes.ExchangeIdx, propRes.ExchangeKey)
+			if err != nil {
+				tc.Fatalf("DisputePrivateDataExchange: %v", err)
+			}
+
+			if dispRes.Successful {
+				tc.Error("expected unsuccessful dispute result")
+			}
+
+			if dispRes.Cheater != tc.DataRequesterAddress {
+				tc.Errorf("expected cheater address %v, but got %v", tc.DataRequesterAddress.String(), dispRes.Cheater.String())
 			}
 		})
 	})

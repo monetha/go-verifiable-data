@@ -121,3 +121,41 @@ func FilterPrivateDataExchangeProposed(
 
 	return
 }
+
+// FilterPrivateDataExchangeDisputed filters event
+// PrivateDataExchangeDisputed(uint256 indexed exchangeIdx, bool indexed successful, address indexed cheater)
+// from logs.
+func FilterPrivateDataExchangeDisputed(
+	ctx context.Context,
+	logs []*types.Log,
+	exchangeIdx []*big.Int, successful []bool, cheater []common.Address,
+) (events []PassportLogicContractPrivateDataExchangeDisputed, err error) {
+	cf := &PassportLogicContractFilterer{
+		contract: bind.NewBoundContract(common.Address{}, PassportLogicABI, nil, nil, methereum.SliceLogFilterer(logs)),
+	}
+
+	it, err := cf.FilterPrivateDataExchangeDisputed(&bind.FilterOpts{Context: ctx}, exchangeIdx, successful, cheater)
+	if err != nil {
+		return
+	}
+	defer func() {
+		if cErr := it.Close(); err == nil && cErr != nil {
+			err = cErr
+		}
+	}()
+
+	for it.Next() {
+		if err = it.Error(); err != nil {
+			return nil, err
+		}
+
+		ev := it.Event
+		if ev == nil {
+			continue
+		}
+
+		events = append(events, *ev)
+	}
+
+	return
+}
