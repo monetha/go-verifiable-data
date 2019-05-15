@@ -6,7 +6,9 @@ import (
 	"crypto/rand"
 	"io"
 	"math/big"
+	"sync"
 	"testing"
+	"time"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/math"
@@ -108,4 +110,25 @@ func createPassportAndFactProviderSession(ctx context.Context, t *testing.T) (co
 	pa := newPassportWithActors(ctx, t, rand.Reader)
 
 	return pa.PassportAddress, pa.FactProviderSession()
+}
+
+type clockMock struct {
+	mu  sync.RWMutex
+	now time.Time // current time
+}
+
+func newClockMock() *clockMock {
+	return &clockMock{now: time.Unix(0, 0)}
+}
+
+func (c *clockMock) Now() time.Time {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	return c.now
+}
+
+func (c *clockMock) Add(d time.Duration) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.now = c.now.Add(d)
 }

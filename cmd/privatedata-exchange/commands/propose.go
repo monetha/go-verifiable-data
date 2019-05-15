@@ -59,7 +59,7 @@ func (c *ProposeCommand) Execute(args []string) error {
 	log.Warn("Private data exchange proposed", "exchange_index", propResult.ExchangeIdx.String())
 
 	log.Warn("Writing exchange key to file", "file_name", c.ExchangeKeyFile)
-	if err := ioutil.WriteFile(c.ExchangeKeyFile, propResult.ExchangeKey, 0400); err != nil {
+	if err := ioutil.WriteFile(c.ExchangeKeyFile, propResult.ExchangeKey[:], 0400); err != nil {
 		return errors.Wrap(err, "failed to write exchange key")
 	}
 
