@@ -643,6 +643,37 @@ this is a very secret message
 
 ### Private data exchange
 
+Private data exchange engine enables participants to exchange private data via Passports in a secure manner. Anyone can 
+request private data from the passport of user. This is achieved by running an interactive protocol between the passport 
+owner and the data requester.
+
+How it works:
+
+1. The data requester initiates retrieval of private data from a passport by calling `propose` command. When executing this 
+   command, the data requester specifies which fact provider data he wants to read, encrypts exchange key with the passport 
+   owner's public key and transfers to the passport the funds that he is willing to pay for the private data.
+  
+1. The passport owner receives an event from the Ethereum blockchain or directly from the data requester for the data 
+   exchange proposition. If he is satisfied with the proposal, he executes the `accept` command. When executing this command, 
+   the passport owner encrypts the data encryption key with the exchange key of data requester and 
+   transfers the same amount of funds as the data requester to he passport as a guarantee of the validity of the data encryption key.
+   
+   The data requester has 24 hours to accept private data exchange. 24 hours after the exchange proposition, the data 
+   requester can close the proposition and return staked funds back by calling `timeout` command.
+   
+1. The data requester receives an event from the Ethereum blockchain or directly from the passport owner about accepted 
+   private data exchange. It decrypts the data access key using exchange key and reads private data using `read` command. 
+   After that `finish` command is called, which returns all staked funds to the passport owner.
+   
+   During the first 24 hours, the `finish` command can only be called by the data requester, after 24 hours anyone can call this command.
+
+1. If it is not possible to decrypt the data, the data requester calls the `dispute` command, revealing the exchange key.
+   The Ethereum contract code identifies the cheater and transfers all staked funds to the party who behaved honestly.
+   The data requester has 24 hours to open a dispute, otherwise the exchange is considered valid and the passport owner
+   can get all staked funds.
+   
+At any time, the `status` command can be used to get detailed information about the private data exchange.
+
 ![PlantUML model](http://www.plantuml.com/plantuml/png/jPF1JWCX48RlFCKSTqtRW_7KWwbH4prfZ3VZWSBiGheB28DjtzujbLGQgscgUmAopFzz0ym2SK-nxvZI4W5xHskG68JNZhGrZBsSlS9uV0cFtZeRKC8Kt7POrSnOGl2wLGJMGAVDWWdUTIXXlfw2vCJ1url4GEXPEPqo6CEGli00jyzt3D_HK5hCIHMkXEAcnNkv6gLYJtdp21mFmLbF3qk3lcPe96nW6Ckx4_IL4EWeGVCq_9KvrmMxASoAwM7c7FGNpDVTPvj9zsZZW0oy8VHmVg4c9tUyHGfR1RbHW3aNYvr72Yyjld9covApqKO7TUHjW4f6hqqxM86Qr0nsd_N0pTeQX2g9vr-AipXiyzswRVRYJrIMEhX8MDMGBKuy6wYM2WsKYY0KSa9P7-dwuoNEKNlvEUfVspeitwJExJ-K48N049hOZROavVkO3SFOTny0)
 
 #### Proposing private data exchange
