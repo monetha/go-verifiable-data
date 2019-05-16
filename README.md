@@ -28,6 +28,18 @@
     * [Changing passport permissions](#changing-passport-permissions)
     * [Reading facts history](#reading-facts-history)
     * [Passport scanner](#passport-scanner) (sample web application)
+    * [Private data](#private-data)        
+        * [Writing private data](#writing-private-data)
+        * [Reading private data](#reading-private-data)
+        * [Reading history of private data](#reading-history-of-private-data)
+    * [Private data exchange](#private-data-exchange)
+        * [Proposing private data exchange](#proposing-private-data-exchange)
+        * [Getting status of private data exchange](#getting-status-of-private-data-exchange)
+        * [Accepting private data exchange](#accepting-private-data-exchange)
+        * [Reading private data after private data exchange acceptance](#reading-private-data-after-private-data-exchange-acceptance)
+        * [Closing private data exchange proposition when timed out](#closing-private-data-exchange-proposition-when-timed-out)        
+        * [Closing private data exchange after acceptance](#closing-private-data-exchange-after-acceptance)
+        * [Opening dispute after private data exchange acceptance](#opening-dispute-after-private-data-exchange-acceptance)
 * [Permissioned blockchains support](#permissioned-blockchains-support)
     * [Quorum](#quorum)
 
@@ -436,6 +448,324 @@ and open [http://localhost:8080](http://localhost:8080) in your browser. More de
 The latest version of passport scanner is also uploaded to IPFS: https://ipfs.io/ipfs/QmNyHrzkD5RpxmxJyJKg9QraUYtGJ48KhskWjnGPfudhoy/
 
 Happy scanning!
+
+### Private data
+
+Private data is stored in encrypted form in IPFS, only the IPFS hash and hash of data encryption key are saved in the 
+blockchain.
+
+Reading/writing private data is as simple as reading/writing public data. The only difference is that only the person 
+who is the passport owner at the time of writing private data can read the 
+private data. The private data provider can read private data only if it has saved the data encryption key.
+The passport owner does not need to know the data encryption key, as he can decrypt all private data using his Ethereum 
+private key.
+
+#### Writing private data
+
+In order for the fact provider to write private data, it needs to specify the private data type: `-ftype privatedata`.
+
+If the fact provider specifies a `-datakeyfile` parameter, the encryption key will be saved to a file, which will allow 
+the fact provider to read the private data later (for verification purposes, for example).
+
+Let's try to store text `this is a very secret message` under the key `secret_message` as `privatedata` in passport 
+`0x4026a67a2C4746b94F168bd4d082708f78d7b29f`, and also save the data encryption key in the file `data_enc.key`:
+
+```bash
+echo -n "this is a very secret message" | \
+  ./bin/write-fact -ownerkey fact_provider.key \
+  -fkey secret_message \
+  -ftype privatedata \
+  -passportaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
+  -datakeyfile data_enc.key \
+  -backendurl https://ropsten.infura.io
+```
+
+As a result, you can see something like the following output:
+
+```
+WARN [05-13|16:51:53.823] Loaded configuration                     fact_provider=0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E backend_url=https://ropsten.infura.io passport=0x4026a67a2C4746b94F168bd4d082708f78d7b29f
+WARN [05-13|16:51:54.820] Filtering OwnershipTransferred           newOwner=0xD101709569D2dEc41f88d874Badd9c7CF1106AF7
+WARN [05-13|16:51:54.975] Getting transaction by hash              tx_hash=0x40768efcf3e6254216bed543433eaeac586fe0ed25b9de04d22e7677cfc980f1
+WARN [05-13|16:51:55.115] Writing ephemeral public key to IPFS...
+WARN [05-13|16:52:05.050] Ephemeral public key added to IPFS       hash=QmPDZpSfsbU1DKquxhZxEZ6JmWZ61RSa1UiHaqZHDdqMZV size=73
+WARN [05-13|16:52:05.050] Writing encrypted message to IPFS...
+WARN [05-13|16:52:16.885] Encrypted message added to IPFS          hash=QmfJuqBT7Kqd8Fb4omSDZWQMTpLkj2Gw81uYJm7wDz3Cpt size=53
+WARN [05-13|16:52:16.885] Writing message HMAC to IPFS...
+WARN [05-13|16:52:17.664] Message HMAC added to IPFS               hash=QmcqcwppRyKc8yQWrkECuixsBgpwyjiirfYUP4Y3TVKYgf size=40
+WARN [05-13|16:52:17.664] Creating directory in IPFS...
+WARN [05-13|16:52:29.507] Directory created in IPFS                hash=QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm
+WARN [05-13|16:52:29.507] Writing private data hashes to Ethereum  passport=0x4026a67a2C4746b94F168bd4d082708f78d7b29f fact_key="[115 101 99 114 101 116 95 109 101 115 115 97 103 101 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]" ipfs_hash=QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm data_key_hash=0x07bbab23c88ec28c3ddf46ebb8de1a24a278f1c27789cdb0b4fdfd7c5773f2ab
+WARN [05-13|16:52:29.652] Writing IPFS private data hashes to passport fact_provider=0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E key="[115 101 99 114 101 116 95 109 101 115 115 97 103 101 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]"
+WARN [05-13|16:52:30.323] Waiting for transaction                  hash=0x52dcfb7591be53cac31bd81fc2c297eb634b79607328969c7375fb481b02dea6
+WARN [05-13|16:52:34.496] Transaction successfully mined           tx_hash=0x52dcfb7591be53cac31bd81fc2c297eb634b79607328969c7375fb481b02dea6 gas_used=136031
+WARN [05-13|16:52:34.496] Writing data encryption key to file      file_name=data_enc.key
+WARN [05-13|16:52:34.497] Done.
+```
+
+From the output, you can see that private data was saved in IPFS: [QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm](https://ipfs.infura.io/ipfs/QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm)
+
+However, despite the fact that the private data is stored publicly, only the passport owner or the fact provider (only if he's saved the data encryption key) can decrypt it.
+
+#### Reading private data
+
+After the fact provider has written the public data to the passport, the data can be read either by passport owner or by 
+fact provider (only if he's saved the data encryption key). To read private data, the following data should be provided:
+* the address of the passport (`-passportaddr` parameter)
+* the address of the fact provider who stored the private data (`-factprovideraddr` parameter)
+* the key under which the private data was stored (`-fkey` parameter)
+* if the data is read by the fact provider, he need to specify data encryption key (`-datakeyfile` parameter)
+* if the data is read by the owner of the passport, he need to specify his private key (`-ownerkey` parameter)
+
+Let's try to retrieve private data as fact provider using data encryption key stored in file `data_enc.key` from passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f` that was stored by the fact provider `0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E` under the key `secret_message` as `privatedata` data type and write it to the standard output:
+
+```bash
+./bin/read-fact -out /dev/stdout \
+  -passportaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
+  -factprovideraddr 0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E \
+  -fkey secret_message \
+  -ftype privatedata \
+  -datakeyfile data_enc.key \
+  -backendurl https://ropsten.infura.io
+```
+
+You should see something like the following output:
+
+```
+WARN [05-13|17:00:27.686] Loaded configuration                     fact_provider=0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E fact_key="[115 101 99 114 101 116 95 109 101 115 115 97 103 101 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]" backend_url=https://ropsten.infura.io passport=0x4026a67a2C4746b94F168bd4d082708f78d7b29f
+WARN [05-13|17:00:28.549] Reading private data hashes from Ethereum passport=0x4026a67a2C4746b94F168bd4d082708f78d7b29f fact_provider=0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E fact_key="[115 101 99 114 101 116 95 109 101 115 115 97 103 101 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]"
+WARN [05-13|17:00:28.549] Getting IPFS private data hashes         fact_provider=0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E key="[115 101 99 114 101 116 95 109 101 115 115 97 103 101 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]"
+WARN [05-13|17:00:28.681] Reading encrypted message from IPFS      hash=QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm filename=encrypted_message
+WARN [05-13|17:00:29.230] Reading message HMAC from IPFS           hash=QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm filename=hmac
+WARN [05-13|17:00:29.816] Writing data to file
+this is a very secret message
+```
+
+Now let's try to read the same private data as passport owner. Instead of parameter `-datakeyfile data_enc.key`, parameter `-ownerkey pass_owner.key` is provided:
+
+```bash
+./bin/read-fact -out /dev/stdout \
+  -passportaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
+  -factprovideraddr 0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E \
+  -fkey secret_message \
+  -ftype privatedata \
+  -ownerkey pass_owner.key \
+  -backendurl https://ropsten.infura.io
+```
+
+After running the command passport owner should see something like this:
+
+```
+WARN [05-13|17:01:32.755] Loaded configuration                     fact_provider=0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E fact_key="[115 101 99 114 101 116 95 109 101 115 115 97 103 101 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]" backend_url=https://ropsten.infura.io passport=0x4026a67a2C4746b94F168bd4d082708f78d7b29f
+WARN [05-13|17:01:33.632] Reading private data hashes from Ethereum passport=0x4026a67a2C4746b94F168bd4d082708f78d7b29f fact_provider=0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E fact_key="[115 101 99 114 101 116 95 109 101 115 115 97 103 101 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]"
+WARN [05-13|17:01:33.632] Getting IPFS private data hashes         fact_provider=0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E key="[115 101 99 114 101 116 95 109 101 115 115 97 103 101 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]"
+WARN [05-13|17:01:33.771] Reading ephemeral public key from IPFS   hash=QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm filename=public_key
+WARN [05-13|17:01:34.342] Reading encrypted message from IPFS      hash=QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm filename=encrypted_message
+WARN [05-13|17:01:34.835] Reading message HMAC from IPFS           hash=QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm filename=hmac
+WARN [05-13|17:01:35.314] Writing data to file
+this is a very secret message
+```
+
+As you can see from the output, the passport owner additionally reads the ephemeral public key from IPFS, which allows 
+him to recover the data encryption key using his Ethereum private key.
+
+#### Reading history of private data
+
+Reading the history of private data works for private data in the same way as for public data. You only need to additionally 
+specify the data type `-ftype privatedata`, and specify either a data encryption key (`-datakeyfile` parameter) or a 
+passport owner’s Ethereum private key (`-ownerkey` parameter).
+
+Let's try to retrieve the entire change history for the passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f` in Ropsten blockchain:
+
+```bash
+./bin/read-history -out /dev/stdout \
+  -passportaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
+  -backendurl https://ropsten.infura.io
+```
+
+The output (converted to the table form):
+
+| fact_provider | key | data_type | change_type | block_number | tx_hash |
+|---------------|-----|-----------|-------------|--------------|---------|
+| 0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E | secret_message | PrivateData | Updated | 5590046 | 0x52dcfb7591be53cac31bd81fc2c297eb634b79607328969c7375fb481b02dea6 |
+| 0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E | some_text | TxData | Updated | 5590236 | 0xc792c69fd59a4146c06ee524262ab929b2af4a895a04df56d7cd1b0bb20af28b |
+
+From the output, you can see that private data was saved in transaction `0x52dcfb7591be53cac31bd81fc2c297eb634b79607328969c7375fb481b02dea6`.
+
+Let's try to read the private data from this transaction using data encryption key stored in file `data_enc.key`:
+
+```bash
+./bin/read-history -out /dev/stdout \
+  -passportaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
+  -txhash 0x52dcfb7591be53cac31bd81fc2c297eb634b79607328969c7375fb481b02dea6 \
+  -ftype privatedata \
+  -datakeyfile data_enc.key \
+  -backendurl https://ropsten.infura.io
+```
+
+The output:
+
+```
+WARN [05-13|17:05:03.014] Loaded configuration                     backend_url=https://ropsten.infura.io passport=0x4026a67a2C4746b94F168bd4d082708f78d7b29f
+WARN [05-13|17:05:03.766] Reading data hashes from Ethereum transaction passport=0x4026a67a2C4746b94F168bd4d082708f78d7b29f tx_hash=52dcfb…02dea6
+WARN [05-13|17:05:03.766] Getting transaction by hash              tx_hash=0x52dcfb7591be53cac31bd81fc2c297eb634b79607328969c7375fb481b02dea6
+WARN [05-13|17:05:03.918] Reading encrypted message from IPFS      hash=QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm filename=encrypted_message
+WARN [05-13|17:05:04.464] Reading message HMAC from IPFS           hash=QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm filename=hmac
+this is a very secret message
+```
+
+Keep in mind that every time a fact provider writes private data, a random data encryption key is used, so you need to 
+specify the encryption key that was used in that particular transaction. The passport owner does not need to know all 
+the data encryption keys, because he can restore them with his Ethereum private key.
+
+Reading private data from the same transaction by the passport owner looks very similar (instead of `-datakeyfile` 
+parameter `-ownerkey` parameter is specified):
+
+```bash
+./bin/read-history -out /dev/stdout \
+  -passportaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
+  -txhash 0x52dcfb7591be53cac31bd81fc2c297eb634b79607328969c7375fb481b02dea6 \
+  -ftype privatedata \
+  -ownerkey ./pass_owner.key \
+  -backendurl https://ropsten.infura.io
+```
+
+The output:
+
+```
+WARN [05-13|17:04:00.042] Loaded configuration                     backend_url=https://ropsten.infura.io passport=0x4026a67a2C4746b94F168bd4d082708f78d7b29f
+WARN [05-13|17:04:00.798] Reading data hashes from Ethereum transaction passport=0x4026a67a2C4746b94F168bd4d082708f78d7b29f tx_hash=52dcfb…02dea6
+WARN [05-13|17:04:00.798] Getting transaction by hash              tx_hash=0x52dcfb7591be53cac31bd81fc2c297eb634b79607328969c7375fb481b02dea6
+WARN [05-13|17:04:00.957] Reading ephemeral public key from IPFS   hash=QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm filename=public_key
+WARN [05-13|17:04:01.500] Reading encrypted message from IPFS      hash=QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm filename=encrypted_message
+WARN [05-13|17:04:02.038] Reading message HMAC from IPFS           hash=QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm filename=hmac
+this is a very secret message
+```
+
+### Private data exchange
+
+![PlantUML model](http://www.plantuml.com/plantuml/png/jPF1JWCX48RlFCKSTqtRW_7KWwbH4prfZ3VZWSBiGheB28DjtzujbLGQgscgUmAopFzz0ym2SK-nxvZI4W5xHskG68JNZhGrZBsSlS9uV0cFtZeRKC8Kt7POrSnOGl2wLGJMGAVDWWdUTIXXlfw2vCJ1url4GEXPEPqo6CEGli00jyzt3D_HK5hCIHMkXEAcnNkv6gLYJtdp21mFmLbF3qk3lcPe96nW6Ckx4_IL4EWeGVCq_9KvrmMxASoAwM7c7FGNpDVTPvj9zsZZW0oy8VHmVg4c9tUyHGfR1RbHW3aNYvr72Yyjld9covApqKO7TUHjW4f6hqqxM86Qr0nsd_N0pTeQX2g9vr-AipXiyzswRVRYJrIMEhX8MDMGBKuy6wYM2WsKYY0KSa9P7-dwuoNEKNlvEUfVspeitwJExJ-K48N049hOZROavVkO3SFOTny0)
+
+#### Proposing private data exchange
+
+```bash
+./bin/privatedata-exchange propose \
+  --passportaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
+  --factprovideraddr 0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E \
+  --fkey secret_message \
+  --requesterkey ./data_requester.key \
+  --stake 10000000000000000 \
+  --exchangekey ./exchange.key \
+  --backendurl https://ropsten.infura.io
+```
+
+```
+WARN [05-16|13:56:31.944] Filtering OwnershipTransferred           newOwner=0xD101709569D2dEc41f88d874Badd9c7CF1106AF7
+WARN [05-16|13:56:32.091] Getting transaction by hash              tx_hash=0x40768efcf3e6254216bed543433eaeac586fe0ed25b9de04d22e7677cfc980f1
+WARN [05-16|13:56:32.223] Proposing private data exchange          fact_provider=0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E fact_key="[115 101 99 114 101 116 95 109 101 115 115 97 103 101 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]" encrypted_key="[4 206 42 209 27 210 127 104 62 239 227 22 238 102 255 172 187 19 208 6 48 131 70 132 255 136 108 110 176 192 115 160 205 184 242 144 94 240 142 123 21 166 118 215 100 68 146 194 23 163 41 128 240 212 150 188 107 50 216 9 129 110 136 112 25]" key_hash=e86ec7…d8e4b9
+WARN [05-16|13:56:32.980] Waiting for transaction                  hash=0xd353c8d21f44a3f17ebe7782bedf03a3b6d4456721f24192bb9813e916977526
+WARN [05-16|13:56:37.123] Transaction successfully mined           tx_hash=0xd353c8d21f44a3f17ebe7782bedf03a3b6d4456721f24192bb9813e916977526 gas_used=398976
+WARN [05-16|13:56:37.123] PrivateDataExchangeProposed              exchange_index=1 data_requester=0xd2Bb3Aa3F2c0bdA6D8020f3228EabD4A89d8B951 passport_owner=0xD101709569D2dEc41f88d874Badd9c7CF1106AF7
+WARN [05-16|13:56:37.123] Private data exchange proposed           exchange_index=1
+WARN [05-16|13:56:37.123] Writing exchange key to file             file_name=./exchange.key
+```
+
+#### Getting status of private data exchange
+
+```bash
+./bin/privatedata-exchange status \
+  --passportaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
+  --exchidx 1 \
+  --backendurl https://ropsten.infura.io
+```
+
+```
+Private data exchange:               1 (Proposed, expires in 1 day)
+Data requester address:              0xd2Bb3Aa3F2c0bdA6D8020f3228EabD4A89d8B951
+Data requester staked:               0.01 ETH
+Passport owner address:              0xD101709569D2dEc41f88d874Badd9c7CF1106AF7
+Passport owner staked:               0 ETH
+Private data fact provider:          0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E
+Private data fact key:               secret_message
+Private data IPFS hash:              QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm
+```
+
+#### Accepting private data exchange
+
+```bash
+./bin/privatedata-exchange accept \
+  --passportaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
+  --exchidx 1 \
+  --ownerkey ./pass_owner.key \
+  --backendurl https://ropsten.infura.io
+```
+
+```
+WARN [05-16|14:01:18.257] Reading ephemeral public key from IPFS   hash=QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm filename=public_key
+WARN [05-16|14:01:18.773] Accepting private data exchange          exchange_index=1 encrypted_key="[12 201 213 144 184 166 215 0 173 4 39 228 62 198 102 75 221 245 254 31 183 117 86 152 34 68 218 152 49 76 233 214]"
+WARN [05-16|14:01:19.771] Waiting for transaction                  hash=0x51fb2ae16e6796bcdb6025b468ffcb3d045fc7ced359db88f64ee1cb7e0ab4dd
+WARN [05-16|14:01:32.305] Transaction successfully mined           tx_hash=0x51fb2ae16e6796bcdb6025b468ffcb3d045fc7ced359db88f64ee1cb7e0ab4dd gas_used=81836
+```
+
+#### Reading private data after private data exchange acceptance
+
+```bash
+./bin/privatedata-exchange read \
+  --passportaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
+  --exchidx 1 \
+  --exchangekey ./exchange.key \
+  --datafile /dev/stdout \
+  --backendurl https://ropsten.infura.io
+```
+
+```
+WARN [05-16|14:02:20.619] Reading encrypted message from IPFS      hash=QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm filename=encrypted_message
+WARN [05-16|14:02:21.103] Reading message HMAC from IPFS           hash=QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm filename=hmac
+WARN [05-16|14:02:21.633] Writing private data to file             file_name=/dev/stdout
+this is a very secret message
+```
+
+#### Closing private data exchange proposition when timed out
+
+```bash
+./bin/privatedata-exchange timeout \
+  --passportaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
+  --exchidx 2 \
+  --requesterkey ./data_requester.key \
+  --backendurl https://ropsten.infura.io
+```
+
+#### Closing private data exchange after acceptance
+
+```bash
+./bin/privatedata-exchange finish \
+  --passportaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
+  --exchidx 1 \
+  --requesterkey ./data_requester.key \
+  --backendurl https://ropsten.infura.io
+```
+
+```
+WARN [05-16|14:03:24.275] Waiting for transaction                  hash=0x544c5b51c167efd7a1d50d26bffd706dbe2a13daefdf087afcfac6940f19b725
+WARN [05-16|14:03:45.061] Transaction successfully mined           tx_hash=0x544c5b51c167efd7a1d50d26bffd706dbe2a13daefdf087afcfac6940f19b725 gas_used=31348
+```
+
+#### Opening dispute after private data exchange acceptance
+
+```bash
+./bin/privatedata-exchange dispute \
+  --passportaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
+  --exchidx 3 \
+  --exchangekey ./exchange3.key \
+  --requesterkey ./data_requester.key \
+  --backendurl https://ropsten.infura.io
+```
+
+```
+WARN [05-16|14:38:05.921] Dispute private data exchange            exchange_index=3
+WARN [05-16|14:38:06.617] Waiting for transaction                  hash=0x2770518215a20bd2d339499c2c225b430b3d6b6e10c80fb681b3e3758da92001
+WARN [05-16|14:38:14.886] Transaction successfully mined           tx_hash=0x2770518215a20bd2d339499c2c225b430b3d6b6e10c80fb681b3e3758da92001 gas_used=38461
+WARN [05-16|14:38:14.886] Dispute result                           successful=false cheater_address=0xd2Bb3Aa3F2c0bdA6D8020f3228EabD4A89d8B951
+```
 
 ## Permissioned blockchains support
 
