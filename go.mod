@@ -20,6 +20,7 @@ require (
 	github.com/go-test/deep v1.0.1
 	github.com/golang/protobuf v1.3.1 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
+	github.com/hako/durafmt v0.0.0-20180520121703-7b7ae1e72ead
 	github.com/hashicorp/golang-lru v0.5.1 // indirect
 	github.com/huin/goupnp v1.0.0 // indirect
 	github.com/influxdata/influxdb v1.7.6 // indirect
