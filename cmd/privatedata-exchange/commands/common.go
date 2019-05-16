@@ -25,9 +25,10 @@ func newEth(backendURL string) (*eth.Eth, error) {
 	return eth.New(client, log.Warn), nil
 }
 
-func fileExists(name string) bool {
-	if _, err := os.Stat(name); os.IsExist(err) {
-		return true
+func fileExistsAndNotTty(name string) bool {
+	fInfo, err := os.Stat(name)
+	if os.IsNotExist(err) {
+		return false
 	}
-	return false
+	return (fInfo.Mode() & os.ModeCharDevice) == 0 // ignore tty
 }

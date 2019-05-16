@@ -30,7 +30,7 @@ type ReadCommand struct {
 
 // Execute implements flags.Commander interface
 func (c *ReadCommand) Execute(args []string) error {
-	if fileExists(c.DataFile) {
+	if fileExistsAndNotTty(c.DataFile) {
 		return ErrDataFileExists
 	}
 

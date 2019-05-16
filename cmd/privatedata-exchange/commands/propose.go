@@ -31,7 +31,7 @@ type ProposeCommand struct {
 
 // Execute implements flags.Commander interface
 func (c *ProposeCommand) Execute(args []string) error {
-	if fileExists(c.ExchangeKeyFile) {
+	if fileExistsAndNotTty(c.ExchangeKeyFile) {
 		return ErrExchangeKeyFileExists
 	}
 
