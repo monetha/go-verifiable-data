@@ -848,7 +848,16 @@ WARN [05-16|14:03:45.061] Transaction successfully mined           tx_hash=0x544
 
 #### Opening dispute after private data exchange acceptance
 
-TODO:
+If it is not possible to decrypt the data, the data requester calls the `dispute` command within 24 hours after acceptance, 
+revealing the exchange key. The logic of the passport is the arbitrator who determines who the cheater is.
+This is possible due to the fact that in the passport the hashes of both the data encryption key and the exchange key are saved, and
+the data encryption key is XORed with the exchange key during the private data exchange acceptance by the passport owner.
+
+When resolving a dispute, all staked funds are transferred to the side that behaved honestly.
+
+Below you can see how the data requester tries to pretend that he could not read the private data from exchange referred 
+by the index `3` from the passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f` providing valid exchange key in file `exchange3.key` and
+valid Ethereum private key of data requester stored in file `data_requester.key`:
 
 ```bash
 ./bin/privatedata-exchange dispute \
@@ -858,6 +867,9 @@ TODO:
   --requesterkey ./data_requester.key \
   --backendurl https://ropsten.infura.io
 ```
+
+However, as a result, we see that the contract makes the only right decision that the dispute is opened unfairly 
+(Dispute result: `successful=false`) and the data requester is cheater (`cheater_address=0xd2Bb3Aa3F2c0bdA6D8020f3228EabD4A89d8B951`):
 
 ```
 WARN [05-16|14:38:05.921] Dispute private data exchange            exchange_index=3
