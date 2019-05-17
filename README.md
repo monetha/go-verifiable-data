@@ -723,12 +723,22 @@ WARN [05-16|13:56:37.123] Writing exchange key to file             file_name=./e
 
 #### Getting status of private data exchange
 
+`status` command allows to get more detailed information about the private data exchange. To get the information the following parameters should be specified:
+
+* the passport address (`--passportaddr` parameter)
+* the private data exchange index (`--exchidx` parameter)
+
+Let's try to get this information about private data exchange referred by the index `1` from passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f`:
+
 ```bash
 ./bin/privatedata-exchange status \
   --passportaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
   --exchidx 1 \
   --backendurl https://ropsten.infura.io
 ```
+
+Immediately after creating the private data exchange proposition, you can see that it's in `Proposed` state, data 
+requester staked `0.01 ETH`, and the passport owner has one day left to accept it:
 
 ```
 Private data exchange:               1 (Proposed, expires in 1 day)
@@ -743,6 +753,15 @@ Private data IPFS hash:              QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw
 
 #### Accepting private data exchange
 
+To accept the private data exchange after proposition, passport owner should execute `accept` command providing the following parameters:
+
+* the passport address (`--passportaddr` parameter)
+* the private data exchange index (`--exchidx` parameter)
+* the passport owner's Ethereum private key (`--ownerkey` parameter)
+
+Thus, to accept a private exchange proposition referred by the index `1` from the passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f`, 
+the passport owner should execute the following command using it's Ethereum private key stored in file `pass_owner.key`:
+
 ```bash
 ./bin/privatedata-exchange accept \
   --passportaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
@@ -750,6 +769,8 @@ Private data IPFS hash:              QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw
   --ownerkey ./pass_owner.key \
   --backendurl https://ropsten.infura.io
 ```
+
+This is how the output looks like:
 
 ```
 WARN [05-16|14:01:18.257] Reading ephemeral public key from IPFS   hash=QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm filename=public_key
@@ -760,6 +781,16 @@ WARN [05-16|14:01:32.305] Transaction successfully mined           tx_hash=0x51f
 
 #### Reading private data after private data exchange acceptance
 
+After a private data exchange proposition is accepted, the data requester can read the private data by providing the following parameters:
+
+* the passport address (`--passportaddr` parameter)
+* the private data exchange index (`--exchidx` parameter)
+* the name of the file with the exchange key (`--exchangekey` parameter), that was created as result of `propose` command
+* the name of the file where the decrypted private data will be saved (`--datafile` parameter)
+
+Here is the command to read private data from a passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f` for the private 
+data exchange referred by the index `1`, using exchange key from file `exchange.key` and writing result to standard output:
+
 ```bash
 ./bin/privatedata-exchange read \
   --passportaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
@@ -768,6 +799,8 @@ WARN [05-16|14:01:32.305] Transaction successfully mined           tx_hash=0x51f
   --datafile /dev/stdout \
   --backendurl https://ropsten.infura.io
 ```
+
+Below you can see how the data was read, decrypted and output to the console:
 
 ```
 WARN [05-16|14:02:20.619] Reading encrypted message from IPFS      hash=QmPXKoz1jy16oHWApn5MmWgf2BcNtZTsTEAnbTtd8tw1xm filename=encrypted_message
