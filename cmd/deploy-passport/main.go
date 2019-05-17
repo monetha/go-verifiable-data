@@ -34,7 +34,7 @@ func main() {
 	)
 	flag.Parse()
 
-	if cmd.PrintVersion() {
+	if cmd.HasPrintedVersion() {
 		return
 	}
 
@@ -89,9 +89,10 @@ func main() {
 		cmdutils.CheckBalance(ctx, monethaSession, deployer.PassportFactoryGasLimit)
 
 		// deploying passport factory
-		passportFactoryAddress, err = deployer.New(monethaSession).DeployPassportFactory(ctx)
+		res, err := deployer.New(monethaSession).DeployPassportFactory(ctx)
 		cmdutils.CheckErr(err, "create passport factory")
 
+		passportFactoryAddress = res.PassportFactoryAddress
 	} else {
 		client, err := ethclient.Dial(*backendURL)
 		cmdutils.CheckErr(err, "ethclient.Dial")

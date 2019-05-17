@@ -1,4 +1,3 @@
-//go:generate go get github.com/alvaroloes/enumer
 //go:generate enumer -type=Type
 
 package data
@@ -23,4 +22,6 @@ const (
 	Bool Type = iota
 	// IPFS hash stored in Ethereum storage, data stored in IPFS
 	IPFS Type = iota
+	// PrivateData is encrypted data stored in IPFS, only IPFS hash and hash of encryption key is stored in Ethereum storage
+	PrivateData Type = iota
 )

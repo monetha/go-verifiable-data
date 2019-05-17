@@ -1,22 +1,25 @@
 package ipfs
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
-
-	"github.com/monetha/reputation-go-sdk/ipfs/files"
+	"net/url"
+	"strings"
 )
 
 // IPFS provides limited functionality to interact with the IPFS (https://ipfs.io)
 type IPFS struct {
-	url     string
+	url     *url.URL
 	httpcli *http.Client
 }
 
 // New creates new instance of IPFS from the provided url
-func New(url string) *IPFS {
+func New(url string) (*IPFS, error) {
 	c := &http.Client{
 		Transport: &http.Transport{
 			Proxy:             http.ProxyFromEnvironment,
@@ -28,36 +31,50 @@ func New(url string) *IPFS {
 }
 
 // NewWithClient creates new instance of IPFS from the provided url and http.Client
-func NewWithClient(url string, c *http.Client) *IPFS {
-	return &IPFS{
-		url:     url,
-		httpcli: c,
+func NewWithClient(uri string, c *http.Client) (*IPFS, error) {
+	if !strings.HasPrefix(uri, "http") {
+		uri = "http://" + uri
 	}
+	u, err := url.Parse(uri)
+	if err != nil {
+		return nil, err
+	}
+
+	return &IPFS{
+		url:     u,
+		httpcli: c,
+	}, nil
 }
 
-type object struct {
-	Hash string
+// AddResult contains result of AddResult command
+type AddResult struct {
+	Hash string `json:"Hash"`
+	Size uint64 `json:"Size,string"`
 }
+
+// Link represents an IPFS Merkle DAG Link between Nodes.
+type Link struct {
+	// multihash of the target object
+	Cid Cid `json:"Cid"`
+	// utf string name. should be unique per object
+	Name string `json:"Name"`
+	// cumulative size of target object
+	Size uint64 `json:"Size"`
+}
+
+// String implements fmt.Stringer interface
+func (a *AddResult) String() string { return fmt.Sprintf("Hash: %s Size: %d", a.Hash, a.Size) }
+
+// ToLink creates link from AddResult
+func (a *AddResult) ToLink(name string) Link { return Link{Cid: Cid(a.Hash), Name: name, Size: a.Size} }
 
 // Add a file to ipfs from the given reader, returns the hash of the added file
-func (f *IPFS) Add(ctx context.Context, r io.Reader) (string, error) {
-	var rc io.ReadCloser
-	if rclose, ok := r.(io.ReadCloser); ok {
-		rc = rclose
-	} else {
-		rc = ioutil.NopCloser(r)
-	}
-
-	// handler expects an array of files
-	fr := files.NewReaderFile("", "", rc, nil)
-	slf := files.NewSliceFile("", "", []files.File{fr})
-	fileReader := files.NewMultiFileReader(slf, true)
-
-	var out object
-	return out.Hash, f.request("add").
+func (f *IPFS) Add(ctx context.Context, r io.Reader) (*AddResult, error) {
+	var out AddResult
+	return &out, f.request("add").
 		Option("progress", false).
 		Option("pin", true).
-		Body(fileReader).
+		Body(r).
 		Exec(ctx, &out)
 }
 
@@ -74,10 +91,67 @@ func (f *IPFS) Cat(ctx context.Context, path string) (io.ReadCloser, error) {
 	return resp.Output, nil
 }
 
-func (f *IPFS) request(command string, args ...string) *requestBuilder {
-	return &requestBuilder{
-		command: command,
-		args:    args,
-		ipfs:    f,
+// CatBytes returns the content bytes at the given path.
+func (f *IPFS) CatBytes(ctx context.Context, path string) (bs []byte, err error) {
+	rc, err := f.Cat(ctx, path)
+	if err != nil {
+		return
 	}
+	defer func() {
+		if cErr := rc.Close(); cErr != nil && err == nil {
+			err = cErr
+		}
+	}()
+
+	bs, err = ioutil.ReadAll(rc)
+	return
+}
+
+type dagNode struct {
+	Data  string `json:"data"`
+	Links []Link `json:"links"`
+}
+
+// DagPutLinks puts directory containing links and returns Cid of directory.
+func (f *IPFS) DagPutLinks(ctx context.Context, links []Link) (Cid, error) {
+	dagJSONBytes, err := json.Marshal(dagNode{
+		Data:  "CAE=",
+		Links: links,
+	})
+	if err != nil {
+		return "", err
+	}
+
+	var out struct {
+		Cid Cid `json:"Cid"`
+	}
+
+	return out.Cid, f.request("dag/put").
+		Option("format", "protobuf").
+		Option("input-enc", "json").
+		Option("pin", true).
+		Body(bytes.NewBuffer(dagJSONBytes)).
+		Exec(ctx, &out)
+}
+
+// DagGetLinks gets directory links.
+func (f *IPFS) DagGetLinks(ctx context.Context, cid Cid) ([]Link, error) {
+	var out dagNode
+	return out.Links, f.request("dag/get", cid.String()).Exec(ctx, &out)
+}
+
+// ObjectStat provides information about dag nodes
+type ObjectStat struct {
+	Hash           string `json:"Hash"`
+	NumLinks       uint64 `json:"NumLinks"`
+	BlockSize      uint64 `json:"BlockSize"`
+	LinksSize      uint64 `json:"LinksSize"`
+	DataSize       uint64 `json:"DataSize"`
+	CumulativeSize uint64 `json:"CumulativeSize"`
+}
+
+// ObjectStat returns information about the dag node
+func (f *IPFS) ObjectStat(ctx context.Context, path string) (*ObjectStat, error) {
+	var out ObjectStat
+	return &out, f.request("object/stat", path).Exec(ctx, &out)
 }

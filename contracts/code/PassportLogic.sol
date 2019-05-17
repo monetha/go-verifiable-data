@@ -341,6 +341,39 @@ contract Storage is ClaimableProxy
 
     mapping(address => mapping(bytes32 => IPFSHashValue)) internal ipfsHashStorage;
 
+    struct PrivateData {
+        string dataIPFSHash; // The IPFS hash of encrypted private data
+        bytes32 dataKeyHash; // The hash of symmetric key that was used to encrypt the data
+    }
+
+    struct PrivateDataValue {
+        bool initialized;
+        PrivateData value;
+    }
+
+    mapping(address => mapping(bytes32 => PrivateDataValue)) internal privateDataStorage;
+
+    enum PrivateDataExchangeState {Closed, Proposed, Accepted}
+
+    struct PrivateDataExchange {
+        address dataRequester;          // The address of the data requester
+        uint256 dataRequesterValue;     // The amount staked by the data requester
+        address passportOwner;          // The address of the passport owner at the time of the data exchange proposition
+        uint256 passportOwnerValue;     // Tha amount staked by the passport owner
+        address factProvider;           // The private data provider
+        bytes32 key;                    // the key for the private data record
+        string dataIPFSHash;            // The IPFS hash of encrypted private data
+        bytes32 dataKeyHash;            // The hash of data symmetric key that was used to encrypt the data
+        bytes encryptedExchangeKey;     // The encrypted exchange session key (only passport owner can decrypt it)
+        bytes32 exchangeKeyHash;        // The hash of exchange session key
+        bytes32 encryptedDataKey;       // The data symmetric key XORed with the exchange key
+        PrivateDataExchangeState state; // The state of private data exchange
+        uint256 stateExpired;           // The state expiration timestamp
+    }
+
+    uint public openPrivateDataExchangesCount; // the count of open private data exchanges TODO: use it in contract destruction/ownership transfer logic
+    PrivateDataExchange[] public privateDataExchanges;
+
     /***************************************************************************
      *** END OF SECTION OF STORAGE VARIABLES                                 ***
      ***************************************************************************/
@@ -738,6 +771,249 @@ contract IPFSStorageLogic is Storage {
     }
 }
 
+// File: openzeppelin-solidity/contracts/math/SafeMath.sol
+
+/**
+ * @title SafeMath
+ * @dev Math operations with safety checks that throw on error
+ */
+library SafeMath {
+
+  /**
+  * @dev Multiplies two numbers, throws on overflow.
+  */
+  function mul(uint256 _a, uint256 _b) internal pure returns (uint256 c) {
+    // Gas optimization: this is cheaper than asserting 'a' not being zero, but the
+    // benefit is lost if 'b' is also tested.
+    // See: https://github.com/OpenZeppelin/openzeppelin-solidity/pull/522
+    if (_a == 0) {
+      return 0;
+    }
+
+    c = _a * _b;
+    assert(c / _a == _b);
+    return c;
+  }
+
+  /**
+  * @dev Integer division of two numbers, truncating the quotient.
+  */
+  function div(uint256 _a, uint256 _b) internal pure returns (uint256) {
+    // assert(_b > 0); // Solidity automatically throws when dividing by 0
+    // uint256 c = _a / _b;
+    // assert(_a == _b * c + _a % _b); // There is no case in which this doesn't hold
+    return _a / _b;
+  }
+
+  /**
+  * @dev Subtracts two numbers, throws on overflow (i.e. if subtrahend is greater than minuend).
+  */
+  function sub(uint256 _a, uint256 _b) internal pure returns (uint256) {
+    assert(_b <= _a);
+    return _a - _b;
+  }
+
+  /**
+  * @dev Adds two numbers, throws on overflow.
+  */
+  function add(uint256 _a, uint256 _b) internal pure returns (uint256 c) {
+    c = _a + _b;
+    assert(c >= _a);
+    return c;
+  }
+}
+
+// File: contracts/storage/PrivateDataStorageLogic.sol
+
+contract PrivateDataStorageLogic is Storage {
+    using SafeMath for uint256;
+
+    event PrivateDataHashesUpdated(address indexed factProvider, bytes32 indexed key);
+    event PrivateDataHashesDeleted(address indexed factProvider, bytes32 indexed key);
+
+    event PrivateDataExchangeProposed(uint256 indexed exchangeIdx, address indexed dataRequester, address indexed passportOwner);
+    event PrivateDataExchangeAccepted(uint256 indexed exchangeIdx, address indexed dataRequester, address indexed passportOwner);
+    event PrivateDataExchangeClosed(uint256 indexed exchangeIdx);
+    event PrivateDataExchangeDisputed(uint256 indexed exchangeIdx, bool indexed successful, address indexed cheater);
+
+    uint256 constant public privateDataExchangeProposeTimeout = 1 days;
+    uint256 constant public privateDataExchangeAcceptTimeout = 1 days;
+
+    /// @param _key The key for the record
+    /// @param _dataIPFSHash The IPFS hash of encrypted private data
+    /// @param _dataKeyHash The hash of symmetric key that was used to encrypt the data
+    function setPrivateDataHashes(bytes32 _key, string _dataIPFSHash, bytes32 _dataKeyHash) external {
+        _setPrivateDataHashes(_key, _dataIPFSHash, _dataKeyHash);
+    }
+
+    /// @param _key The key for the record
+    function deletePrivateDataHashes(bytes32 _key) external {
+        _deletePrivateDataHashes(_key);
+    }
+
+    /// @param _factProvider The fact provider
+    /// @param _key The key for the record
+    function getPrivateDataHashes(address _factProvider, bytes32 _key) external view returns (bool success, string dataIPFSHash, bytes32 dataKeyHash) {
+        return _getPrivateDataHashes(_factProvider, _key);
+    }
+
+    /**
+     * @dev returns the number of private data exchanges created.
+     */
+    function getPrivateDataExchangesCount() public constant returns (uint256 count) {
+        return privateDataExchanges.length;
+    }
+
+    /// @param _factProvider The fact provider
+    /// @param _key The key for the record
+    /// @param _encryptedExchangeKey The encrypted exchange session key (only passport owner can decrypt it)
+    /// @param _exchangeKeyHash The hash of exchange session key
+    function proposePrivateDataExchange(
+        address _factProvider,
+        bytes32 _key,
+        bytes _encryptedExchangeKey,
+        bytes32 _exchangeKeyHash
+    ) external payable {
+        (bool success, string memory dataIPFSHash, bytes32 dataKeyHash) = _getPrivateDataHashes(_factProvider, _key);
+        require(success, "private data must exist");
+
+        address passportOwner = _getOwner();
+        bytes32 encryptedDataKey;
+        PrivateDataExchange memory exchange = PrivateDataExchange({
+            dataRequester : msg.sender,
+            dataRequesterValue : msg.value,
+            passportOwner : passportOwner,
+            passportOwnerValue : 0,
+            factProvider : _factProvider,
+            key : _key,
+            dataIPFSHash : dataIPFSHash,
+            dataKeyHash : dataKeyHash,
+            encryptedExchangeKey : _encryptedExchangeKey,
+            exchangeKeyHash : _exchangeKeyHash,
+            encryptedDataKey : encryptedDataKey,
+            state : PrivateDataExchangeState.Proposed,
+            stateExpired : now + privateDataExchangeProposeTimeout
+            });
+        privateDataExchanges.push(exchange);
+
+        _incOpenPrivateDataExchangesCount();
+
+        uint256 exchangeIdx = privateDataExchanges.length - 1;
+        emit PrivateDataExchangeProposed(exchangeIdx, msg.sender, passportOwner);
+    }
+
+    /// @param _exchangeIdx The private data exchange index
+    /// @param _encryptedDataKey The data symmetric key XORed with the exchange key
+    function acceptPrivateDataExchange(uint256 _exchangeIdx, bytes32 _encryptedDataKey) external payable {
+        require(_exchangeIdx < privateDataExchanges.length, "invalid exchange index");
+        PrivateDataExchange storage exchange = privateDataExchanges[_exchangeIdx];
+        require(msg.sender == exchange.passportOwner, "only passport owner allowed");
+        require(PrivateDataExchangeState.Proposed == exchange.state, "exchange must be in proposed state");
+        require(msg.value >= exchange.dataRequesterValue, "need to stake at least data requester amount");
+        require(now < exchange.stateExpired, "exchange state expired");
+
+        exchange.passportOwnerValue = msg.value;
+        exchange.encryptedDataKey = _encryptedDataKey;
+        exchange.state = PrivateDataExchangeState.Accepted;
+        exchange.stateExpired = now + privateDataExchangeAcceptTimeout;
+
+        emit PrivateDataExchangeAccepted(_exchangeIdx, exchange.dataRequester, msg.sender);
+    }
+
+    /// @param _exchangeIdx The private data exchange index
+    function finishPrivateDataExchange(uint256 _exchangeIdx) external {
+        require(_exchangeIdx < privateDataExchanges.length, "invalid exchange index");
+        PrivateDataExchange storage exchange = privateDataExchanges[_exchangeIdx];
+        require(PrivateDataExchangeState.Accepted == exchange.state, "exchange must be in accepted state");
+        require(now > exchange.stateExpired || msg.sender == exchange.dataRequester, "exchange must be either expired or be finished by the data requester");
+
+        exchange.state = PrivateDataExchangeState.Closed;
+
+        // transfer all exchange staked money to passport owner
+        uint256 val = exchange.dataRequesterValue.add(exchange.passportOwnerValue);
+        require(exchange.passportOwner.send(val));
+
+        _decOpenPrivateDataExchangesCount();
+
+        emit PrivateDataExchangeClosed(_exchangeIdx);
+    }
+
+    /// @param _exchangeIdx The private data exchange index
+    function timeoutPrivateDataExchange(uint256 _exchangeIdx) external {
+        require(_exchangeIdx < privateDataExchanges.length, "invalid exchange index");
+        PrivateDataExchange storage exchange = privateDataExchanges[_exchangeIdx];
+        require(PrivateDataExchangeState.Proposed == exchange.state, "exchange must be in proposed state");
+        require(msg.sender == exchange.dataRequester, "only data requester allowed");
+        require(now > exchange.stateExpired, "exchange must be expired");
+
+        exchange.state = PrivateDataExchangeState.Closed;
+
+        // return staked amount to data requester
+        require(exchange.dataRequester.send(exchange.dataRequesterValue));
+
+        _decOpenPrivateDataExchangesCount();
+
+        emit PrivateDataExchangeClosed(_exchangeIdx);
+    }
+
+    /// @param _exchangeIdx The private data exchange index
+    /// @param _exchangeKey The unencrypted exchange session key
+    function disputePrivateDataExchange(uint256 _exchangeIdx, bytes32 _exchangeKey) external {
+        require(_exchangeIdx < privateDataExchanges.length, "invalid exchange index");
+        PrivateDataExchange storage exchange = privateDataExchanges[_exchangeIdx];
+        require(PrivateDataExchangeState.Accepted == exchange.state, "exchange must be in accepted state");
+        require(msg.sender == exchange.dataRequester, "only data requester allowed");
+        require(now < exchange.stateExpired, "exchange must not be expired");
+        require(keccak256(abi.encodePacked(_exchangeKey)) == exchange.exchangeKeyHash, "exchange key hash must match");
+
+        bytes32 dataKey = _exchangeKey ^ exchange.encryptedDataKey; // data symmetric key is XORed with exchange key
+        bool validDataKey = keccak256(abi.encodePacked(dataKey)) == exchange.dataKeyHash;
+
+        exchange.state = PrivateDataExchangeState.Closed;
+
+        uint256 val = exchange.dataRequesterValue.add(exchange.passportOwnerValue);
+
+        address cheater;
+        if (validDataKey) { // the data key was valid -> data requester cheated
+            require(exchange.passportOwner.send(val));
+            cheater = exchange.dataRequester;
+        } else { // the data key is invalid -> passport owner cheated
+            require(exchange.dataRequester.send(val));
+            cheater = exchange.passportOwner;
+        }
+
+        _decOpenPrivateDataExchangesCount();
+
+        emit PrivateDataExchangeClosed(_exchangeIdx);
+        emit PrivateDataExchangeDisputed(_exchangeIdx, !validDataKey, cheater);
+    }
+
+    function _incOpenPrivateDataExchangesCount() internal { openPrivateDataExchangesCount = openPrivateDataExchangesCount + 1; }
+    function _decOpenPrivateDataExchangesCount() internal { openPrivateDataExchangesCount = openPrivateDataExchangesCount - 1; }
+
+    function _setPrivateDataHashes(bytes32 _key, string _dataIPFSHash, bytes32 _dataKeyHash) allowedFactProvider internal {
+        privateDataStorage[msg.sender][_key] = PrivateDataValue({
+            initialized : true,
+            value : PrivateData({
+                dataIPFSHash : _dataIPFSHash,
+                dataKeyHash : _dataKeyHash
+                })
+            });
+        emit PrivateDataHashesUpdated(msg.sender, _key);
+    }
+
+    function _deletePrivateDataHashes(bytes32 _key) allowedFactProvider internal {
+        delete privateDataStorage[msg.sender][_key];
+        emit PrivateDataHashesDeleted(msg.sender, _key);
+    }
+
+    function _getPrivateDataHashes(address _factProvider, bytes32 _key) internal view returns (bool success, string dataIPFSHash, bytes32 dataKeyHash) {
+        PrivateDataValue storage initValue = privateDataStorage[_factProvider][_key];
+        return (initValue.initialized, initValue.value.dataIPFSHash, initValue.value.dataKeyHash);
+    }
+
+}
+
 // File: contracts/PassportLogic.sol
 
 contract PassportLogic
@@ -751,4 +1027,5 @@ is IPassportLogic
 , BytesStorageLogic
 , TxDataStorageLogic
 , IPFSStorageLogic
+, PrivateDataStorageLogic
 {}

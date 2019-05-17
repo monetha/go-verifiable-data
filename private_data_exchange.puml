@@ -1,0 +1,56 @@
+@startuml
+hide empty description
+
+[*] --> Proposed : propose()
+note right on link
+called by: data requester
+data requester:
+ - stakes ETH
+event:
+ - Proposed(exchangeIdx, dataRequester, passportOwner)
+end note
+
+Proposed --> Accepted : accept()
+note right on link
+called by: passport owner
+passport owner:
+ - stakes ETH
+event:
+ - Accepted(exchangeIdx, dataRequester, passportOwner)
+end note
+
+Proposed --> Closed : timeout() after 24h.
+note right on link
+called by: data requester
+data requester:
+ - gets staked ETH back
+event:
+ - Closed(exchangeIdx)
+end note
+
+Accepted --> Closed : finish()
+note right on link
+called by: data requester (during 24 h.)
+           or anyone (after 24 h.)
+passport owner:
+ - gets staked ETH back
+ - gets staked ETH of data requester
+event:
+ - Closed(exchangeIdx)
+end note
+
+Accepted --> Closed : dispute() during 24h.
+note right on link
+called by: data requester
+data requester (when passport owner cheated):
+ - gets staked ETH back
+ - gets staked ETH of passport owner
+passport owner (when data requester cheated):
+ - gets staked ETH back
+ - gets staked ETH of data requester
+event:
+ - Closed(exchangeIdx)
+ - Disputed(exchangeIdx, successful, cheater)
+end note
+
+@enduml

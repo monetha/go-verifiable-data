@@ -6,7 +6,8 @@ go:
 
 cache:
   directories:
-    - vendor
+    - $HOME/.cache/go-build
+    - $HOME/gopath/pkg/mod
 
 env:
   global:

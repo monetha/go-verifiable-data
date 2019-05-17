@@ -267,6 +267,42 @@ func TestParseSetBoolCallData(t *testing.T) {
 	}
 }
 
+func TestParseSetPrivateDataCallData(t *testing.T) {
+	address := common.Address{}
+	transactor := &transactorMock{}
+	contractTransactor, err := contracts.NewPassportLogicContractTransactor(address, transactor)
+	if err != nil {
+		panic(err)
+	}
+
+	transactOpts := &bind.TransactOpts{Signer: bind.SignerFn(noSign)}
+
+	tests := []struct {
+		name   string
+		params *SetPrivateDataParameters
+	}{
+		{"test 1", &SetPrivateDataParameters{[32]byte{}, "", [32]byte{}}},
+		{"test 2", &SetPrivateDataParameters{[32]byte{0x1, 0x2}, "test IPFS hash", [32]byte{9, 8, 7, 6}}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tx, err := contractTransactor.SetPrivateDataHashes(transactOpts, tt.params.Key, tt.params.DataIPFSHash, tt.params.DataKeyHash)
+			if err != nil {
+				t.Errorf("contractTransactor.SetPrivateDataHashes: %v", err)
+			}
+
+			params, err := ParseSetPrivateDataHashesCallData(tx.Data())
+			if err != nil {
+				t.Errorf("ParseSetPrivateDataHashesCallData: %v", err)
+			}
+
+			if diff := deep.Equal(tt.params, params); diff != nil {
+				t.Error(diff)
+			}
+		})
+	}
+}
+
 func noSign(signer types.Signer, from common.Address, tx *types.Transaction) (*types.Transaction, error) {
 	return tx, nil
 }

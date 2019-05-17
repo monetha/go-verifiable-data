@@ -2,16 +2,21 @@ package cmdutils
 
 import (
 	"context"
+	"crypto/ecdsa"
+	"encoding/hex"
 	"flag"
 	"fmt"
 	"os"
 	"os/signal"
 	"strconv"
+	"strings"
 	"syscall"
 
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/reputation-go-sdk/eth"
+	"github.com/monetha/reputation-go-sdk/types/data"
 )
 
 // CheckErr prints error if it's not nil and causes the current program to exit with the status code equal to 1.
@@ -111,7 +116,7 @@ func (f *AddressFlag) IsSet() bool {
 	return f.set
 }
 
-// GetValue retruns flag value
+// GetValue returns flag value
 func (f *AddressFlag) GetValue() common.Address {
 	return f.value
 }
@@ -147,7 +152,7 @@ func (f *HashFlag) IsSet() bool {
 	return f.set
 }
 
-// GetValue retruns flag value
+// GetValue returns flag value
 func (f *HashFlag) GetValue() common.Hash {
 	return f.value
 }
@@ -156,6 +161,104 @@ func (f *HashFlag) GetValue() common.Hash {
 // The argument value is the default value of the flag.
 func HashVar(name string, value common.Hash, usage string) *HashFlag {
 	v := &HashFlag{value: value}
+	flag.Var(v, name, usage)
+	return v
+}
+
+// PrivateKeyFlag holds flag value and indicator if it was set from command line
+type PrivateKeyFlag struct {
+	set   bool
+	value *ecdsa.PrivateKey
+}
+
+// String returns string representation of the value
+func (f *PrivateKeyFlag) String() string {
+	return hex.EncodeToString(crypto.FromECDSA(f.value))
+}
+
+// Set sets value from string representation
+func (f *PrivateKeyFlag) Set(s string) (err error) {
+	f.value, err = crypto.HexToECDSA(s)
+	f.set = true
+	return
+}
+
+// IsSet returns true if value was set from command line
+func (f *PrivateKeyFlag) IsSet() bool {
+	return f.set
+}
+
+// GetValue returns flag value
+func (f *PrivateKeyFlag) GetValue() *ecdsa.PrivateKey {
+	return f.value
+}
+
+// PrivateKeyFlagVar defines a private key flag with specified name, default value, and usage string.
+// The argument value is the default value of the flag.
+func PrivateKeyFlagVar(name string, value *ecdsa.PrivateKey, usage string) *PrivateKeyFlag {
+	v := &PrivateKeyFlag{value: value}
+	flag.Var(v, name, usage)
+	return v
+}
+
+var (
+	dataTypes      = make(map[string]data.Type)
+	dataTypeSetStr string
+)
+
+func init() {
+	keys := make([]string, 0, len(data.TypeValues()))
+
+	for _, key := range data.TypeValues() {
+		keyStr := strings.ToLower(key.String())
+		dataTypes[keyStr] = key
+		keys = append(keys, keyStr)
+	}
+
+	dataTypeSetStr = strings.Join(keys, ", ")
+}
+
+// DataTypeSetStr returns comma separated string of allowed data types
+func DataTypeSetStr() string {
+	return dataTypeSetStr
+}
+
+// DataTypeFlag holds flag value and indicator if it was set from command line
+type DataTypeFlag struct {
+	set   bool
+	value data.Type
+}
+
+// String returns string representation of the value
+func (f *DataTypeFlag) String() string {
+	return strings.ToLower(f.value.String())
+}
+
+// Set sets value from string representation
+func (f *DataTypeFlag) Set(s string) (err error) {
+	var ok bool
+	f.value, ok = dataTypes[s]
+	f.set = true
+	if !ok {
+		err = fmt.Errorf("unsupported data type of fact '%v', use one of: %v", s, dataTypeSetStr)
+	}
+	return
+}
+
+// IsSet returns true if value was set from command line
+func (f *DataTypeFlag) IsSet() bool {
+	return f.set
+}
+
+// GetValue returns flag value
+func (f *DataTypeFlag) GetValue() data.Type {
+	return f.value
+}
+
+// DataTypeFlagVar defines a data type flag with specified name, default value, and usage string.
+// The argument value is the default value of the flag.
+func DataTypeFlagVar(name string, value data.Type, usage string) *DataTypeFlag {
+	v := &DataTypeFlag{value: value}
 	flag.Var(v, name, usage)
 	return v
 }

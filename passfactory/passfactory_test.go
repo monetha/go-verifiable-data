@@ -147,10 +147,11 @@ func createPassport(ctx context.Context, t *testing.T) (passportCreationResult, 
 
 	monethaSession := e.NewSession(monethaKey)
 	// deploying passport factory with all dependencies: passport logic, passport logic registry
-	passportFactoryAddress, err := deployer.New(monethaSession).DeployPassportFactory(ctx)
+	res, err := deployer.New(monethaSession).DeployPassportFactory(ctx)
 	if err != nil {
 		t.Errorf("Deploy.DeployPassportFactory() error = %v", err)
 	}
+	passportFactoryAddress := res.PassportFactoryAddress
 
 	passportOwnerSession := e.NewSession(passportOwnerKey)
 	// deploying passport

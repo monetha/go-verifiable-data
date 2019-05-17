@@ -6,9 +6,9 @@ import (
 	"fmt"
 )
 
-const _TypeName = "TxDataStringBytesAddressUintIntBoolIPFS"
+const _TypeName = "TxDataStringBytesAddressUintIntBoolIPFSPrivateData"
 
-var _TypeIndex = [...]uint8{0, 6, 12, 17, 24, 28, 31, 35, 39}
+var _TypeIndex = [...]uint8{0, 6, 12, 17, 24, 28, 31, 35, 39, 50}
 
 func (i Type) String() string {
 	if i >= Type(len(_TypeIndex)-1) {
@@ -17,7 +17,7 @@ func (i Type) String() string {
 	return _TypeName[_TypeIndex[i]:_TypeIndex[i+1]]
 }
 
-var _TypeValues = []Type{0, 1, 2, 3, 4, 5, 6, 7}
+var _TypeValues = []Type{0, 1, 2, 3, 4, 5, 6, 7, 8}
 
 var _TypeNameToValueMap = map[string]Type{
 	_TypeName[0:6]:   0,
@@ -28,6 +28,7 @@ var _TypeNameToValueMap = map[string]Type{
 	_TypeName[28:31]: 5,
 	_TypeName[31:35]: 6,
 	_TypeName[35:39]: 7,
+	_TypeName[39:50]: 8,
 }
 
 // TypeString retrieves an enum value from the enum constants string name.

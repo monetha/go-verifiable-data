@@ -161,24 +161,26 @@ type ChangesFilterOpts struct {
 var (
 	eventNameByChangeTypeDataType = map[change.Type]map[data.Type]string{
 		change.Deleted: {
-			data.Address: "AddressDeleted",
-			data.Bool:    "BoolDeleted",
-			data.Bytes:   "BytesDeleted",
-			data.Int:     "IntDeleted",
-			data.String:  "StringDeleted",
-			data.TxData:  "TxDataDeleted",
-			data.Uint:    "UintDeleted",
-			data.IPFS:    "IPFSHashDeleted",
+			data.Address:     "AddressDeleted",
+			data.Bool:        "BoolDeleted",
+			data.Bytes:       "BytesDeleted",
+			data.Int:         "IntDeleted",
+			data.String:      "StringDeleted",
+			data.TxData:      "TxDataDeleted",
+			data.Uint:        "UintDeleted",
+			data.IPFS:        "IPFSHashDeleted",
+			data.PrivateData: "PrivateDataHashesDeleted",
 		},
 		change.Updated: {
-			data.Address: "AddressUpdated",
-			data.Bool:    "BoolUpdated",
-			data.Bytes:   "BytesUpdated",
-			data.Int:     "IntUpdated",
-			data.String:  "StringUpdated",
-			data.TxData:  "TxDataUpdated",
-			data.Uint:    "UintUpdated",
-			data.IPFS:    "IPFSHashUpdated",
+			data.Address:     "AddressUpdated",
+			data.Bool:        "BoolUpdated",
+			data.Bytes:       "BytesUpdated",
+			data.Int:         "IntUpdated",
+			data.String:      "StringUpdated",
+			data.TxData:      "TxDataUpdated",
+			data.Uint:        "UintUpdated",
+			data.IPFS:        "IPFSHashUpdated",
+			data.PrivateData: "PrivateDataHashesUpdated",
 		},
 	}
 )
@@ -348,6 +350,14 @@ type (
 		Key          [32]byte
 		Hash         string
 	}
+
+	// WritePrivateDataHashesHistoryItem holds parameters of WritePrivateDataHashes call
+	WritePrivateDataHashesHistoryItem struct {
+		FactProvider common.Address
+		Key          [32]byte
+		DataIPFSHash string
+		DataKeyHash  [32]byte
+	}
 )
 
 // GetHistoryItemOfWriteTxData returns the data value that was set in the given transaction.
@@ -502,11 +512,31 @@ func (h *Historian) GetHistoryItemOfWriteIPFSHash(ctx context.Context, passport 
 	}, nil
 }
 
+// GetHistoryItemOfWritePrivateDataHashes returns the private data value that was set in the given transaction.
+func (h *Historian) GetHistoryItemOfWritePrivateDataHashes(ctx context.Context, passport common.Address, txHash common.Hash) (*WritePrivateDataHashesHistoryItem, error) {
+	from, txData, err := h.getTransactionSenderData(ctx, txHash)
+	if err != nil {
+		return nil, err
+	}
+
+	params, err := txdata.ParseSetPrivateDataHashesCallData(txData)
+	if err != nil {
+		return nil, err
+	}
+
+	return &WritePrivateDataHashesHistoryItem{
+		FactProvider: from,
+		Key:          params.Key,
+		DataIPFSHash: params.DataIPFSHash,
+		DataKeyHash:  params.DataKeyHash,
+	}, nil
+}
+
 func (h *Historian) getTransactionSenderData(ctx context.Context, txHash common.Hash) (common.Address, []byte, error) {
 	(*eth.Eth)(h).Log("Getting transaction by hash", "tx_hash", txHash.Hex())
 	tx, _, err := h.Backend.TransactionByHash(ctx, txHash)
 	if err != nil {
-		return common.Address{}, nil, fmt.Errorf("facts: TransactionByHash(%v): %v", txHash, err)
+		return common.Address{}, nil, fmt.Errorf("facts: TransactionByHash(%v): %v", txHash.String(), err)
 	}
 
 	from, err := types.Sender(types.NewEIP155Signer(tx.ChainId()), tx)

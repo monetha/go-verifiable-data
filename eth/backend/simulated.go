@@ -6,6 +6,7 @@ import (
 	"context"
 	"math/big"
 	"sync"
+	"time"
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind/backends"
@@ -22,7 +23,7 @@ var _ Backend = &SimulatedBackendExt{}
 // `ethereum.TransactionReader` interface.
 func NewSimulatedBackendExtended(alloc core.GenesisAlloc, gasLimit uint64) *SimulatedBackendExt {
 	return &SimulatedBackendExt{
-		b: backends.NewSimulatedBackend(alloc, 10000000),
+		b: backends.NewSimulatedBackend(alloc, gasLimit),
 	}
 }
 
@@ -124,4 +125,9 @@ func (b *SimulatedBackendExt) TransactionByHash(ctx context.Context, txHash comm
 	isPending = txr == nil
 
 	return
+}
+
+// AdjustTime adds a time shift to the simulated clock.
+func (b *SimulatedBackendExt) AdjustTime(adjustment time.Duration) error {
+	return b.b.AdjustTime(adjustment)
 }

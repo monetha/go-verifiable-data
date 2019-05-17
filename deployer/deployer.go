@@ -11,8 +11,19 @@ import (
 )
 
 const (
+	// PassportLogicDeployGasLimit is a gas limit to deploy only PassportLogic contract
+	PassportLogicDeployGasLimit = 3300000
+	// PassportLogicRegistryDeployGasLimit is a gas limit to deploy only PassportLogicRegistry contract
+	PassportLogicRegistryDeployGasLimit = 1120000
+	// PassportFactoryDeployGasLimit is a gas limit to deploy only PassportFactory contract
+	PassportFactoryDeployGasLimit = 1020000
+	// AddPassportLogicGasLimit is a gas limit to call AddPassportLogic of PassportLogicRegistry contract
+	AddPassportLogicGasLimit = 50000
+	// SetCurrentPassportLogicGasLimit is a gas limit to call SetCurrentPassportLogic of PassportLogicRegistry contract
+	SetCurrentPassportLogicGasLimit = 50000
+
 	// PassportFactoryGasLimit is a minimum gas amount needed to fully deployer passport factory contract with all dependent contracts
-	PassportFactoryGasLimit = 4000000
+	PassportFactoryGasLimit = PassportLogicDeployGasLimit + PassportLogicRegistryDeployGasLimit + PassportFactoryDeployGasLimit
 
 	// PassportGasLimit is a minimum gas amount needed to fully deployer passport contract
 	PassportGasLimit = 460000
@@ -26,8 +37,77 @@ func New(s *eth.Session) *Deploy {
 	return (*Deploy)(s)
 }
 
+// DeployPassportFactoryResult hold result of DeployPassportFactory execution
+type DeployPassportFactoryResult struct {
+	PassportLogicAddress         common.Address
+	PassportLogicRegistryAddress common.Address
+	PassportFactoryAddress       common.Address
+}
+
 // DeployPassportFactory deploys PassportFactory contract and all contracts needed in order to deployer it
-func (d *Deploy) DeployPassportFactory(ctx context.Context) (common.Address, error) {
+func (d *Deploy) DeployPassportFactory(ctx context.Context) (*DeployPassportFactoryResult, error) {
+	backend := d.Backend
+	ownerAuth := &d.TransactOpts
+
+	///////////////////////////////////////////////////////
+	// deploying PassportLogic
+	///////////////////////////////////////////////////////
+
+	d.Log("Deploying PassportLogic", "owner_address", ownerAuth.From)
+	passportLogicAddress, tx, _, err := contracts.DeployPassportLogicContract(ownerAuth, backend)
+	if err != nil {
+		return nil, fmt.Errorf("deploying PassportLogic contract: %v", err)
+	}
+	_, err = d.WaitForTxReceipt(ctx, tx.Hash())
+	if err != nil {
+		return nil, err
+	}
+
+	d.Log("PassportLogic deployed", "contract_address", passportLogicAddress.Hex())
+
+	///////////////////////////////////////////////////////
+	// deploying PassportLogicRegistry
+	///////////////////////////////////////////////////////
+
+	version := "0.1"
+	d.Log("Deploying PassportLogicRegistry", "owner_address", ownerAuth.From, "impl_version", version, "impl_address", passportLogicAddress)
+	passportLogicRegistryAddress, tx, _, err := contracts.DeployPassportLogicRegistryContract(ownerAuth, backend, version, passportLogicAddress)
+	if err != nil {
+		return nil, fmt.Errorf("deploying PassportLogicRegistry contract: %v", err)
+	}
+	_, err = d.WaitForTxReceipt(ctx, tx.Hash())
+	if err != nil {
+		return nil, err
+	}
+
+	d.Log("PassportLogicRegistry deployed", "contract_address", passportLogicRegistryAddress.Hex())
+
+	///////////////////////////////////////////////////////
+	// deploying PassportFactory
+	///////////////////////////////////////////////////////
+
+	d.Log("Deploying PassportFactory", "owner_address", ownerAuth.From, "registry", passportLogicRegistryAddress)
+	passportFactoryAddress, tx, _, err := contracts.DeployPassportFactoryContract(ownerAuth, backend, passportLogicRegistryAddress)
+	if err != nil {
+		return nil, fmt.Errorf("deploying PassportFactory contract: %v", err)
+	}
+	_, err = d.WaitForTxReceipt(ctx, tx.Hash())
+	if err != nil {
+		return nil, err
+	}
+
+	d.Log("PassportFactory deployed", "contract_address", passportFactoryAddress.Hex())
+
+	return &DeployPassportFactoryResult{
+		PassportLogicAddress:         passportLogicAddress,
+		PassportLogicRegistryAddress: passportLogicRegistryAddress,
+		PassportFactoryAddress:       passportFactoryAddress,
+	}, nil
+}
+
+// UpgradePassportLogic deploys PassportLogic contract and sets it as current in PassportLogicRegistry
+// Returns address of deployed PassportLogic contract
+func (d *Deploy) UpgradePassportLogic(ctx context.Context, passportLogicVersion string, passportLogicRegistryAddress common.Address) (common.Address, error) {
 	backend := d.Backend
 	ownerAuth := &d.TransactOpts
 
@@ -48,39 +128,36 @@ func (d *Deploy) DeployPassportFactory(ctx context.Context) (common.Address, err
 	d.Log("PassportLogic deployed", "contract_address", passportLogicAddress.Hex())
 
 	///////////////////////////////////////////////////////
-	// deploying PassportLogicRegistry
+	// updating PassportLogicRegistry
 	///////////////////////////////////////////////////////
 
-	version := "0.1"
-	d.Log("Deploying PassportLogicRegistry", "owner_address", ownerAuth.From, "impl_version", version, "impl_address", passportLogicAddress)
-	passportLogicRegistryAddress, tx, _, err := contracts.DeployPassportLogicRegistryContract(ownerAuth, backend, version, passportLogicAddress)
+	d.Log("Initializing PassportLogicRegistry", "address", passportLogicRegistryAddress)
+	passportLogicRegistryContract, err := contracts.NewPassportLogicRegistryContract(passportLogicRegistryAddress, backend)
 	if err != nil {
-		return common.Address{}, fmt.Errorf("deploying PassportLogicRegistry contract: %v", err)
+		return common.Address{}, fmt.Errorf("initializing PassportLogicRegistry contract: %v", err)
+	}
+
+	d.Log("Adding new PassportLogic to registry", "registry_address", passportLogicRegistryAddress, "logic_address", passportLogicAddress, "version", passportLogicVersion)
+	tx, err = passportLogicRegistryContract.AddPassportLogic(ownerAuth, passportLogicVersion, passportLogicAddress)
+	if err != nil {
+		return common.Address{}, fmt.Errorf("adding new PassportLogic to registry: %v", err)
 	}
 	_, err = d.WaitForTxReceipt(ctx, tx.Hash())
 	if err != nil {
 		return common.Address{}, err
 	}
 
-	d.Log("PassportLogicRegistry deployed", "contract_address", passportLogicRegistryAddress.Hex())
-
-	///////////////////////////////////////////////////////
-	// deploying PassportFactory
-	///////////////////////////////////////////////////////
-
-	d.Log("Deploying PassportFactory", "owner_address", ownerAuth.From, "registry", passportLogicRegistryAddress)
-	passportFactoryAddress, tx, _, err := contracts.DeployPassportFactoryContract(ownerAuth, backend, passportLogicRegistryAddress)
+	d.Log("Setting current PassportLogic in registry", "registry_address", passportLogicRegistryAddress, "version", passportLogicVersion)
+	tx, err = passportLogicRegistryContract.SetCurrentPassportLogic(ownerAuth, passportLogicVersion)
 	if err != nil {
-		return common.Address{}, fmt.Errorf("deploying PassportFactory contract: %v", err)
+		return common.Address{}, fmt.Errorf("setting current PassportLogic in registry: %v", err)
 	}
 	_, err = d.WaitForTxReceipt(ctx, tx.Hash())
 	if err != nil {
 		return common.Address{}, err
 	}
 
-	d.Log("PassportFactory deployed", "contract_address", passportFactoryAddress.Hex())
-
-	return passportFactoryAddress, nil
+	return passportLogicAddress, nil
 }
 
 // DeployPassport deploys only Passport contract using existing PassportFactory contract

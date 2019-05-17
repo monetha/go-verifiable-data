@@ -227,6 +227,26 @@ func (p *Provider) WriteIPFSHash(ctx context.Context, passportAddress common.Add
 	return txHash, err
 }
 
+// WritePrivateDataHashes writes IPFS hash of encrypted private data and hash of data encryption key
+func (p *Provider) WritePrivateDataHashes(ctx context.Context, passportAddress common.Address, key [32]byte, privateData *PrivateDataHashes) (common.Hash, error) {
+	factProviderAuth := &p.TransactOpts
+
+	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	if err != nil {
+		return common.Hash{}, err
+	}
+
+	p.Log("Writing IPFS private data hashes to passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	tx, err := c.SetPrivateDataHashes(factProviderAuth, key, privateData.DataIPFSHash, privateData.DataKeyHash)
+	if err != nil {
+		return common.Hash{}, fmt.Errorf("facts: SetPrivateDataHashes: %v", err)
+	}
+	txHash := tx.Hash()
+	_, err = p.WaitForTxReceipt(ctx, txHash)
+
+	return txHash, err
+}
+
 // DeleteTxData deletes tx data for the specific key
 func (p *Provider) DeleteTxData(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
@@ -380,6 +400,26 @@ func (p *Provider) DeleteIPFSHash(ctx context.Context, passportAddress common.Ad
 	tx, err := c.DeleteIPFSHash(factProviderAuth, key)
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: DeleteIPFSHash: %v", err)
+	}
+	txHash := tx.Hash()
+	_, err = p.WaitForTxReceipt(ctx, txHash)
+
+	return txHash, err
+}
+
+// DeletePrivateDataHashes deletes IPFS private data for the specific key
+func (p *Provider) DeletePrivateDataHashes(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
+	factProviderAuth := &p.TransactOpts
+
+	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	if err != nil {
+		return common.Hash{}, err
+	}
+
+	p.Log("Deleting IPFS private data hashes from passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
+	tx, err := c.DeletePrivateDataHashes(factProviderAuth, key)
+	if err != nil {
+		return common.Hash{}, fmt.Errorf("facts: DeletePrivateDataHashes: %v", err)
 	}
 	txHash := tx.Hash()
 	_, err = p.WaitForTxReceipt(ctx, txHash)

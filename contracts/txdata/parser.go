@@ -57,6 +57,13 @@ type (
 		Key  [32]byte `abi:"_key"`
 		Hash string   `abi:"_value"`
 	}
+
+	// SetPrivateDataParameters holds parameters of the setPrivateData method call
+	SetPrivateDataParameters struct {
+		Key          [32]byte `abi:"_key"`
+		DataIPFSHash string   `abi:"_dataIPFSHash"`
+		DataKeyHash  [32]byte `abi:"_dataKeyHash"`
+	}
 )
 
 // ParseSetTxDataBlockNumberCallData parses setTxDataBlockNumber method call parameters from transaction input data.
@@ -133,6 +140,16 @@ func ParseSetBoolCallData(input []byte) (parms *SetBoolParameters, err error) {
 func ParseSetIPFSHashCallData(input []byte) (parms *SetIPFSHashParameters, err error) {
 	v := &SetIPFSHashParameters{}
 	err = unpackInput(contracts.PassportLogicABI, v, "setIPFSHash", input)
+	if err == nil {
+		parms = v
+	}
+	return
+}
+
+// ParseSetPrivateDataHashesCallData parses setPrivateData method call parameters from transaction input data
+func ParseSetPrivateDataHashesCallData(input []byte) (parms *SetPrivateDataParameters, err error) {
+	v := &SetPrivateDataParameters{}
+	err = unpackInput(contracts.PassportLogicABI, v, "setPrivateDataHashes", input)
 	if err == nil {
 		parms = v
 	}

@@ -8,6 +8,8 @@ import (
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/monetha/reputation-go-sdk/contracts"
 	"github.com/monetha/reputation-go-sdk/facts"
 )
 
@@ -434,4 +436,83 @@ func TestReader_ReadIPFSHash(t *testing.T) {
 			t.Errorf("Reader.ReadIPFSHash() expecting error = %v, got error = %v", ethereum.NotFound, err)
 		}
 	})
+}
+
+func TestReader_ReadPrivateData(t *testing.T) {
+	tests := []struct {
+		name string
+		key  [32]byte
+		data *facts.PrivateDataHashes
+	}{
+		{"test 1", [32]byte{}, &facts.PrivateDataHashes{DataIPFSHash: "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j", DataKeyHash: [32]byte{1, 2, 3}}},
+		{"test 2", [32]byte{9, 8, 7, 6}, &facts.PrivateDataHashes{DataIPFSHash: "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j", DataKeyHash: [32]byte{1, 2, 3}}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ctx := context.Background()
+
+			passportAddress, factProviderSession := createPassportAndFactProviderSession(ctx, t)
+
+			e := factProviderSession.Eth
+			factProviderAddress := factProviderSession.TransactOpts.From
+
+			_, err := facts.NewProvider(factProviderSession).WritePrivateDataHashes(ctx, passportAddress, tt.key, tt.data)
+			if err != nil {
+				t.Errorf("Provider.WritePrivateDataHashes() error = %v", err)
+			}
+
+			readData, err := facts.NewReader(e).ReadPrivateDataHashes(ctx, passportAddress, factProviderAddress, tt.key)
+			if err != nil {
+				t.Errorf("Reader.ReadPrivateDataHashes() error = %v", err)
+			}
+
+			if tt.data.DataIPFSHash != readData.DataIPFSHash {
+				t.Errorf("Expected data IPFS hash = %v, read data IPFS hash = %v", tt.data.DataIPFSHash, readData.DataIPFSHash)
+			}
+
+			if tt.data.DataKeyHash != readData.DataKeyHash {
+				t.Errorf("Expected data key hash = %v, read data key hash = %v", tt.data.DataKeyHash, readData.DataKeyHash)
+			}
+		})
+	}
+
+	t.Run("reading non existing key value", func(t *testing.T) {
+		ctx := context.Background()
+
+		passportAddress, factProviderSession := createPassportAndFactProviderSession(ctx, t)
+
+		e := factProviderSession.Eth
+		factProviderAddress := factProviderSession.TransactOpts.From
+
+		key := [32]byte{1, 2, 3}
+
+		_, err := facts.NewReader(e).ReadPrivateDataHashes(ctx, passportAddress, factProviderAddress, key)
+		if err != ethereum.NotFound {
+			t.Errorf("Reader.ReadPrivateDataHashes() expecting error = %v, got error = %v", ethereum.NotFound, err)
+		}
+	})
+}
+
+func TestReader_ReadOwnerPublicKey(t *testing.T) {
+	ctx := context.Background()
+
+	passportAddress, factProviderSession := createPassportAndFactProviderSession(ctx, t)
+	e := factProviderSession.Eth
+
+	pubKey, err := facts.NewReader(e).ReadOwnerPublicKey(ctx, passportAddress)
+	if err != nil {
+		t.Fatalf("ReadOwnerPublicKey() error = %v", err)
+	}
+
+	pubKeyAddress := crypto.PubkeyToAddress(*pubKey)
+
+	passportLogicContract := contracts.InitPassportLogicContract(passportAddress, e.Backend)
+	passportOwnerAddress, err := passportLogicContract.Owner(nil)
+	if err != nil {
+		t.Fatalf("Owner() error = %v", err)
+	}
+
+	if pubKeyAddress != passportOwnerAddress {
+		t.Errorf("public key address %v not equal to owner address %v", pubKeyAddress.String(), passportOwnerAddress.String())
+	}
 }

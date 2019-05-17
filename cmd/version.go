@@ -20,16 +20,21 @@ func init() {
 	flag.BoolVar(&printVersion, "v", false, "outputs the binary version")
 }
 
-// PrintVersion outputs the binary version when command-line flag "-v" is set.
+// HasPrintedVersion outputs the binary version when command-line flag "-v" is set.
 // It returns true if flag is set.
-func PrintVersion() bool {
+func HasPrintedVersion() bool {
 	if !flag.Parsed() {
 		flag.Parse()
 	}
 
 	if printVersion {
-		fmt.Printf("Version: %s\nBuildTime: %v\nGitHash: %s\n", Version, BuildTime, GitHash)
+		PrintVersion()
 	}
 
 	return printVersion
+}
+
+// PrintVersion outputs the binary version
+func PrintVersion() {
+	fmt.Printf("Version: %s\nBuildTime: %v\nGitHash: %s\n", Version, BuildTime, GitHash)
 }

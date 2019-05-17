@@ -5,15 +5,16 @@ package main
 import (
 	"log"
 
-	data "github.com/monetha/reputation-go-sdk/cmd/passport-scanner"
+	data "github.com/monetha/reputation-go-sdk/cmd/passport-scanner/assets-data"
 	"github.com/shurcooL/vfsgen"
 )
 
 func main() {
 	err := vfsgen.Generate(data.Assets, vfsgen.Options{
-		PackageName:  "main",
+		PackageName:  "data",
 		BuildTags:    "!dev",
 		VariableName: "Assets",
+		Filename:     "assets-data/assets_vfsdata.go",
 	})
 	if err != nil {
 		log.Fatalln(err)

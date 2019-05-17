@@ -1,13 +1,14 @@
 package main
 
 import (
+	"crypto/ecdsa"
 	"flag"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"math/big"
 	"os"
 	"strconv"
-	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/cmd/utils"
@@ -26,52 +27,37 @@ import (
 	"github.com/monetha/reputation-go-sdk/types/data"
 )
 
-var (
-	factTypes  = make(map[string]data.Type)
-	factSetStr string
-)
-
-func init() {
-	keys := make([]string, 0, len(data.TypeValues()))
-
-	for _, key := range data.TypeValues() {
-		keyStr := strings.ToLower(key.String())
-		factTypes[keyStr] = key
-		keys = append(keys, keyStr)
-	}
-
-	factSetStr = strings.Join(keys, ", ")
-}
-
 func main() {
 	var (
 		backendURL       = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
 		passportAddr     = cmdutils.AddressVar("passportaddr", common.Address{}, "Ethereum address of passport contract")
 		factProviderAddr = cmdutils.AddressVar("factprovideraddr", common.Address{}, "Ethereum address of fact provider")
 		factKeyStr       = flag.String("fkey", "", "the key of the fact (max. 32 bytes)")
-		factTypeStr      = flag.String("ftype", "", fmt.Sprintf("the data type of fact (%v)", factSetStr))
+		factTypeVar      = cmdutils.DataTypeFlagVar("ftype", data.TxData, fmt.Sprintf("the data type of fact (%v)", cmdutils.DataTypeSetStr()))
 		fileName         = flag.String("out", "", "save retrieved data to the specified file")
+		ownerKeyFile     = flag.String("ownerkey", "", "passport owner private key filename (only for privatedata data type)")
+		ownerKeyHex      = cmdutils.PrivateKeyFlagVar("ownerkeyhex", nil, "passport owner private key as hex (only for privatedata data type)")
+		dataKeyFileName  = flag.String("datakeyfile", "", "data decryption key file name (only for privatedata data type)")
 		ipfsURL          = flag.String("ipfsurl", "https://ipfs.infura.io:5001", "IPFS node address")
 		verbosity        = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
 		vmodule          = flag.String("vmodule", "", "log verbosity pattern")
 
-		factKey       [32]byte
-		factType      data.Type
-		knownFactType bool
-		err           error
+		factKey [32]byte
+		err     error
+		// private data variables
+		passportOwnerKey     *ecdsa.PrivateKey
+		privateDataSecretKey []byte
 	)
 	flag.Parse()
 
-	if cmd.PrintVersion() {
+	if cmd.HasPrintedVersion() {
 		return
 	}
 
 	glogger := log.NewGlogHandler(log.StreamHandler(os.Stderr, log.TerminalFormat(false)))
 	glogger.Verbosity(log.Lvl(*verbosity))
-	glogger.Vmodule(*vmodule)
+	_ = glogger.Vmodule(*vmodule)
 	log.Root().SetHandler(glogger)
-
-	factType, knownFactType = factTypes[*factTypeStr]
 
 	switch {
 	case !passportAddr.IsSet() && *backendURL != "":
@@ -82,16 +68,43 @@ func main() {
 		utils.Fatalf("Use -out to save retrieved data to the specified file")
 	case *factKeyStr == "":
 		utils.Fatalf("Use -fkey to specify the key of the fact")
-	case *factTypeStr == "":
+	case !factTypeVar.IsSet():
 		utils.Fatalf("Use -ftype to specify the data type of fact")
-	case !knownFactType:
-		utils.Fatalf("Unsupported data type of fact '%v', use one of: %v", *factTypeStr, factSetStr)
+	case *ownerKeyFile != "" && factTypeVar.GetValue() != data.PrivateData:
+		utils.Fatalf("Use -ownerkey only with -ftype privatedata")
+	case ownerKeyHex.IsSet() && factTypeVar.GetValue() != data.PrivateData:
+		utils.Fatalf("Use -ownerkeyhex only with -ftype privatedata")
+	case *dataKeyFileName != "" && factTypeVar.GetValue() != data.PrivateData:
+		utils.Fatalf("Use -datakeyfile only with -ftype privatedata")
+	case *ownerKeyFile == "" && !ownerKeyHex.IsSet() && *dataKeyFileName == "" && factTypeVar.GetValue() == data.PrivateData:
+		utils.Fatalf("Use -ownerkey or -ownerkeyhex to specify a private key of passport owner or -datakeyfile to provide decryption key")
+	case *ownerKeyFile != "" && ownerKeyHex.IsSet():
+		utils.Fatalf("Options -ownerkey or -ownerkeyhex are mutually exclusive")
+	case *ownerKeyFile != "" && *dataKeyFileName != "":
+		utils.Fatalf("Options -ownerkey or -datakeyfile are mutually exclusive")
+	case ownerKeyHex.IsSet() && *dataKeyFileName != "":
+		utils.Fatalf("Options -ownerkeyhex or -datakeyfile are mutually exclusive")
 	}
 
 	if factKeyBytes := []byte(*factKeyStr); len(factKeyBytes) <= 32 {
 		copy(factKey[:], factKeyBytes)
 	} else {
 		utils.Fatalf("The key string should fit into 32 bytes")
+	}
+
+	if factTypeVar.GetValue() == data.PrivateData {
+		switch {
+		case *dataKeyFileName != "":
+			if privateDataSecretKey, err = ioutil.ReadFile(*dataKeyFileName); err != nil {
+				utils.Fatalf("-datakeyfile: %v", err)
+			}
+		case *ownerKeyFile != "":
+			if passportOwnerKey, err = crypto.LoadECDSA(*ownerKeyFile); err != nil {
+				utils.Fatalf("-ownerkey: %v", err)
+			}
+		case ownerKeyHex.IsSet():
+			passportOwnerKey = ownerKeyHex.GetValue()
+		}
 	}
 
 	passportAddress := passportAddr.GetValue()
@@ -101,20 +114,23 @@ func main() {
 
 	ctx := cmdutils.CreateCtrlCContext()
 
+	fs, err := ipfs.New(*ipfsURL)
+	cmdutils.CheckErr(err, "creating IPFS client")
+
 	var (
 		e *eth.Eth
 	)
 	if *backendURL == "" {
-		monethaKey, err := crypto.GenerateKey()
-		cmdutils.CheckErr(err, "generating key")
+		// use deterministic "random" numbers in simulated environment
+		randReader := cmdutils.NewMathRandFixedSeed()
+
+		monethaKey := cmdutils.TestMonethaAdminKey
 		monethaAddress := bind.NewKeyedTransactor(monethaKey).From
 
-		passportOwnerKey, err := crypto.GenerateKey()
-		cmdutils.CheckErr(err, "generating key")
+		passportOwnerKey := cmdutils.TestPassportOwnerKey
 		passportOwnerAddress := bind.NewKeyedTransactor(passportOwnerKey).From
 
-		factProviderKey, err := crypto.GenerateKey()
-		cmdutils.CheckErr(err, "generating key")
+		factProviderKey := cmdutils.TestFactProviderKey
 		factProviderAddress = bind.NewKeyedTransactor(factProviderKey).From
 
 		alloc := core.GenesisAlloc{
@@ -133,8 +149,9 @@ func main() {
 		cmdutils.CheckBalance(ctx, monethaSession, deployer.PassportFactoryGasLimit)
 
 		// deploying passport factory
-		passportFactoryAddress, err := deployer.New(monethaSession).DeployPassportFactory(ctx)
+		res, err := deployer.New(monethaSession).DeployPassportFactory(ctx)
 		cmdutils.CheckErr(err, "create passport factory")
+		passportFactoryAddress := res.PassportFactoryAddress
 
 		// creating passport owner session and checking balance
 		passportOwnerSession := e.NewSession(passportOwnerKey)
@@ -144,7 +161,8 @@ func main() {
 		passportAddress, err = deployer.New(passportOwnerSession).DeployPassport(ctx, passportFactoryAddress)
 		cmdutils.CheckErr(err, "create passport")
 
-		factProvider := facts.NewProvider(e.NewSession(factProviderKey))
+		factProviderSession := e.NewSession(factProviderKey)
+		factProvider := facts.NewProvider(factProviderSession)
 
 		_, err = factProvider.WriteTxData(ctx, passportAddress, factKey, []byte("This is test only tx data!"))
 		cmdutils.CheckErr(err, "WriteTxData")
@@ -169,6 +187,12 @@ func main() {
 
 		_, err = factProvider.WriteIPFSHash(ctx, passportAddress, factKey, "QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j")
 		cmdutils.CheckErr(err, "WriteIPFSHash")
+
+		wr := facts.NewPrivateDataWriter(factProviderSession, fs)
+
+		wpdRes, err := wr.WritePrivateData(ctx, passportAddress, factKey, []byte("this is a secret message"), randReader)
+		cmdutils.CheckErr(err, "writing private data")
+		log.Warn("Private data has been written", "data_secret_key", wpdRes.DataKey)
 	} else {
 		client, err := ethclient.Dial(*backendURL)
 		cmdutils.CheckErr(err, "ethclient.Dial")
@@ -180,45 +204,57 @@ func main() {
 	factReader := facts.NewReader(e)
 	var fileOp fileOperation
 
+	factType := factTypeVar.GetValue()
 	switch factType {
 	case data.TxData:
-		data, err := factReader.ReadTxData(ctx, passportAddress, factProviderAddress, factKey)
+		dataBytes, err := factReader.ReadTxData(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadTxData")
-		fileOp = writeBytes(data)
+		fileOp = writeBytes(dataBytes)
 	case data.String:
-		data, err := factReader.ReadString(ctx, passportAddress, factProviderAddress, factKey)
+		dataBytes, err := factReader.ReadString(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadString")
-		fileOp = writeString(data)
+		fileOp = writeString(dataBytes)
 	case data.Bytes:
-		data, err := factReader.ReadBytes(ctx, passportAddress, factProviderAddress, factKey)
+		dataBytes, err := factReader.ReadBytes(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadBytes")
-		fileOp = writeBytes(data)
+		fileOp = writeBytes(dataBytes)
 	case data.Address:
-		data, err := factReader.ReadAddress(ctx, passportAddress, factProviderAddress, factKey)
+		addressVal, err := factReader.ReadAddress(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadAddress")
-		fileOp = writeString(data.String())
+		fileOp = writeString(addressVal.String())
 	case data.Uint:
-		data, err := factReader.ReadUint(ctx, passportAddress, factProviderAddress, factKey)
+		uintVal, err := factReader.ReadUint(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadUint")
-		fileOp = writeString(data.String())
+		fileOp = writeString(uintVal.String())
 	case data.Int:
-		data, err := factReader.ReadInt(ctx, passportAddress, factProviderAddress, factKey)
+		intVal, err := factReader.ReadInt(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadInt")
-		fileOp = writeString(data.String())
+		fileOp = writeString(intVal.String())
 	case data.Bool:
-		data, err := factReader.ReadBool(ctx, passportAddress, factProviderAddress, factKey)
+		dataBytes, err := factReader.ReadBool(ctx, passportAddress, factProviderAddress, factKey)
 		cmdutils.CheckErr(err, "ReadBool")
-		fileOp = writeString(strconv.FormatBool(data))
+		fileOp = writeString(strconv.FormatBool(dataBytes))
 	case data.IPFS:
-		hash, err := factReader.ReadIPFSHash(ctx, passportAddress, factProviderAddress, factKey)
+		r := facts.NewIPFSDataReader(e, fs)
 
-		log.Warn("Reading from IPFS...", "hash", hash)
-		cmdutils.CheckErr(err, "ReadIPFSHash")
-		rc, err := ipfs.
-			New(*ipfsURL).
-			Cat(ctx, hash)
-		cmdutils.CheckErr(err, "IPFS.Cat")
+		rc, err := r.ReadIPFSData(ctx, passportAddress, factProviderAddress, factKey)
+		cmdutils.CheckErr(err, "IPFSDataReader.ReadIPFSData")
+
 		fileOp = writeReader(rc)
+	case data.PrivateData:
+		rd := facts.NewPrivateDataReader(e, fs)
+
+		if passportOwnerKey != nil {
+			decryptedData, err := rd.ReadPrivateData(ctx, passportOwnerKey, passportAddress, factProviderAddress, factKey)
+			cmdutils.CheckErr(err, "ReadPrivateData")
+			fileOp = writeBytes(decryptedData)
+		} else if privateDataSecretKey != nil {
+			decryptedData, err := rd.ReadPrivateDataUsingSecretKey(ctx, privateDataSecretKey, passportAddress, factProviderAddress, factKey)
+			cmdutils.CheckErr(err, "ReadPrivateDataUsingSecretKey")
+			fileOp = writeBytes(decryptedData)
+		} else {
+			utils.Fatalf("either specify passport owner secret key or data decryption secret key")
+		}
 	default:
 		cmdutils.CheckErr(fmt.Errorf("unsupported fact type: %v", factType.String()), "reading by type")
 	}
@@ -227,7 +263,7 @@ func main() {
 
 	f, err := os.Create(*fileName)
 	cmdutils.CheckErr(err, "Create file")
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	cmdutils.CheckErr(fileOp(f), "Write to file")
 

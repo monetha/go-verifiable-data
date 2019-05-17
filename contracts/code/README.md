@@ -1,2 +1,2 @@
 Compiler: 0.4.24+commit.e67f0147.Emscripten.clang
-Contracts commit: 2d886e795aaaf6853a56ae00fec8a5f87f34d190
+Contracts commit: 51ba1b57ae9786983d68ff41e9d4dd4c3408d227

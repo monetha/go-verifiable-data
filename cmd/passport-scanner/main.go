@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/monetha/reputation-go-sdk/cmd"
+	data "github.com/monetha/reputation-go-sdk/cmd/passport-scanner/assets-data"
 	"github.com/monetha/reputation-go-sdk/cmd/passport-scanner/middleware"
 	"github.com/shurcooL/httpgzip"
 )
@@ -18,14 +19,14 @@ var (
 
 func main() {
 	flag.Parse()
-	if cmd.PrintVersion() {
+	if cmd.HasPrintedVersion() {
 		return
 	}
 
 	log.Printf("listening on %q...", *listen)
 
 	fileServer := httpgzip.FileServer(
-		Assets,
+		data.Assets,
 		httpgzip.FileServerOptions{
 			IndexHTML: true,
 		},

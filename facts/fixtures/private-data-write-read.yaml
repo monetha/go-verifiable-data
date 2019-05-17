@@ -1,0 +1,224 @@
+---
+version: 1
+interactions:
+- request:
+    body: !!binary |
+      LS00M2I0NTdjMzMwZGVjNDc4MmZjMzk3MTNiZWEzOWJkZjYzYWIzZTIxZmQxMGVhNmFhNW
+      FjOGNkZmRlZWYNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0iZmls
+      ZSI7IGZpbGVuYW1lPSIiDQpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL29jdGV0LXN0cm
+      VhbQ0KDQoEfOxRvoW/spui4vJ3/3w2d8RI3//zDku+eamXPV9so3LceUaaIuZemYeNW46c
+      YgU0ts4G22S4+TL+Qag4M60vzQ0KLS00M2I0NTdjMzMwZGVjNDc4MmZjMzk3MTNiZWEzOW
+      JkZjYzYWIzZTIxZmQxMGVhNmFhNWFjOGNkZmRlZWYtLQ0K
+    form: {}
+    headers:
+      Content-Type:
+      - multipart/form-data; boundary=43b457c330dec4782fc39713bea39bdf63ab3e21fd10ea6aa5ac8cdfdeef
+    url: https://ipfs.infura.io:5001/api/v0/add?encoding=json&pin=true&progress=false&stream-channels=true
+    method: POST
+  response:
+    body: |
+      {"Name":"QmPqEPWfpm17pU1fZMpSWSgHR8hkZayJzNJcjxk1pDdfNw","Hash":"QmPqEPWfpm17pU1fZMpSWSgHR8hkZayJzNJcjxk1pDdfNw","Size":"73"}
+    headers:
+      Access-Control-Allow-Headers:
+      - X-Stream-Output, X-Chunked-Output, X-Content-Length
+      Access-Control-Expose-Headers:
+      - X-Stream-Output, X-Chunked-Output, X-Content-Length
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 25 Apr 2019 13:26:55 GMT
+      Server:
+      - nginx
+      Vary:
+      - Origin
+      X-Chunked-Output:
+      - "1"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: !!binary |
+      LS0wMDExNjk3ZDA2NDQ1YTE5ODUwYzJiYjMzMzg3NWUyZjA3ZTgzOTQ0YzBkMGFlNjQ1ZD
+      YxZGY5YWM1NzYNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0iZmls
+      ZSI7IGZpbGVuYW1lPSIiDQpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL29jdGV0LXN0cm
+      VhbQ0KDQoL9QWYdZIeZopb3yx/xIRF2NZzZxPkBWrY+ucjy5fbSiU3q3abH9dXDQotLTAw
+      MTE2OTdkMDY0NDVhMTk4NTBjMmJiMzMzODc1ZTJmMDdlODM5NDRjMGQwYWU2NDVkNjFkZj
+      lhYzU3Ni0tDQo=
+    form: {}
+    headers:
+      Content-Type:
+      - multipart/form-data; boundary=0011697d06445a19850c2bb333875e2f07e83944c0d0ae645d61df9ac576
+    url: https://ipfs.infura.io:5001/api/v0/add?encoding=json&pin=true&progress=false&stream-channels=true
+    method: POST
+  response:
+    body: |
+      {"Name":"QmTRnLBEQwVoJdRW6RWrCxbVGuSV7UdicR55Jvpvy66rGp","Hash":"QmTRnLBEQwVoJdRW6RWrCxbVGuSV7UdicR55Jvpvy66rGp","Size":"48"}
+    headers:
+      Access-Control-Allow-Headers:
+      - X-Stream-Output, X-Chunked-Output, X-Content-Length
+      Access-Control-Expose-Headers:
+      - X-Stream-Output, X-Chunked-Output, X-Content-Length
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 25 Apr 2019 13:26:56 GMT
+      Server:
+      - nginx
+      Vary:
+      - Origin
+      X-Chunked-Output:
+      - "1"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: !!binary |
+      LS04YzNkNTFlYmY5MjQ5MjMzNzAyODkyMjVhYzE4NDk5MDAwMGI1NjNhYmY5MTI2YTJmY2
+      NhYTY3OWY2ZDENCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0iZmls
+      ZSI7IGZpbGVuYW1lPSIiDQpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL29jdGV0LXN0cm
+      VhbQ0KDQpO02cfNnlg8U8jjZfbVeZvfLn5JLBuM46bnncDDTxm2A0KLS04YzNkNTFlYmY5
+      MjQ5MjMzNzAyODkyMjVhYzE4NDk5MDAwMGI1NjNhYmY5MTI2YTJmY2NhYTY3OWY2ZDEtLQ
+      0K
+    form: {}
+    headers:
+      Content-Type:
+      - multipart/form-data; boundary=8c3d51ebf924923370289225ac184990000b563abf9126a2fccaa679f6d1
+    url: https://ipfs.infura.io:5001/api/v0/add?encoding=json&pin=true&progress=false&stream-channels=true
+    method: POST
+  response:
+    body: |
+      {"Name":"QmaBCXhP3o5twSJ9LE8Bia3H4U5MQWLwKvE388doYthZ8K","Hash":"QmaBCXhP3o5twSJ9LE8Bia3H4U5MQWLwKvE388doYthZ8K","Size":"40"}
+    headers:
+      Access-Control-Allow-Headers:
+      - X-Stream-Output, X-Chunked-Output, X-Content-Length
+      Access-Control-Expose-Headers:
+      - X-Stream-Output, X-Chunked-Output, X-Content-Length
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 25 Apr 2019 13:27:01 GMT
+      Server:
+      - nginx
+      Vary:
+      - Origin
+      X-Chunked-Output:
+      - "1"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: "--3354e3711a0655c8b08d6666816fb2ed11cce0bb42a09f89895a91be1981\r\nContent-Disposition:
+      form-data; name=\"file\"; filename=\"\"\r\nContent-Type: application/octet-stream\r\n\r\n{\"data\":\"CAE=\",\"links\":[{\"Cid\":{\"/\":\"QmPqEPWfpm17pU1fZMpSWSgHR8hkZayJzNJcjxk1pDdfNw\"},\"Name\":\"public_key\",\"Size\":73},{\"Cid\":{\"/\":\"QmTRnLBEQwVoJdRW6RWrCxbVGuSV7UdicR55Jvpvy66rGp\"},\"Name\":\"encrypted_message\",\"Size\":48},{\"Cid\":{\"/\":\"QmaBCXhP3o5twSJ9LE8Bia3H4U5MQWLwKvE388doYthZ8K\"},\"Name\":\"hmac\",\"Size\":40}]}\r\n--3354e3711a0655c8b08d6666816fb2ed11cce0bb42a09f89895a91be1981--\r\n"
+    form: {}
+    headers:
+      Content-Type:
+      - multipart/form-data; boundary=3354e3711a0655c8b08d6666816fb2ed11cce0bb42a09f89895a91be1981
+    url: https://ipfs.infura.io:5001/api/v0/dag/put?encoding=json&format=protobuf&input-enc=json&pin=true&stream-channels=true
+    method: POST
+  response:
+    body: |
+      {"Cid":{"/":"QmQWKpdXfuy3e3QQb8EukcNcmqqGzXb5zvNeLAbdDfP8BG"}}
+    headers:
+      Access-Control-Allow-Headers:
+      - X-Stream-Output, X-Chunked-Output, X-Content-Length
+      Access-Control-Expose-Headers:
+      - X-Stream-Output, X-Chunked-Output, X-Content-Length
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 25 Apr 2019 13:27:02 GMT
+      Server:
+      - nginx
+      Vary:
+      - Origin
+      X-Chunked-Output:
+      - "1"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers: {}
+    url: https://ipfs.infura.io:5001/api/v0/cat?arg=QmQWKpdXfuy3e3QQb8EukcNcmqqGzXb5zvNeLAbdDfP8BG%2Fpublic_key&encoding=json&stream-channels=true
+    method: POST
+  response:
+    body: !!binary |
+      BHzsUb6Fv7KbouLyd/98NnfESN//8w5Lvnmplz1fbKNy3HlGmiLmXpmHjVuOnGIFNLbOBt
+      tkuPky/kGoODOtL80=
+    headers:
+      Access-Control-Allow-Headers:
+      - X-Stream-Output, X-Chunked-Output, X-Content-Length
+      Access-Control-Expose-Headers:
+      - X-Stream-Output, X-Chunked-Output, X-Content-Length
+      Content-Type:
+      - text/plain
+      Date:
+      - Thu, 25 Apr 2019 13:27:02 GMT
+      Server:
+      - nginx
+      Vary:
+      - Origin
+      X-Content-Length:
+      - "65"
+      X-Stream-Output:
+      - "1"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers: {}
+    url: https://ipfs.infura.io:5001/api/v0/cat?arg=QmQWKpdXfuy3e3QQb8EukcNcmqqGzXb5zvNeLAbdDfP8BG%2Fencrypted_message&encoding=json&stream-channels=true
+    method: POST
+  response:
+    body: !!binary C/UFmHWSHmaKW98sf8SERdjWc2cT5AVq2PrnI8uX20olN6t2mx/XVw==
+    headers:
+      Access-Control-Allow-Headers:
+      - X-Stream-Output, X-Chunked-Output, X-Content-Length
+      Access-Control-Expose-Headers:
+      - X-Stream-Output, X-Chunked-Output, X-Content-Length
+      Content-Type:
+      - text/plain
+      Date:
+      - Thu, 25 Apr 2019 13:27:02 GMT
+      Server:
+      - nginx
+      Vary:
+      - Origin
+      X-Content-Length:
+      - "40"
+      X-Stream-Output:
+      - "1"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers: {}
+    url: https://ipfs.infura.io:5001/api/v0/cat?arg=QmQWKpdXfuy3e3QQb8EukcNcmqqGzXb5zvNeLAbdDfP8BG%2Fhmac&encoding=json&stream-channels=true
+    method: POST
+  response:
+    body: !!binary TtNnHzZ5YPFPI42X21Xmb3y5+SSwbjOOm553Aw08Ztg=
+    headers:
+      Access-Control-Allow-Headers:
+      - X-Stream-Output, X-Chunked-Output, X-Content-Length
+      Access-Control-Expose-Headers:
+      - X-Stream-Output, X-Chunked-Output, X-Content-Length
+      Content-Type:
+      - text/plain
+      Date:
+      - Thu, 25 Apr 2019 13:27:02 GMT
+      Server:
+      - nginx
+      Vary:
+      - Origin
+      X-Content-Length:
+      - "32"
+      X-Stream-Output:
+      - "1"
+    status: 200 OK
+    code: 200
+    duration: ""

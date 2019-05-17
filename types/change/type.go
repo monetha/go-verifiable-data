@@ -1,4 +1,3 @@
-//go:generate go get github.com/alvaroloes/enumer
 //go:generate enumer -type=Type
 
 package change

@@ -292,7 +292,7 @@ func (a *App) setupOnReadHistoryValue() {
 					"key", string(hi.Key[:]))
 
 				switch dataType {
-				case data.IPFS:
+				case data.IPFS, data.PrivateData:
 					hash := string(hi.Value)
 					btn.WithClass("btn btn-success").
 						WithAttribute("href", ipfsHashToUrl(hash)).
