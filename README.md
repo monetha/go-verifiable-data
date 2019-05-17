@@ -671,12 +671,30 @@ How it works:
    The Ethereum contract code identifies the cheater and transfers all staked funds to the party who behaved honestly.
    The data requester has 24 hours to open a dispute, otherwise the exchange is considered valid and the passport owner
    can get all staked funds.
-   
-At any time, the `status` command can be used to get detailed information about the private data exchange.
 
+This is how it looks in the state diagram:
+   
 ![PlantUML model](http://www.plantuml.com/plantuml/png/jPF1JWCX48RlFCKSTqtRW_7KWwbH4prfZ3VZWSBiGheB28DjtzujbLGQgscgUmAopFzz0ym2SK-nxvZI4W5xHskG68JNZhGrZBsSlS9uV0cFtZeRKC8Kt7POrSnOGl2wLGJMGAVDWWdUTIXXlfw2vCJ1url4GEXPEPqo6CEGli00jyzt3D_HK5hCIHMkXEAcnNkv6gLYJtdp21mFmLbF3qk3lcPe96nW6Ckx4_IL4EWeGVCq_9KvrmMxASoAwM7c7FGNpDVTPvj9zsZZW0oy8VHmVg4c9tUyHGfR1RbHW3aNYvr72Yyjld9covApqKO7TUHjW4f6hqqxM86Qr0nsd_N0pTeQX2g9vr-AipXiyzswRVRYJrIMEhX8MDMGBKuy6wYM2WsKYY0KSa9P7-dwuoNEKNlvEUfVspeitwJExJ-K48N049hOZROavVkO3SFOTny0)
 
+At any time, the `status` command can be used to get detailed information about the private data exchange.
+
+At all steps of the interactive protocol, the utility `privatedata-exchange` is used.
+
 #### Proposing private data exchange
+
+To initiate the exchange of private data, the data requester must specify the following parameters:
+
+* the passport address (`--passportaddr` parameter)
+* the address of the data provider who stored the private data (`--factprovideraddr` parameter)
+* key under which private data was stored (`--fkey` parameter)
+* the name of the file with the Ethereum private key of data requester (`--requesterkey` parameter)
+* the amount of funds (in wei) that the requester is willing to pay for private data (`--stake` parameter)
+* the name of the file where the exchange key will be saved (`--exchangekey` parameter), used later both for 
+  accessing private data and for resolving a possible dispute
+
+In the example below, the data requester attempts to initiate the retrieval of private data that was stored by the fact provider
+`0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E` in passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f` under the key `secret_message` 
+by staking `10000000000000000 wei` (which is equal to `0.01 ETH`).
 
 ```bash
 ./bin/privatedata-exchange propose \
@@ -688,6 +706,9 @@ At any time, the `status` command can be used to get detailed information about 
   --exchangekey ./exchange.key \
   --backendurl https://ropsten.infura.io
 ```
+
+As a result of the command, you can see that the private data exchange proposition was created under index `1` (the index 
+is simply the data exchange identifier to refer it in all subsequent commands), and the exchange key was written to file `exchange.key`:
 
 ```
 WARN [05-16|13:56:31.944] Filtering OwnershipTransferred           newOwner=0xD101709569D2dEc41f88d874Badd9c7CF1106AF7
