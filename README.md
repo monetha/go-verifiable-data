@@ -811,7 +811,11 @@ this is a very secret message
 
 #### Closing private data exchange proposition when timed out
 
-TODO:
+If the passport owner ignored the request for the private data exchange, then after 24 hours, the data requester may 
+close the request and return the staked funds by calling `timeout` command.
+
+Here's how to close the private data exchange referred by the index `2` in the passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f` 
+using the Ethereum private key of data requester stored in the `data_requester.key` file:
 
 ```bash
 ./bin/privatedata-exchange timeout \
@@ -819,6 +823,14 @@ TODO:
   --exchidx 2 \
   --requesterkey ./data_requester.key \
   --backendurl https://ropsten.infura.io
+```
+
+The output:
+
+```
+WARN [05-17|14:01:11.231] Timeout private data exchange            exchange_index=2
+WARN [05-17|14:01:11.988] Waiting for transaction                  hash=0xfa1d7f4fb5cc82c3270e123cfd2a56e0577b91d1dc56e667e66e193e5dfb57d4
+WARN [05-17|14:01:41.140] Transaction successfully mined           tx_hash=0xfa1d7f4fb5cc82c3270e123cfd2a56e0577b91d1dc56e667e66e193e5dfb57d4 gas_used=23030
 ```
 
 #### Closing private data exchange after acceptance
