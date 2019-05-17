@@ -811,6 +811,8 @@ this is a very secret message
 
 #### Closing private data exchange proposition when timed out
 
+TODO:
+
 ```bash
 ./bin/privatedata-exchange timeout \
   --passportaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
@@ -821,6 +823,14 @@ this is a very secret message
 
 #### Closing private data exchange after acceptance
 
+After the data requester successfully read the private data, it can confirm this by invoking the `finish` command.
+When executing the command, the funds staked by the data requester and passport owner will be transferred to the passport owner.
+If the data requester doesn't send the finalization request withing a predefined timespan (24 hours), the passport owner 
+is allowed to finalize private data exchange, preventing the escrow being locked-up indefinitely.
+
+This is how private data exchange referred by the index `1` in passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f` may 
+be finalized by the data requester using she's Ethereum private key from file `data_requester.key`:
+
 ```bash
 ./bin/privatedata-exchange finish \
   --passportaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
@@ -829,12 +839,16 @@ this is a very secret message
   --backendurl https://ropsten.infura.io
 ```
 
+The output:
+
 ```
 WARN [05-16|14:03:24.275] Waiting for transaction                  hash=0x544c5b51c167efd7a1d50d26bffd706dbe2a13daefdf087afcfac6940f19b725
 WARN [05-16|14:03:45.061] Transaction successfully mined           tx_hash=0x544c5b51c167efd7a1d50d26bffd706dbe2a13daefdf087afcfac6940f19b725 gas_used=31348
 ```
 
 #### Opening dispute after private data exchange acceptance
+
+TODO:
 
 ```bash
 ./bin/privatedata-exchange dispute \
