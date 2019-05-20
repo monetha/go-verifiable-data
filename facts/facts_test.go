@@ -83,9 +83,9 @@ func newPassportWithActors(
 
 	monethaSession := e.NewSession(monethaKey)
 	// deploying passport factory with all dependencies: passport logic, passport logic registry
-	res, err := deployer.New(monethaSession).DeployPassportFactory(ctx)
+	res, err := deployer.New(monethaSession).Bootstrap(ctx)
 	if err != nil {
-		t.Fatalf("Deploy.DeployPassportFactory() error = %v", err)
+		t.Fatalf("Deploy.Bootstrap() error = %v", err)
 	}
 	passportFactoryAddress := res.PassportFactoryAddress
 

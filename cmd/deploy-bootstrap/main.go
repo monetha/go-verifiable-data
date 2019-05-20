@@ -89,7 +89,7 @@ func main() {
 
 	// deploying passport factory
 	_, err = deployer.New(ownerSession).
-		DeployPassportFactory(ctx)
+		Bootstrap(ctx)
 	cmdutils.CheckErr(err, "create passport factory")
 
 	log.Warn("Done.")

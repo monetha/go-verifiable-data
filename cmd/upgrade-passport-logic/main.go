@@ -90,7 +90,7 @@ func main() {
 		cmdutils.CheckBalance(ctx, monethaSession, deployer.PassportFactoryGasLimit)
 
 		// deploying passport factory
-		res, err := deployer.New(monethaSession).DeployPassportFactory(ctx)
+		res, err := deployer.New(monethaSession).Bootstrap(ctx)
 		cmdutils.CheckErr(err, "create passport factory")
 		passportRegistryAddress = res.PassportLogicRegistryAddress
 	} else {

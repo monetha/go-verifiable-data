@@ -37,15 +37,15 @@ func New(s *eth.Session) *Deploy {
 	return (*Deploy)(s)
 }
 
-// DeployPassportFactoryResult hold result of DeployPassportFactory execution
+// DeployPassportFactoryResult hold result of Bootstrap execution
 type DeployPassportFactoryResult struct {
 	PassportLogicAddress         common.Address
 	PassportLogicRegistryAddress common.Address
 	PassportFactoryAddress       common.Address
 }
 
-// DeployPassportFactory deploys PassportFactory contract and all contracts needed in order to deployer it
-func (d *Deploy) DeployPassportFactory(ctx context.Context) (*DeployPassportFactoryResult, error) {
+// Bootstrap deploys PassportFactory contract and all contracts needed in order to deploy it
+func (d *Deploy) Bootstrap(ctx context.Context) (*DeployPassportFactoryResult, error) {
 	backend := d.Backend
 	ownerAuth := &d.TransactOpts
 
