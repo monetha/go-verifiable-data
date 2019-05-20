@@ -46,30 +46,17 @@ type BootstrapResult struct {
 
 // Bootstrap deploys PassportFactory contract and all contracts needed in order to deploy it
 func (d *Deploy) Bootstrap(ctx context.Context) (*BootstrapResult, error) {
-	backend := d.Backend
-	ownerAuth := d.TransactOpts
-	ownerAuth.Context = ctx
-
 	///////////////////////////////////////////////////////
 	// deploying PassportLogic
 	///////////////////////////////////////////////////////
-
-	d.Log("Deploying PassportLogic", "owner_address", ownerAuth.From)
-	passportLogicAddress, tx, _, err := contracts.DeployPassportLogicContract(&ownerAuth, backend)
-	if err != nil {
-		return nil, fmt.Errorf("deploying PassportLogic contract: %v", err)
-	}
-	txr, err := d.WaitForTxReceipt(ctx, tx.Hash())
+	passportLogicAddress, err := d.DeployPassportLogic(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	d.Log("PassportLogic deployed", "contract_address", passportLogicAddress.Hex(), "gas_used", txr.GasUsed)
-
 	///////////////////////////////////////////////////////
 	// deploying PassportLogicRegistry
 	///////////////////////////////////////////////////////
-
 	version := "0.1"
 	passportLogicRegistryAddress, err := d.DeployPassportLogicRegistry(ctx, version, passportLogicAddress)
 	if err != nil {
@@ -89,6 +76,27 @@ func (d *Deploy) Bootstrap(ctx context.Context) (*BootstrapResult, error) {
 		PassportLogicRegistryAddress: passportLogicRegistryAddress,
 		PassportFactoryAddress:       passportFactoryAddress,
 	}, nil
+}
+
+// DeployPassportLogic deploys only PassportLogic contract
+func (d *Deploy) DeployPassportLogic(ctx context.Context) (common.Address, error) {
+	backend := d.Backend
+	ownerAuth := d.TransactOpts
+	ownerAuth.Context = ctx
+
+	d.Log("Deploying PassportLogic", "owner_address", ownerAuth.From)
+	passportLogicAddress, tx, _, err := contracts.DeployPassportLogicContract(&ownerAuth, backend)
+	if err != nil {
+		return common.Address{}, fmt.Errorf("deploying PassportLogic contract: %v", err)
+	}
+	txr, err := d.WaitForTxReceipt(ctx, tx.Hash())
+	if err != nil {
+		return common.Address{}, err
+	}
+
+	d.Log("PassportLogic deployed", "contract_address", passportLogicAddress.Hex(), "gas_used", txr.GasUsed)
+
+	return passportLogicAddress, nil
 }
 
 // DeployPassportLogicRegistry deploys only PassportLogicRegistry contract
