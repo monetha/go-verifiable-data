@@ -29,7 +29,7 @@ func main() {
 		StartFromBlock         int
 	}{
 		BackendURL:             "https://ropsten.infura.io",
-		PassportFactoryAddress: "0x5FD962855e9b327262F47594949fd6d742FE2A01",
+		PassportFactoryAddress: "0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2",
 		StartFromBlock:         5233000,
 	}); err != nil {
 		panic(err)
