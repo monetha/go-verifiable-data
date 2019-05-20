@@ -138,9 +138,9 @@ The contract addresses deployed on Mainnet:
 
 | Contract      | Address                                      |
 |---------------|----------------------------------------------|
-| `PassportLogic` | [`0x76E2fe5C37c47Fe09DCFa55Bec9Fd34318922F27`](https://etherscan.io/address/0x76E2fe5C37c47Fe09DCFa55Bec9Fd34318922F27) |
+| `PassportLogic` | [`0x12b0d242283ce61bEb463b16D485df64A4E3932f`](https://etherscan.io/address/0x12b0d242283ce61bEb463b16D485df64A4E3932f) |
 | `PassportLogicRegistry`  | [`0x41c32A8387ff178659ED9B04190613623F545657`](https://etherscan.io/address/0x41c32A8387ff178659ED9B04190613623F545657) |
-| `PassportFactory` | [`0xdbf780f836D8a22b56AcF9Fd266171fAFf31F521`](https://etherscan.io/address/0xdbf780f836D8a22b56AcF9Fd266171fAFf31F521) |
+| `PassportFactory` | [`0x53b21DC502b163Bcf3bD9a68d5db5e8E6110E1CC`](https://etherscan.io/address/0x53b21DC502b163Bcf3bD9a68d5db5e8E6110E1CC) |
 
 Consider the process of deploying your own set of auxiliary repoutation layer contracts to experiment with our implementation. If you are going to deploy your contracts, then you will have to support them yourself.
 
