@@ -130,17 +130,17 @@ The contract addresses deployed on Ropsten:
 
 | Contract      | Address                                      |
 |---------------|----------------------------------------------|
-| `PassportLogic` | [`0xe11BeF038e0F34EeFef1Ee2ef3bc2154a64A8D6C`](https://ropsten.etherscan.io/address/0xe11BeF038e0F34EeFef1Ee2ef3bc2154a64A8D6C) |
+| `PassportLogic` | [`0x74C22a5d68E4727029FD906aD73D5F39D9130905`](https://ropsten.etherscan.io/address/0x74C22a5d68E4727029FD906aD73D5F39D9130905) |
 | `PassportLogicRegistry`  | [`0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c`](https://ropsten.etherscan.io/address/0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c) |
-| `PassportFactory` | [`0x5FD962855e9b327262F47594949fd6d742FE2A01`](https://ropsten.etherscan.io/address/0x5FD962855e9b327262F47594949fd6d742FE2A01) |
+| `PassportFactory` | [`0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2`](https://ropsten.etherscan.io/address/0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2) |
 
 The contract addresses deployed on Mainnet:
 
 | Contract      | Address                                      |
 |---------------|----------------------------------------------|
-| `PassportLogic` | [`0x76E2fe5C37c47Fe09DCFa55Bec9Fd34318922F27`](https://etherscan.io/address/0x76E2fe5C37c47Fe09DCFa55Bec9Fd34318922F27) |
+| `PassportLogic` | [`0x12b0d242283ce61bEb463b16D485df64A4E3932f`](https://etherscan.io/address/0x12b0d242283ce61bEb463b16D485df64A4E3932f) |
 | `PassportLogicRegistry`  | [`0x41c32A8387ff178659ED9B04190613623F545657`](https://etherscan.io/address/0x41c32A8387ff178659ED9B04190613623F545657) |
-| `PassportFactory` | [`0xdbf780f836D8a22b56AcF9Fd266171fAFf31F521`](https://etherscan.io/address/0xdbf780f836D8a22b56AcF9Fd266171fAFf31F521) |
+| `PassportFactory` | [`0x53b21DC502b163Bcf3bD9a68d5db5e8E6110E1CC`](https://etherscan.io/address/0x53b21DC502b163Bcf3bD9a68d5db5e8E6110E1CC) |
 
 Consider the process of deploying your own set of auxiliary repoutation layer contracts to experiment with our implementation. If you are going to deploy your contracts, then you will have to support them yourself.
 
@@ -175,7 +175,7 @@ WARN [03-19|10:29:39.585] PassportLogicRegistry deployed           contract_addr
 WARN [03-19|10:29:39.585] Deploying PassportFactory                owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55 registry=0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c
 WARN [03-19|10:29:40.275] Waiting for transaction                  hash=0x984b1df10640a5fe3005aea593b1cbb7af59682469564063a490820c8a8cb6f0
 WARN [03-19|10:29:48.602] Transaction successfully mined           tx_hash=0x984b1df10640a5fe3005aea593b1cbb7af59682469564063a490820c8a8cb6f0 cumulative_gas_used=1446005
-WARN [03-19|10:29:48.602] PassportFactory deployed                 contract_address=0x5FD962855e9b327262F47594949fd6d742FE2A01
+WARN [03-19|10:29:48.602] PassportFactory deployed                 contract_address=0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2
 WARN [03-19|10:29:48.602] Done.
 ```
 
@@ -192,25 +192,25 @@ Before creating a passport for a specific Ethereum address, store the private ke
 Make sure that the passport owner has enough money to create a passport contract. Usually passport contract deployment takes `425478` gas.
 
 To create a passport contract you need to know address of the `PassportFactory` contract. Let's try to create a passport in Ropsten
-using the `PassportFactory` contract deployed by Monetha ([`0x5FD962855e9b327262F47594949fd6d742FE2A01`](https://ropsten.etherscan.io/address/0x5FD962855e9b327262F47594949fd6d742FE2A01)):
+using the `PassportFactory` contract deployed by Monetha ([`0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2`](https://ropsten.etherscan.io/address/0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2)):
 
 ```bash
 ./bin/deploy-passport -ownerkey ./pass_owner.key \
-  -factoryaddr 0x5FD962855e9b327262F47594949fd6d742FE2A01 \
+  -factoryaddr 0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2 \
   -backendurl https://ropsten.infura.io
 ```
 
 Below you can see the output of the command to create a passport for the address `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d`.
 
 ```
-WARN [03-19|10:41:59.024] Loaded configuration                     owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55 backend_url=https://ropsten.infura.io factory=0x5FD962855e9b327262F47594949fd6d742FE2A01
+WARN [03-19|10:41:59.024] Loaded configuration                     owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55 backend_url=https://ropsten.infura.io factory=0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2
 WARN [03-19|10:41:59.798] Getting balance                          address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55
-WARN [03-19|10:41:59.933] Initializing PassportFactory contract    factory=0x5FD962855e9b327262F47594949fd6d742FE2A01
+WARN [03-19|10:41:59.933] Initializing PassportFactory contract    factory=0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2
 WARN [03-19|10:41:59.940] Deploying Passport contract              owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55
 WARN [03-19|10:42:00.692] Waiting for transaction                  hash=0x33e7d5dc34f5e8597859c319c34ef4f613238defbadcc2fda3ae65f508b45884
 WARN [03-19|10:42:08.980] Transaction successfully mined           tx_hash=0x33e7d5dc34f5e8597859c319c34ef4f613238defbadcc2fda3ae65f508b45884 cumulative_gas_used=6130011
 WARN [03-19|10:42:08.987] Passport deployed                        contract_address=0x1C3A76a9A27470657BcBE7BfB47820457E4DB682
-WARN [03-19|10:42:08.987] Initializing Passport contract           passport=0x5FD962855e9b327262F47594949fd6d742FE2A01
+WARN [03-19|10:42:08.987] Initializing Passport contract           passport=0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2
 WARN [03-19|10:42:08.987] Claiming ownership                       owner_address=0xDdD9b3Ea9d65cfD12b18ceA4E6f7Df4948ec4C55
 WARN [03-19|10:42:09.550] Waiting for transaction                  hash=0xae51f2769db4bb7d5c8c651cfa78b8048f5fcd6bc949ac3d6b220aa7c2d5255e
 WARN [03-19|10:42:22.061] Transaction successfully mined           tx_hash=0xae51f2769db4bb7d5c8c651cfa78b8048f5fcd6bc949ac3d6b220aa7c2d5255e cumulative_gas_used=2220151
@@ -223,20 +223,20 @@ As you can see in the line `Passport deployed`, a passport contract was created 
 
 The passport factory allows you to get a list of all the passports that have been created.
 
-Let's try to get a list of all passports using the address of `PassportFactory` contract deployed by Monetha ([`0x5FD962855e9b327262F47594949fd6d742FE2A01`](https://ropsten.etherscan.io/address/0x5FD962855e9b327262F47594949fd6d742FE2A01))
+Let's try to get a list of all passports using the address of `PassportFactory` contract deployed by Monetha ([`0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2`](https://ropsten.etherscan.io/address/0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2))
 in Ropsten network:
 
 ```bash
 ./bin/passport-list -out /dev/stdout \
   -backendurl https://ropsten.infura.io \
-  -factoryaddr 0x5FD962855e9b327262F47594949fd6d742FE2A01
+  -factoryaddr 0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2
 ```
 
 You should see something like this:
 
 ```
-WARN [03-19|10:44:48.830] Loaded configuration                     factory_provider=0x5FD962855e9b327262F47594949fd6d742FE2A01 backend_url=https://ropsten.infura.io
-WARN [03-19|10:44:49.579] Initialising passport factory contract   passport_factory=0x5FD962855e9b327262F47594949fd6d742FE2A01
+WARN [03-19|10:44:48.830] Loaded configuration                     factory_provider=0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2 backend_url=https://ropsten.infura.io
+WARN [03-19|10:44:49.579] Initialising passport factory contract   passport_factory=0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2
 WARN [03-19|10:44:49.579] FilterPassportCreated                    start_block=0
 WARN [03-19|10:44:49.841] Writing collected passports to file
 passport_address,first_owner,block_number,tx_hash

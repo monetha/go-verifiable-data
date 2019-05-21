@@ -234,12 +234,71 @@ contract HasNoTokens is CanReclaimToken {
 
 }
 
+// File: contracts/lifecycle/PausableProxy.sol
+
+/**
+ * @title PausableProxy
+ * @dev Base contract which allows children to implement an emergency stop mechanism.
+ */
+contract PausableProxy {
+    /**
+     * @dev Storage slot with the paused state of the contract.
+     * This is the keccak-256 hash of "org.monetha.proxy.paused", and is
+     * validated in the constructor.
+     */
+    bytes32 private constant PAUSED_OWNER_SLOT = 0x9e7945c55c116aa3404b99fe56db7af9613d3b899554a437c2616a4749a94d8a;
+
+    /**
+     * @dev The ClaimableProxy constructor validates PENDING_OWNER_SLOT constant.
+     */
+    constructor() public {
+        assert(PAUSED_OWNER_SLOT == keccak256("org.monetha.proxy.paused"));
+    }
+
+    /**
+     * @dev Modifier to make a function callable only when the contract is not paused.
+     */
+    modifier whenNotPaused() {
+        require(!_getPaused(), "contract should not be paused");
+        _;
+    }
+
+    /**
+     * @dev Modifier to make a function callable only when the contract is paused.
+     */
+    modifier whenPaused() {
+        require(_getPaused(), "contract should be paused");
+        _;
+    }
+
+    /**
+     * @return True when the contract is paused.
+     */
+    function _getPaused() internal view returns (bool paused) {
+        bytes32 slot = PAUSED_OWNER_SLOT;
+        assembly {
+            paused := sload(slot)
+        }
+    }
+
+    /**
+     * @dev Sets the paused state.
+     * @param _paused New paused state.
+     */
+    function _setPaused(bool _paused) internal {
+        bytes32 slot = PAUSED_OWNER_SLOT;
+        assembly {
+            sstore(slot, _paused)
+        }
+    }
+}
+
 // File: contracts/ownership/OwnableProxy.sol
 
 /**
  * @title OwnableProxy
  */
-contract OwnableProxy {
+contract OwnableProxy is PausableProxy {
     event OwnershipRenounced(address indexed previousOwner);
     event OwnershipTransferred(
         address indexed previousOwner,
@@ -277,7 +336,7 @@ contract OwnableProxy {
      * It will not be possible to call the functions with the `onlyOwner`
      * modifier anymore.
      */
-    function renounceOwnership() public onlyOwner {
+    function renounceOwnership() public onlyOwner whenNotPaused {
         emit OwnershipRenounced(_getOwner());
         _setOwner(address(0));
     }
@@ -286,7 +345,7 @@ contract OwnableProxy {
      * @dev Allows the current owner to transfer control of the contract to a newOwner.
      * @param _newOwner The address to transfer ownership to.
      */
-    function transferOwnership(address _newOwner) public onlyOwner {
+    function transferOwnership(address _newOwner) public onlyOwner whenNotPaused {
         _transferOwnership(_newOwner);
     }
 
@@ -368,14 +427,14 @@ contract ClaimableProxy is OwnableProxy {
      * @dev Allows the current owner to set the pendingOwner address.
      * @param newOwner The address to transfer ownership to.
      */
-    function transferOwnership(address newOwner) public onlyOwner {
+    function transferOwnership(address newOwner) public onlyOwner whenNotPaused {
         _setPendingOwner(newOwner);
     }
 
     /**
      * @dev Allows the pendingOwner address to finalize the transfer.
      */
-    function claimOwnership() public onlyPendingOwner {
+    function claimOwnership() public onlyPendingOwner whenNotPaused {
         emit OwnershipTransferred(_getOwner(), _getPendingOwner());
         _setOwner(_getPendingOwner());
         _setPendingOwner(address(0));
@@ -414,11 +473,11 @@ contract DestructibleProxy is OwnableProxy {
     /**
      * @dev Transfers the current balance to the owner and terminates the contract.
      */
-    function destroy() public onlyOwner {
+    function destroy() public onlyOwner whenNotPaused {
         selfdestruct(_getOwner());
     }
 
-    function destroyAndSend(address _recipient) public onlyOwner {
+    function destroyAndSend(address _recipient) public onlyOwner whenNotPaused {
         selfdestruct(_recipient);
     }
 }

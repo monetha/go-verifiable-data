@@ -28,8 +28,8 @@ Usage of `./deploy-passport`:
   ```
 
 * Deploying passport contract in Ropsten network using passport factory contract at
-  [0x5FD962855e9b327262F47594949fd6d742FE2A01](https://ropsten.etherscan.io/address/0x5FD962855e9b327262F47594949fd6d742FE2A01#code) 
+  [0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2](https://ropsten.etherscan.io/address/0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2#code) 
   and Ethereum private key stored in file `./owner.key`:
   ```bash
-  ./deploy-passport -ownerkey ./owner.key -factoryaddr 0x5FD962855e9b327262F47594949fd6d742FE2A01 -backendurl https://ropsten.infura.io
+  ./deploy-passport -ownerkey ./owner.key -factoryaddr 0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2 -backendurl https://ropsten.infura.io
   ```

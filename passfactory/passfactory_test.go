@@ -147,9 +147,9 @@ func createPassport(ctx context.Context, t *testing.T) (passportCreationResult, 
 
 	monethaSession := e.NewSession(monethaKey)
 	// deploying passport factory with all dependencies: passport logic, passport logic registry
-	res, err := deployer.New(monethaSession).DeployPassportFactory(ctx)
+	res, err := deployer.New(monethaSession).Bootstrap(ctx)
 	if err != nil {
-		t.Errorf("Deploy.DeployPassportFactory() error = %v", err)
+		t.Errorf("Deploy.Bootstrap() error = %v", err)
 	}
 	passportFactoryAddress := res.PassportFactoryAddress
 

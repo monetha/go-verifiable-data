@@ -23,9 +23,9 @@ import (
 func main() {
 	var (
 		backendURL   = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
-		factoryAddr  = flag.String("factoryaddr", "", "Ethereum address of passport factory contract")
-		ownerKeyFile = flag.String("ownerkey", "", "owner private key filename")
-		ownerKeyHex  = flag.String("ownerkeyhex", "", "private key as hex (for testing)")
+		registryAddr = flag.String("registryaddr", "", "Ethereum address of passport logic registry contract")
+		ownerKeyFile = flag.String("ownerkey", "", "Monetha owner private key filename")
+		ownerKeyHex  = flag.String("ownerkeyhex", "", "Monetha owner private key as hex (for testing)")
 		verbosity    = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
 		vmodule      = flag.String("vmodule", "", "log verbosity pattern")
 
@@ -44,8 +44,8 @@ func main() {
 	log.Root().SetHandler(glogger)
 
 	switch {
-	case *factoryAddr == "" && *backendURL != "":
-		utils.Fatalf("Use -factoryaddr to specify an address of passport factory contract")
+	case *registryAddr == "" && *backendURL != "":
+		utils.Fatalf("Use -registryaddr to specify an address of passport logic registry contract")
 	case *ownerKeyFile == "" && *ownerKeyHex == "":
 		utils.Fatalf("Use -ownerkey or -ownerkeyhex to specify a private key")
 	case *ownerKeyFile != "" && *ownerKeyHex != "":
@@ -60,9 +60,9 @@ func main() {
 		}
 	}
 
-	passportFactoryAddress := common.HexToAddress(*factoryAddr)
+	passportRegistryAddress := common.HexToAddress(*registryAddr)
 	ownerAddress := bind.NewKeyedTransactor(ownerKey).From
-	log.Warn("Loaded configuration", "owner_address", ownerAddress.Hex(), "backend_url", *backendURL, "factory", passportFactoryAddress.Hex())
+	log.Warn("Loaded configuration", "owner_address", ownerAddress.Hex(), "backend_url", *backendURL, "registry", passportRegistryAddress.Hex())
 
 	ctx := cmdutils.CreateCtrlCContext()
 
@@ -70,13 +70,11 @@ func main() {
 		e *eth.Eth
 	)
 	if *backendURL == "" {
-		monethaKey, err := crypto.GenerateKey()
-		cmdutils.CheckErr(err, "generating key")
-		monethaAddress := bind.NewKeyedTransactor(monethaKey).From
-
 		alloc := core.GenesisAlloc{
-			monethaAddress: {Balance: big.NewInt(deployer.PassportFactoryGasLimit)},
-			ownerAddress:   {Balance: big.NewInt(deployer.PassportGasLimit)},
+			ownerAddress: {Balance: big.NewInt(2*deployer.PassportFactoryGasLimit +
+				deployer.PassportLogicDeployGasLimit +
+				deployer.AddPassportLogicGasLimit +
+				deployer.SetCurrentPassportLogicGasLimit)},
 		}
 		sim := backend.NewSimulatedBackendExtended(alloc, 10000000)
 		sim.Commit()
@@ -85,14 +83,13 @@ func main() {
 		cmdutils.CheckErr(e.UpdateSuggestedGasPrice(ctx), "SuggestGasPrice")
 
 		// creating owner session and checking balance
-		monethaSession := e.NewSession(monethaKey)
+		monethaSession := e.NewSession(ownerKey)
 		cmdutils.CheckBalance(ctx, monethaSession, deployer.PassportFactoryGasLimit)
 
 		// deploying passport factory
 		res, err := deployer.New(monethaSession).Bootstrap(ctx)
 		cmdutils.CheckErr(err, "create passport factory")
-
-		passportFactoryAddress = res.PassportFactoryAddress
+		passportRegistryAddress = res.PassportLogicRegistryAddress
 	} else {
 		client, err := ethclient.Dial(*backendURL)
 		cmdutils.CheckErr(err, "ethclient.Dial")
@@ -105,12 +102,10 @@ func main() {
 
 	// creating owner session and checking balance
 	ownerSession := e.NewSession(ownerKey)
-	cmdutils.CheckBalance(ctx, ownerSession, deployer.PassportGasLimit)
 
-	// deploying passport
-	_, err = deployer.New(ownerSession).
-		DeployPassport(ctx, passportFactoryAddress)
-	cmdutils.CheckErr(err, "deploying passport")
+	// upgrading passport logic passport
+	_, err = deployer.New(ownerSession).DeployPassportFactory(ctx, passportRegistryAddress)
+	cmdutils.CheckErr(err, "deploying new passport factory")
 
 	log.Warn("Done.")
 }
