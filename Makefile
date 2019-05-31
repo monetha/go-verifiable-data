@@ -35,7 +35,7 @@ dependencies:
 	go install github.com/ethereum/go-ethereum/cmd/abigen
 
 .PHONY: lint
-lint:
+lint: cmd-gen
 	@echo "Checking formatting..."
 	@gofiles=$$(go list -f {{.Dir}} $(PKGS) | grep -v mock) && [ -z "$$gofiles" ] || unformatted=$$(for d in $$gofiles; do goimports -l $$d/*.go; done) && [ -z "$$unformatted" ] || (echo >&2 "Go files must be formatted with goimports. Following files has problem:\n$$unformatted" && false)
 	@echo "Checking vet..."
