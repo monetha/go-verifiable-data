@@ -80,7 +80,7 @@ func TestIPFSData(t *testing.T) {
 				t.Fatalf("Data read: %v", err)
 			}
 
-			if bytes.Compare(factData, data) != 0 {
+			if !bytes.Equal(factData, data) {
 				t.Errorf("wanted data %v, but got %v", factData, data)
 			}
 		})
@@ -108,7 +108,7 @@ func TestIPFSData(t *testing.T) {
 				t.Fatalf("Data read: %v", err)
 			}
 
-			if bytes.Compare(factData, data) != 0 {
+			if !bytes.Equal(factData, data) {
 				t.Errorf("wanted data %v, but got %v", factData, data)
 			}
 		})

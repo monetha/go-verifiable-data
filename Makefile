@@ -4,6 +4,8 @@ ARTIFACTS_DIR := $(if $(ARTIFACTS_DIR),$(ARTIFACTS_DIR),bin)
 
 PKGS ?= $(shell go list ./...)
 PKGS_NO_CMDS ?= $(shell go list ./... | grep -v $(PACKAGE_NAME)/cmd)
+PKGS_NOJS ?= $(shell go list ./... | grep -v $(PACKAGE_NAME)/cmd/passport-scanner/web)
+PKGS_JS ?= cmd/passport-scanner/web/...
 BENCH_FLAGS ?= -benchmem
 
 VERSION := $(if $(TRAVIS_TAG),$(TRAVIS_TAG),$(if $(TRAVIS_BRANCH),$(TRAVIS_BRANCH),development_in_$(shell git rev-parse --abbrev-ref HEAD)))
@@ -37,9 +39,10 @@ lint:
 	@echo "Checking formatting..."
 	@gofiles=$$(go list -f {{.Dir}} $(PKGS) | grep -v mock) && [ -z "$$gofiles" ] || unformatted=$$(for d in $$gofiles; do goimports -l $$d/*.go; done) && [ -z "$$unformatted" ] || (echo >&2 "Go files must be formatted with goimports. Following files has problem:\n$$unformatted" && false)
 	@echo "Checking vet..."
-	@go vet $(PKG_FILES)
+	@go vet ./...
 	@echo "Checking staticcheck..."
-	@staticcheck $(PKG_FILES)
+	@staticcheck $(PKGS_NOJS)
+	@env GOARCH=wasm GOOS=js staticcheck $(PKGS_JS)
 	@echo "Checking lint..."
 	@$(foreach dir,$(PKGS),golint $(dir);)
 

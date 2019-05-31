@@ -159,7 +159,7 @@ func TestPrivateDataExchange(t *testing.T) {
 				tc.Fatalf("ReadPrivateData: %v", err)
 			}
 
-			if bytes.Compare(factData, readFactData) != 0 {
+			if !bytes.Equal(factData, readFactData) {
 				tc.Fatalf("expected to read %v, but got %v", factData, readFactData)
 			}
 		})
@@ -248,7 +248,7 @@ func TestPrivateDataExchange(t *testing.T) {
 				tc.Fatalf("ReadPrivateData: %v", err)
 			}
 
-			if bytes.Compare(factData, readFactData) != 0 {
+			if !bytes.Equal(factData, readFactData) {
 				tc.Fatalf("expected to read %v, but got %v", factData, readFactData)
 			}
 		})

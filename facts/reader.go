@@ -316,6 +316,7 @@ func (r *Reader) ReadOwnerPublicKey(ctx context.Context, passport common.Address
 	ownershipTransferredEvent, err := (*extPassportLogicContract)(plc).GetFirstOwnershipTransferredEvent(ctx, newOwner)
 	if err != nil {
 		err = fmt.Errorf("facts: FilterOwnershipTransferred: %v", err)
+		return
 	}
 
 	txHash := ownershipTransferredEvent.Raw.TxHash

@@ -392,10 +392,13 @@ func TestHistorian_GetHistoryItemOfWriteTxData(t *testing.T) {
 
 	txHash, err := provider.WriteTxData(ctx, passportAddress, ehi.Key, ehi.Data)
 	if err != nil {
-		t.Errorf("Provider.WriteTxData() errro = %v", err)
+		t.Errorf("Provider.WriteTxData() error = %v", err)
 	}
 
 	hi, err := facts.NewHistorian(factProviderSession.Eth).GetHistoryItemOfWriteTxData(ctx, passportAddress, txHash)
+	if err != nil {
+		t.Errorf("Historian.GetHistoryItemOfWriteTxData() error = %v", err)
+	}
 
 	if diff := deep.Equal(ehi, hi); diff != nil {
 		t.Error(diff)
@@ -416,10 +419,13 @@ func TestHistorian_GetHistoryItemOfWriteBytes(t *testing.T) {
 
 	txHash, err := provider.WriteBytes(ctx, passportAddress, ehi.Key, ehi.Data)
 	if err != nil {
-		t.Errorf("Provider.WriteBytes() errro = %v", err)
+		t.Errorf("Provider.WriteBytes() error = %v", err)
 	}
 
 	hi, err := facts.NewHistorian(factProviderSession.Eth).GetHistoryItemOfWriteBytes(ctx, passportAddress, txHash)
+	if err != nil {
+		t.Errorf("Historian.GetHistoryItemOfWriteBytes() error = %v", err)
+	}
 
 	if diff := deep.Equal(ehi, hi); diff != nil {
 		t.Error(diff)
@@ -440,10 +446,13 @@ func TestHistorian_GetHistoryItemOfWriteString(t *testing.T) {
 
 	txHash, err := provider.WriteString(ctx, passportAddress, ehi.Key, ehi.Data)
 	if err != nil {
-		t.Errorf("Provider.WriteString() errro = %v", err)
+		t.Errorf("Provider.WriteString() error = %v", err)
 	}
 
 	hi, err := facts.NewHistorian(factProviderSession.Eth).GetHistoryItemOfWriteString(ctx, passportAddress, txHash)
+	if err != nil {
+		t.Errorf("Historian.GetHistoryItemOfWriteString error = %v", err)
+	}
 
 	if diff := deep.Equal(ehi, hi); diff != nil {
 		t.Error(diff)
@@ -464,10 +473,13 @@ func TestHistorian_GetHistoryItemOfWriteAddress(t *testing.T) {
 
 	txHash, err := provider.WriteAddress(ctx, passportAddress, ehi.Key, ehi.Data)
 	if err != nil {
-		t.Errorf("Provider.WriteAddress() errro = %v", err)
+		t.Errorf("Provider.WriteAddress() error = %v", err)
 	}
 
 	hi, err := facts.NewHistorian(factProviderSession.Eth).GetHistoryItemOfWriteAddress(ctx, passportAddress, txHash)
+	if err != nil {
+		t.Errorf("Historian.GetHistoryItemOfWriteAddress() error = %v", err)
+	}
 
 	if diff := deep.Equal(ehi, hi); diff != nil {
 		t.Error(diff)
@@ -488,10 +500,13 @@ func TestHistorian_GetHistoryItemOfWriteUint(t *testing.T) {
 
 	txHash, err := provider.WriteUint(ctx, passportAddress, ehi.Key, ehi.Data)
 	if err != nil {
-		t.Errorf("Provider.WriteUint() errro = %v", err)
+		t.Errorf("Provider.WriteUint() error = %v", err)
 	}
 
 	hi, err := facts.NewHistorian(factProviderSession.Eth).GetHistoryItemOfWriteUint(ctx, passportAddress, txHash)
+	if err != nil {
+		t.Errorf("Historian.GetHistoryItemOfWriteUint() error = %v", err)
+	}
 
 	if diff := deep.Equal(ehi, hi); diff != nil {
 		t.Error(diff)
@@ -512,10 +527,13 @@ func TestHistorian_GetHistoryItemOfWriteInt(t *testing.T) {
 
 	txHash, err := provider.WriteInt(ctx, passportAddress, ehi.Key, ehi.Data)
 	if err != nil {
-		t.Errorf("Provider.WriteInt() errro = %v", err)
+		t.Errorf("Provider.WriteInt() error = %v", err)
 	}
 
 	hi, err := facts.NewHistorian(factProviderSession.Eth).GetHistoryItemOfWriteInt(ctx, passportAddress, txHash)
+	if err != nil {
+		t.Errorf("Historian.GetHistoryItemOfWriteInt() error = %v", err)
+	}
 
 	if diff := deep.Equal(ehi, hi); diff != nil {
 		t.Error(diff)
@@ -536,10 +554,13 @@ func TestHistorian_GetHistoryItemOfWriteBool(t *testing.T) {
 
 	txHash, err := provider.WriteBool(ctx, passportAddress, ehi.Key, ehi.Data)
 	if err != nil {
-		t.Errorf("Provider.WriteBool() errro = %v", err)
+		t.Errorf("Provider.WriteBool() error = %v", err)
 	}
 
 	hi, err := facts.NewHistorian(factProviderSession.Eth).GetHistoryItemOfWriteBool(ctx, passportAddress, txHash)
+	if err != nil {
+		t.Errorf("Historian.GetHistoryItemOfWriteBool() error = %v", err)
+	}
 
 	if diff := deep.Equal(ehi, hi); diff != nil {
 		t.Error(diff)
@@ -560,10 +581,13 @@ func TestHistorian_GetHistoryItemOfWriteIPFSHash(t *testing.T) {
 
 	txHash, err := provider.WriteIPFSHash(ctx, passportAddress, ehi.Key, ehi.Hash)
 	if err != nil {
-		t.Errorf("Provider.WriteIPFSHash() errro = %v", err)
+		t.Errorf("Provider.WriteIPFSHash() error = %v", err)
 	}
 
 	hi, err := facts.NewHistorian(factProviderSession.Eth).GetHistoryItemOfWriteIPFSHash(ctx, passportAddress, txHash)
+	if err != nil {
+		t.Errorf("Historian.GetHistoryItemOfWriteIPFSHash() error = %v", err)
+	}
 
 	if diff := deep.Equal(ehi, hi); diff != nil {
 		t.Error(diff)

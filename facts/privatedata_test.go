@@ -70,7 +70,7 @@ func TestPrivateData(t *testing.T) {
 				tc.Fatalf("ReadPrivateData: %v", err)
 			}
 
-			if bytes.Compare(factData, decryptedData) != 0 {
+			if !bytes.Equal(factData, decryptedData) {
 				tc.Errorf("wanted data %v, but got %v", factData, decryptedData)
 			}
 		})
@@ -92,7 +92,7 @@ func TestPrivateData(t *testing.T) {
 				tc.Fatalf("ReadPrivateDataUsingSecretKey: %v", err)
 			}
 
-			if bytes.Compare(factData, decryptedData) != 0 {
+			if !bytes.Equal(factData, decryptedData) {
 				tc.Errorf("wanted data %v, but got %v", factData, decryptedData)
 			}
 		})
@@ -118,7 +118,7 @@ func TestPrivateData(t *testing.T) {
 				tc.Fatalf("ReadPrivateData: %v", err)
 			}
 
-			if bytes.Compare(tc.DataKey, secretKey) != 0 {
+			if !bytes.Equal(tc.DataKey, secretKey) {
 				tc.Errorf("wanted secret key %v, but got %v", tc.DataKey, secretKey)
 			}
 		})
@@ -140,7 +140,7 @@ func TestPrivateData(t *testing.T) {
 				tc.Fatalf("ReadPrivateData: %v", err)
 			}
 
-			if bytes.Compare(factData, decryptedData) != 0 {
+			if !bytes.Equal(factData, decryptedData) {
 				tc.Errorf("wanted data %v, but got %v", factData, decryptedData)
 			}
 		})
@@ -166,7 +166,7 @@ func TestPrivateData(t *testing.T) {
 				tc.Fatalf("ReadPrivateData: %v", err)
 			}
 
-			if bytes.Compare(factData, decryptedData) != 0 {
+			if !bytes.Equal(factData, decryptedData) {
 				tc.Errorf("wanted data %v, but got %v", factData, decryptedData)
 			}
 		})
@@ -188,7 +188,7 @@ func TestPrivateData(t *testing.T) {
 				tc.Fatalf("ReadHistoryPrivateDataUsingSecretKey: %v", err)
 			}
 
-			if bytes.Compare(factData, decryptedData) != 0 {
+			if !bytes.Equal(factData, decryptedData) {
 				tc.Errorf("wanted data %v, but got %v", factData, decryptedData)
 			}
 		})

@@ -46,7 +46,7 @@ func (c *StatusCommand) Execute(args []string) error {
 
 	stateDetails := []string{status.State.String()}
 	if status.State != exchange.Closed {
-		agoDur := time.Now().Sub(status.StateExpirationTime)
+		agoDur := time.Since(status.StateExpirationTime)
 		fmtStr := "expired %v ago"
 		if agoDur < 0 {
 			fmtStr = "expires in %v"
