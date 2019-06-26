@@ -508,7 +508,7 @@ However, despite the fact that the private data is stored publicly, only the pas
 
 #### Reading private data
 
-After the fact provider has written the public data to the passport, the data can be read either by passport owner or by 
+After the fact provider has written the private data to the passport, the data can be read either by passport owner or by 
 fact provider (only if he's saved the data encryption key). To read private data, the following data should be provided:
 * the address of the passport (`-passportaddr` parameter)
 * the address of the fact provider who stored the private data (`-factprovideraddr` parameter)
@@ -656,9 +656,9 @@ How it works:
 1. The passport owner receives an event from the Ethereum blockchain or directly from the data requester for the data 
    exchange proposition. If he is satisfied with the proposal, he executes the `accept` command. When executing this command, 
    the passport owner encrypts the data encryption key with the exchange key of data requester and 
-   transfers the same amount of funds as the data requester to he passport as a guarantee of the validity of the data encryption key.
+   transfers the same amount of funds as the data requester to the passport as a guarantee of the validity of the data encryption key.
    
-   The data requester has 24 hours to accept private data exchange. 24 hours after the exchange proposition, the data 
+   The passport owner has 24 hours to accept private data exchange. 24 hours after the exchange proposition, the data 
    requester can close the proposition and return staked funds back by calling `timeout` command.
    
 1. The data requester receives an event from the Ethereum blockchain or directly from the passport owner about accepted 

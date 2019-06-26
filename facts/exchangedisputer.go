@@ -48,7 +48,7 @@ func (f *ExchangeDisputer) DisputePrivateDataExchange(ctx context.Context, passp
 		return nil, errors.Wrap(err, "failed to get private data exchange")
 	}
 
-	// it should be either closed or accepted
+	// it should be accepted
 	exState := exchange.StateType(ex.State)
 	if exState != exchange.Accepted {
 		return nil, ErrExchangeMustBeAccepted

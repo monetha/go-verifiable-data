@@ -47,7 +47,7 @@ func (f *ExchangeFinisher) FinishPrivateDataExchange(ctx context.Context, passpo
 		return errors.Wrap(err, "failed to get proposed private data exchange")
 	}
 
-	// it should be proposed
+	// it should be accepted
 	exState := exchange.StateType(ex.State)
 	if exState != exchange.Accepted {
 		return ErrExchangeMustBeAccepted
