@@ -254,7 +254,7 @@ func (d *Deploy) DeployPassport(ctx context.Context, passportFactoryAddress comm
 	// initializing Passport
 	///////////////////////////////////////////////////////
 
-	d.Log("Initializing Passport contract", "passport", passportFactoryAddress.Hex())
+	d.Log("Initializing Passport contract", "passport", passportAddress.Hex())
 	passportContract, err := contracts.NewPassportContract(passportAddress, backend)
 	if err != nil {
 		return common.Address{}, fmt.Errorf("initializing Passport contract: %v", err)
