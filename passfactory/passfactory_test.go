@@ -2,6 +2,7 @@ package passfactory_test
 
 import (
 	"context"
+	"fmt"
 	"math/big"
 	"testing"
 
@@ -9,6 +10,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/reputation-go-sdk/deployer"
 	"github.com/monetha/reputation-go-sdk/eth"
 	"github.com/monetha/reputation-go-sdk/eth/backend"
@@ -142,7 +144,12 @@ func createPassport(ctx context.Context, t *testing.T) (passportCreationResult, 
 	sim := backend.NewSimulatedBackendExtended(alloc, 10000000)
 	sim.Commit()
 
-	e := eth.New(sim, nil)
+	glogHandler := log.NewGlogHandler(log.StreamHandler(tWriter{}, log.LogfmtFormat()))
+	glogHandler.Verbosity(log.LvlWarn)
+	log.Root().SetHandler(glogHandler)
+	lf := log.Warn
+
+	e := eth.New(sim, lf)
 	e.UpdateSuggestedGasPrice(ctx)
 
 	monethaSession := e.NewSession(monethaKey)
@@ -165,4 +172,11 @@ func createPassport(ctx context.Context, t *testing.T) (passportCreationResult, 
 		PassportOwnerAddress:   passportOwnerAddress,
 		PassportFactoryAddress: passportFactoryAddress,
 	}, e
+}
+
+type tWriter struct{}
+
+func (t tWriter) Write(p []byte) (n int, err error) {
+	fmt.Print(string(p))
+	return len(p), nil
 }
