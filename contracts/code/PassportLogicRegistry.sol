@@ -1,6 +1,8 @@
-pragma solidity ^0.4.24;
 
 // File: openzeppelin-solidity/contracts/ownership/Ownable.sol
+
+pragma solidity ^0.4.24;
+
 
 /**
  * @title Ownable
@@ -66,6 +68,10 @@ contract Ownable {
 
 // File: openzeppelin-solidity/contracts/ownership/HasNoEther.sol
 
+pragma solidity ^0.4.24;
+
+
+
 /**
  * @title Contracts that should not own Ether
  * @author Remco Bloemen <remco@2π.com>
@@ -105,6 +111,9 @@ contract HasNoEther is Ownable {
 
 // File: openzeppelin-solidity/contracts/token/ERC20/ERC20Basic.sol
 
+pragma solidity ^0.4.24;
+
+
 /**
  * @title ERC20Basic
  * @dev Simpler version of ERC20 interface
@@ -118,6 +127,10 @@ contract ERC20Basic {
 }
 
 // File: openzeppelin-solidity/contracts/token/ERC20/ERC20.sol
+
+pragma solidity ^0.4.24;
+
+
 
 /**
  * @title ERC20 interface
@@ -139,6 +152,11 @@ contract ERC20 is ERC20Basic {
 }
 
 // File: openzeppelin-solidity/contracts/token/ERC20/SafeERC20.sol
+
+pragma solidity ^0.4.24;
+
+
+
 
 /**
  * @title SafeERC20
@@ -181,6 +199,12 @@ library SafeERC20 {
 
 // File: openzeppelin-solidity/contracts/ownership/CanReclaimToken.sol
 
+pragma solidity ^0.4.24;
+
+
+
+
+
 /**
  * @title Contracts that should be able to recover tokens
  * @author SylTi
@@ -202,6 +226,10 @@ contract CanReclaimToken is Ownable {
 }
 
 // File: openzeppelin-solidity/contracts/ownership/HasNoTokens.sol
+
+pragma solidity ^0.4.24;
+
+
 
 /**
  * @title Contracts that should not own Tokens
@@ -235,6 +263,8 @@ contract HasNoTokens is CanReclaimToken {
 }
 
 // File: contracts/IPassportLogicRegistry.sol
+
+pragma solidity ^0.4.24;
 
 interface IPassportLogicRegistry {
     /**
@@ -272,6 +302,12 @@ interface IPassportLogicRegistry {
 }
 
 // File: contracts/PassportLogicRegistry.sol
+
+pragma solidity ^0.4.24;
+
+
+
+
 
 /**
  * @title PassportImplRegistry

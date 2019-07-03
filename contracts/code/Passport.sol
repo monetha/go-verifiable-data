@@ -1,6 +1,7 @@
-pragma solidity ^0.4.24;
 
 // File: contracts/lifecycle/PausableProxy.sol
+
+pragma solidity ^0.4.24;
 
 /**
  * @title PausableProxy
@@ -60,6 +61,9 @@ contract PausableProxy {
 }
 
 // File: contracts/ownership/OwnableProxy.sol
+
+pragma solidity ^0.4.24;
+
 
 /**
  * @title OwnableProxy
@@ -157,6 +161,9 @@ contract OwnableProxy is PausableProxy {
 
 // File: contracts/ownership/ClaimableProxy.sol
 
+pragma solidity ^0.4.24;
+
+
 /**
  * @title ClaimableProxy
  * @dev Extension for the OwnableProxy contract, where the ownership needs to be claimed.
@@ -231,6 +238,9 @@ contract ClaimableProxy is OwnableProxy {
 
 // File: contracts/lifecycle/DestructibleProxy.sol
 
+pragma solidity ^0.4.24;
+
+
 /**
  * @title Destructible
  * @dev Base contract that can be destroyed by owner. All funds in contract will be sent to the owner.
@@ -249,6 +259,8 @@ contract DestructibleProxy is OwnableProxy {
 }
 
 // File: contracts/IPassportLogicRegistry.sol
+
+pragma solidity ^0.4.24;
 
 interface IPassportLogicRegistry {
     /**
@@ -286,6 +298,8 @@ interface IPassportLogicRegistry {
 }
 
 // File: contracts/upgradeability/Proxy.sol
+
+pragma solidity ^0.4.24;
 
 /**
  * @title Proxy
@@ -337,6 +351,12 @@ contract Proxy {
 }
 
 // File: contracts/Passport.sol
+
+pragma solidity ^0.4.24;
+
+
+
+
 
 /**
  * @title Passport

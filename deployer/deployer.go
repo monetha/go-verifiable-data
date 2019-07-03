@@ -12,7 +12,7 @@ import (
 
 const (
 	// PassportLogicDeployGasLimit is a gas limit to deploy only PassportLogic contract
-	PassportLogicDeployGasLimit = 3400000
+	PassportLogicDeployGasLimit = 3420000
 	// PassportLogicRegistryDeployGasLimit is a gas limit to deploy only PassportLogicRegistry contract
 	PassportLogicRegistryDeployGasLimit = 1120000
 	// PassportFactoryDeployGasLimit is a gas limit to deploy only PassportFactory contract
