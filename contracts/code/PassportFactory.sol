@@ -1,6 +1,8 @@
-pragma solidity ^0.4.24;
 
 // File: openzeppelin-solidity/contracts/ownership/Ownable.sol
+
+pragma solidity ^0.4.24;
+
 
 /**
  * @title Ownable
@@ -66,6 +68,10 @@ contract Ownable {
 
 // File: openzeppelin-solidity/contracts/ownership/HasNoEther.sol
 
+pragma solidity ^0.4.24;
+
+
+
 /**
  * @title Contracts that should not own Ether
  * @author Remco Bloemen <remco@2π.com>
@@ -105,6 +111,9 @@ contract HasNoEther is Ownable {
 
 // File: openzeppelin-solidity/contracts/token/ERC20/ERC20Basic.sol
 
+pragma solidity ^0.4.24;
+
+
 /**
  * @title ERC20Basic
  * @dev Simpler version of ERC20 interface
@@ -118,6 +127,10 @@ contract ERC20Basic {
 }
 
 // File: openzeppelin-solidity/contracts/token/ERC20/ERC20.sol
+
+pragma solidity ^0.4.24;
+
+
 
 /**
  * @title ERC20 interface
@@ -139,6 +152,11 @@ contract ERC20 is ERC20Basic {
 }
 
 // File: openzeppelin-solidity/contracts/token/ERC20/SafeERC20.sol
+
+pragma solidity ^0.4.24;
+
+
+
 
 /**
  * @title SafeERC20
@@ -181,6 +199,12 @@ library SafeERC20 {
 
 // File: openzeppelin-solidity/contracts/ownership/CanReclaimToken.sol
 
+pragma solidity ^0.4.24;
+
+
+
+
+
 /**
  * @title Contracts that should be able to recover tokens
  * @author SylTi
@@ -202,6 +226,10 @@ contract CanReclaimToken is Ownable {
 }
 
 // File: openzeppelin-solidity/contracts/ownership/HasNoTokens.sol
+
+pragma solidity ^0.4.24;
+
+
 
 /**
  * @title Contracts that should not own Tokens
@@ -235,6 +263,8 @@ contract HasNoTokens is CanReclaimToken {
 }
 
 // File: contracts/lifecycle/PausableProxy.sol
+
+pragma solidity ^0.4.24;
 
 /**
  * @title PausableProxy
@@ -294,6 +324,9 @@ contract PausableProxy {
 }
 
 // File: contracts/ownership/OwnableProxy.sol
+
+pragma solidity ^0.4.24;
+
 
 /**
  * @title OwnableProxy
@@ -391,6 +424,9 @@ contract OwnableProxy is PausableProxy {
 
 // File: contracts/ownership/ClaimableProxy.sol
 
+pragma solidity ^0.4.24;
+
+
 /**
  * @title ClaimableProxy
  * @dev Extension for the OwnableProxy contract, where the ownership needs to be claimed.
@@ -465,6 +501,9 @@ contract ClaimableProxy is OwnableProxy {
 
 // File: contracts/lifecycle/DestructibleProxy.sol
 
+pragma solidity ^0.4.24;
+
+
 /**
  * @title Destructible
  * @dev Base contract that can be destroyed by owner. All funds in contract will be sent to the owner.
@@ -483,6 +522,8 @@ contract DestructibleProxy is OwnableProxy {
 }
 
 // File: contracts/IPassportLogicRegistry.sol
+
+pragma solidity ^0.4.24;
 
 interface IPassportLogicRegistry {
     /**
@@ -520,6 +561,8 @@ interface IPassportLogicRegistry {
 }
 
 // File: contracts/upgradeability/Proxy.sol
+
+pragma solidity ^0.4.24;
 
 /**
  * @title Proxy
@@ -571,6 +614,12 @@ contract Proxy {
 }
 
 // File: contracts/Passport.sol
+
+pragma solidity ^0.4.24;
+
+
+
+
 
 /**
  * @title Passport
@@ -637,6 +686,12 @@ contract Passport is Proxy, ClaimableProxy, DestructibleProxy {
 }
 
 // File: contracts/PassportFactory.sol
+
+pragma solidity ^0.4.24;
+
+
+
+
 
 /**
  * @title PassportFactory

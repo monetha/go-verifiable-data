@@ -1,6 +1,7 @@
-pragma solidity ^0.4.24;
 
 // File: contracts/lifecycle/PausableProxy.sol
+
+pragma solidity ^0.4.24;
 
 /**
  * @title PausableProxy
@@ -60,6 +61,9 @@ contract PausableProxy {
 }
 
 // File: contracts/ownership/OwnableProxy.sol
+
+pragma solidity ^0.4.24;
+
 
 /**
  * @title OwnableProxy
@@ -157,6 +161,9 @@ contract OwnableProxy is PausableProxy {
 
 // File: contracts/ownership/ClaimableProxy.sol
 
+pragma solidity ^0.4.24;
+
+
 /**
  * @title ClaimableProxy
  * @dev Extension for the OwnableProxy contract, where the ownership needs to be claimed.
@@ -230,6 +237,8 @@ contract ClaimableProxy is OwnableProxy {
 }
 
 // File: contracts/IPassportLogic.sol
+
+pragma solidity ^0.4.24;
 
 interface IPassportLogic {
     /**
@@ -332,6 +341,9 @@ interface IPassportLogic {
 }
 
 // File: contracts/storage/Storage.sol
+
+pragma solidity ^0.4.24;
+
 
 // Storage contracts holds all state.
 // Do not change the order of the fields, аdd new fields to the end of the contract!
@@ -497,6 +509,9 @@ contract Storage is ClaimableProxy
 
 // File: contracts/storage/AddressStorageLogic.sol
 
+pragma solidity ^0.4.24;
+
+
 contract AddressStorageLogic is Storage {
     event AddressUpdated(address indexed factProvider, bytes32 indexed key);
     event AddressDeleted(address indexed factProvider, bytes32 indexed key);
@@ -538,6 +553,9 @@ contract AddressStorageLogic is Storage {
 }
 
 // File: contracts/storage/UintStorageLogic.sol
+
+pragma solidity ^0.4.24;
+
 
 contract UintStorageLogic is Storage {
     event UintUpdated(address indexed factProvider, bytes32 indexed key);
@@ -581,6 +599,9 @@ contract UintStorageLogic is Storage {
 
 // File: contracts/storage/IntStorageLogic.sol
 
+pragma solidity ^0.4.24;
+
+
 contract IntStorageLogic is Storage {
     event IntUpdated(address indexed factProvider, bytes32 indexed key);
     event IntDeleted(address indexed factProvider, bytes32 indexed key);
@@ -622,6 +643,9 @@ contract IntStorageLogic is Storage {
 }
 
 // File: contracts/storage/BoolStorageLogic.sol
+
+pragma solidity ^0.4.24;
+
 
 contract BoolStorageLogic is Storage {
     event BoolUpdated(address indexed factProvider, bytes32 indexed key);
@@ -665,6 +689,9 @@ contract BoolStorageLogic is Storage {
 
 // File: contracts/storage/StringStorageLogic.sol
 
+pragma solidity ^0.4.24;
+
+
 contract StringStorageLogic is Storage {
     event StringUpdated(address indexed factProvider, bytes32 indexed key);
     event StringDeleted(address indexed factProvider, bytes32 indexed key);
@@ -706,6 +733,9 @@ contract StringStorageLogic is Storage {
 }
 
 // File: contracts/storage/BytesStorageLogic.sol
+
+pragma solidity ^0.4.24;
+
 
 contract BytesStorageLogic is Storage {
     event BytesUpdated(address indexed factProvider, bytes32 indexed key);
@@ -749,6 +779,9 @@ contract BytesStorageLogic is Storage {
 
 // File: contracts/storage/TxDataStorageLogic.sol
 
+pragma solidity ^0.4.24;
+
+
 /**
  * @title TxDataStorage
  * @dev This contract saves only the block number for the input data. The input data is not stored into
@@ -789,6 +822,9 @@ contract TxDataStorageLogic is Storage {
 }
 
 // File: contracts/storage/IPFSStorageLogic.sol
+
+pragma solidity ^0.4.24;
+
 
 contract IPFSStorageLogic is Storage {
     event IPFSHashUpdated(address indexed factProvider, bytes32 indexed key);
@@ -831,6 +867,9 @@ contract IPFSStorageLogic is Storage {
 }
 
 // File: openzeppelin-solidity/contracts/math/SafeMath.sol
+
+pragma solidity ^0.4.24;
+
 
 /**
  * @title SafeMath
@@ -883,6 +922,10 @@ library SafeMath {
 }
 
 // File: contracts/storage/PrivateDataStorageLogic.sol
+
+pragma solidity ^0.4.24;
+
+
 
 contract PrivateDataStorageLogic is Storage {
     using SafeMath for uint256;
@@ -951,7 +994,7 @@ contract PrivateDataStorageLogic is Storage {
             exchangeKeyHash : _exchangeKeyHash,
             encryptedDataKey : encryptedDataKey,
             state : PrivateDataExchangeState.Proposed,
-            stateExpired : now + privateDataExchangeProposeTimeout
+            stateExpired : _nowSeconds() + privateDataExchangeProposeTimeout
             });
         privateDataExchanges.push(exchange);
 
@@ -969,12 +1012,12 @@ contract PrivateDataStorageLogic is Storage {
         require(msg.sender == exchange.passportOwner, "only passport owner allowed");
         require(PrivateDataExchangeState.Proposed == exchange.state, "exchange must be in proposed state");
         require(msg.value >= exchange.dataRequesterValue, "need to stake at least data requester amount");
-        require(now < exchange.stateExpired, "exchange state expired");
+        require(_nowSeconds() < exchange.stateExpired, "exchange state expired");
 
         exchange.passportOwnerValue = msg.value;
         exchange.encryptedDataKey = _encryptedDataKey;
         exchange.state = PrivateDataExchangeState.Accepted;
-        exchange.stateExpired = now + privateDataExchangeAcceptTimeout;
+        exchange.stateExpired = _nowSeconds() + privateDataExchangeAcceptTimeout;
 
         emit PrivateDataExchangeAccepted(_exchangeIdx, exchange.dataRequester, msg.sender);
     }
@@ -984,7 +1027,7 @@ contract PrivateDataStorageLogic is Storage {
         require(_exchangeIdx < privateDataExchanges.length, "invalid exchange index");
         PrivateDataExchange storage exchange = privateDataExchanges[_exchangeIdx];
         require(PrivateDataExchangeState.Accepted == exchange.state, "exchange must be in accepted state");
-        require(now > exchange.stateExpired || msg.sender == exchange.dataRequester, "exchange must be either expired or be finished by the data requester");
+        require(_nowSeconds() > exchange.stateExpired || msg.sender == exchange.dataRequester, "exchange must be either expired or be finished by the data requester");
 
         exchange.state = PrivateDataExchangeState.Closed;
 
@@ -1003,7 +1046,7 @@ contract PrivateDataStorageLogic is Storage {
         PrivateDataExchange storage exchange = privateDataExchanges[_exchangeIdx];
         require(PrivateDataExchangeState.Proposed == exchange.state, "exchange must be in proposed state");
         require(msg.sender == exchange.dataRequester, "only data requester allowed");
-        require(now > exchange.stateExpired, "exchange must be expired");
+        require(_nowSeconds() > exchange.stateExpired, "exchange must be expired");
 
         exchange.state = PrivateDataExchangeState.Closed;
 
@@ -1022,7 +1065,7 @@ contract PrivateDataStorageLogic is Storage {
         PrivateDataExchange storage exchange = privateDataExchanges[_exchangeIdx];
         require(PrivateDataExchangeState.Accepted == exchange.state, "exchange must be in accepted state");
         require(msg.sender == exchange.dataRequester, "only data requester allowed");
-        require(now < exchange.stateExpired, "exchange must not be expired");
+        require(_nowSeconds() < exchange.stateExpired, "exchange must not be expired");
         require(keccak256(abi.encodePacked(_exchangeKey)) == exchange.exchangeKeyHash, "exchange key hash must match");
 
         bytes32 dataKey = _exchangeKey ^ exchange.encryptedDataKey;
@@ -1083,9 +1126,34 @@ contract PrivateDataStorageLogic is Storage {
         return (initValue.initialized, initValue.value.dataIPFSHash, initValue.value.dataKeyHash);
     }
 
+    function _nowSeconds() private view returns(uint256) {
+        uint256 t = now;
+
+        // In Quorum blockchain timestamp is in nanoseconds, not seconds:
+        // https://github.com/jpmorganchase/quorum/issues/713
+        // https://github.com/jpmorganchase/quorum/issues/190
+        if (t > 150000000000000000) {
+            t /= 1000000000;
+        }
+
+        return t;
+    }
 }
 
 // File: contracts/PassportLogic.sol
+
+pragma solidity ^0.4.24;
+
+
+
+
+
+
+
+
+
+
+
 
 contract PassportLogic
 is IPassportLogic

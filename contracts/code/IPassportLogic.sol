@@ -1,6 +1,7 @@
-pragma solidity ^0.4.24;
 
 // File: contracts/IPassportLogic.sol
+
+pragma solidity ^0.4.24;
 
 interface IPassportLogic {
     /**
