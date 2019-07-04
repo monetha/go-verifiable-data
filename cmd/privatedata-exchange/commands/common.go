@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"context"
 	"os"
 
 	"github.com/ethereum/go-ethereum/ethclient"
@@ -16,13 +17,17 @@ func initLogging(level log.Lvl, vmodule string) {
 	log.Root().SetHandler(glogger)
 }
 
-func newEth(backendURL string) (*eth.Eth, error) {
-	client, err := ethclient.Dial(backendURL)
+func newEth(ctx context.Context, backendURL string) (e *eth.Eth, err error) {
+	client, err := ethclient.DialContext(ctx, backendURL)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to connect ETH client")
 	}
 
-	return eth.New(client, log.Warn), nil
+	e = eth.New(client, log.Warn)
+	if err = e.UpdateSuggestedGasPrice(ctx); err != nil {
+		e = nil
+	}
+	return
 }
 
 func fileExistsAndNotTty(name string) bool {

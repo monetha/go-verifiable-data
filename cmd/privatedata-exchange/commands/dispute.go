@@ -23,7 +23,7 @@ func (c *DisputeCommand) Execute(args []string) error {
 	initLogging(log.Lvl(c.Verbosity), c.VModule)
 	ctx := cmdutils.CreateCtrlCContext()
 
-	e, err := newEth(c.BackendURL)
+	e, err := newEth(ctx, c.BackendURL)
 	if err != nil {
 		return err
 	}

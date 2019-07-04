@@ -17,6 +17,8 @@ import (
 	"github.com/pkg/errors"
 )
 
+const acceptGasLimit = 85000
+
 // ExchangeAcceptor allows passport owner to accept private data exchange proposition
 type ExchangeAcceptor struct {
 	passportOwnerKey *ecdsa.PrivateKey
@@ -107,6 +109,7 @@ func (a *ExchangeAcceptor) AcceptPrivateDataExchange(ctx context.Context, passpo
 	auth := a.s.TransactOpts
 	auth.Context = ctx
 	auth.Value = ex.DataRequesterValue // stake the same amount of ETH as data requester
+	auth.GasLimit = acceptGasLimit
 
 	a.s.Log("Accepting private data exchange", "exchange_index", exchangeIdx.String(), "encrypted_key", encryptedDataKey)
 	tx, err := c.AcceptPrivateDataExchange(&auth, exchangeIdx, encryptedDataKey)
