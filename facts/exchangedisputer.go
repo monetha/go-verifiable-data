@@ -15,6 +15,8 @@ import (
 	"github.com/pkg/errors"
 )
 
+const disputeGasLimit = 60000
+
 // ExchangeDisputer allows to dispute data exchange
 type ExchangeDisputer struct {
 	s     *eth.Session
@@ -56,6 +58,7 @@ func (f *ExchangeDisputer) DisputePrivateDataExchange(ctx context.Context, passp
 
 	auth := f.s.TransactOpts
 	auth.Context = ctx
+	auth.GasLimit = disputeGasLimit
 
 	// only data requester can call "dispute"
 	if auth.From != ex.DataRequester {

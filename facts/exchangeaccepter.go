@@ -17,7 +17,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-const acceptGasLimit = 85000
+const acceptGasLimit = 90000
 
 // ExchangeAcceptor allows passport owner to accept private data exchange proposition
 type ExchangeAcceptor struct {

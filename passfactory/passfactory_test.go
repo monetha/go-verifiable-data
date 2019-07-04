@@ -14,6 +14,7 @@ import (
 	"github.com/monetha/reputation-go-sdk/deployer"
 	"github.com/monetha/reputation-go-sdk/eth"
 	"github.com/monetha/reputation-go-sdk/eth/backend"
+	sdklog "github.com/monetha/reputation-go-sdk/log"
 	"github.com/monetha/reputation-go-sdk/passfactory"
 )
 
@@ -144,13 +145,16 @@ func createPassport(ctx context.Context, t *testing.T) (passportCreationResult, 
 	sim := backend.NewSimulatedBackendExtended(alloc, 10000000)
 	sim.Commit()
 
-	glogHandler := log.NewGlogHandler(log.StreamHandler(tWriter{}, log.LogfmtFormat()))
-	glogHandler.Verbosity(log.LvlWarn)
-	log.Root().SetHandler(glogHandler)
-	lf := log.Warn
+	if sdklog.IsTestLogSet() {
+		glogHandler := log.NewGlogHandler(log.StreamHandler(tWriter{}, log.LogfmtFormat()))
+		glogHandler.Verbosity(log.LvlWarn)
+		log.Root().SetHandler(glogHandler)
+	}
 
-	e := eth.New(sim, lf)
-	e.UpdateSuggestedGasPrice(ctx)
+	e := eth.New(sim, log.Warn)
+	if err := e.UpdateSuggestedGasPrice(ctx); err != nil {
+		t.Fatalf("Eth.UpdateSuggestedGasPrice() error = %v", err)
+	}
 
 	monethaSession := e.NewSession(monethaKey)
 	// deploying passport factory with all dependencies: passport logic, passport logic registry
