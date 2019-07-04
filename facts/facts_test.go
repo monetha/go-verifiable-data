@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/ecdsa"
 	"crypto/rand"
+	"fmt"
 	"io"
 	"math/big"
 	"sync"
@@ -14,9 +15,11 @@ import (
 	"github.com/ethereum/go-ethereum/common/math"
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/reputation-go-sdk/deployer"
 	"github.com/monetha/reputation-go-sdk/eth"
 	"github.com/monetha/reputation-go-sdk/eth/backend"
+	sdklog "github.com/monetha/reputation-go-sdk/log"
 )
 
 func bigInt(x int64) *big.Int             { return big.NewInt(x) }
@@ -76,7 +79,13 @@ func newPassportWithActors(
 	sim := backend.NewSimulatedBackendExtended(alloc, 10000000)
 	sim.Commit()
 
-	e := eth.New(sim, nil)
+	if sdklog.IsTestLogSet() {
+		glogHandler := log.NewGlogHandler(log.StreamHandler(tWriter{}, log.LogfmtFormat()))
+		glogHandler.Verbosity(log.LvlWarn)
+		log.Root().SetHandler(glogHandler)
+	}
+
+	e := eth.New(sim, log.Warn)
 	if err := e.UpdateSuggestedGasPrice(ctx); err != nil {
 		t.Fatalf("Eth.UpdateSuggestedGasPrice() error = %v", err)
 	}
@@ -131,4 +140,11 @@ func (c *clockMock) Add(d time.Duration) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	c.now = c.now.Add(d)
+}
+
+type tWriter struct{}
+
+func (t tWriter) Write(p []byte) (n int, err error) {
+	fmt.Print(string(p))
+	return len(p), nil
 }

@@ -13,6 +13,8 @@ import (
 	"github.com/pkg/errors"
 )
 
+const proposeGasLimit = 500000
+
 // ExchangeProposer allows to propose data exchange
 type ExchangeProposer eth.Session
 
@@ -41,6 +43,7 @@ func (e *ExchangeProposer) ProposePrivateDataExchange(
 	auth := e.TransactOpts
 	auth.Context = ctx
 	auth.Value = exchangeStakeWei
+	auth.GasLimit = proposeGasLimit
 
 	// reading passport owner key
 	passportOwnerPublicKey, err := NewReader(e.Eth).ReadOwnerPublicKey(ctx, passportAddress)

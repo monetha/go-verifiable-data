@@ -13,6 +13,8 @@ import (
 	"github.com/pkg/errors"
 )
 
+const timeoutGasLimit = 60000
+
 // ExchangeTimeouter allows to timeout data exchange/close it after proposition has expired.
 type ExchangeTimeouter struct {
 	s     *eth.Session
@@ -50,6 +52,7 @@ func (f *ExchangeTimeouter) TimeoutPrivateDataExchange(ctx context.Context, pass
 
 	auth := f.s.TransactOpts
 	auth.Context = ctx
+	auth.GasLimit = timeoutGasLimit
 
 	// only data requester can call "timeout"
 	if auth.From != ex.DataRequester {
