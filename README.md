@@ -2,12 +2,12 @@
 
 [1]: https://godoc.org/github.com/monetha/go-verifiable-data?status.svg
 [2]: https://godoc.org/github.com/monetha/go-verifiable-data
-[3]: https://travis-ci.org/monetha/reputation-go-sdk.svg?branch=master
-[4]: https://travis-ci.org/monetha/reputation-go-sdk
+[3]: https://travis-ci.org/monetha/go-verifiable-data.svg?branch=master
+[4]: https://travis-ci.org/monetha/go-verifiable-data
 [5]: https://goreportcard.com/badge/github.com/monetha/go-verifiable-data
 [6]: https://goreportcard.com/report/github.com/monetha/go-verifiable-data
-[7]: https://codecov.io/gh/monetha/reputation-go-sdk/branch/master/graph/badge.svg
-[8]: https://codecov.io/gh/monetha/reputation-go-sdk
+[7]: https://codecov.io/gh/monetha/go-verifiable-data/branch/master/graph/badge.svg
+[8]: https://codecov.io/gh/monetha/go-verifiable-data
 
 # Reputation Layer: go-sdk
 
@@ -54,7 +54,7 @@
     ```bash
     mkdir -p $GOPATH/src/github.com/monetha
     cd $GOPATH/src/github.com/monetha
-    git clone git@github.com:monetha/reputation-go-sdk.git
+    git clone git@github.com:monetha/go-verifiable-data.git
     cd reputation-go-sdk
     ```
 
