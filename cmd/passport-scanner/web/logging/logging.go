@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"time"
 
-	sdk_log "github.com/monetha/reputation-go-sdk/log"
+	sdk_log "github.com/monetha/go-verifiable-data/log"
 )
 
 const (

@@ -7,9 +7,9 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/log"
-	"github.com/monetha/reputation-go-sdk/contracts"
-	"github.com/monetha/reputation-go-sdk/crypto/ecies"
-	"github.com/monetha/reputation-go-sdk/eth"
+	"github.com/monetha/go-verifiable-data/contracts"
+	"github.com/monetha/go-verifiable-data/crypto/ecies"
+	"github.com/monetha/go-verifiable-data/eth"
 	"github.com/pkg/errors"
 )
 

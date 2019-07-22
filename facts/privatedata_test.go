@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/monetha/reputation-go-sdk/ipfs"
+	"github.com/monetha/go-verifiable-data/ipfs"
 
 	"github.com/dnaeon/go-vcr/recorder"
-	"github.com/monetha/reputation-go-sdk/facts"
+	"github.com/monetha/go-verifiable-data/facts"
 )
 
 func TestPrivateData(t *testing.T) {

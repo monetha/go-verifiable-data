@@ -13,12 +13,12 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/log"
-	"github.com/monetha/reputation-go-sdk/cmd"
-	"github.com/monetha/reputation-go-sdk/cmd/internal/cmdutils"
-	"github.com/monetha/reputation-go-sdk/deployer"
-	"github.com/monetha/reputation-go-sdk/eth"
-	"github.com/monetha/reputation-go-sdk/eth/backend"
-	"github.com/monetha/reputation-go-sdk/pass"
+	"github.com/monetha/go-verifiable-data/cmd"
+	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"
+	"github.com/monetha/go-verifiable-data/deployer"
+	"github.com/monetha/go-verifiable-data/eth"
+	"github.com/monetha/go-verifiable-data/eth/backend"
+	"github.com/monetha/go-verifiable-data/pass"
 )
 
 func main() {

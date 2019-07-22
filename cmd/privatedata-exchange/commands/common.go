@@ -6,7 +6,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/log"
-	"github.com/monetha/reputation-go-sdk/eth"
+	"github.com/monetha/go-verifiable-data/eth"
 	"github.com/pkg/errors"
 )
 

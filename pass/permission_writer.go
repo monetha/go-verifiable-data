@@ -6,8 +6,8 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/monetha/reputation-go-sdk/contracts"
-	"github.com/monetha/reputation-go-sdk/eth"
+	"github.com/monetha/go-verifiable-data/contracts"
+	"github.com/monetha/go-verifiable-data/eth"
 )
 
 // PermissionWriter modifies passport permissions. Only passport owner is allowed to modify permissions.

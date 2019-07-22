@@ -9,8 +9,8 @@ import (
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/monetha/reputation-go-sdk/contracts"
-	"github.com/monetha/reputation-go-sdk/facts"
+	"github.com/monetha/go-verifiable-data/contracts"
+	"github.com/monetha/go-verifiable-data/facts"
 )
 
 func TestFactReader_ReadTxData(t *testing.T) {

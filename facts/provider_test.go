@@ -5,7 +5,7 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/monetha/reputation-go-sdk/facts"
+	"github.com/monetha/go-verifiable-data/facts"
 )
 
 func TestFactProvider_WriteUint(t *testing.T) {

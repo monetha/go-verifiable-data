@@ -9,11 +9,11 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/monetha/reputation-go-sdk/contracts"
-	"github.com/monetha/reputation-go-sdk/crypto/ecies"
-	"github.com/monetha/reputation-go-sdk/eth"
-	"github.com/monetha/reputation-go-sdk/ipfs"
-	"github.com/monetha/reputation-go-sdk/types/exchange"
+	"github.com/monetha/go-verifiable-data/contracts"
+	"github.com/monetha/go-verifiable-data/crypto/ecies"
+	"github.com/monetha/go-verifiable-data/eth"
+	"github.com/monetha/go-verifiable-data/ipfs"
+	"github.com/monetha/go-verifiable-data/types/exchange"
 	"github.com/pkg/errors"
 )
 

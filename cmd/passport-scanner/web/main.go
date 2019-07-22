@@ -9,9 +9,9 @@ import (
 	"strings"
 	"syscall/js"
 
-	"github.com/monetha/reputation-go-sdk/cmd/passport-scanner/web/app"
-	"github.com/monetha/reputation-go-sdk/cmd/passport-scanner/web/dom"
-	"github.com/monetha/reputation-go-sdk/cmd/passport-scanner/web/logging"
+	"github.com/monetha/go-verifiable-data/cmd/passport-scanner/web/app"
+	"github.com/monetha/go-verifiable-data/cmd/passport-scanner/web/dom"
+	"github.com/monetha/go-verifiable-data/cmd/passport-scanner/web/logging"
 )
 
 func main() {

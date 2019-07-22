@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/jessevdk/go-flags"
-	"github.com/monetha/reputation-go-sdk/cmd/privatedata-exchange/commands"
+	"github.com/monetha/go-verifiable-data/cmd/privatedata-exchange/commands"
 )
 
 func main() {

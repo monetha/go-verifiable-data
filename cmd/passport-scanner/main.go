@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/monetha/reputation-go-sdk/cmd"
-	data "github.com/monetha/reputation-go-sdk/cmd/passport-scanner/assets-data"
-	"github.com/monetha/reputation-go-sdk/cmd/passport-scanner/middleware"
+	"github.com/monetha/go-verifiable-data/cmd"
+	data "github.com/monetha/go-verifiable-data/cmd/passport-scanner/assets-data"
+	"github.com/monetha/go-verifiable-data/cmd/passport-scanner/middleware"
 	"github.com/shurcooL/httpgzip"
 )
 

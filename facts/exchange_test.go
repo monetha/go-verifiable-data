@@ -14,8 +14,8 @@ import (
 
 	"github.com/dnaeon/go-vcr/recorder"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/monetha/reputation-go-sdk/facts"
-	"github.com/monetha/reputation-go-sdk/ipfs"
+	"github.com/monetha/go-verifiable-data/facts"
+	"github.com/monetha/go-verifiable-data/ipfs"
 )
 
 func TestPrivateDataExchange(t *testing.T) {

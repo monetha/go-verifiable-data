@@ -5,7 +5,7 @@ package main
 import (
 	"log"
 
-	data "github.com/monetha/reputation-go-sdk/cmd/passport-scanner/assets-data"
+	data "github.com/monetha/go-verifiable-data/cmd/passport-scanner/assets-data"
 	"github.com/shurcooL/vfsgen"
 )
 

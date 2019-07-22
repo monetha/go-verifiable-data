@@ -1,11 +1,11 @@
 # Monetha: Decentralized Reputation Framework [![GoDoc][1]][2] [![Build Status][3]][4] [![Go Report Card][5]][6] [![Coverage Status][7]][8]
 
-[1]: https://godoc.org/github.com/monetha/reputation-go-sdk?status.svg
-[2]: https://godoc.org/github.com/monetha/reputation-go-sdk
+[1]: https://godoc.org/github.com/monetha/go-verifiable-data?status.svg
+[2]: https://godoc.org/github.com/monetha/go-verifiable-data
 [3]: https://travis-ci.org/monetha/reputation-go-sdk.svg?branch=master
 [4]: https://travis-ci.org/monetha/reputation-go-sdk
-[5]: https://goreportcard.com/badge/github.com/monetha/reputation-go-sdk
-[6]: https://goreportcard.com/report/github.com/monetha/reputation-go-sdk
+[5]: https://goreportcard.com/badge/github.com/monetha/go-verifiable-data
+[6]: https://goreportcard.com/report/github.com/monetha/go-verifiable-data
 [7]: https://codecov.io/gh/monetha/reputation-go-sdk/branch/master/graph/badge.svg
 [8]: https://codecov.io/gh/monetha/reputation-go-sdk
 
@@ -62,8 +62,8 @@
 
 ```bash
 docker run -it --rm \
-  -v "$PWD":/go/src/github.com/monetha/reputation-go-sdk \
-  -w /go/src/github.com/monetha/reputation-go-sdk \
+  -v "$PWD":/go/src/github.com/monetha/go-verifiable-data \
+  -w /go/src/github.com/monetha/go-verifiable-data \
   golang:1.12 \
   /bin/bash
 ```

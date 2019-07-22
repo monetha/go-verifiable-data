@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/dnaeon/go-vcr/recorder"
-	"github.com/monetha/reputation-go-sdk/ipfs"
+	"github.com/monetha/go-verifiable-data/ipfs"
 )
 
 func ExampleIPFS_DagPutLinks() {

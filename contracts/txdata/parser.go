@@ -6,7 +6,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/monetha/reputation-go-sdk/contracts"
+	"github.com/monetha/go-verifiable-data/contracts"
 )
 
 type (

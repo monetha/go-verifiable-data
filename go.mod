@@ -1,4 +1,4 @@
-module github.com/monetha/reputation-go-sdk
+module github.com/monetha/go-verifiable-data
 
 go 1.12
 

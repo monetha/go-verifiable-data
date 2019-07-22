@@ -3,7 +3,7 @@ package commands
 import (
 	"os"
 
-	"github.com/monetha/reputation-go-sdk/cmd"
+	"github.com/monetha/go-verifiable-data/cmd"
 )
 
 // ExchangeCommand is a root command used to parse command line arguments

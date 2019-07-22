@@ -8,7 +8,7 @@ import (
 
 	"github.com/cheekybits/is"
 	"github.com/dnaeon/go-vcr/recorder"
-	"github.com/monetha/reputation-go-sdk/ipfs"
+	"github.com/monetha/go-verifiable-data/ipfs"
 )
 
 func TestIPFS_Cat(t *testing.T) {

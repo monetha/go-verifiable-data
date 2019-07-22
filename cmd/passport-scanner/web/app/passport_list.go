@@ -7,10 +7,10 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/monetha/reputation-go-sdk/cmd/passport-scanner/web/rx"
-	"github.com/monetha/reputation-go-sdk/eth"
-	"github.com/monetha/reputation-go-sdk/log"
-	"github.com/monetha/reputation-go-sdk/passfactory"
+	"github.com/monetha/go-verifiable-data/cmd/passport-scanner/web/rx"
+	"github.com/monetha/go-verifiable-data/eth"
+	"github.com/monetha/go-verifiable-data/log"
+	"github.com/monetha/go-verifiable-data/passfactory"
 )
 
 type passportListObserver struct {

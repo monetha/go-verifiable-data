@@ -5,7 +5,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/monetha/reputation-go-sdk/crypto/ecies"
+	"github.com/monetha/go-verifiable-data/crypto/ecies"
 	"github.com/pkg/errors"
 )
 

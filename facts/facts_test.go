@@ -16,10 +16,10 @@ import (
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/log"
-	"github.com/monetha/reputation-go-sdk/deployer"
-	"github.com/monetha/reputation-go-sdk/eth"
-	"github.com/monetha/reputation-go-sdk/eth/backend"
-	sdklog "github.com/monetha/reputation-go-sdk/log"
+	"github.com/monetha/go-verifiable-data/deployer"
+	"github.com/monetha/go-verifiable-data/eth"
+	"github.com/monetha/go-verifiable-data/eth/backend"
+	sdklog "github.com/monetha/go-verifiable-data/log"
 )
 
 func bigInt(x int64) *big.Int             { return big.NewInt(x) }

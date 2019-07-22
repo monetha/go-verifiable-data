@@ -15,8 +15,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/log"
-	"github.com/monetha/reputation-go-sdk/eth"
-	"github.com/monetha/reputation-go-sdk/types/data"
+	"github.com/monetha/go-verifiable-data/eth"
+	"github.com/monetha/go-verifiable-data/types/data"
 )
 
 // CheckErr prints error if it's not nil and causes the current program to exit with the status code equal to 1.

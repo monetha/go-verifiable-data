@@ -2,10 +2,10 @@ package commands
 
 import (
 	"github.com/ethereum/go-ethereum/log"
-	"github.com/monetha/reputation-go-sdk/cmd/internal/cmdutils"
-	"github.com/monetha/reputation-go-sdk/cmd/privatedata-exchange/commands/flag"
-	"github.com/monetha/reputation-go-sdk/facts"
-	"github.com/monetha/reputation-go-sdk/ipfs"
+	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"
+	"github.com/monetha/go-verifiable-data/cmd/privatedata-exchange/commands/flag"
+	"github.com/monetha/go-verifiable-data/facts"
+	"github.com/monetha/go-verifiable-data/ipfs"
 	"github.com/pkg/errors"
 )
 
