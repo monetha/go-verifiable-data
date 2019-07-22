@@ -1,5 +1,5 @@
 SHELL := bash
-PACKAGE_NAME := github.com/monetha/reputation-go-sdk
+PACKAGE_NAME := github.com/monetha/go-verifiable-data
 ARTIFACTS_DIR := $(if $(ARTIFACTS_DIR),$(ARTIFACTS_DIR),bin)
 
 PKGS ?= $(shell go list ./...)

@@ -55,7 +55,7 @@
     mkdir -p $GOPATH/src/github.com/monetha
     cd $GOPATH/src/github.com/monetha
     git clone git@github.com:monetha/go-verifiable-data.git
-    cd reputation-go-sdk
+    cd go-verifiable-data
     ```
 
 **Note**: You can skip steps 2-3 on Linux and use the official docker image for Go after step 4 to build the project:
@@ -82,7 +82,7 @@ to build the full suite of utilities. After the executable files are built, they
 
 ### Executables
 
-The reputation-go-sdk project comes with several executables found in the [`cmd`](cmd) directory.
+The go-verifiable-data project comes with several executables found in the [`cmd`](cmd) directory.
 
 | Command    | Description |
 |:----------:|-------------|
