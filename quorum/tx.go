@@ -25,9 +25,8 @@ import (
 // from a single private key for Quorum private transactions.
 func NewPrivateTransactor(ctx context.Context, key *ecdsa.PrivateKey, enclaveURL string) *bind.TransactOpts {
 	keyAddr := crypto.PubkeyToAddress(key.PublicKey)
-	var opts *bind.TransactOpts
 
-	opts = &bind.TransactOpts{
+	opts := &bind.TransactOpts{
 		From: keyAddr,
 		Signer: func(signer types.Signer, address common.Address, tx *types.Transaction) (*types.Transaction, error) {
 			if address != keyAddr {
