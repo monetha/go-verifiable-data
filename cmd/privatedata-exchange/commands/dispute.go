@@ -9,6 +9,7 @@ import (
 
 // DisputeCommand handles dispute command
 type DisputeCommand struct {
+	cmdutils.QuorumPrivateTxIOCommand
 	PassportAddress  flag.EthereumAddress         `long:"passportaddr" required:"true" description:"Ethereum address of passport contract"`
 	ExchangeIndex    flag.ExchangeIndex           `long:"exchidx"      required:"true" description:"private data exchange index"`
 	ExchangeKey      flag.ExchangeKeyFromFile     `long:"exchangekey"  required:"true" description:"exchange key filename"`
@@ -23,7 +24,7 @@ func (c *DisputeCommand) Execute(args []string) error {
 	initLogging(log.Lvl(c.Verbosity), c.VModule)
 	ctx := cmdutils.CreateCtrlCContext()
 
-	e, err := newEth(ctx, c.BackendURL)
+	e, err := newEth(ctx, c.BackendURL, c.QuorumEnclave, c.QuorumPrivateFor.AsStringArr())
 	if err != nil {
 		return err
 	}

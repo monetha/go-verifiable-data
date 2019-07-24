@@ -18,6 +18,7 @@ var (
 
 // ProposeCommand handles propose command
 type ProposeCommand struct {
+	cmdutils.QuorumPrivateTxIOCommand
 	PassportAddress  flag.EthereumAddress         `long:"passportaddr"     required:"true" description:"Ethereum address of passport contract"`
 	FactProvider     flag.EthereumAddress         `long:"factprovideraddr" required:"true" description:"Ethereum address of fact provider"`
 	FactKey          flag.FactKey                 `long:"fkey"             required:"true" description:"the key of the fact (max. 32 bytes)"`
@@ -38,7 +39,7 @@ func (c *ProposeCommand) Execute(args []string) error {
 	initLogging(log.Lvl(c.Verbosity), c.VModule)
 	ctx := cmdutils.CreateCtrlCContext()
 
-	e, err := newEth(ctx, c.BackendURL)
+	e, err := newEth(ctx, c.BackendURL, c.QuorumEnclave, c.QuorumPrivateFor.AsStringArr())
 	if err != nil {
 		return err
 	}
