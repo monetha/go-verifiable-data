@@ -24,6 +24,8 @@ Usage of `./read-fact`:
     	log verbosity (0-9) (default 2)
   -vmodule string
     	log verbosity pattern
+  -quorum_enclave
+        Quorum enclave url to decrypt facts, stored using private transactions
 ```
 
 ## Examples

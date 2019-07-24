@@ -544,5 +544,12 @@ func (h *Historian) getTransactionSenderData(ctx context.Context, txHash common.
 		return common.Address{}, nil, fmt.Errorf("facts: types.Sender(): %v", err)
 	}
 
+	if h.TxDecrypter != nil {
+		tx, err = h.TxDecrypter(ctx, tx)
+		if err != nil {
+			return common.Address{}, nil, fmt.Errorf("facts: h.TxDecrypter(): %v", err)
+		}
+	}
+
 	return from, tx.Data(), nil
 }

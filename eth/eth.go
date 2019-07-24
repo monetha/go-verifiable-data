@@ -17,11 +17,29 @@ import (
 	"github.com/monetha/go-verifiable-data/log"
 )
 
+// TransactorFactoryFunc - function for creating transactor from private key
+type TransactorFactoryFunc = func(key *ecdsa.PrivateKey) *bind.TransactOpts
+
+// SignedTxRestorerFunc - function for restoring function to its just after signing state
+type SignedTxRestorerFunc = func(ctx context.Context, tx *types.Transaction) (*types.Transaction, error)
+
+// TxDecrypterFunc - function for decrypting transaction
+type TxDecrypterFunc = func(ctx context.Context, tx *types.Transaction) (*types.Transaction, error)
+
 // Eth simplifies some operations with the Ethereum network
 type Eth struct {
 	Backend           backend.Backend
 	LogFun            log.Fun
 	SuggestedGasPrice *big.Int
+	TransactorFactory TransactorFactoryFunc
+
+	// SignedTxRestorer is an optional transaction converter, used to convert transaction
+	// retrieved from Ethereum to its form, where it could be used to restore sender's public key
+	SignedTxRestorer SignedTxRestorerFunc
+
+	// TxDecrypter is an optional transaction decrypter which is used when there is a need to
+	// read encrypted transaction's input data if blockchain encrypts it (i.e. Quorum private tx)
+	TxDecrypter TxDecrypterFunc
 }
 
 // New creates new instance of Eth
@@ -34,7 +52,14 @@ func New(b backend.Backend, lf log.Fun) *Eth {
 
 // NewSession creates an instance of Session
 func (e *Eth) NewSession(key *ecdsa.PrivateKey) *Session {
-	transactOpts := bind.NewKeyedTransactor(key)
+	var transactOpts *bind.TransactOpts
+
+	if e.TransactorFactory != nil {
+		transactOpts = e.TransactorFactory(key)
+	} else {
+		transactOpts = bind.NewKeyedTransactor(key)
+	}
+
 	transactOpts.GasPrice = e.SuggestedGasPrice
 	return &Session{
 		Eth:          e,
@@ -50,6 +75,21 @@ func (e *Eth) UpdateSuggestedGasPrice(ctx context.Context) error {
 	}
 	e.SuggestedGasPrice = gasPrice
 	return nil
+}
+
+// SetTransactorFactory sets factory which creates transactor during sessions creation
+func (e *Eth) SetTransactorFactory(f TransactorFactoryFunc) {
+	e.TransactorFactory = f
+}
+
+// SetSignedTxRestorer sets converter, used to convert transactions to their signed form
+func (e *Eth) SetSignedTxRestorer(f SignedTxRestorerFunc) {
+	e.SignedTxRestorer = f
+}
+
+// SetTxDecrypter sets decrypter, used to decrypt encrypted transactions
+func (e *Eth) SetTxDecrypter(f TxDecrypterFunc) {
+	e.TxDecrypter = f
 }
 
 // NewHandleNonceBackend returns new instance of Eth which internally handles nonce of the given addresses. It still calls PendingNonceAt of

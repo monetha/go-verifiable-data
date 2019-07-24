@@ -95,6 +95,13 @@ func (r *Reader) ReadTxData(ctx context.Context, passport common.Address, factPr
 		return nil, fmt.Errorf("facts: TransactionByHash(%v): %v", txHash.String(), err)
 	}
 
+	if r.TxDecrypter != nil {
+		tx, err = r.TxDecrypter(ctx, tx)
+		if err != nil {
+			return nil, fmt.Errorf("facts: TxDecrypter(%v): %v", txHash.String(), err)
+		}
+	}
+
 	params, err := txdata.ParseSetTxDataBlockNumberCallData(tx.Data())
 	if err != nil {
 		return nil, err
@@ -325,6 +332,14 @@ func (r *Reader) ReadOwnerPublicKey(ctx context.Context, passport common.Address
 	if err != nil {
 		err = fmt.Errorf("facts: TransactionByHash(%v): %v", txHash.String(), err)
 		return
+	}
+
+	if r.SignedTxRestorer != nil {
+		tx, err = r.SignedTxRestorer(ctx, tx)
+		if err != nil {
+			err = fmt.Errorf("facts: SignedTxRestorer(%v): %v", txHash.String(), err)
+			return
+		}
 	}
 
 	return (*eth.Transaction)(tx).GetSenderPublicKey()

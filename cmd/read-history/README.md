@@ -22,6 +22,8 @@ Usage of `./read-history`:
     	log verbosity (0-9) (default 2)
   -vmodule string
     	log verbosity pattern
+  -quorum_enclave
+        Quorum enclave url to decrypt facts, stored using private transactions
 ```
 
 When the `-ftype` and` -txhash` options are omitted, the entire change history is returned. 

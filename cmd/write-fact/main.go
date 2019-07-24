@@ -18,10 +18,10 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/cmd"
 	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"
+	internalFlag "github.com/monetha/go-verifiable-data/cmd/internal/flag"
 	"github.com/monetha/go-verifiable-data/deployer"
 	"github.com/monetha/go-verifiable-data/eth"
 	"github.com/monetha/go-verifiable-data/eth/backend"
@@ -32,16 +32,18 @@ import (
 
 func main() {
 	var (
-		backendURL      = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
-		passportAddr    = cmdutils.AddressVar("passportaddr", common.Address{}, "Ethereum address of passport contract")
-		factKeyStr      = flag.String("fkey", "", "the key of the fact (max. 32 bytes)")
-		factTypeVar     = cmdutils.DataTypeFlagVar("ftype", data.TxData, fmt.Sprintf("the data type of fact (%v)", cmdutils.DataTypeSetStr()))
-		ownerKeyFile    = flag.String("ownerkey", "", "fact provider private key filename")
-		ownerKeyHex     = cmdutils.PrivateKeyFlagVar("ownerkeyhex", nil, "fact provider private key as hex")
-		ipfsURL         = flag.String("ipfsurl", "https://ipfs.infura.io:5001", "IPFS node address")
-		dataKeyFileName = flag.String("datakeyfile", "", "save data encryption key to the specified file (only for privatedata data type)")
-		verbosity       = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
-		vmodule         = flag.String("vmodule", "", "log verbosity pattern")
+		backendURL       = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
+		passportAddr     = cmdutils.AddressVar("passportaddr", common.Address{}, "Ethereum address of passport contract")
+		factKeyStr       = flag.String("fkey", "", "the key of the fact (max. 32 bytes)")
+		factTypeVar      = cmdutils.DataTypeFlagVar("ftype", data.TxData, fmt.Sprintf("the data type of fact (%v)", cmdutils.DataTypeSetStr()))
+		ownerKeyFile     = flag.String("ownerkey", "", "fact provider private key filename")
+		ownerKeyHex      = cmdutils.PrivateKeyFlagVar("ownerkeyhex", nil, "fact provider private key as hex")
+		ipfsURL          = flag.String("ipfsurl", "https://ipfs.infura.io:5001", "IPFS node address")
+		dataKeyFileName  = flag.String("datakeyfile", "", "save data encryption key to the specified file (only for privatedata data type)")
+		verbosity        = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
+		vmodule          = flag.String("vmodule", "", "log verbosity pattern")
+		quorumPrivateFor = flag.String("quorum_privatefor", "", "Quorum nodes public keys to make transaction private for, separated by commas")
+		quorumEnclave    = flag.String("quorum_enclave", "", "Quorum enclave url for private transactions")
 
 		factProviderKey *ecdsa.PrivateKey
 		factKey         [32]byte
@@ -57,6 +59,10 @@ func main() {
 	if cmd.HasPrintedVersion() {
 		return
 	}
+
+	privateFor := &internalFlag.StringArray{}
+	privateFor.UnmarshalFlag(*quorumPrivateFor)
+	bf := cmdutils.NewBackendFactory(quorumEnclave, privateFor.AsStringArr())
 
 	glogger := log.NewGlogHandler(log.StreamHandler(os.Stderr, log.TerminalFormat(false)))
 	glogger.Verbosity(log.Lvl(*verbosity))
@@ -168,10 +174,10 @@ func main() {
 		passportAddress, err = deployer.New(passportOwnerSession).DeployPassport(ctx, passportFactoryAddress)
 		cmdutils.CheckErr(err, "create passport")
 	} else {
-		client, err := ethclient.Dial(*backendURL)
-		cmdutils.CheckErr(err, "ethclient.Dial")
+		client, err := bf.DialBackend(*backendURL)
+		cmdutils.CheckErr(err, "bf.DialBackend")
 
-		e = eth.New(client, log.Warn)
+		e = bf.NewEth(ctx, client)
 		cmdutils.CheckErr(e.UpdateSuggestedGasPrice(ctx), "SuggestGasPrice")
 	}
 
