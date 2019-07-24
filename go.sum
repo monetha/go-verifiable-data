@@ -74,6 +74,7 @@ github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 h1:RWengNIwukTxcDr9
 github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826/go.mod h1:TaXosZuwdSHYgviHp1DAtfrULt5eUgsSMsZf+YrPgl8=
 github.com/monetha/go-ethereum v0.0.0-20190419125020-9e984db77e93 h1:D134H3g9GTcr1V0tPWql0p/EaBLhkQvGDq/x/G8KpR0=
 github.com/monetha/go-ethereum v0.0.0-20190419125020-9e984db77e93/go.mod h1:1Hw1sVdQbE4qCfzaDm/aOAK3vBsignV24lTQWoii56o=
+github.com/monetha/go-verifiable-data v0.0.0-20190722133354-6d9886a01901 h1:b7YsK5Oiv1UvfW/UzFltU05tW1QGiqzxSkxqg62teJs=
 github.com/onsi/ginkgo v1.6.0/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+WWjE=
 github.com/onsi/ginkgo v1.7.0/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+WWjE=
 github.com/onsi/gomega v1.4.3/go.mod h1:ex+gbHU/CVuBBDIJjb2X0qEXbFg53c61hWP/1CpauHY=

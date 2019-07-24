@@ -2,8 +2,9 @@ package commands
 
 import (
 	"context"
-	"github.com/monetha/reputation-go-sdk/cmd/internal/cmdutils"
 	"os"
+
+	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"
 
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/eth"
