@@ -46,6 +46,7 @@ require (
 	golang.org/x/net v0.0.0-20190424112056-4829fb13d2c6 // indirect
 	golang.org/x/sys v0.0.0-20190429190828-d89cdac9e872 // indirect
 	golang.org/x/tools v0.0.0-20190430004104-b9fed7929fc1 // indirect
+	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
 	gopkg.in/olebedev/go-duktape.v3 v3.0.0-20190213234257-ec84240a7772 // indirect
 	gopkg.in/urfave/cli.v1 v1.20.0 // indirect
 	honnef.co/go/tools v0.0.0-20190418001031-e561f6794a2a // indirect

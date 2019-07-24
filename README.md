@@ -28,7 +28,7 @@
     * [Changing passport permissions](#changing-passport-permissions)
     * [Reading facts history](#reading-facts-history)
     * [Passport scanner](#passport-scanner) (sample web application)
-    * [Private data](#private-data)        
+    * [Private data](#private-data)
         * [Writing private data](#writing-private-data)
         * [Reading private data](#reading-private-data)
         * [Reading history of private data](#reading-history-of-private-data)
@@ -37,7 +37,7 @@
         * [Getting status of private data exchange](#getting-status-of-private-data-exchange)
         * [Accepting private data exchange](#accepting-private-data-exchange)
         * [Reading private data after private data exchange acceptance](#reading-private-data-after-private-data-exchange-acceptance)
-        * [Closing private data exchange proposition when timed out](#closing-private-data-exchange-proposition-when-timed-out)        
+        * [Closing private data exchange proposition when timed out](#closing-private-data-exchange-proposition-when-timed-out)
         * [Closing private data exchange after acceptance](#closing-private-data-exchange-after-acceptance)
         * [Opening dispute after private data exchange acceptance](#opening-dispute-after-private-data-exchange-acceptance)
 * [Permissioned blockchains support](#permissioned-blockchains-support)
@@ -74,7 +74,7 @@ Install dependencies:
 
     make dependencies
 
-Once the dependencies are installed, run 
+Once the dependencies are installed, run
 
     make cmd
 
@@ -124,7 +124,7 @@ After Ethereum contracts code is updated and artifacts are created:
 
 ## Bootstrap reputation layer
 
-Monetha has already deployed this set of auxiliary reputation layer contracts on Ropsten test network and Mainnet network. 
+Monetha has already deployed this set of auxiliary reputation layer contracts on Ropsten test network and Mainnet network.
 
 The contract addresses deployed on Ropsten:
 
@@ -144,7 +144,7 @@ The contract addresses deployed on Mainnet:
 
 Consider the process of deploying your own set of auxiliary repoutation layer contracts to experiment with our implementation. If you are going to deploy your contracts, then you will have to support them yourself.
 
-This means that if the reputation layer logic of the passport is updated by Monetha developers, you'll need to deploy a new `PassportLogic` contract, register it 
+This means that if the reputation layer logic of the passport is updated by Monetha developers, you'll need to deploy a new `PassportLogic` contract, register it
 in an existing `PassportLogicRegistry` contract (by calling `addPassportLogic` method) and finally make it active (by calling `setCurrentPassportLogic`).
 
 If you use a set of Monetha deployed reputation layer contracts, then the reputation passport logic is always up-to-date with latest fixes and features.
@@ -158,7 +158,7 @@ To deploy all contracts in Rospten network using Ethereum private key stored in 
 ./bin/deploy-bootstrap -ownerkey ./owner.key \
   -backendurl https://ropsten.infura.io
 ```
-    
+
 After running the command, you should see something like the following output:
 
 ```
@@ -262,11 +262,11 @@ After the passport is created, any fact provider can start writing data to the p
 Before we start writing facts to a passport, let's store the private key of the fact provider to the file `fact_provider.key`.
 Make sure that the fact provider has enough funds to write the facts. Check [gas usage table](cmd/write-fact#gas-usage) to estimate the required amount of funds.
 
-You can write up to 100KB of data in passport under one key when `txdata` data type is used. Supported data types that 
-can be written to the passport: `string`, `bytes`, `address`, `uint`, `int`, `bool`, `txdata`. All types except `txdata` 
-use Ethereum storage to store the data. `txdata` uses Ethereum storage only to save the block number, the data itself 
-remains in the transaction input data and can be read later using the SDK. Therefore, if you need to save a large amount 
-of data, it is better to use `txdata` type of data. The disadvantage of the `txdata` type of data is the data can only be read 
+You can write up to 100KB of data in passport under one key when `txdata` data type is used. Supported data types that
+can be written to the passport: `string`, `bytes`, `address`, `uint`, `int`, `bool`, `txdata`. All types except `txdata`
+use Ethereum storage to store the data. `txdata` uses Ethereum storage only to save the block number, the data itself
+remains in the transaction input data and can be read later using the SDK. Therefore, if you need to save a large amount
+of data, it is better to use `txdata` type of data. The disadvantage of the `txdata` type of data is the data can only be read
 using the SDK, within the contracts this data is not available.
 
 Let's try to store image from the file `~/Downloads/monetha.jpg` under the key `monetha.jpg` as `txdata` in passport
@@ -294,11 +294,11 @@ Keep in mind, the data will be stored in IPFS, only IPFS hash will be stored in 
 ### Reading facts
 
 After the fact provider has written the public data to the passport, the data can be read by anyone.
-To read the data you need to know: the address of the passport, the address of the fact provider who stored the data, 
+To read the data you need to know: the address of the passport, the address of the fact provider who stored the data,
 the key under which the data was stored and the type of data.
 
 Let's try to retrieve image from passport `0x1C3A76a9A27470657BcBE7BfB47820457E4DB682` that was stored by the fact provider
-`0x5b2ae3b3a801469886bb8f5349fc3744caa6348d` under the key `monetha.jpg` as `txdata` data type and write it to the file 
+`0x5b2ae3b3a801469886bb8f5349fc3744caa6348d` under the key `monetha.jpg` as `txdata` data type and write it to the file
 `./fact_image.jpg`:
 
 ```bash
@@ -328,10 +328,10 @@ To get the same file that was previously saved in IPFS, just change the paramete
 ### Changing passport permissions
 
 By default any fact provider can write to a passport, but a passport owner can change permissions that allow only
-fact providers from the whitelist to write to a passport. To do this, the passport owner must add the authorized fact providers 
+fact providers from the whitelist to write to a passport. To do this, the passport owner must add the authorized fact providers
 to the whitelist and then allow to store the facts only to fact providers from the whitelist.
 
-Consider an example of how owner of a passport `0x1C3A76a9A27470657BcBE7BfB47820457E4DB682` adds fact provider 
+Consider an example of how owner of a passport `0x1C3A76a9A27470657BcBE7BfB47820457E4DB682` adds fact provider
 `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d` to the whitelist in Ropsten network:
 
 ```bash
@@ -345,7 +345,7 @@ Please note that the passport owner’s private key is stored in the file `pass_
 
 After executing the command, any fact provider is still allowed to store the facts in the passport. Let's fix it!
 
-Owner of a passport `0x1C3A76a9A27470657BcBE7BfB47820457E4DB682` may allow to store the facts only to fact providers 
+Owner of a passport `0x1C3A76a9A27470657BcBE7BfB47820457E4DB682` may allow to store the facts only to fact providers
 from the whitelist by running the command:
 
 ```bash
@@ -389,7 +389,7 @@ The CSV output can be saved to a file and converted to the table:
 | 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d | monetha.jpg | IPFS | Updated | 5233917 | 0xf069012520c55d293595654805f3f2b1ff032c1395ddd37cd1366fc1ac67114e |
 | 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d | Monetha_WP.pdf | IPFS | Updated | 5233930 | 0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca |
 
-As we can see, there were two fact updates of type `TxData` (under the same key `monetha.jpg`) by the same data provider `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d`, 
+As we can see, there were two fact updates of type `TxData` (under the same key `monetha.jpg`) by the same data provider `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d`,
 and one update of type `IPFS` by the same data provider.
 The `block_number` and `tx_hash` columns allow us to understand in which block and in which transaction the changes were made.
 The `change_type` column may contain either `Updated` or `Deleted` values. Even if the value of a fact has been deleted, we can read its value as it was before the deletion.
@@ -416,7 +416,7 @@ Similarly, we can read what fact value was written in the second transaction `0x
 
 Now you can compare pictures `monetha1.jpg` and `monetha2.jpg` to see what changes have been made.
 
-To read fact value of type `TxData` in the third transaction parameter `-ftype` should be changed to `ipfs` and `-txhash` 
+To read fact value of type `TxData` in the third transaction parameter `-ftype` should be changed to `ipfs` and `-txhash`
 to `0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca`:
 
 ```bash
@@ -431,10 +431,10 @@ to `0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca`:
 
 ### Passport scanner
 
-After the [go-ethereum](https://github.com/ethereum/go-ethereum) community recently accepted [our changes](https://github.com/ethereum/go-ethereum/pull/17709), 
-it became possible to compile Go SDK of reputation layer into WebAssembly module and run it in a browser. 
-We have prepared a sample web application that has the same functionality as [`passport-list`](cmd/passport-list) and 
-[`read-history`](cmd/read-history) utilities provide, i.e. it allows you to get the list of deployed passports and 
+After the [go-ethereum](https://github.com/ethereum/go-ethereum) community recently accepted [our changes](https://github.com/ethereum/go-ethereum/pull/17709),
+it became possible to compile Go SDK of reputation layer into WebAssembly module and run it in a browser.
+We have prepared a sample web application that has the same functionality as [`passport-list`](cmd/passport-list) and
+[`read-history`](cmd/read-history) utilities provide, i.e. it allows you to get the list of deployed passports and
 the history of passport changes directly in your web browser.
 
 To play with the web application, run the command
@@ -451,23 +451,23 @@ Happy scanning!
 
 ### Private data
 
-Private data is stored in encrypted form in IPFS, only the IPFS hash and hash of data encryption key are saved in the 
+Private data is stored in encrypted form in IPFS, only the IPFS hash and hash of data encryption key are saved in the
 blockchain.
 
-Reading/writing private data is as simple as reading/writing public data. The only difference is that only the person 
-who is the passport owner at the time of writing private data can read the 
+Reading/writing private data is as simple as reading/writing public data. The only difference is that only the person
+who is the passport owner at the time of writing private data can read the
 private data. The private data provider can read private data only if it has saved the data encryption key.
-The passport owner does not need to know the data encryption key, as he can decrypt all private data using his Ethereum 
+The passport owner does not need to know the data encryption key, as he can decrypt all private data using his Ethereum
 private key.
 
 #### Writing private data
 
 In order for the fact provider to write private data, it needs to specify the private data type: `-ftype privatedata`.
 
-If the fact provider specifies a `-datakeyfile` parameter, the encryption key will be saved to a file, which will allow 
+If the fact provider specifies a `-datakeyfile` parameter, the encryption key will be saved to a file, which will allow
 the fact provider to read the private data later (for verification purposes, for example).
 
-Let's try to store text `this is a very secret message` under the key `secret_message` as `privatedata` in passport 
+Let's try to store text `this is a very secret message` under the key `secret_message` as `privatedata` in passport
 `0x4026a67a2C4746b94F168bd4d082708f78d7b29f`, and also save the data encryption key in the file `data_enc.key`:
 
 ```bash
@@ -508,7 +508,7 @@ However, despite the fact that the private data is stored publicly, only the pas
 
 #### Reading private data
 
-After the fact provider has written the private data to the passport, the data can be read either by passport owner or by 
+After the fact provider has written the private data to the passport, the data can be read either by passport owner or by
 fact provider (only if he's saved the data encryption key). To read private data, the following data should be provided:
 * the address of the passport (`-passportaddr` parameter)
 * the address of the fact provider who stored the private data (`-factprovideraddr` parameter)
@@ -565,13 +565,13 @@ WARN [05-13|17:01:35.314] Writing data to file
 this is a very secret message
 ```
 
-As you can see from the output, the passport owner additionally reads the ephemeral public key from IPFS, which allows 
+As you can see from the output, the passport owner additionally reads the ephemeral public key from IPFS, which allows
 him to recover the data encryption key using his Ethereum private key.
 
 #### Reading history of private data
 
-Reading the history of private data works for private data in the same way as for public data. You only need to additionally 
-specify the data type `-ftype privatedata`, and specify either a data encryption key (`-datakeyfile` parameter) or a 
+Reading the history of private data works for private data in the same way as for public data. You only need to additionally
+specify the data type `-ftype privatedata`, and specify either a data encryption key (`-datakeyfile` parameter) or a
 passport owner’s Ethereum private key (`-ownerkey` parameter).
 
 Let's try to retrieve the entire change history for the passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f` in Ropsten blockchain:
@@ -613,11 +613,11 @@ WARN [05-13|17:05:04.464] Reading message HMAC from IPFS           hash=QmPXKoz1
 this is a very secret message
 ```
 
-Keep in mind that every time a fact provider writes private data, a random data encryption key is used, so you need to 
-specify the encryption key that was used in that particular transaction. The passport owner does not need to know all 
+Keep in mind that every time a fact provider writes private data, a random data encryption key is used, so you need to
+specify the encryption key that was used in that particular transaction. The passport owner does not need to know all
 the data encryption keys, because he can restore them with his Ethereum private key.
 
-Reading private data from the same transaction by the passport owner looks very similar (instead of `-datakeyfile` 
+Reading private data from the same transaction by the passport owner looks very similar (instead of `-datakeyfile`
 parameter `-ownerkey` parameter is specified):
 
 ```bash
@@ -643,28 +643,28 @@ this is a very secret message
 
 ### Private data exchange
 
-Private data exchange engine enables participants to exchange private data via Passports in a secure manner. Anyone can 
-request private data from the passport of user. This is achieved by running an interactive protocol between the passport 
+Private data exchange engine enables participants to exchange private data via Passports in a secure manner. Anyone can
+request private data from the passport of user. This is achieved by running an interactive protocol between the passport
 owner and the data requester.
 
 How it works:
 
-1. The data requester initiates retrieval of private data from a passport by calling `propose` command. When executing this 
-   command, the data requester specifies which fact provider data he wants to read, encrypts exchange key with the passport 
+1. The data requester initiates retrieval of private data from a passport by calling `propose` command. When executing this
+   command, the data requester specifies which fact provider data he wants to read, encrypts exchange key with the passport
    owner's public key and transfers to the passport the funds that he is willing to pay for the private data.
-  
-1. The passport owner receives an event from the Ethereum blockchain or directly from the data requester for the data 
-   exchange proposition. If he is satisfied with the proposal, he executes the `accept` command. When executing this command, 
-   the passport owner encrypts the data encryption key with the exchange key of data requester and 
+
+1. The passport owner receives an event from the Ethereum blockchain or directly from the data requester for the data
+   exchange proposition. If he is satisfied with the proposal, he executes the `accept` command. When executing this command,
+   the passport owner encrypts the data encryption key with the exchange key of data requester and
    transfers the same amount of funds as the data requester to the passport as a guarantee of the validity of the data encryption key.
-   
-   The passport owner has 24 hours to accept private data exchange. 24 hours after the exchange proposition, the data 
+
+   The passport owner has 24 hours to accept private data exchange. 24 hours after the exchange proposition, the data
    requester can close the proposition and return staked funds back by calling `timeout` command.
-   
-1. The data requester receives an event from the Ethereum blockchain or directly from the passport owner about accepted 
-   private data exchange. It decrypts the data access key using exchange key and reads private data using `read` command. 
+
+1. The data requester receives an event from the Ethereum blockchain or directly from the passport owner about accepted
+   private data exchange. It decrypts the data access key using exchange key and reads private data using `read` command.
    After that `finish` command is called, which returns all staked funds to the passport owner.
-   
+
    During the first 24 hours, the `finish` command can only be called by the data requester, after 24 hours anyone can call this command.
 
 1. If it is not possible to decrypt the data, the data requester calls the `dispute` command, revealing the exchange key.
@@ -673,7 +673,7 @@ How it works:
    can get all staked funds.
 
 This is how it looks in the state diagram:
-   
+
 ![PlantUML model](http://www.plantuml.com/plantuml/png/jPF1JWCX48RlFCKSTqtRW_7KWwbH4prfZ3VZWSBiGheB28DjtzujbLGQgscgUmAopFzz0ym2SK-nxvZI4W5xHskG68JNZhGrZBsSlS9uV0cFtZeRKC8Kt7POrSnOGl2wLGJMGAVDWWdUTIXXlfw2vCJ1url4GEXPEPqo6CEGli00jyzt3D_HK5hCIHMkXEAcnNkv6gLYJtdp21mFmLbF3qk3lcPe96nW6Ckx4_IL4EWeGVCq_9KvrmMxASoAwM7c7FGNpDVTPvj9zsZZW0oy8VHmVg4c9tUyHGfR1RbHW3aNYvr72Yyjld9covApqKO7TUHjW4f6hqqxM86Qr0nsd_N0pTeQX2g9vr-AipXiyzswRVRYJrIMEhX8MDMGBKuy6wYM2WsKYY0KSa9P7-dwuoNEKNlvEUfVspeitwJExJ-K48N049hOZROavVkO3SFOTny0)
 
 At any time, the `status` command can be used to get detailed information about the private data exchange.
@@ -689,11 +689,11 @@ To initiate the exchange of private data, the data requester must specify the fo
 * key under which private data was stored (`--fkey` parameter)
 * the name of the file with the Ethereum private key of data requester (`--requesterkey` parameter)
 * the amount of funds (in wei) that the requester is willing to pay for private data (`--stake` parameter)
-* the name of the file where the exchange key will be saved (`--exchangekey` parameter), used later both for 
+* the name of the file where the exchange key will be saved (`--exchangekey` parameter), used later both for
   accessing private data and for resolving a possible dispute
 
 In the example below, the data requester attempts to initiate the retrieval of private data that was stored by the fact provider
-`0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E` in passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f` under the key `secret_message` 
+`0xd8CD4f4640D9Df7ae39aDdF08AE2c6871FcFf77E` in passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f` under the key `secret_message`
 by staking `10000000000000000 wei` (which is equal to `0.01 ETH`).
 
 ```bash
@@ -707,7 +707,7 @@ by staking `10000000000000000 wei` (which is equal to `0.01 ETH`).
   --backendurl https://ropsten.infura.io
 ```
 
-As a result of the command, you can see that the private data exchange proposition was created under index `1` (the index 
+As a result of the command, you can see that the private data exchange proposition was created under index `1` (the index
 is simply the data exchange identifier to refer it in all subsequent commands), and the exchange key was written to file `exchange.key`:
 
 ```
@@ -737,7 +737,7 @@ Let's try to get this information about private data exchange referred by the in
   --backendurl https://ropsten.infura.io
 ```
 
-Immediately after creating the private data exchange proposition, you can see that it's in `Proposed` state, data 
+Immediately after creating the private data exchange proposition, you can see that it's in `Proposed` state, data
 requester staked `0.01 ETH`, and the passport owner has one day left to accept it:
 
 ```
@@ -759,7 +759,7 @@ To accept the private data exchange after proposition, passport owner should exe
 * the private data exchange index (`--exchidx` parameter)
 * the passport owner's Ethereum private key (`--ownerkey` parameter)
 
-Thus, to accept a private exchange proposition referred by the index `1` from the passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f`, 
+Thus, to accept a private exchange proposition referred by the index `1` from the passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f`,
 the passport owner should execute the following command using it's Ethereum private key stored in file `pass_owner.key`:
 
 ```bash
@@ -788,7 +788,7 @@ After a private data exchange proposition is accepted, the data requester can re
 * the name of the file with the exchange key (`--exchangekey` parameter), that was created as result of `propose` command
 * the name of the file where the decrypted private data will be saved (`--datafile` parameter)
 
-Here is the command to read private data from a passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f` for the private 
+Here is the command to read private data from a passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f` for the private
 data exchange referred by the index `1`, using exchange key from file `exchange.key` and writing result to standard output:
 
 ```bash
@@ -811,10 +811,10 @@ this is a very secret message
 
 #### Closing private data exchange proposition when timed out
 
-If the passport owner ignored the request for the private data exchange, then after 24 hours, the data requester may 
+If the passport owner ignored the request for the private data exchange, then after 24 hours, the data requester may
 close the request and return the staked funds by calling `timeout` command.
 
-Here's how to close the private data exchange referred by the index `2` in the passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f` 
+Here's how to close the private data exchange referred by the index `2` in the passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f`
 using the Ethereum private key of data requester stored in the `data_requester.key` file:
 
 ```bash
@@ -837,10 +837,10 @@ WARN [05-17|14:01:41.140] Transaction successfully mined           tx_hash=0xfa1
 
 After the data requester successfully read the private data, it can confirm this by invoking the `finish` command.
 When executing the command, the funds staked by the data requester and passport owner will be transferred to the passport owner.
-If the data requester doesn't send the finalization request withing a predefined timespan (24 hours), the passport owner 
+If the data requester doesn't send the finalization request withing a predefined timespan (24 hours), the passport owner
 is allowed to finalize private data exchange, preventing the escrow being locked-up indefinitely.
 
-This is how private data exchange referred by the index `1` in passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f` may 
+This is how private data exchange referred by the index `1` in passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f` may
 be finalized by the data requester using she's Ethereum private key from file `data_requester.key`:
 
 ```bash
@@ -860,14 +860,14 @@ WARN [05-16|14:03:45.061] Transaction successfully mined           tx_hash=0x544
 
 #### Opening dispute after private data exchange acceptance
 
-If it is not possible to decrypt the data, the data requester calls the `dispute` command within 24 hours after acceptance, 
+If it is not possible to decrypt the data, the data requester calls the `dispute` command within 24 hours after acceptance,
 revealing the exchange key. The logic of the passport is the arbitrator who determines who the cheater is.
 This is possible due to the fact that in the passport the hashes of both the data encryption key and the exchange key are saved, and
 the data encryption key is XORed with the exchange key during the private data exchange acceptance by the passport owner.
 
 When resolving a dispute, all staked funds are transferred to the side that behaved honestly.
 
-Below you can see how the data requester tries to pretend that he could not read the private data from exchange referred 
+Below you can see how the data requester tries to pretend that he could not read the private data from exchange referred
 by the index `3` from the passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f` providing valid exchange key in file `exchange3.key` and
 valid Ethereum private key of data requester stored in file `data_requester.key`:
 
@@ -880,7 +880,7 @@ valid Ethereum private key of data requester stored in file `data_requester.key`
   --backendurl https://ropsten.infura.io
 ```
 
-However, as a result, we see that the contract makes the only right decision that the dispute is opened unfairly 
+However, as a result, we see that the contract makes the only right decision that the dispute is opened unfairly
 (Dispute result: `successful=false`) and the data requester is cheater (`cheater_address=0xd2Bb3Aa3F2c0bdA6D8020f3228EabD4A89d8B951`):
 
 ```
@@ -894,14 +894,14 @@ WARN [05-16|14:38:14.886] Dispute result                           successful=fa
 
 ### Quorum
 
-[Quorum](https://www.jpmorgan.com/global/Quorum)™ is an enterprise-focused version of [Ethereum](https://ethereum.org/). 
-It's ideal for any application requiring high speed and high throughput processing of private transactions within a 
+[Quorum](https://www.jpmorgan.com/global/Quorum)™ is an enterprise-focused version of [Ethereum](https://ethereum.org/).
+It's ideal for any application requiring high speed and high throughput processing of private transactions within a
 permissioned group of known participants.
 
-In order to play with our SDK on Quorum network, you need to run Quorum network somewhere. The easiest way to run Quorum 
-network of 7 nodes locally is by running a preconfigured Vagrant environment. Follow the 
+In order to play with our SDK on Quorum network, you need to run Quorum network somewhere. The easiest way to run Quorum
+network of 7 nodes locally is by running a preconfigured Vagrant environment. Follow the
 instructions below to do this:
- 
+
 1. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 
 1. Install [Vagrant](https://www.vagrantup.com/downloads.html)
@@ -914,11 +914,11 @@ instructions below to do this:
    $ vagrant ssh
    ```
    After executing these commands, you will be inside a virtual machine with all the tools to start the Quorum network.
-   
-   ***NOTE***: To shutdown the Vagrant instance later, run `vagrant suspend`. To delete it, run `vagrant destroy`. 
-   To start from scratch, run `vagrant up` after destroying the instance. (you should run all `vagrant` commands from 
+
+   ***NOTE***: To shutdown the Vagrant instance later, run `vagrant suspend`. To delete it, run `vagrant destroy`.
+   To start from scratch, run `vagrant up` after destroying the instance. (you should run all `vagrant` commands from
    the host machine, not from the virtual machine)
-   
+
 1. Once inside the virtual machine, run the blockchain nodes using Raft consensus:
    ```
    $ cd quorum-examples/7nodes/
@@ -926,9 +926,9 @@ instructions below to do this:
    $ ./raft-start.sh
    ```
    Make sure 7 processes of `geth` are up and running by executing `ps aux | grep geth` command.
-   
+
    Genesis block contains 5 addresses, each of which has 1000000000 ETH:
-   
+
    | Address                                    | Private key                                                      |
    |--------------------------------------------|------------------------------------------------------------------|
    | 0xed9d02e382b34818e88B88a309c7fe71E65f419d | e6181caaffff94a09d7e332fc8da9884d99902c7874eb74354bdcadf411929f1 |
@@ -936,33 +936,33 @@ instructions below to do this:
    | 0x0fBDc686b912d7722dc86510934589E0AAf3b55A | 61dced5af778942996880120b303fc11ee28cc8e5036d2fdff619b5675ded3f0 |
    | 0x9186eb3d20Cbd1F5f992a950d808C4495153ABd5 | 794392ba288a24092030badaadfee71e3fa55ccef1d70c708baf55c07ed538a8 |
    | 0x0638E1574728b6D862dd5d3A3E0942c3be47D996 | 30bee17b2b8b1e774115f785e92474027d45d900a12a9d5d99af637c2d1a61bd |
-   
+
 1. When all nodes are up and running it's safe to exit from virtual machine and start reputation layer bootstrap. Run `exit`, to leave Vagrant environment:
 
    ```
    $ exit
    ```
-   
+
    Now you're on the host machine.
    Vagrant environment exposes ports 22000-22007, on which Ethereum JSON RPC is available.
    You can check it's working by running command:
-   
+
    ```
    $ curl -H "Content-Type: application/json" \
      -X POST --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
      http://localhost:22000
    ```
-   
+
    You should see the output:
-   
+
    ```
    {"jsonrpc":"2.0","id":1,"result":"0x0"}
    ```
 
-1. Now follow [Building the source](#building-the-source) steps to build the full suite of reputation SDK utilities, 
-   if you haven't done it yet. Use private keys from the table above and specify one of the Quorum node (like `http://localhost:22000`) 
+1. Now follow [Building the source](#building-the-source) steps to build the full suite of reputation SDK utilities,
+   if you haven't done it yet. Use private keys from the table above and specify one of the Quorum node (like `http://localhost:22000`)
    as `-backendurl` parameter to make transactions.
-   
+
    For example:
    ```
    $ echo e6181caaffff94a09d7e332fc8da9884d99902c7874eb74354bdcadf411929f1 > bootstrap_owner.key
@@ -982,3 +982,21 @@ instructions below to do this:
         -backendurl http://localhost:22000
    ...
    ```
+
+   *NOTE*: SDK support Quorum's private transactions. For commands that send transactions, use these additional parameters:
+   ```
+   --quorum_enclave "<url of enclave for transaction encryption>"
+   --quorum_privatefor "<comma separated public keys of Quorum nodes to make this tx visible to>"
+   ```
+
+   For example:
+   ```
+   ./bin/deploy-bootstrap -ownerkey ./bootstrap_owner.key \
+      -backendurl http://localhost:22000 \
+      -quorum_enclave "http://127.0.0.1:9081" \
+      -quorum_privatefor "BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=,QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc="
+   ```
+
+   For commands that read transactions, only `-quorum_enclave` is needed (to decrypt transaction data in some cases).
+
+   Exceptions: private data exchange commands `read` and `status` do not require any additional parameters at all.
