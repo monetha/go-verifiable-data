@@ -262,3 +262,7 @@ func (m *backendMock) SubscribeFilterLogs(ctx context.Context, query ethereum.Fi
 func (m *backendMock) TransactionByHash(ctx context.Context, txHash common.Hash) (tx *types.Transaction, isPending bool, err error) {
 	return nil, false, nil
 }
+
+func (m *backendMock) GetSenderPublicKey(t *types.Transaction) (*ecdsa.PublicKey, error) {
+	return (*Transaction)(t).GetSenderPublicKey()
+}

@@ -6,9 +6,9 @@ import (
 	"io"
 
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/monetha/go-verifiable-data/cmd/passport-scanner/web/rx"
 	"github.com/monetha/go-verifiable-data/eth"
+	"github.com/monetha/go-verifiable-data/eth/backend/ethclient"
 	"github.com/monetha/go-verifiable-data/log"
 	"github.com/monetha/go-verifiable-data/passfactory"
 )

@@ -20,9 +20,6 @@ import (
 // TransactorFactoryFunc - function for creating transactor from private key
 type TransactorFactoryFunc = func(key *ecdsa.PrivateKey) *bind.TransactOpts
 
-// SignedTxRestorerFunc - function for restoring function to its just after signing state
-type SignedTxRestorerFunc = func(ctx context.Context, tx *types.Transaction) (*types.Transaction, error)
-
 // TxDecrypterFunc - function for decrypting transaction
 type TxDecrypterFunc = func(ctx context.Context, tx *types.Transaction) (*types.Transaction, error)
 
@@ -32,10 +29,6 @@ type Eth struct {
 	LogFun            log.Fun
 	SuggestedGasPrice *big.Int
 	TransactorFactory TransactorFactoryFunc
-
-	// SignedTxRestorer is an optional transaction converter, used to convert transaction
-	// retrieved from Ethereum to its form, where it could be used to restore sender's public key
-	SignedTxRestorer SignedTxRestorerFunc
 
 	// TxDecrypter is an optional transaction decrypter which is used when there is a need to
 	// read encrypted transaction's input data if blockchain encrypts it (i.e. Quorum private tx)
@@ -80,11 +73,6 @@ func (e *Eth) UpdateSuggestedGasPrice(ctx context.Context) error {
 // SetTransactorFactory sets factory which creates transactor during sessions creation
 func (e *Eth) SetTransactorFactory(f TransactorFactoryFunc) {
 	e.TransactorFactory = f
-}
-
-// SetSignedTxRestorer sets converter, used to convert transactions to their signed form
-func (e *Eth) SetSignedTxRestorer(f SignedTxRestorerFunc) {
-	e.SignedTxRestorer = f
 }
 
 // SetTxDecrypter sets decrypter, used to decrypt encrypted transactions

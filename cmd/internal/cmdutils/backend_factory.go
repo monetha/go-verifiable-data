@@ -7,10 +7,10 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/cmd/utils"
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/eth"
 	"github.com/monetha/go-verifiable-data/eth/backend"
+	"github.com/monetha/go-verifiable-data/eth/backend/ethclient"
 	"github.com/monetha/go-verifiable-data/quorum"
 )
 
@@ -60,10 +60,6 @@ func (f *BackendFactory) NewEth(ctx context.Context, b backend.Backend) *eth.Eth
 	if f.isPrivateQuorum() {
 		e.SetTransactorFactory(func(key *ecdsa.PrivateKey) *bind.TransactOpts {
 			return quorum.NewPrivateTransactor(ctx, key, *f.quorumEnclave)
-		})
-
-		e.SetSignedTxRestorer(func(ctx context.Context, tx *types.Transaction) (*types.Transaction, error) {
-			return quorum.RestoreTxToSignedForm(tx), nil
 		})
 
 		if pb, ok := b.(*quorum.PrivateTxClient); ok {

@@ -2,12 +2,13 @@ package quorum
 
 import (
 	"context"
+	"crypto/ecdsa"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/rlp"
 	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/monetha/go-verifiable-data/eth/backend/ethclient"
 )
 
 // PrivateTxClient is a client to work with Quorum's private transactions
@@ -26,6 +27,7 @@ func Dial(rawurl string, privateFor []string) (*PrivateTxClient, error) {
 	return DialContext(context.Background(), rawurl, privateFor)
 }
 
+// DialContext connects a client to the given URL using provided context.
 func DialContext(ctx context.Context, rawurl string, privateFor []string) (*PrivateTxClient, error) {
 	c, err := rpc.DialContext(ctx, rawurl)
 	if err != nil {
@@ -64,4 +66,9 @@ func (ec *PrivateTxClient) SendTransaction(ctx context.Context, tx *types.Transa
 	}
 
 	return ec.c.CallContext(ctx, nil, "eth_sendRawPrivateTransaction", hexutil.Encode(data), privateFor)
+}
+
+// GetSenderPublicKey retrieves public key of sender from transaction.
+func (ec *PrivateTxClient) GetSenderPublicKey(t *types.Transaction) (*ecdsa.PublicKey, error) {
+	return ec.Client.GetSenderPublicKey(RestoreTxToSignedForm(t))
 }

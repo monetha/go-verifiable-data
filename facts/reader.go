@@ -334,15 +334,7 @@ func (r *Reader) ReadOwnerPublicKey(ctx context.Context, passport common.Address
 		return
 	}
 
-	if r.SignedTxRestorer != nil {
-		tx, err = r.SignedTxRestorer(ctx, tx)
-		if err != nil {
-			err = fmt.Errorf("facts: SignedTxRestorer(%v): %v", txHash.String(), err)
-			return
-		}
-	}
-
-	return (*eth.Transaction)(tx).GetSenderPublicKey()
+	return backend.GetSenderPublicKey(tx)
 }
 
 type extPassportLogicContract contracts.PassportLogicContract

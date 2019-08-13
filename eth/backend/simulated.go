@@ -4,6 +4,7 @@ package backend
 
 import (
 	"context"
+	"crypto/ecdsa"
 	"math/big"
 	"sync"
 	"time"
@@ -130,4 +131,9 @@ func (b *SimulatedBackendExt) TransactionByHash(ctx context.Context, txHash comm
 // AdjustTime adds a time shift to the simulated clock.
 func (b *SimulatedBackendExt) AdjustTime(adjustment time.Duration) error {
 	return b.b.AdjustTime(adjustment)
+}
+
+// GetSenderPublicKey retrieves public key of sender from transaction.
+func (b *SimulatedBackendExt) GetSenderPublicKey(t *types.Transaction) (*ecdsa.PublicKey, error) {
+	return (*Transaction)(t).GetSenderPublicKey()
 }
