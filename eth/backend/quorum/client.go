@@ -28,13 +28,8 @@ type privateForParams struct {
 	PrivateFor []string `json:"privateFor"`
 }
 
-// Dial connects a client to the given URL.
-func Dial(rawurl string, privateFor []string, quorumEnclave string) (*PrivateTxClient, error) {
-	return DialContext(context.Background(), rawurl, privateFor, quorumEnclave)
-}
-
-// DialContext connects a client to the given URL using provided context.
-func DialContext(ctx context.Context, rawurl string, privateFor []string, quorumEnclave string) (*PrivateTxClient, error) {
+// DialHTTP connects a client to the given URL using provided context.
+func DialHTTP(rawurl string, privateFor []string, quorumEnclave string) (*PrivateTxClient, error) {
 	hc := &http.Client{Transport: &http.Transport{
 		Proxy: http.ProxyFromEnvironment,
 		DialContext: (&net.Dialer{
@@ -48,13 +43,13 @@ func DialContext(ctx context.Context, rawurl string, privateFor []string, quorum
 		ExpectContinueTimeout: 1 * time.Second,
 	}}
 
-	return DialContextWithHTTP(ctx, hc, rawurl, privateFor, quorumEnclave)
+	return DialHTTPWithClient(rawurl, privateFor, quorumEnclave, hc)
 }
 
-// DialContextWithHTTP connects a client to the given URL using provided context and uses given HTTP client for
+// DialHTTPWithClient connects a client to the given URL using provided context and uses given HTTP client for
 // internal http requests.
-func DialContextWithHTTP(ctx context.Context, hc *http.Client, rawurl string, privateFor []string, quorumEnclave string) (*PrivateTxClient, error) {
-	c, err := rpc.DialContext(ctx, rawurl)
+func DialHTTPWithClient(rawurl string, privateFor []string, quorumEnclave string, hc *http.Client) (*PrivateTxClient, error) {
+	c, err := rpc.DialHTTP(rawurl)
 	if err != nil {
 		return nil, err
 	}
