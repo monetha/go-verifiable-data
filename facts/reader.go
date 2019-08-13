@@ -95,14 +95,12 @@ func (r *Reader) ReadTxData(ctx context.Context, passport common.Address, factPr
 		return nil, fmt.Errorf("facts: TransactionByHash(%v): %v", txHash.String(), err)
 	}
 
-	if r.TxDecrypter != nil {
-		tx, err = r.TxDecrypter(ctx, tx)
-		if err != nil {
-			return nil, fmt.Errorf("facts: TxDecrypter(%v): %v", txHash.String(), err)
-		}
+	bs, err := backend.DecryptPayload(ctx, tx)
+	if err != nil {
+		return nil, fmt.Errorf("facts: backend.DecryptPayload(%v): %v", txHash.String(), err)
 	}
 
-	params, err := txdata.ParseSetTxDataBlockNumberCallData(tx.Data())
+	params, err := txdata.ParseSetTxDataBlockNumberCallData(bs)
 	if err != nil {
 		return nil, err
 	}

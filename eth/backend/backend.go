@@ -22,6 +22,8 @@ type Backend interface {
 	// NewKeyedTransactor is a utility method to easily create a transaction signer
 	// from a single private key.
 	NewKeyedTransactor(key *ecdsa.PrivateKey) *bind.TransactOpts
+	// DecryptPayload decrypts transaction payload.
+	DecryptPayload(ctx context.Context, tx *types.Transaction) ([]byte, error)
 }
 
 // HandleNonceBackend internally handles nonce of the given addresses. It still calls PendingNonceAt of
@@ -176,6 +178,11 @@ func (b *HandleNonceBackend) NewKeyedTransactor(key *ecdsa.PrivateKey) *bind.Tra
 	return b.inner.NewKeyedTransactor(key)
 }
 
+// DecryptPayload decrypts transaction payload.
+func (b *HandleNonceBackend) DecryptPayload(ctx context.Context, tx *types.Transaction) ([]byte, error) {
+	return b.inner.DecryptPayload(ctx, tx)
+}
+
 type commiterRollbacker interface {
 	Commit()
 	Rollback()
@@ -248,4 +255,8 @@ func (b *simBackend) GetSenderPublicKey(t *types.Transaction) (*ecdsa.PublicKey,
 
 func (b *simBackend) NewKeyedTransactor(key *ecdsa.PrivateKey) *bind.TransactOpts {
 	return b.b.NewKeyedTransactor(key)
+}
+
+func (b *simBackend) DecryptPayload(ctx context.Context, tx *types.Transaction) ([]byte, error) {
+	return b.b.DecryptPayload(ctx, tx)
 }

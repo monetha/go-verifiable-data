@@ -29,6 +29,11 @@ func (c *Client) NewKeyedTransactor(key *ecdsa.PrivateKey) *bind.TransactOpts {
 	return bind.NewKeyedTransactor(key)
 }
 
+// DecryptPayload decrypts transaction payload.
+func (c *Client) DecryptPayload(ctx context.Context, tx *types.Transaction) ([]byte, error) {
+	return tx.Data(), nil
+}
+
 // Dial connects a client to the given URL.
 func Dial(rawurl string) (*Client, error) {
 	return DialContext(context.Background(), rawurl)

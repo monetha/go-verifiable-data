@@ -144,3 +144,8 @@ func (b *SimulatedBackendExt) GetSenderPublicKey(t *types.Transaction) (*ecdsa.P
 func (b *SimulatedBackendExt) NewKeyedTransactor(key *ecdsa.PrivateKey) *bind.TransactOpts {
 	return bind.NewKeyedTransactor(key)
 }
+
+// DecryptPayload decrypts transaction payload.
+func (b *SimulatedBackendExt) DecryptPayload(ctx context.Context, tx *types.Transaction) ([]byte, error) {
+	return tx.Data(), nil
+}

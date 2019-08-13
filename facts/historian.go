@@ -532,24 +532,18 @@ func (h *Historian) GetHistoryItemOfWritePrivateDataHashes(ctx context.Context, 
 	}, nil
 }
 
-func (h *Historian) getTransactionSenderData(ctx context.Context, txHash common.Hash) (common.Address, []byte, error) {
+func (h *Historian) getTransactionSenderData(ctx context.Context, txHash common.Hash) (from common.Address, bs []byte, err error) {
 	(*eth.Eth)(h).Log("Getting transaction by hash", "tx_hash", txHash.Hex())
 	tx, _, err := h.Backend.TransactionByHash(ctx, txHash)
 	if err != nil {
 		return common.Address{}, nil, fmt.Errorf("facts: TransactionByHash(%v): %v", txHash.String(), err)
 	}
 
-	from, err := types.Sender(types.NewEIP155Signer(tx.ChainId()), tx)
+	from, err = types.Sender(types.NewEIP155Signer(tx.ChainId()), tx)
 	if err != nil {
 		return common.Address{}, nil, fmt.Errorf("facts: types.Sender(): %v", err)
 	}
 
-	if h.TxDecrypter != nil {
-		tx, err = h.TxDecrypter(ctx, tx)
-		if err != nil {
-			return common.Address{}, nil, fmt.Errorf("facts: h.TxDecrypter(): %v", err)
-		}
-	}
-
-	return from, tx.Data(), nil
+	bs, err = h.Backend.DecryptPayload(ctx, tx)
+	return
 }

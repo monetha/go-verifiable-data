@@ -28,10 +28,6 @@ type Eth struct {
 	Backend           backend.Backend
 	LogFun            log.Fun
 	SuggestedGasPrice *big.Int
-
-	// TxDecrypter is an optional transaction decrypter which is used when there is a need to
-	// read encrypted transaction's input data if blockchain encrypts it (i.e. Quorum private tx)
-	TxDecrypter TxDecrypterFunc
 }
 
 // New creates new instance of Eth
@@ -60,11 +56,6 @@ func (e *Eth) UpdateSuggestedGasPrice(ctx context.Context) error {
 	}
 	e.SuggestedGasPrice = gasPrice
 	return nil
-}
-
-// SetTxDecrypter sets decrypter, used to decrypt encrypted transactions
-func (e *Eth) SetTxDecrypter(f TxDecrypterFunc) {
-	e.TxDecrypter = f
 }
 
 // NewHandleNonceBackend returns new instance of Eth which internally handles nonce of the given addresses. It still calls PendingNonceAt of

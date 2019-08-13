@@ -197,7 +197,7 @@ func RestoreTxToSignedForm(tx *types.Transaction) *types.Transaction {
 // It uses private data hash from "input" field and replaces it
 // with decoded data that comes from calling `eth_getQuorumPayload` RPC method.
 // Provided backend object must be connected to Quorum node which is a party to this private tx.
-func DecryptTx(ctx context.Context, tx *types.Transaction, client *rpc.Client) (*types.Transaction, error) {
+func DecryptTx(ctx context.Context, tx *types.Transaction, client *rpc.Client) (*types.Transaction, error) { // TODO: @Martynas method should return only decoded payload
 	if !IsPrivateTx(tx) {
 		return tx, nil
 	}

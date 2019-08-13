@@ -81,3 +81,12 @@ func (ec *PrivateTxClient) GetSenderPublicKey(t *types.Transaction) (*ecdsa.Publ
 func (ec *PrivateTxClient) NewKeyedTransactor(key *ecdsa.PrivateKey) *bind.TransactOpts {
 	return NewPrivateTransactor(context.Background(), key, ec.quorumEnclave)
 }
+
+// DecryptPayload decrypts transaction payload.
+func (ec *PrivateTxClient) DecryptPayload(ctx context.Context, tx *types.Transaction) (bs []byte, err error) {
+	if tx, err = DecryptTx(ctx, tx, ec.c); err != nil {
+		return
+	}
+	bs = tx.Data()
+	return
+}

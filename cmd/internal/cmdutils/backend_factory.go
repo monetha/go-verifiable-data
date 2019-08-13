@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/eth"
 	"github.com/monetha/go-verifiable-data/eth/backend"
@@ -53,17 +52,7 @@ func (f *BackendFactory) DialBackend(backendURL string) (backend.Backend, error)
 
 // NewEth creates new instance of Eth
 func (f *BackendFactory) NewEth(ctx context.Context, b backend.Backend) *eth.Eth {
-	e := eth.New(b, log.Warn)
-
-	if f.isPrivateQuorum() {
-		if pb, ok := b.(*quorum.PrivateTxClient); ok {
-			e.SetTxDecrypter(func(ctx context.Context, tx *types.Transaction) (*types.Transaction, error) {
-				return quorum.DecryptTx(ctx, tx, pb.GetRPCClient())
-			})
-		}
-	}
-
-	return e
+	return eth.New(b, log.Warn)
 }
 
 func (f *BackendFactory) isPrivateQuorum() bool {

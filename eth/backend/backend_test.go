@@ -270,3 +270,7 @@ func (m *backendMock) GetSenderPublicKey(t *types.Transaction) (*ecdsa.PublicKey
 func (m *backendMock) NewKeyedTransactor(key *ecdsa.PrivateKey) *bind.TransactOpts {
 	return bind.NewKeyedTransactor(key)
 }
+
+func (m *backendMock) DecryptPayload(ctx context.Context, tx *types.Transaction) ([]byte, error) {
+	return tx.Data(), nil
+}
