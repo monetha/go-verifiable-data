@@ -84,9 +84,5 @@ func (ec *PrivateTxClient) NewKeyedTransactor(key *ecdsa.PrivateKey) *bind.Trans
 
 // DecryptPayload decrypts transaction payload.
 func (ec *PrivateTxClient) DecryptPayload(ctx context.Context, tx *types.Transaction) (bs []byte, err error) {
-	if tx, err = DecryptTx(ctx, tx, ec.c); err != nil {
-		return
-	}
-	bs = tx.Data()
-	return
+	return DecryptPayload(ctx, tx, ec.c)
 }
