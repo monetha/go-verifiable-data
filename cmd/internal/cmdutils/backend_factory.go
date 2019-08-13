@@ -35,7 +35,7 @@ func NewBackendFactory(quorumEnclave *string, quorumPrivateFor []string) *Backen
 // DialBackendContext connects an Ethereum client to the given URL.
 func (f *BackendFactory) DialBackendContext(ctx context.Context, backendURL string) (backend.Backend, error) {
 	if f.isPrivateQuorum() {
-		return quorum.DialContext(ctx, backendURL, f.quorumPrivateFor, *f.quorumEnclave)
+		return quorum.DialHTTP(backendURL, f.quorumPrivateFor, *f.quorumEnclave)
 	}
 
 	return ethclient.DialContext(ctx, backendURL)
@@ -44,7 +44,7 @@ func (f *BackendFactory) DialBackendContext(ctx context.Context, backendURL stri
 // DialBackend connects an Ethereum client to the given URL.
 func (f *BackendFactory) DialBackend(backendURL string) (backend.Backend, error) {
 	if f.isPrivateQuorum() {
-		return quorum.Dial(backendURL, f.quorumPrivateFor, *f.quorumEnclave)
+		return quorum.DialHTTP(backendURL, f.quorumPrivateFor, *f.quorumEnclave)
 	}
 
 	return ethclient.Dial(backendURL)
