@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/ethereum/go-ethereum"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind/backends"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core"
@@ -136,4 +137,10 @@ func (b *SimulatedBackendExt) AdjustTime(adjustment time.Duration) error {
 // GetSenderPublicKey retrieves public key of sender from transaction.
 func (b *SimulatedBackendExt) GetSenderPublicKey(t *types.Transaction) (*ecdsa.PublicKey, error) {
 	return (*Transaction)(t).GetSenderPublicKey()
+}
+
+// NewKeyedTransactor is a utility method to easily create a transaction signer
+// from a single private key.
+func (b *SimulatedBackendExt) NewKeyedTransactor(key *ecdsa.PrivateKey) *bind.TransactOpts {
+	return bind.NewKeyedTransactor(key)
 }

@@ -19,6 +19,9 @@ type Backend interface {
 	BalanceAt(ctx context.Context, address common.Address, blockNum *big.Int) (*big.Int, error)
 	// GetSenderPublicKey retrieves public key of sender from transaction.
 	GetSenderPublicKey(t *types.Transaction) (*ecdsa.PublicKey, error)
+	// NewKeyedTransactor is a utility method to easily create a transaction signer
+	// from a single private key.
+	NewKeyedTransactor(key *ecdsa.PrivateKey) *bind.TransactOpts
 }
 
 // HandleNonceBackend internally handles nonce of the given addresses. It still calls PendingNonceAt of
@@ -167,6 +170,12 @@ func (b *HandleNonceBackend) GetSenderPublicKey(t *types.Transaction) (*ecdsa.Pu
 	return b.inner.GetSenderPublicKey(t)
 }
 
+// NewKeyedTransactor is a utility method to easily create a transaction signer
+// from a single private key.
+func (b *HandleNonceBackend) NewKeyedTransactor(key *ecdsa.PrivateKey) *bind.TransactOpts {
+	return b.inner.NewKeyedTransactor(key)
+}
+
 type commiterRollbacker interface {
 	Commit()
 	Rollback()
@@ -234,5 +243,9 @@ func (b *simBackend) Rollback() {
 }
 
 func (b *simBackend) GetSenderPublicKey(t *types.Transaction) (*ecdsa.PublicKey, error) {
-	return (*Transaction)(t).GetSenderPublicKey()
+	return b.b.GetSenderPublicKey(t)
+}
+
+func (b *simBackend) NewKeyedTransactor(key *ecdsa.PrivateKey) *bind.TransactOpts {
+	return b.b.NewKeyedTransactor(key)
 }

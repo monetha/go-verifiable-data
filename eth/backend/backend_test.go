@@ -266,3 +266,7 @@ func (m *backendMock) TransactionByHash(ctx context.Context, txHash common.Hash)
 func (m *backendMock) GetSenderPublicKey(t *types.Transaction) (*ecdsa.PublicKey, error) {
 	return (*Transaction)(t).GetSenderPublicKey()
 }
+
+func (m *backendMock) NewKeyedTransactor(key *ecdsa.PrivateKey) *bind.TransactOpts {
+	return bind.NewKeyedTransactor(key)
+}

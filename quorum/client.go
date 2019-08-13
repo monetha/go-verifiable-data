@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/ecdsa"
 
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/rlp"
@@ -14,8 +15,9 @@ import (
 // PrivateTxClient is a client to work with Quorum's private transactions
 type PrivateTxClient struct {
 	*ethclient.Client
-	c          *rpc.Client
-	privateFor []string
+	c             *rpc.Client
+	privateFor    []string
+	quorumEnclave string
 }
 
 type privateForParams struct {
@@ -23,26 +25,27 @@ type privateForParams struct {
 }
 
 // Dial connects a client to the given URL.
-func Dial(rawurl string, privateFor []string) (*PrivateTxClient, error) {
-	return DialContext(context.Background(), rawurl, privateFor)
+func Dial(rawurl string, privateFor []string, quorumEnclave string) (*PrivateTxClient, error) {
+	return DialContext(context.Background(), rawurl, privateFor, quorumEnclave)
 }
 
 // DialContext connects a client to the given URL using provided context.
-func DialContext(ctx context.Context, rawurl string, privateFor []string) (*PrivateTxClient, error) {
+func DialContext(ctx context.Context, rawurl string, privateFor []string, quorumEnclave string) (*PrivateTxClient, error) {
 	c, err := rpc.DialContext(ctx, rawurl)
 	if err != nil {
 		return nil, err
 	}
 
-	return NewClient(c, privateFor), nil
+	return NewClient(c, privateFor, quorumEnclave), nil
 }
 
 // NewClient creates a client that uses the given RPC client.
-func NewClient(c *rpc.Client, privateFor []string) *PrivateTxClient {
+func NewClient(c *rpc.Client, privateFor []string, quorumEnclave string) *PrivateTxClient {
 	return &PrivateTxClient{
-		c:          c,
-		Client:     ethclient.NewClient(c),
-		privateFor: privateFor,
+		c:             c,
+		Client:        ethclient.NewClient(c),
+		privateFor:    privateFor,
+		quorumEnclave: quorumEnclave,
 	}
 }
 
@@ -71,4 +74,10 @@ func (ec *PrivateTxClient) SendTransaction(ctx context.Context, tx *types.Transa
 // GetSenderPublicKey retrieves public key of sender from transaction.
 func (ec *PrivateTxClient) GetSenderPublicKey(t *types.Transaction) (*ecdsa.PublicKey, error) {
 	return ec.Client.GetSenderPublicKey(RestoreTxToSignedForm(t))
+}
+
+// NewKeyedTransactor is a utility method to easily create a transaction signer
+// from a single private key.
+func (ec *PrivateTxClient) NewKeyedTransactor(key *ecdsa.PrivateKey) *bind.TransactOpts {
+	return NewPrivateTransactor(context.Background(), key, ec.quorumEnclave)
 }

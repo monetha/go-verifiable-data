@@ -28,7 +28,6 @@ type Eth struct {
 	Backend           backend.Backend
 	LogFun            log.Fun
 	SuggestedGasPrice *big.Int
-	TransactorFactory TransactorFactoryFunc
 
 	// TxDecrypter is an optional transaction decrypter which is used when there is a need to
 	// read encrypted transaction's input data if blockchain encrypts it (i.e. Quorum private tx)
@@ -45,14 +44,7 @@ func New(b backend.Backend, lf log.Fun) *Eth {
 
 // NewSession creates an instance of Session
 func (e *Eth) NewSession(key *ecdsa.PrivateKey) *Session {
-	var transactOpts *bind.TransactOpts
-
-	if e.TransactorFactory != nil {
-		transactOpts = e.TransactorFactory(key)
-	} else {
-		transactOpts = bind.NewKeyedTransactor(key)
-	}
-
+	transactOpts := e.Backend.NewKeyedTransactor(key)
 	transactOpts.GasPrice = e.SuggestedGasPrice
 	return &Session{
 		Eth:          e,
@@ -68,11 +60,6 @@ func (e *Eth) UpdateSuggestedGasPrice(ctx context.Context) error {
 	}
 	e.SuggestedGasPrice = gasPrice
 	return nil
-}
-
-// SetTransactorFactory sets factory which creates transactor during sessions creation
-func (e *Eth) SetTransactorFactory(f TransactorFactoryFunc) {
-	e.TransactorFactory = f
 }
 
 // SetTxDecrypter sets decrypter, used to decrypt encrypted transactions

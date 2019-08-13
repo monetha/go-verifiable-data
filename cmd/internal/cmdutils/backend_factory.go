@@ -2,9 +2,7 @@ package cmdutils
 
 import (
 	"context"
-	"crypto/ecdsa"
 
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/cmd/utils"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/log"
@@ -38,7 +36,7 @@ func NewBackendFactory(quorumEnclave *string, quorumPrivateFor []string) *Backen
 // DialBackendContext connects an Ethereum client to the given URL.
 func (f *BackendFactory) DialBackendContext(ctx context.Context, backendURL string) (backend.Backend, error) {
 	if f.isPrivateQuorum() {
-		return quorum.DialContext(ctx, backendURL, f.quorumPrivateFor)
+		return quorum.DialContext(ctx, backendURL, f.quorumPrivateFor, *f.quorumEnclave)
 	}
 
 	return ethclient.DialContext(ctx, backendURL)
@@ -47,7 +45,7 @@ func (f *BackendFactory) DialBackendContext(ctx context.Context, backendURL stri
 // DialBackend connects an Ethereum client to the given URL.
 func (f *BackendFactory) DialBackend(backendURL string) (backend.Backend, error) {
 	if f.isPrivateQuorum() {
-		return quorum.Dial(backendURL, f.quorumPrivateFor)
+		return quorum.Dial(backendURL, f.quorumPrivateFor, *f.quorumEnclave)
 	}
 
 	return ethclient.Dial(backendURL)
@@ -58,10 +56,6 @@ func (f *BackendFactory) NewEth(ctx context.Context, b backend.Backend) *eth.Eth
 	e := eth.New(b, log.Warn)
 
 	if f.isPrivateQuorum() {
-		e.SetTransactorFactory(func(key *ecdsa.PrivateKey) *bind.TransactOpts {
-			return quorum.NewPrivateTransactor(ctx, key, *f.quorumEnclave)
-		})
-
 		if pb, ok := b.(*quorum.PrivateTxClient); ok {
 			e.SetTxDecrypter(func(ctx context.Context, tx *types.Transaction) (*types.Transaction, error) {
 				return quorum.DecryptTx(ctx, tx, pb.GetRPCClient())

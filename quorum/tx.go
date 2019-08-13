@@ -24,6 +24,7 @@ import (
 // NewPrivateTransactor is a utility method to easily create a transaction signer
 // from a single private key for Quorum private transactions.
 func NewPrivateTransactor(ctx context.Context, key *ecdsa.PrivateKey, enclaveURL string) *bind.TransactOpts {
+	// TODO: @Martynas NewPrivateTransactor should be refactored, currently it creates new http.Client for each request
 	keyAddr := crypto.PubkeyToAddress(key.PublicKey)
 
 	opts := &bind.TransactOpts{
@@ -35,7 +36,7 @@ func NewPrivateTransactor(ctx context.Context, key *ecdsa.PrivateKey, enclaveURL
 
 			// Send TX data to enclave for encryption
 			rawData := tx.Data()
-			dataHash, err := encryptTxData(ctx, rawData, enclaveURL)
+			dataHash, err := encryptTxData(ctx, rawData, enclaveURL) // TODO: @Martynas, the same ctx is used in closure
 			if err != nil {
 				return nil, err
 			}

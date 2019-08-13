@@ -4,6 +4,8 @@ import (
 	"context"
 	"crypto/ecdsa"
 
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+
 	"github.com/ethereum/go-ethereum/rpc"
 
 	"github.com/ethereum/go-ethereum/core/types"
@@ -19,6 +21,12 @@ type Client struct {
 // GetSenderPublicKey retrieves public key of sender from transaction.
 func (c *Client) GetSenderPublicKey(t *types.Transaction) (*ecdsa.PublicKey, error) {
 	return (*backend.Transaction)(t).GetSenderPublicKey()
+}
+
+// NewKeyedTransactor is a utility method to easily create a transaction signer
+// from a single private key.
+func (c *Client) NewKeyedTransactor(key *ecdsa.PrivateKey) *bind.TransactOpts {
+	return bind.NewKeyedTransactor(key)
 }
 
 // Dial connects a client to the given URL.
