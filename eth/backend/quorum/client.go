@@ -3,6 +3,9 @@ package quorum
 import (
 	"context"
 	"crypto/ecdsa"
+	"net"
+	"net/http"
+	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -16,6 +19,7 @@ import (
 type PrivateTxClient struct {
 	*ethclient.Client
 	c             *rpc.Client
+	hc            *http.Client
 	privateFor    []string
 	quorumEnclave string
 }
@@ -31,27 +35,42 @@ func Dial(rawurl string, privateFor []string, quorumEnclave string) (*PrivateTxC
 
 // DialContext connects a client to the given URL using provided context.
 func DialContext(ctx context.Context, rawurl string, privateFor []string, quorumEnclave string) (*PrivateTxClient, error) {
+	hc := &http.Client{Transport: &http.Transport{
+		Proxy: http.ProxyFromEnvironment,
+		DialContext: (&net.Dialer{
+			Timeout:   30 * time.Second,
+			KeepAlive: 30 * time.Second,
+		}).DialContext,
+		MaxIdleConns:          100,
+		MaxIdleConnsPerHost:   100,
+		IdleConnTimeout:       90 * time.Second,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+	}}
+
+	return DialContextWithHTTP(ctx, hc, rawurl, privateFor, quorumEnclave)
+}
+
+// DialContextWithHTTP connects a client to the given URL using provided context and uses given HTTP client for
+// internal http requests.
+func DialContextWithHTTP(ctx context.Context, hc *http.Client, rawurl string, privateFor []string, quorumEnclave string) (*PrivateTxClient, error) {
 	c, err := rpc.DialContext(ctx, rawurl)
 	if err != nil {
 		return nil, err
 	}
 
-	return NewClient(c, privateFor, quorumEnclave), nil
+	return NewClient(c, hc, privateFor, quorumEnclave), nil
 }
 
 // NewClient creates a client that uses the given RPC client.
-func NewClient(c *rpc.Client, privateFor []string, quorumEnclave string) *PrivateTxClient {
+func NewClient(c *rpc.Client, hc *http.Client, privateFor []string, quorumEnclave string) *PrivateTxClient {
 	return &PrivateTxClient{
 		c:             c,
+		hc:            hc,
 		Client:        ethclient.NewClient(c),
 		privateFor:    privateFor,
 		quorumEnclave: quorumEnclave,
 	}
-}
-
-// GetRPCClient returns raw RPC client that this client is connected with
-func (ec *PrivateTxClient) GetRPCClient() *rpc.Client {
-	return ec.c
 }
 
 // SendTransaction injects a signed private transaction into the pending pool for execution.
@@ -79,7 +98,7 @@ func (ec *PrivateTxClient) GetSenderPublicKey(t *types.Transaction) (*ecdsa.Publ
 // NewKeyedTransactor is a utility method to easily create a transaction signer
 // from a single private key.
 func (ec *PrivateTxClient) NewKeyedTransactor(key *ecdsa.PrivateKey) *bind.TransactOpts {
-	return NewPrivateTransactor(context.Background(), key, ec.quorumEnclave)
+	return NewPrivateTransactor(ec.hc, key, ec.quorumEnclave)
 }
 
 // DecryptPayload decrypts transaction payload.
