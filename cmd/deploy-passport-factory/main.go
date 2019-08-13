@@ -11,10 +11,10 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/cmd"
 	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"
+	internalFlag "github.com/monetha/go-verifiable-data/cmd/internal/flag"
 	"github.com/monetha/go-verifiable-data/deployer"
 	"github.com/monetha/go-verifiable-data/eth"
 	"github.com/monetha/go-verifiable-data/eth/backend"
@@ -22,12 +22,14 @@ import (
 
 func main() {
 	var (
-		backendURL   = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
-		registryAddr = flag.String("registryaddr", "", "Ethereum address of passport logic registry contract")
-		ownerKeyFile = flag.String("ownerkey", "", "Monetha owner private key filename")
-		ownerKeyHex  = flag.String("ownerkeyhex", "", "Monetha owner private key as hex (for testing)")
-		verbosity    = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
-		vmodule      = flag.String("vmodule", "", "log verbosity pattern")
+		backendURL       = flag.String("backendurl", "", "backend URL (simulated backend used if empty)")
+		registryAddr     = flag.String("registryaddr", "", "Ethereum address of passport logic registry contract")
+		ownerKeyFile     = flag.String("ownerkey", "", "Monetha owner private key filename")
+		ownerKeyHex      = flag.String("ownerkeyhex", "", "Monetha owner private key as hex (for testing)")
+		verbosity        = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
+		vmodule          = flag.String("vmodule", "", "log verbosity pattern")
+		quorumPrivateFor = flag.String("quorum_privatefor", "", "Quorum nodes public keys to make transaction private for, separated by commas")
+		quorumEnclave    = flag.String("quorum_enclave", "", "Quorum enclave url for private transactions")
 
 		ownerKey *ecdsa.PrivateKey
 		err      error
@@ -37,6 +39,10 @@ func main() {
 	if cmd.HasPrintedVersion() {
 		return
 	}
+
+	privateFor := &internalFlag.StringArray{}
+	privateFor.UnmarshalFlag(*quorumPrivateFor)
+	bf := cmdutils.NewBackendFactory(quorumEnclave, privateFor.AsStringArr())
 
 	glogger := log.NewGlogHandler(log.StreamHandler(os.Stderr, log.TerminalFormat(false)))
 	glogger.Verbosity(log.Lvl(*verbosity))
@@ -91,10 +97,10 @@ func main() {
 		cmdutils.CheckErr(err, "create passport factory")
 		passportRegistryAddress = res.PassportLogicRegistryAddress
 	} else {
-		client, err := ethclient.Dial(*backendURL)
-		cmdutils.CheckErr(err, "ethclient.Dial")
+		client, err := bf.DialBackend(*backendURL)
+		cmdutils.CheckErr(err, "bf.DialBackend")
 
-		e = eth.New(client, log.Warn)
+		e = bf.NewEth(ctx, client)
 		cmdutils.CheckErr(e.UpdateSuggestedGasPrice(ctx), "SuggestGasPrice")
 	}
 

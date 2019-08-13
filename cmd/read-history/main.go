@@ -15,7 +15,6 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/cmd"
 	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"
@@ -40,6 +39,7 @@ func main() {
 		dataKeyFileName = flag.String("datakeyfile", "", "data decryption key file name (only for privatedata data type)")
 		verbosity       = flag.Int("verbosity", int(log.LvlWarn), "log verbosity (0-9)")
 		vmodule         = flag.String("vmodule", "", "log verbosity pattern")
+		quorumEnclave   = flag.String("quorum_enclave", "", "Quorum enclave url to decrypt facts, stored using private transactions")
 
 		err error
 		// private data variables
@@ -50,6 +50,8 @@ func main() {
 	if cmd.HasPrintedVersion() {
 		return
 	}
+
+	bf := cmdutils.NewBackendFactory(quorumEnclave, nil)
 
 	glogger := log.NewGlogHandler(log.StreamHandler(os.Stderr, log.TerminalFormat(false)))
 	glogger.Verbosity(log.Lvl(*verbosity))
@@ -178,10 +180,10 @@ func main() {
 		cmdutils.CheckErr(ignoreHash(factProvider.DeleteIPFSHash(ctx, passportAddress, factKey)), "DeleteIPFSHash")
 		cmdutils.CheckErr(ignoreHash(factProvider.DeletePrivateDataHashes(ctx, passportAddress, factKey)), "DeletePrivateDataHashes")
 	} else {
-		client, err := ethclient.Dial(*backendURL)
-		cmdutils.CheckErr(err, "ethclient.Dial")
+		client, err := bf.DialBackend(*backendURL)
+		cmdutils.CheckErr(err, "bf.DialBackend")
 
-		e = eth.New(client, log.Warn)
+		e = bf.NewEth(ctx, client)
 		cmdutils.CheckErr(e.UpdateSuggestedGasPrice(ctx), "SuggestGasPrice")
 	}
 

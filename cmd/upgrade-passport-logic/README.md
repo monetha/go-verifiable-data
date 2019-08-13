@@ -21,6 +21,10 @@ Usage of `./upgrade-passport-logic`:
     	The version of new passport logic contract (which will be deployed)
   -vmodule string
     	log verbosity pattern
+  -quorum_privatefor
+        Quorum nodes public keys to make transaction private for, separated by commas
+  -quorum_enclave
+        Quorum enclave url for private transactions
 ```
 
 

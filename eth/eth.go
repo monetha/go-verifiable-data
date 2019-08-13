@@ -17,6 +17,12 @@ import (
 	"github.com/monetha/go-verifiable-data/log"
 )
 
+// TransactorFactoryFunc - function for creating transactor from private key
+type TransactorFactoryFunc = func(key *ecdsa.PrivateKey) *bind.TransactOpts
+
+// TxDecrypterFunc - function for decrypting transaction
+type TxDecrypterFunc = func(ctx context.Context, tx *types.Transaction) (*types.Transaction, error)
+
 // Eth simplifies some operations with the Ethereum network
 type Eth struct {
 	Backend           backend.Backend
@@ -34,7 +40,7 @@ func New(b backend.Backend, lf log.Fun) *Eth {
 
 // NewSession creates an instance of Session
 func (e *Eth) NewSession(key *ecdsa.PrivateKey) *Session {
-	transactOpts := bind.NewKeyedTransactor(key)
+	transactOpts := e.Backend.NewKeyedTransactor(key)
 	transactOpts.GasPrice = e.SuggestedGasPrice
 	return &Session{
 		Eth:          e,

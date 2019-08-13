@@ -4,11 +4,13 @@ package backend
 
 import (
 	"context"
+	"crypto/ecdsa"
 	"math/big"
 	"sync"
 	"time"
 
 	"github.com/ethereum/go-ethereum"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind/backends"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core"
@@ -130,4 +132,20 @@ func (b *SimulatedBackendExt) TransactionByHash(ctx context.Context, txHash comm
 // AdjustTime adds a time shift to the simulated clock.
 func (b *SimulatedBackendExt) AdjustTime(adjustment time.Duration) error {
 	return b.b.AdjustTime(adjustment)
+}
+
+// GetSenderPublicKey retrieves public key of sender from transaction.
+func (b *SimulatedBackendExt) GetSenderPublicKey(t *types.Transaction) (*ecdsa.PublicKey, error) {
+	return (*Transaction)(t).GetSenderPublicKey()
+}
+
+// NewKeyedTransactor is a utility method to easily create a transaction signer
+// from a single private key.
+func (b *SimulatedBackendExt) NewKeyedTransactor(key *ecdsa.PrivateKey) *bind.TransactOpts {
+	return bind.NewKeyedTransactor(key)
+}
+
+// DecryptPayload decrypts transaction payload.
+func (b *SimulatedBackendExt) DecryptPayload(ctx context.Context, tx *types.Transaction) ([]byte, error) {
+	return tx.Data(), nil
 }

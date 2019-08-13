@@ -37,7 +37,7 @@ func (c *ReadCommand) Execute(args []string) error {
 	initLogging(log.Lvl(c.Verbosity), c.VModule)
 	ctx := cmdutils.CreateCtrlCContext()
 
-	e, err := newEth(ctx, c.BackendURL)
+	e, err := newEth(ctx, c.BackendURL, "", nil)
 	if err != nil {
 		return err
 	}

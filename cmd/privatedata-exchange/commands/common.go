@@ -4,7 +4,8 @@ import (
 	"context"
 	"os"
 
-	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"
+
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/eth"
 	"github.com/pkg/errors"
@@ -17,13 +18,15 @@ func initLogging(level log.Lvl, vmodule string) {
 	log.Root().SetHandler(glogger)
 }
 
-func newEth(ctx context.Context, backendURL string) (e *eth.Eth, err error) {
-	client, err := ethclient.DialContext(ctx, backendURL)
+func newEth(ctx context.Context, backendURL string, enclaveURL string, privateFor []string) (e *eth.Eth, err error) {
+	bf := cmdutils.NewBackendFactory(&enclaveURL, privateFor)
+
+	client, err := bf.DialBackendContext(ctx, backendURL)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to connect ETH client")
 	}
 
-	e = eth.New(client, log.Warn)
+	e = bf.NewEth(ctx, client)
 	if err = e.UpdateSuggestedGasPrice(ctx); err != nil {
 		e = nil
 	}

@@ -18,6 +18,10 @@ Usage of `./deploy-passport`:
     	log verbosity (0-9) (default 2)
   -vmodule string
     	log verbosity pattern
+  -quorum_privatefor
+          Quorum nodes public keys to make transaction private for, separated by commas
+  -quorum_enclave
+          Quorum enclave url for private transactions
 ```
 
 ## Examples

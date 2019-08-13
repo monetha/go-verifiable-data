@@ -24,11 +24,15 @@ Usage of `./write-fact`:
     	log verbosity (0-9) (default 2)
   -vmodule string
     	log verbosity pattern
+  -quorum_privatefor
+        Quorum nodes public keys to make transaction private for, separated by commas
+  -quorum_enclave
+        Quorum enclave url for private transactions
 ```
 
 ## Gas usage
 
-Cumulative gas usage in simulated backend to store number of character of `a` under the key 
+Cumulative gas usage in simulated backend to store number of character of `a` under the key
 `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` using different data types:
 
 | Number of characters |     `ipfs`, gas used    |     `txdata`, gas used    |  `bytes`, gas used |  `string`, gas used |
@@ -47,7 +51,7 @@ Cumulative gas usage in simulated backend to store number of character of `a` un
 
 ## Examples
 
-* Store 1000 characters of `a` under the key `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` as `txdata` in simulated backend 
+* Store 1000 characters of `a` under the key `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` as `txdata` in simulated backend
 using fact provider private key `1dae9ab9e0c080371c56d816f4b6323e6c229e1cea4d15bc7f828c40ad9729d6`:
   ```bash
   head -c 1000 < /dev/zero | tr '\0' '\141' | ./write-fact \
@@ -65,7 +69,7 @@ using fact provider private key `1dae9ab9e0c080371c56d816f4b6323e6c229e1cea4d15b
     -passportaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
     -backendurl https://ropsten.infura.io < ~/Downloads/monetha.jpg
   ```
-  
+
 * Store image from the file `~/Downloads/monetha.jpg` under the key `monetha.jpg` as `ipfs` (data will be stored in IPFS,
   only hash will be stored in the Ethereum storage) in passport
   [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064):

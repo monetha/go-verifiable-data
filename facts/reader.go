@@ -95,7 +95,12 @@ func (r *Reader) ReadTxData(ctx context.Context, passport common.Address, factPr
 		return nil, fmt.Errorf("facts: TransactionByHash(%v): %v", txHash.String(), err)
 	}
 
-	params, err := txdata.ParseSetTxDataBlockNumberCallData(tx.Data())
+	bs, err := backend.DecryptPayload(ctx, tx)
+	if err != nil {
+		return nil, fmt.Errorf("facts: backend.DecryptPayload(%v): %v", txHash.String(), err)
+	}
+
+	params, err := txdata.ParseSetTxDataBlockNumberCallData(bs)
 	if err != nil {
 		return nil, err
 	}
@@ -327,7 +332,7 @@ func (r *Reader) ReadOwnerPublicKey(ctx context.Context, passport common.Address
 		return
 	}
 
-	return (*eth.Transaction)(tx).GetSenderPublicKey()
+	return backend.GetSenderPublicKey(tx)
 }
 
 type extPassportLogicContract contracts.PassportLogicContract

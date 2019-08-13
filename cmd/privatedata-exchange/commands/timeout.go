@@ -9,6 +9,7 @@ import (
 
 // TimeoutCommand handles timeout command
 type TimeoutCommand struct {
+	cmdutils.QuorumPrivateTxIOCommand
 	PassportAddress  flag.EthereumAddress         `long:"passportaddr" required:"true" description:"Ethereum address of passport contract"`
 	ExchangeIndex    flag.ExchangeIndex           `long:"exchidx"      required:"true" description:"private data exchange index"`
 	DataRequesterKey flag.ECDSAPrivateKeyFromFile `long:"requesterkey" required:"true" description:"data requester private key filename"`
@@ -22,7 +23,7 @@ func (c *TimeoutCommand) Execute(args []string) error {
 	initLogging(log.Lvl(c.Verbosity), c.VModule)
 	ctx := cmdutils.CreateCtrlCContext()
 
-	e, err := newEth(ctx, c.BackendURL)
+	e, err := newEth(ctx, c.BackendURL, c.QuorumEnclave, c.QuorumPrivateFor.AsStringArr())
 	if err != nil {
 		return err
 	}
