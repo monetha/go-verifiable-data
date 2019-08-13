@@ -8,7 +8,7 @@ import (
 	"github.com/monetha/go-verifiable-data/eth"
 	"github.com/monetha/go-verifiable-data/eth/backend"
 	"github.com/monetha/go-verifiable-data/eth/backend/ethclient"
-	"github.com/monetha/go-verifiable-data/quorum"
+	"github.com/monetha/go-verifiable-data/eth/backend/quorum"
 )
 
 // BackendFactory provides functions for creating clients, which are able to communicate
