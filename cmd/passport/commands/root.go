@@ -12,6 +12,7 @@ type RootCommand struct {
 	DeployBootstrap       DeployBootstrapCommand       `command:"deploy-bootstrap"        description:"Deploy digital identity backbone contracts"`
 	DeployPassportFactory DeployPassportFactoryCommand `command:"deploy-passport-factory" description:"Deploy digital identity factory contract"`
 	DeployPassport        DeployPassportCommand        `command:"deploy-passport" description:"Deploy digital identity contract"`
+	PassportList          PassportListCommand          `command:"passport-list" description:"Get list of digital identities from factory"`
 }
 
 // Root is a prepared command to be used in command line arguments parsing
