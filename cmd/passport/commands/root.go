@@ -10,7 +10,8 @@ import (
 type RootCommand struct {
 	Version               func()                       `short:"v" long:"version" description:"Print the version of tool and exit"`
 	DeployBootstrap       DeployBootstrapCommand       `command:"deploy-bootstrap"        description:"Deploy digital identity backbone contracts"`
-	DeployPassportFactory DeployPassportFactoryCommand `command:"deploy-passport-factory"        description:"Deploy digital identity factory contract"`
+	DeployPassportFactory DeployPassportFactoryCommand `command:"deploy-passport-factory" description:"Deploy digital identity factory contract"`
+	DeployPassport        DeployPassportCommand        `command:"deploy-passport" description:"Deploy digital identity contract"`
 }
 
 // Root is a prepared command to be used in command line arguments parsing

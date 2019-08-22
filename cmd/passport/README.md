@@ -29,7 +29,7 @@ Command to deploy three contracts at once:
 1. [PassportFactory](../../contracts/code/PassportFactory.sol) contract
 
 After passport factory contract is created, it can be used to deploy [Passport](../../contracts/code/Passport.sol) contracts using
-[deploy-passport](#deploy-bootstrap) command.
+[deploy-passport](#deploy-passport) command.
 
 ### Usage
 
@@ -89,4 +89,37 @@ Usage of `deploy-passport-factory`:
   ./passport deploy-passport-factory --ownerkey ./owner.key \
      --registryaddr 0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c \
      --backendurl https://ropsten.infura.io
+  ```
+
+## deploy-passport
+
+Command to deploy [Passport](../../contracts/code/Passport.sol) contract.
+
+### Usage
+
+Usage of `deploy-passport`:
+```
+  --backendurl string
+    	backend URL
+  --factoryaddr string
+    	Ethereum address of passport factory contract
+  --ownerkey string
+    	owner private key filename
+  --verbosity int
+    	log verbosity (0-9) (default 2)
+  --vmodule string
+    	log verbosity pattern
+  --quorum_privatefor
+        Quorum nodes public keys to make transaction private for, separated by commas
+  --quorum_enclave
+        Quorum enclave url for private transactions
+```
+
+### Examples
+
+* Deploying passport contract in Ropsten network using passport factory contract at
+  [0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2](https://ropsten.etherscan.io/address/0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2#code)
+  and Ethereum private key stored in file `./owner.key`:
+  ```bash
+  ./passport deploy-passport --ownerkey ./owner.key --factoryaddr 0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2 --backendurl https://ropsten.infura.io
   ```
