@@ -23,10 +23,10 @@ type AcceptCommand struct {
 
 // Execute implements flags.Commander interface
 func (c *AcceptCommand) Execute(args []string) error {
-	initLogging(log.Lvl(c.Verbosity), c.VModule)
+	cmdutils.InitLogging(log.Lvl(c.Verbosity), c.VModule)
 	ctx := cmdutils.CreateCtrlCContext()
 
-	e, err := newEth(ctx, c.BackendURL, c.QuorumEnclave, c.QuorumPrivateFor.AsStringArr())
+	e, err := cmdutils.NewEth(ctx, c.BackendURL, c.QuorumEnclave, c.QuorumPrivateFor.AsStringArr())
 	if err != nil {
 		return err
 	}
