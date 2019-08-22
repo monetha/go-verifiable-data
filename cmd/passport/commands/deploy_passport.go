@@ -10,18 +10,18 @@ import (
 	"github.com/pkg/errors"
 )
 
-// DeployPassportFactoryCommand deploys PassportFactory contract
-type DeployPassportFactoryCommand struct {
+// DeployPassportCommand deploys Passport contract
+type DeployPassportCommand struct {
 	cmdutils.QuorumPrivateTxIOCommand
 	PassportOwnerKey flag.ECDSAPrivateKeyFromFile `long:"ownerkey" required:"true"     description:"passport owner private key filename"`
 	BackendURL       string                       `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
-	RegistryAddr     flag.EthereumAddress         `long:"registryaddr"     required:"true" description:"Ethereum address of passport logic registry contract"`
+	FactoryAddr      flag.EthereumAddress         `long:"factoryaddr"     required:"true" description:"Ethereum address of passport factory contract"`
 	Verbosity        int                          `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
 	VModule          string                       `long:"vmodule"                          description:"log verbosity pattern"`
 }
 
 // Execute implements flags.Commander interface
-func (c *DeployPassportFactoryCommand) Execute(args []string) error {
+func (c *DeployPassportCommand) Execute(args []string) error {
 	cmdutils.InitLogging(log.Lvl(c.Verbosity), c.VModule)
 	ctx := cmdutils.CreateCtrlCContext()
 
@@ -29,7 +29,7 @@ func (c *DeployPassportFactoryCommand) Execute(args []string) error {
 	log.Warn("Loaded configuration",
 		"owner_address", ownerAddress.Hex(),
 		"backend_url", c.BackendURL,
-		"registry", c.RegistryAddr.AsCommonAddress().Hex())
+		"factory", c.FactoryAddr.AsCommonAddress().Hex())
 
 	e, err := cmdutils.NewEth(ctx, c.BackendURL, c.QuorumEnclave, c.QuorumPrivateFor.AsStringArr())
 	if err != nil {
@@ -40,11 +40,16 @@ func (c *DeployPassportFactoryCommand) Execute(args []string) error {
 
 	// Creating owner session
 	ownerSession := e.NewSession(c.PassportOwnerKey.AsECDSAPrivateKey())
-
-	// Deploying passport factory contract
-	_, err = deployer.New(ownerSession).DeployPassportFactory(ctx, c.RegistryAddr.AsCommonAddress())
+	err = cmdutils.CheckBalance(ctx, ownerSession, deployer.PassportGasLimit)
 	if err != nil {
-		return errors.Wrap(err, "failed to deploy passport factory")
+		return err
+	}
+
+	// Deploying passport contract
+	_, err = deployer.New(ownerSession).
+		DeployPassport(ctx, c.FactoryAddr.AsCommonAddress())
+	if err != nil {
+		return errors.Wrap(err, "failed to deploy passport")
 	}
 
 	return nil
