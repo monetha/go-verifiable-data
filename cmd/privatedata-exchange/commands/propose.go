@@ -36,10 +36,10 @@ func (c *ProposeCommand) Execute(args []string) error {
 		return ErrExchangeKeyFileExists
 	}
 
-	initLogging(log.Lvl(c.Verbosity), c.VModule)
+	cmdutils.InitLogging(log.Lvl(c.Verbosity), c.VModule)
 	ctx := cmdutils.CreateCtrlCContext()
 
-	e, err := newEth(ctx, c.BackendURL, c.QuorumEnclave, c.QuorumPrivateFor.AsStringArr())
+	e, err := cmdutils.NewEth(ctx, c.BackendURL, c.QuorumEnclave, c.QuorumPrivateFor.AsStringArr())
 	if err != nil {
 		return err
 	}
