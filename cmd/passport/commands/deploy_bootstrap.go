@@ -12,10 +12,10 @@ import (
 // DeployBootstrapCommand is a command for deploying PassportLogic, PassportRegistry and PassportFactory contracts in one go
 type DeployBootstrapCommand struct {
 	cmdutils.QuorumPrivateTxIOCommand
-	PassportOwnerKey flag.ECDSAPrivateKeyFromFile `long:"ownerkey" required:"true"     description:"passport owner private key filename"`
-	BackendURL       string                       `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
-	Verbosity        int                          `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
-	VModule          string                       `long:"vmodule"                          description:"log verbosity pattern"`
+	OwnerKey   flag.ECDSAPrivateKeyFromFile `long:"ownerkey" required:"true"     description:"contracts owner private key filename"`
+	BackendURL string                       `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
+	Verbosity  int                          `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
+	VModule    string                       `long:"vmodule"                          description:"log verbosity pattern"`
 }
 
 // Execute implements flags.Commander interface
@@ -23,7 +23,7 @@ func (c *DeployBootstrapCommand) Execute(args []string) error {
 	cmdutils.InitLogging(log.Lvl(c.Verbosity), c.VModule)
 	ctx := cmdutils.CreateCtrlCContext()
 
-	ownerAddress := bind.NewKeyedTransactor(c.PassportOwnerKey.AsECDSAPrivateKey()).From
+	ownerAddress := bind.NewKeyedTransactor(c.OwnerKey.AsECDSAPrivateKey()).From
 	log.Warn("Loaded configuration", "owner_address", ownerAddress.Hex(), "backend_url", c.BackendURL)
 
 	e, err := cmdutils.NewEth(ctx, c.BackendURL, c.QuorumEnclave, c.QuorumPrivateFor.AsStringArr())
@@ -34,7 +34,7 @@ func (c *DeployBootstrapCommand) Execute(args []string) error {
 	e = e.NewHandleNonceBackend([]common.Address{ownerAddress})
 
 	// Creating owner session and checking balance
-	ownerSession := e.NewSession(c.PassportOwnerKey.AsECDSAPrivateKey())
+	ownerSession := e.NewSession(c.OwnerKey.AsECDSAPrivateKey())
 
 	err = cmdutils.CheckBalance(ctx, ownerSession, deployer.PassportFactoryGasLimit)
 	if err != nil {
