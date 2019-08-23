@@ -153,3 +153,78 @@ Usage of `passport-list`:
     --backendurl https://ropsten.infura.io \
     --factoryaddr 0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2
   ```
+## passport-permission
+
+A command that allows a digital identity owner to allow or deny a data source to write/delete data to/from a digital identity.
+By default any data source can write to a digital identity, but a digital identity owner can change permissions that allow only
+data sources from the whitelist to write to a digital identity.
+
+## Usage
+
+Usage of `./passport-permission`:
+```
+  --add string
+    	add data source address to the whitelist
+  --remove string
+    	remove data source address from the whitelist
+  --backendurl string
+    	backend URL
+  --enablewhitelist
+    	enables the use of a whitelist of data sources
+  --disablewhitelist
+      disables the use of a whitelist of data sources
+  --ownerkey string
+    	owner private key filename
+  --passaddr string
+    	Ethereum address of passport contract
+  --verbosity int
+    	log verbosity (0-9) (default 2)
+  --vmodule string
+    	log verbosity pattern
+  --quorum_privatefor
+        Quorum nodes public keys to make transaction private for, separated by commas
+  --quorum_enclave
+        Quorum enclave url for private transactions
+```
+
+## Examples
+
+* Owner of a digital identity [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+adds data source `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d` to the whitelist in Ropsten network:
+
+    ```bash
+    ./passport passport-permission --ownerkey pass_owner.key \
+      --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
+      --add 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d \
+      --backendurl https://ropsten.infura.io
+    ```
+
+* Owner of a digital identity [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+removes data source `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d` to the whitelist in Ropsten network:
+
+    ```bash
+    ./passport passport-permission --ownerkey pass_owner.key \
+      --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
+      --remove 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d \
+      --backendurl https://ropsten.infura.io
+    ```
+
+* Owner of a digital identity [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+allows to store the facts only to data sources from the whitelist:
+
+    ```bash
+    ./passport passport-permission --ownerkey pass_owner.key \
+      --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
+      --enablewhitelist \
+      --backendurl https://ropsten.infura.io
+    ```
+
+* Owner of a digital identity [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+allows any data source to write the facts:
+
+    ```bash
+    ./passport passport-permission --ownerkey pass_owner.key \
+      --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
+      --disablewhitelist \
+      --backendurl https://ropsten.infura.io
+    ```
