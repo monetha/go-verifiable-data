@@ -38,7 +38,7 @@ Usage of `deploy-bootstrap`:
   --backendurl string
     	backend URL (simulated backend used if empty)
   --ownerkey string
-    	owner private key filename
+    	contract owner private key filename
   --verbosity int
     	log verbosity (0-9) (default 2)
   --vmodule string
@@ -67,7 +67,7 @@ Usage of `deploy-passport-factory`:
   --backendurl string
     	backend URL
   --ownerkey string
-    	Monetha owner private key filename
+    	contract owner private key filename
   --registryaddr string
     	Ethereum address of passport logic registry contract
   --verbosity int
@@ -161,7 +161,7 @@ data sources from the whitelist to write to a digital identity.
 
 ## Usage
 
-Usage of `./passport-permission`:
+Usage of `passport-permission`:
 ```
   --add string
     	add data source address to the whitelist
@@ -172,7 +172,7 @@ Usage of `./passport-permission`:
   --enablewhitelist
     	enables the use of a whitelist of data sources
   --disablewhitelist
-      disables the use of a whitelist of data sources
+        disables the use of a whitelist of data sources
   --ownerkey string
     	owner private key filename
   --passaddr string
@@ -228,3 +228,41 @@ allows any data source to write the facts:
       --disablewhitelist \
       --backendurl https://ropsten.infura.io
     ```
+
+## upgrade-passport-logic
+
+Command to upgrade [PassportLogic](../../contracts/code/PassportLogic.sol) contract in [PassportLogicRegistry](../../contracts/code/PassportLogicRegistry.sol) contract.
+
+### Usage
+
+Usage of `upgrade-passport-logic`:
+```
+  --backendurl string
+    	backend URL
+  --ownerkey string
+    	registry contract owner private key filename
+  --registryaddr string
+    	Ethereum address of passport logic registry contract
+  --newversion string
+    	The version of new passport logic contract (which will be deployed)
+  --verbosity int
+    	log verbosity (0-9) (default 2)
+  --vmodule string
+    	log verbosity pattern
+  --quorum_privatefor
+        Quorum nodes public keys to make transaction private for, separated by commas
+  --quorum_enclave
+        Quorum enclave url for private transactions
+```
+
+### Examples
+
+* Deploying and registering new [PassportLogic](../../contracts/code/PassportLogic.sol) contract of version `0.2` in
+  [PassportLogicRegistry](../../contracts/code/PassportLogicRegistry.sol) contract (`0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c`) in Ropsten network using Ethereum private
+  key stored in file `./owner.key` (you need to provide private key of [PassportLogicRegistry](../../contracts/code/PassportLogicRegistry.sol) contract owner):
+  ```bash
+  ./passport upgrade-passport-logic --ownerkey ./owner.key \
+     --registryaddr 0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c \
+     --newversion 0.2 \
+     --backendurl https://ropsten.infura.io
+  ```

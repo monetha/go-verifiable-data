@@ -13,11 +13,11 @@ import (
 // DeployPassportFactoryCommand deploys PassportFactory contract
 type DeployPassportFactoryCommand struct {
 	cmdutils.QuorumPrivateTxIOCommand
-	PassportOwnerKey flag.ECDSAPrivateKeyFromFile `long:"ownerkey" required:"true"     description:"passport owner private key filename"`
-	BackendURL       string                       `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
-	RegistryAddr     flag.EthereumAddress         `long:"registryaddr"     required:"true" description:"Ethereum address of passport logic registry contract"`
-	Verbosity        int                          `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
-	VModule          string                       `long:"vmodule"                          description:"log verbosity pattern"`
+	OwnerKey     flag.ECDSAPrivateKeyFromFile `long:"ownerkey" required:"true"     description:"factory contract owner private key filename"`
+	BackendURL   string                       `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
+	RegistryAddr flag.EthereumAddress         `long:"registryaddr"     required:"true" description:"Ethereum address of passport logic registry contract"`
+	Verbosity    int                          `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
+	VModule      string                       `long:"vmodule"                          description:"log verbosity pattern"`
 }
 
 // Execute implements flags.Commander interface
@@ -25,7 +25,7 @@ func (c *DeployPassportFactoryCommand) Execute(args []string) error {
 	cmdutils.InitLogging(log.Lvl(c.Verbosity), c.VModule)
 	ctx := cmdutils.CreateCtrlCContext()
 
-	ownerAddress := bind.NewKeyedTransactor(c.PassportOwnerKey.AsECDSAPrivateKey()).From
+	ownerAddress := bind.NewKeyedTransactor(c.OwnerKey.AsECDSAPrivateKey()).From
 	log.Warn("Loaded configuration",
 		"owner_address", ownerAddress.Hex(),
 		"backend_url", c.BackendURL,
@@ -39,7 +39,7 @@ func (c *DeployPassportFactoryCommand) Execute(args []string) error {
 	e = e.NewHandleNonceBackend([]common.Address{ownerAddress})
 
 	// Creating owner session
-	ownerSession := e.NewSession(c.PassportOwnerKey.AsECDSAPrivateKey())
+	ownerSession := e.NewSession(c.OwnerKey.AsECDSAPrivateKey())
 
 	// Deploying passport factory contract
 	_, err = deployer.New(ownerSession).DeployPassportFactory(ctx, c.RegistryAddr.AsCommonAddress())
