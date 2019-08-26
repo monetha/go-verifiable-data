@@ -266,3 +266,33 @@ Usage of `upgrade-passport-logic`:
      --newversion 0.2 \
      --backendurl https://ropsten.infura.io
   ```
+
+## read-history
+
+Command for reading the history of digital identity changes.
+
+## Usage
+
+Usage of `read-history`:
+```
+  --backendurl string
+    	backend URL
+  --out string
+    	save retrieved data to the specified file
+  --passaddr value
+    	Ethereum address of passport contract
+  --verbosity int
+    	log verbosity (0-9) (default 2)
+  --vmodule string
+    	log verbosity pattern
+```
+
+## Examples
+
+* Read the entire change history for the digital identity [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+  in `Ropsten` block-chain and write it to the file `/dev/stdout` (outputs to the screen):
+    ```bash
+    ./passport read-history --out /dev/stdout \
+      --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
+      --backendurl https://ropsten.infura.io
+    ```
