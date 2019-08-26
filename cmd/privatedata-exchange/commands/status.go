@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	flag2 "github.com/monetha/go-verifiable-data/cmd/internal/flag"
 	"strings"
 	"time"
 
@@ -15,11 +16,11 @@ import (
 
 // StatusCommand handles status command
 type StatusCommand struct {
-	PassportAddress flag.EthereumAddress `long:"passportaddr" required:"true" description:"Ethereum address of passport contract"`
-	ExchangeIndex   flag.ExchangeIndex   `long:"exchidx"      required:"true" description:"private data exchange index"`
-	BackendURL      string               `long:"backendurl"   required:"true" description:"Ethereum backend URL"`
-	Verbosity       int                  `long:"verbosity"                    description:"log verbosity (0-9)" default:"2"`
-	VModule         string               `long:"vmodule"                      description:"log verbosity pattern"`
+	PassportAddress flag2.EthereumAddress `long:"passportaddr" required:"true" description:"Ethereum address of passport contract"`
+	ExchangeIndex   flag.ExchangeIndex    `long:"exchidx"      required:"true" description:"private data exchange index"`
+	BackendURL      string                `long:"backendurl"   required:"true" description:"Ethereum backend URL"`
+	Verbosity       int                   `long:"verbosity"                    description:"log verbosity (0-9)" default:"2"`
+	VModule         string                `long:"vmodule"                      description:"log verbosity pattern"`
 }
 
 // Execute implements flags.Commander interface

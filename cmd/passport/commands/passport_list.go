@@ -2,11 +2,11 @@ package commands
 
 import (
 	"fmt"
+	"github.com/monetha/go-verifiable-data/cmd/internal/flag"
 	"os"
 
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"
-	"github.com/monetha/go-verifiable-data/cmd/privatedata-exchange/commands/flag"
 	"github.com/monetha/go-verifiable-data/passfactory"
 	"github.com/pkg/errors"
 )
