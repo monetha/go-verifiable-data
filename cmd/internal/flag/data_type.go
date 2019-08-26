@@ -2,8 +2,9 @@ package flag
 
 import (
 	"fmt"
-	"github.com/monetha/go-verifiable-data/types/data"
 	"strings"
+
+	"github.com/monetha/go-verifiable-data/types/data"
 )
 
 // DataType is a flag that parses data type of fact

@@ -55,10 +55,10 @@ func main() {
 		GetPassportListButton:           dom.Document.GetElementById("getPassportListBtn").AsButton(),
 		PassportListOutputDiv:           dom.Document.GetElementById("passportListOutput"),
 
-		PassChangesPassAddressInput: dom.Document.GetElementById("passChangesPassportAddressInp").AsInput(),
+		PassChangesPassAddressInput:  dom.Document.GetElementById("passChangesPassportAddressInp").AsInput(),
 		PassChangesStartFromBlockInp: dom.Document.GetElementById("passChangesStartFromBlockInp").AsInput(),
-		GetPassportChangesButton:    dom.Document.GetElementById("getPassportChangesBtn").AsButton(),
-		PassportChangesOutputDiv:    dom.Document.GetElementById("passportChangesOutput"),
+		GetPassportChangesButton:     dom.Document.GetElementById("getPassportChangesBtn").AsButton(),
+		PassportChangesOutputDiv:     dom.Document.GetElementById("passportChangesOutput"),
 	}).
 		RegisterCallBacks()
 

@@ -6,12 +6,13 @@ import (
 	"encoding/hex"
 	"flag"
 	"fmt"
-	"github.com/pkg/errors"
 	"os"
 	"os/signal"
 	"strconv"
 	"strings"
 	"syscall"
+
+	"github.com/pkg/errors"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
