@@ -74,7 +74,7 @@ cmd: cmd-gen
 
 .PHONY: cmdx
 CMDX_PLATFORMS = "windows/amd64" "darwin/amd64" "linux/amd64"
-CMDX_CMDS = "passport-scanner"
+CMDX_CMDS = "passport-scanner" "passport" "privatedata-exchange"
 cmdx: cmd-gen
 	for platform in $(CMDX_PLATFORMS); do \
 		platform_split=($${platform//\// }); \
