@@ -6,7 +6,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 )
 
-// EthereumAddress is a falg that parses Ethereum address
+// EthereumAddress is a flag that parses Ethereum address
 type EthereumAddress common.Address
 
 // UnmarshalFlag implements flags.Unmarshaler interface
