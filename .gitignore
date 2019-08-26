@@ -44,3 +44,5 @@ vendor/
 .cover/
 
 bin/
+
+.vscode/notes*

@@ -36,17 +36,17 @@ After passport factory contract is created, it can be used to deploy [Passport](
 Usage of `deploy-bootstrap`:
 ```
   --backendurl string
-    	backend URL (simulated backend used if empty)
+      backend URL (simulated backend used if empty)
   --ownerkey string
-    	contract owner private key filename
+      contract owner private key filename
   --verbosity int
-    	log verbosity (0-9) (default 2)
+      log verbosity (0-9) (default 2)
   --vmodule string
-    	log verbosity pattern
+      log verbosity pattern
   --quorum_privatefor
-        Quorum nodes public keys to make transaction private for, separated by commas
+      Quorum nodes public keys to make transaction private for, separated by commas
   --quorum_enclave
-        Quorum enclave url for private transactions
+      Quorum enclave url for private transactions
 ```
 
 ### Examples
@@ -65,19 +65,19 @@ Command to deploy only [PassportFactory](../../contracts/code/PassportFactory.so
 Usage of `deploy-passport-factory`:
 ```
   --backendurl string
-    	backend URL
+      backend URL
   --ownerkey string
-    	contract owner private key filename
+      contract owner private key filename
   --registryaddr string
-    	Ethereum address of passport logic registry contract
+      Ethereum address of passport logic registry contract
   --verbosity int
-    	log verbosity (0-9) (default 2)
+      log verbosity (0-9) (default 2)
   --vmodule string
-    	log verbosity pattern
+      log verbosity pattern
   --quorum_privatefor
-        Quorum nodes public keys to make transaction private for, separated by commas
+      Quorum nodes public keys to make transaction private for, separated by commas
   --quorum_enclave
-        Quorum enclave url for private transactions
+      Quorum enclave url for private transactions
 ```
 
 ### Examples
@@ -100,19 +100,19 @@ Command to deploy [Passport](../../contracts/code/Passport.sol) contract.
 Usage of `deploy-passport`:
 ```
   --backendurl string
-    	backend URL
+      backend URL
   --factoryaddr string
-    	Ethereum address of passport factory contract
+      Ethereum address of passport factory contract
   --ownerkey string
-    	owner private key filename
+      owner private key filename
   --verbosity int
-    	log verbosity (0-9) (default 2)
+      log verbosity (0-9) (default 2)
   --vmodule string
-    	log verbosity pattern
+      log verbosity pattern
   --quorum_privatefor
-        Quorum nodes public keys to make transaction private for, separated by commas
+      Quorum nodes public keys to make transaction private for, separated by commas
   --quorum_enclave
-        Quorum enclave url for private transactions
+      Quorum enclave url for private transactions
 ```
 
 ### Examples
@@ -133,15 +133,15 @@ Command for getting a list of passports created using specific [PassportFactory]
 Usage of `passport-list`:
 ```
   --backendurl string
-    	backend URL
+      backend URL
   --factoryaddr string
-    	Ethereum address of passport factory contract
+      Ethereum address of passport factory contract
   --out string
-    	save retrieved passports to the specified file
+      save retrieved passports to the specified file
   --verbosity int
-    	log verbosity (0-9) (default 2)
+      log verbosity (0-9) (default 2)
   --vmodule string
-    	log verbosity pattern
+      log verbosity pattern
 ```
 
 ### Examples
@@ -164,27 +164,27 @@ data sources from the whitelist to write to a digital identity.
 Usage of `passport-permission`:
 ```
   --add string
-    	add data source address to the whitelist
+      add data source address to the whitelist
   --remove string
-    	remove data source address from the whitelist
+      remove data source address from the whitelist
   --backendurl string
-    	backend URL
+      backend URL
   --enablewhitelist
-    	enables the use of a whitelist of data sources
+      enables the use of a whitelist of data sources
   --disablewhitelist
-        disables the use of a whitelist of data sources
+      disables the use of a whitelist of data sources
   --ownerkey string
-    	owner private key filename
+      owner private key filename
   --passaddr string
-    	Ethereum address of passport contract
+      Ethereum address of passport contract
   --verbosity int
-    	log verbosity (0-9) (default 2)
+      log verbosity (0-9) (default 2)
   --vmodule string
-    	log verbosity pattern
+      log verbosity pattern
   --quorum_privatefor
-        Quorum nodes public keys to make transaction private for, separated by commas
+      Quorum nodes public keys to make transaction private for, separated by commas
   --quorum_enclave
-        Quorum enclave url for private transactions
+      Quorum enclave url for private transactions
 ```
 
 ## Examples
@@ -238,21 +238,21 @@ Command to upgrade [PassportLogic](../../contracts/code/PassportLogic.sol) contr
 Usage of `upgrade-passport-logic`:
 ```
   --backendurl string
-    	backend URL
+      backend URL
   --ownerkey string
-    	registry contract owner private key filename
+      registry contract owner private key filename
   --registryaddr string
-    	Ethereum address of passport logic registry contract
+      Ethereum address of passport logic registry contract
   --newversion string
-    	The version of new passport logic contract (which will be deployed)
+      The version of new passport logic contract (which will be deployed)
   --verbosity int
-    	log verbosity (0-9) (default 2)
+      log verbosity (0-9) (default 2)
   --vmodule string
-    	log verbosity pattern
+      log verbosity pattern
   --quorum_privatefor
-        Quorum nodes public keys to make transaction private for, separated by commas
+      Quorum nodes public keys to make transaction private for, separated by commas
   --quorum_enclave
-        Quorum enclave url for private transactions
+      Quorum enclave url for private transactions
 ```
 
 ### Examples
@@ -276,15 +276,15 @@ Command for reading the history of digital identity changes.
 Usage of `read-history`:
 ```
   --backendurl string
-    	backend URL
+      backend URL
   --out string
-    	save retrieved data to the specified file
+      save retrieved data to the specified file
   --passaddr value
-    	Ethereum address of passport contract
+      Ethereum address of passport contract
   --verbosity int
-    	log verbosity (0-9) (default 2)
+      log verbosity (0-9) (default 2)
   --vmodule string
-    	log verbosity pattern
+      log verbosity pattern
 ```
 
 ### Examples
@@ -297,66 +297,6 @@ Usage of `read-history`:
       --backendurl https://ropsten.infura.io
     ```
 
-## read-fact-tx
-
-Command for reading digital identity fact value using transaction hash.
-
-### Usage
-
-Usage of `read-fact-tx`:
-```
-  --backendurl string
-    	backend URL
-  --out string
-    	save retrieved data to the specified file
-  --passaddr value
-    	Ethereum address of passport contract
-  --ftype string
-        the data type of fact (txdata, string, bytes, address, uint, int, bool, ipfs, privatedata)
-  --txhash value
-        the transaction hash to read history value from
-  --ipfsurl string
-        IPFS node address (default "https://ipfs.infura.io:5001") (to read ipfs and privatedata facts)
-  --verbosity int
-    	log verbosity (0-9) (default 2)
-  --vmodule string
-    	log verbosity pattern
-  --ownerkey string
-        digital identity owner private key filename (only for privatedata data type)
-  --datakey string
-        data decryption key file name (only for privatedata data type)
-  --quorum_enclave
-        Quorum enclave url to decrypt facts, stored using private transactions
-  --verbosity int
-    	log verbosity (0-9) (default 2)
-  --vmodule string
-    	log verbosity pattern
-```
-
-### Examples
-
-* Retrieve the history value of type `txdata` stored in transaction [`0xd43201d6b23a18b90a53bf7ef1fffad0b04af603c039b6617601a225a129c632`](https://ropsten.etherscan.io/tx/0xd43201d6b23a18b90a53bf7ef1fffad0b04af603c039b6617601a225a129c632) from digital identity
-    [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
-    in `Ropsten` block-chain and write it to the file `./history_image.jpg`:
-    ```bash
-    ./passport read-fact-tx --out history_image.jpg \
-      --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
-      --ftype txdata \
-      --txhash 0xd43201d6b23a18b90a53bf7ef1fffad0b04af603c039b6617601a225a129c632 \
-      --backendurl https://ropsten.infura.io
-    ```
-
-* Retrieve the history value of type `ipfs` stored in transaction [`0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca`](https://ropsten.etherscan.io/tx/0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca) from digital identity
-    [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
-    in `Ropsten` block-chain and write it to the file `./Monetha_WP.pdf`:
-    ```bash
-    ./passport read-fact-tx --out Monetha_WP.pdf \
-      --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
-      --ftype ipfs \
-      --txhash 0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca \
-      --backendurl https://ropsten.infura.io
-    ```
-
 ## read-fact
 
 Command to read facts from digital identity.
@@ -366,29 +306,29 @@ Command to read facts from digital identity.
 Usage of `read-fact`:
 ```
   --backendurl string
-      	backend URL
+      backend URL
   --out string
-      	save retrieved data to the specified file
+      save retrieved data to the specified file
   --passaddr value
-      	Ethereum address of passport contract
+      Ethereum address of passport contract
   --factprovideraddr string
-    	Ethereum address of data source (fact provider)
+      Ethereum address of data source (fact provider)
   --fkey string
-    	the key of the fact
+      the key of the fact
   --ftype string
-        the data type of fact (txdata, string, bytes, address, uint, int, bool, ipfs, privatedata)
+      the data type of fact (txdata, string, bytes, address, uint, int, bool, ipfs, privatedata)
   --ipfsurl string
-        IPFS node address (default "https://ipfs.infura.io:5001") (to read ipfs and privatedata facts)
+      IPFS node address (default "https://ipfs.infura.io:5001") (to read ipfs and privatedata facts)
   --ownerkey string
-        digital identity owner private key filename (only for privatedata data type)
+      digital identity owner private key filename (only for privatedata data type)
   --datakey string
-        data decryption key file name (only for privatedata data type)
+      data decryption key file name (only for privatedata data type)
   --quorum_enclave
-        Quorum enclave url to decrypt facts, stored using private transactions
+      Quorum enclave url to decrypt facts, stored using private transactions
   --verbosity int
-    	log verbosity (0-9) (default 2)
+      log verbosity (0-9) (default 2)
   --vmodule string
-    	log verbosity pattern
+      log verbosity pattern
 ```
 
 ### Examples
@@ -419,6 +359,66 @@ Usage of `read-fact`:
     --backendurl https://ropsten.infura.io
   ```
 
+## read-fact-tx
+
+Command for reading digital identity fact value using transaction hash.
+
+### Usage
+
+Usage of `read-fact-tx`:
+```
+  --backendurl string
+      backend URL
+  --out string
+      save retrieved data to the specified file
+  --passaddr value
+      Ethereum address of passport contract
+  --ftype string
+      the data type of fact (txdata, string, bytes, address, uint, int, bool, ipfs, privatedata)
+  --txhash value
+      the transaction hash to read history value from
+  --ipfsurl string
+      IPFS node address (default "https://ipfs.infura.io:5001") (to read ipfs and privatedata facts)
+  --verbosity int
+      log verbosity (0-9) (default 2)
+  --vmodule string
+      log verbosity pattern
+  --ownerkey string
+      digital identity owner private key filename (only for privatedata data type)
+  --datakey string
+      data decryption key file name (only for privatedata data type)
+  --quorum_enclave
+      Quorum enclave url to decrypt facts, stored using private transactions
+  --verbosity int
+      log verbosity (0-9) (default 2)
+  --vmodule string
+      log verbosity pattern
+```
+
+### Examples
+
+* Retrieve the history value of type `txdata` stored in transaction [`0xd43201d6b23a18b90a53bf7ef1fffad0b04af603c039b6617601a225a129c632`](https://ropsten.etherscan.io/tx/0xd43201d6b23a18b90a53bf7ef1fffad0b04af603c039b6617601a225a129c632) from digital identity
+    [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+    in `Ropsten` block-chain and write it to the file `./history_image.jpg`:
+    ```bash
+    ./passport read-fact-tx --out history_image.jpg \
+      --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
+      --ftype txdata \
+      --txhash 0xd43201d6b23a18b90a53bf7ef1fffad0b04af603c039b6617601a225a129c632 \
+      --backendurl https://ropsten.infura.io
+    ```
+
+* Retrieve the history value of type `ipfs` stored in transaction [`0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca`](https://ropsten.etherscan.io/tx/0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca) from digital identity
+    [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+    in `Ropsten` block-chain and write it to the file `./Monetha_WP.pdf`:
+    ```bash
+    ./passport read-fact-tx --out Monetha_WP.pdf \
+      --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
+      --ftype ipfs \
+      --txhash 0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca \
+      --backendurl https://ropsten.infura.io
+    ```
+
 ## write-fact
 
 Command to write data facts to digital identity.
@@ -428,27 +428,27 @@ Command to write data facts to digital identity.
 Usage of `write-fact`:
 ```
   --backendurl string
-      	backend URL
+      backend URL
   --passaddr value
-      	Ethereum address of passport contract
+      Ethereum address of passport contract
   --factproviderkey string
-        data source (fact provider) private key filename
+      data source (fact provider) private key filename
   --fkey string
-    	the key of the fact (max 32 bytes)
+      the key of the fact (max 32 bytes)
   --ftype string
-        the data type of fact (txdata, string, bytes, address, uint, int, bool, ipfs, privatedata)
+      the data type of fact (txdata, string, bytes, address, uint, int, bool, ipfs, privatedata)
   --ipfsurl string
-        IPFS node address (default "https://ipfs.infura.io:5001") (to write ipfs and privatedata facts)
+      IPFS node address (default "https://ipfs.infura.io:5001") (to write ipfs and privatedata facts)
   --datakey string
-        save data encryption key to the specified file (only for privatedata data type)
+      save data encryption key to the specified file (only for privatedata data type)
   --verbosity int
-    	log verbosity (0-9) (default 2)
+      log verbosity (0-9) (default 2)
   --vmodule string
-    	log verbosity pattern
+      log verbosity pattern
   --quorum_privatefor
-        Quorum nodes public keys to make transaction private for, separated by commas
+      Quorum nodes public keys to make transaction private for, separated by commas
   --quorum_enclave
-        Quorum enclave url for private transactions
+      Quorum enclave url for private transactions
 ```
 
 ### Gas usage
@@ -489,6 +489,6 @@ Cumulative gas usage to store number of character of `a` under the key
   ./passport write-fact --factproviderkey fact_provider.key \
     --fkey monetha.jpg \
     --ftype ipfs \
-    --passportaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
+    --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
     --backendurl https://ropsten.infura.io < ~/Downloads/monetha.jpg
   ```
