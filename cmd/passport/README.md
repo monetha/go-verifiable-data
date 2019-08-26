@@ -356,7 +356,7 @@ Usage of `read-fact-tx`:
       --txhash 0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca \
       --backendurl https://ropsten.infura.io
     ```
-  
+
 ## read-fact
 
 Command to read facts from digital identity.
@@ -392,9 +392,9 @@ Usage of `read-fact`:
 ```
 
 ### Examples
-  
+
 * Retrieve the value of type `txdata` stored under the key `monetha.jpg` by the data source `0x5b2ae3b3a801469886bb8f5349fc3744caa6348d`
-  from digital identity 
+  from digital identity
   [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
   in `Ropsten` block-chain and write it to the file `./fact_image.jpg`:
   ```bash
@@ -405,9 +405,9 @@ Usage of `read-fact`:
     --ftype txdata \
     --backendurl https://ropsten.infura.io
   ```
-  
+
 * Retrieve the value of type `ipfs` stored under the key `Monetha_WP.pdf` by the data source `0x5b2ae3b3a801469886bb8f5349fc3744caa6348d`
-  from digital identity 
+  from digital identity
   [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
   in `Ropsten` block-chain and write it to the file `./Monetha_WP.pdf`:
   ```bash
@@ -417,4 +417,78 @@ Usage of `read-fact`:
     --fkey Monetha_WP.pdf \
     --ftype ipfs \
     --backendurl https://ropsten.infura.io
+  ```
+
+## write-fact
+
+Command to write data facts to digital identity.
+
+### Usage
+
+Usage of `write-fact`:
+```
+  --backendurl string
+      	backend URL
+  --passaddr value
+      	Ethereum address of passport contract
+  --factproviderkey string
+        data source (fact provider) private key filename
+  --fkey string
+    	the key of the fact (max 32 bytes)
+  --ftype string
+        the data type of fact (txdata, string, bytes, address, uint, int, bool, ipfs, privatedata)
+  --ipfsurl string
+        IPFS node address (default "https://ipfs.infura.io:5001") (to write ipfs and privatedata facts)
+  --datakey string
+        save data encryption key to the specified file (only for privatedata data type)
+  --verbosity int
+    	log verbosity (0-9) (default 2)
+  --vmodule string
+    	log verbosity pattern
+  --quorum_privatefor
+        Quorum nodes public keys to make transaction private for, separated by commas
+  --quorum_enclave
+        Quorum enclave url for private transactions
+```
+
+### Gas usage
+
+Cumulative gas usage to store number of character of `a` under the key
+`aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa` using different data types:
+
+| Number of characters |     `ipfs`, gas used    |     `txdata`, gas used    |  `bytes`, gas used |  `string`, gas used |
+|---------------------:|--------------------------:|--------------------------:|-------------------:|-------------------:|
+| 10 | 114245 | 70436 | 71079 | 71211 |
+| 100 | 114245 | 76598 | 157571 | 157703 |
+| 500 | 114245 | 103870 | 425756 | 425888 |
+| 1000 | 114245 | 138016 | 781119 | 781251 |
+| 5000 | 114245 | 410814 | 3563467 | 3563599 |
+| 10000 | 114245 | 751864 | 7036521 | 7036653 |
+| 50000 | 114245 | 3483963 | - | - |
+| 100000 | 114245 | 6907662 | - | - |
+| 110000 | 114245 | 7593621 | - | - |
+| 120000 | 114245 | 8279814 | - | - |
+| 130000 | 114245 | 8966537 | - | - |
+
+### Examples
+
+* Store image from the file `~/Downloads/monetha.jpg` under the key `monetha.jpg` as `txdata` in digital identity
+  [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064):
+  ```bash
+  ./passport write-fact --factproviderkey fact_provider.key \
+    --fkey monetha.jpg \
+    --ftype txdata \
+    --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
+    --backendurl https://ropsten.infura.io < ~/Downloads/monetha.jpg
+  ```
+
+* Store image from the file `~/Downloads/monetha.jpg` under the key `monetha.jpg` as `ipfs` (data will be stored in IPFS,
+  only hash will be stored in the Ethereum storage) in digital identity
+  [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064):
+  ```bash
+  ./passport write-fact --factproviderkey fact_provider.key \
+    --fkey monetha.jpg \
+    --ftype ipfs \
+    --passportaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
+    --backendurl https://ropsten.infura.io < ~/Downloads/monetha.jpg
   ```
