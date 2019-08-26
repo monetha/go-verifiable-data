@@ -17,6 +17,7 @@ type RootCommand struct {
 	UpgradePassportLogic  UpgradePassportLogicCommand  `command:"upgrade-passport-logic"  description:"Upgrade digital identity logic"`
 	ReadHistory           ReadHistoryCommand           `command:"read-history"            description:"Read history (changes) of digital identity"`
 	ReadFactTx            ReadFactTxCommand            `command:"read-fact-tx"            description:"Read fact value using transaction hash"`
+	ReadFact              ReadFactCommand              `command:"read-fact"               description:"Read latest fact value"`
 }
 
 // Root is a prepared command to be used in command line arguments parsing

@@ -19,3 +19,9 @@ func (f *FactKey) UnmarshalFlag(value string) (err error) {
 	}
 	return
 }
+
+// AsString converts byte value to string
+func (f *FactKey) AsString() string {
+	b := [32]byte(*f)
+	return string(b[:])
+}
