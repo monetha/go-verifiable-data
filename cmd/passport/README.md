@@ -312,21 +312,25 @@ Usage of `read-fact-tx`:
   --passaddr value
     	Ethereum address of passport contract
   --ftype string
-      the data type of fact (txdata, string, bytes, address, uint, int, bool, ipfs, privatedata)
+        the data type of fact (txdata, string, bytes, address, uint, int, bool, ipfs, privatedata)
   --txhash value
-      the transaction hash to read history value from
+        the transaction hash to read history value from
   --ipfsurl string
-      IPFS node address (default "https://ipfs.infura.io:5001") (to read ipfs and privatedata facts)
+        IPFS node address (default "https://ipfs.infura.io:5001") (to read ipfs and privatedata facts)
   --verbosity int
     	log verbosity (0-9) (default 2)
   --vmodule string
     	log verbosity pattern
   --ownerkey string
-      digital identity owner private key filename (only for privatedata data type)
+        digital identity owner private key filename (only for privatedata data type)
   --datakey string
-      data decryption key file name (only for privatedata data type)
+        data decryption key file name (only for privatedata data type)
   --quorum_enclave
-      Quorum enclave url to decrypt facts, stored using private transactions
+        Quorum enclave url to decrypt facts, stored using private transactions
+  --verbosity int
+    	log verbosity (0-9) (default 2)
+  --vmodule string
+    	log verbosity pattern
 ```
 
 ### Examples
@@ -352,3 +356,65 @@ Usage of `read-fact-tx`:
       --txhash 0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca \
       --backendurl https://ropsten.infura.io
     ```
+  
+## read-fact
+
+Command to read facts from digital identity.
+
+### Usage
+
+Usage of `read-fact`:
+```
+  --backendurl string
+      	backend URL
+  --out string
+      	save retrieved data to the specified file
+  --passaddr value
+      	Ethereum address of passport contract
+  --factprovideraddr string
+    	Ethereum address of data source (fact provider)
+  --fkey string
+    	the key of the fact
+  --ftype string
+        the data type of fact (txdata, string, bytes, address, uint, int, bool, ipfs, privatedata)
+  --ipfsurl string
+        IPFS node address (default "https://ipfs.infura.io:5001") (to read ipfs and privatedata facts)
+  --ownerkey string
+        digital identity owner private key filename (only for privatedata data type)
+  --datakey string
+        data decryption key file name (only for privatedata data type)
+  --quorum_enclave
+        Quorum enclave url to decrypt facts, stored using private transactions
+  --verbosity int
+    	log verbosity (0-9) (default 2)
+  --vmodule string
+    	log verbosity pattern
+```
+
+### Examples
+  
+* Retrieve the value of type `txdata` stored under the key `monetha.jpg` by the data source `0x5b2ae3b3a801469886bb8f5349fc3744caa6348d`
+  from digital identity 
+  [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+  in `Ropsten` block-chain and write it to the file `./fact_image.jpg`:
+  ```bash
+  ./passport read-fact --out ./fact_image.jpg \
+    --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
+    --factprovideraddr 0x5b2ae3b3a801469886bb8f5349fc3744caa6348d \
+    --fkey monetha.jpg \
+    --ftype txdata \
+    --backendurl https://ropsten.infura.io
+  ```
+  
+* Retrieve the value of type `ipfs` stored under the key `Monetha_WP.pdf` by the data source `0x5b2ae3b3a801469886bb8f5349fc3744caa6348d`
+  from digital identity 
+  [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+  in `Ropsten` block-chain and write it to the file `./Monetha_WP.pdf`:
+  ```bash
+  ./passport read-fact --out ./Monetha_WP.pdf \
+    --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
+    --factprovideraddr 0x5b2ae3b3a801469886bb8f5349fc3744caa6348d \
+    --fkey Monetha_WP.pdf \
+    --ftype ipfs \
+    --backendurl https://ropsten.infura.io
+  ```
