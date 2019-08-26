@@ -14,10 +14,10 @@ import (
 type DeployPassportCommand struct {
 	cmdutils.QuorumPrivateTxIOCommand
 	PassportOwnerKey flag.ECDSAPrivateKeyFromFile `long:"ownerkey" required:"true"     description:"passport owner private key filename"`
-	BackendURL       string                        `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
+	BackendURL       string                       `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
 	FactoryAddr      flag.EthereumAddress         `long:"factoryaddr"     required:"true" description:"Ethereum address of passport factory contract"`
-	Verbosity        int                           `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
-	VModule          string                        `long:"vmodule"                          description:"log verbosity pattern"`
+	Verbosity        int                          `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
+	VModule          string                       `long:"vmodule"                          description:"log verbosity pattern"`
 }
 
 // Execute implements flags.Commander interface

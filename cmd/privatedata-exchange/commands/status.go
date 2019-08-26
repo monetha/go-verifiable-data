@@ -2,9 +2,10 @@ package commands
 
 import (
 	"fmt"
-	flag2 "github.com/monetha/go-verifiable-data/cmd/internal/flag"
 	"strings"
 	"time"
+
+	flag2 "github.com/monetha/go-verifiable-data/cmd/internal/flag"
 
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/hako/durafmt"

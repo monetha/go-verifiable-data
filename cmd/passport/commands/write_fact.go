@@ -26,13 +26,13 @@ import (
 // WriteFactCommand writes fact to passport
 type WriteFactCommand struct {
 	cmdutils.QuorumPrivateTxIOCommand
-	BackendURL      string                         `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
+	BackendURL      string                        `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
 	PassportAddress flag.EthereumAddress          `long:"passaddr"         required:"true" description:"Ethereum address of passport contract"`
 	FactProviderKey *flag.ECDSAPrivateKeyFromFile `long:"factproviderkey"  required:"true" description:"data source (fact provider) private key filename"`
 	FactKey         flag.FactKey                  `long:"fkey"             required:"true" description:"the key of the fact (max 32 bytes)"`
 	FactType        flag.DataType                 `long:"ftype"            required:"true" description:"the data type of fact (txhash, string, bytes, address, uint, int, bool, ipfs, privatedata)"`
-	IPFSURL         string                         `long:"ipfsurl"                          description:"IPFS node address (to write IPFS and private facts)" default:"https://ipfs.infura.io:5001"`
-	DataKeyFileName string                         `long:"datakey"                          description:"save data encryption key to the specified file (only for privatedata data type)"`
+	IPFSURL         string                        `long:"ipfsurl"                          description:"IPFS node address (to write IPFS and private facts)" default:"https://ipfs.infura.io:5001"`
+	DataKeyFileName string                        `long:"datakey"                          description:"save data encryption key to the specified file (only for privatedata data type)"`
 	Verbosity       int                           `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
 	VModule         string                        `long:"vmodule"                          description:"log verbosity pattern"`
 }
