@@ -1,6 +1,7 @@
 package commands
 
 import (
+	flag2 "github.com/monetha/go-verifiable-data/cmd/internal/flag"
 	"io/ioutil"
 
 	"github.com/ethereum/go-ethereum/log"
@@ -18,7 +19,7 @@ var (
 
 // ReadCommand handles `read` command
 type ReadCommand struct {
-	PassportAddress flag.EthereumAddress     `long:"passportaddr" required:"true" description:"Ethereum address of passport contract"`
+	PassportAddress flag2.EthereumAddress    `long:"passportaddr" required:"true" description:"Ethereum address of passport contract"`
 	ExchangeIndex   flag.ExchangeIndex       `long:"exchidx"      required:"true" description:"private data exchange index"`
 	ExchangeKey     flag.ExchangeKeyFromFile `long:"exchangekey"  required:"true" description:"exchange key filename"`
 	DataFile        string                   `long:"datafile"     required:"true" description:"file name where to save the private data (output)"`

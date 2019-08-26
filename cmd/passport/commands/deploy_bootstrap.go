@@ -5,7 +5,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"
-	"github.com/monetha/go-verifiable-data/cmd/privatedata-exchange/commands/flag"
+	"github.com/monetha/go-verifiable-data/cmd/internal/flag"
 	"github.com/monetha/go-verifiable-data/deployer"
 )
 

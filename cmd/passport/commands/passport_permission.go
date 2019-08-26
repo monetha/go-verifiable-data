@@ -2,12 +2,12 @@ package commands
 
 import (
 	"fmt"
+	"github.com/monetha/go-verifiable-data/cmd/internal/flag"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"
-	"github.com/monetha/go-verifiable-data/cmd/privatedata-exchange/commands/flag"
 	"github.com/monetha/go-verifiable-data/pass"
 	"github.com/pkg/errors"
 )
@@ -17,12 +17,12 @@ type PassportPermissionCommand struct {
 	cmdutils.QuorumPrivateTxIOCommand
 	PassportAddress    flag.EthereumAddress         `long:"passaddr" required:"true"     description:"Ethereum address of passport contract"`
 	PassportOwnerKey   flag.ECDSAPrivateKeyFromFile `long:"ownerkey" required:"true"     description:"passport owner private key filename"`
-	BackendURL         string                       `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
+	BackendURL         string                        `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
 	AddFactProvider    *flag.EthereumAddress        `long:"add"  description:"add data source to the whitelist"`
 	RemoveFactProvider *flag.EthereumAddress        `long:"remove"  description:"remove data source from the whitelist"`
-	EnableWhitelist    *bool                        `long:"enablewhitelist"                        description:"enables the use of a whitelist of data sources"`
-	DisableWhitelist   *bool                        `long:"disablewhitelist"                        description:"disables the use of a whitelist of data sources"`
-	Verbosity          int                          `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
+	EnableWhitelist    *bool                         `long:"enablewhitelist"                        description:"enables the use of a whitelist of data sources"`
+	DisableWhitelist   *bool                         `long:"disablewhitelist"                        description:"disables the use of a whitelist of data sources"`
+	Verbosity          int                           `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
 	VModule            string                       `long:"vmodule"                          description:"log verbosity pattern"`
 }
 

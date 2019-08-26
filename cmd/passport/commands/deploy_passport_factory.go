@@ -5,7 +5,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"
-	"github.com/monetha/go-verifiable-data/cmd/privatedata-exchange/commands/flag"
+	"github.com/monetha/go-verifiable-data/cmd/internal/flag"
 	"github.com/monetha/go-verifiable-data/deployer"
 	"github.com/pkg/errors"
 )
@@ -14,10 +14,10 @@ import (
 type DeployPassportFactoryCommand struct {
 	cmdutils.QuorumPrivateTxIOCommand
 	OwnerKey     flag.ECDSAPrivateKeyFromFile `long:"ownerkey" required:"true"     description:"factory contract owner private key filename"`
-	BackendURL   string                       `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
+	BackendURL   string                        `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
 	RegistryAddr flag.EthereumAddress         `long:"registryaddr"     required:"true" description:"Ethereum address of passport logic registry contract"`
-	Verbosity    int                          `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
-	VModule      string                       `long:"vmodule"                          description:"log verbosity pattern"`
+	Verbosity    int                           `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
+	VModule      string                        `long:"vmodule"                          description:"log verbosity pattern"`
 }
 
 // Execute implements flags.Commander interface

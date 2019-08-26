@@ -3,6 +3,7 @@ package commands
 import (
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"
+	flag2 "github.com/monetha/go-verifiable-data/cmd/internal/flag"
 	"github.com/monetha/go-verifiable-data/cmd/privatedata-exchange/commands/flag"
 	"github.com/monetha/go-verifiable-data/facts"
 	"github.com/monetha/go-verifiable-data/ipfs"
@@ -12,13 +13,13 @@ import (
 // AcceptCommand handles accept command
 type AcceptCommand struct {
 	cmdutils.QuorumPrivateTxIOCommand
-	PassportAddress  flag.EthereumAddress         `long:"passportaddr" required:"true" description:"Ethereum address of passport contract"`
-	ExchangeIndex    flag.ExchangeIndex           `long:"exchidx"      required:"true" description:"private data exchange index"`
-	PassportOwnerKey flag.ECDSAPrivateKeyFromFile `long:"ownerkey"     required:"true" description:"passport owner private key filename"`
-	BackendURL       string                       `long:"backendurl"   required:"true" description:"Ethereum backend URL"`
-	IPFSURL          string                       `long:"ipfsurl"                      description:"IPFS node URL" default:"https://ipfs.infura.io:5001"`
-	Verbosity        int                          `long:"verbosity"                    description:"log verbosity (0-9)" default:"2"`
-	VModule          string                       `long:"vmodule"                      description:"log verbosity pattern"`
+	PassportAddress  flag2.EthereumAddress         `long:"passportaddr" required:"true" description:"Ethereum address of passport contract"`
+	ExchangeIndex    flag.ExchangeIndex            `long:"exchidx"      required:"true" description:"private data exchange index"`
+	PassportOwnerKey flag2.ECDSAPrivateKeyFromFile `long:"ownerkey"     required:"true" description:"passport owner private key filename"`
+	BackendURL       string                        `long:"backendurl"   required:"true" description:"Ethereum backend URL"`
+	IPFSURL          string                        `long:"ipfsurl"                      description:"IPFS node URL" default:"https://ipfs.infura.io:5001"`
+	Verbosity        int                           `long:"verbosity"                    description:"log verbosity (0-9)" default:"2"`
+	VModule          string                        `long:"vmodule"                      description:"log verbosity pattern"`
 }
 
 // Execute implements flags.Commander interface
