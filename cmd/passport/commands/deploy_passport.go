@@ -52,5 +52,6 @@ func (c *DeployPassportCommand) Execute(args []string) error {
 		return errors.Wrap(err, "failed to deploy passport")
 	}
 
+	log.Warn("Done.")
 	return nil
 }

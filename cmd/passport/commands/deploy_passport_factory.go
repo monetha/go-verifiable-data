@@ -47,5 +47,6 @@ func (c *DeployPassportFactoryCommand) Execute(args []string) error {
 		return errors.Wrap(err, "failed to deploy passport factory")
 	}
 
+	log.Warn("Done.")
 	return nil
 }

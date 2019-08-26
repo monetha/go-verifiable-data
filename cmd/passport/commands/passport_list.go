@@ -71,5 +71,6 @@ func (c *PassportListCommand) Execute(args []string) error {
 		}
 	}
 
+	log.Warn("Done.")
 	return nil
 }

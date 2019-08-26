@@ -171,6 +171,7 @@ func (c *WriteFactCommand) Execute(args []string) (err error) {
 		return fmt.Errorf("unsupported fact type: %v", factType.String())
 	}
 
+	log.Warn("Done.")
 	return nil
 }
 

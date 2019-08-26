@@ -65,5 +65,6 @@ func (c *ReadHistoryCommand) Execute(args []string) error {
 		}
 	}
 
+	log.Warn("Done.")
 	return nil
 }

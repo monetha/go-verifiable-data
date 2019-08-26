@@ -50,5 +50,6 @@ func (c *UpgradePassportLogicCommand) Execute(args []string) error {
 		return errors.Wrap(err, "failed to upgrade passport logic")
 	}
 
+	log.Warn("Done.")
 	return nil
 }
