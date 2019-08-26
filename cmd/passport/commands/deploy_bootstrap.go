@@ -44,6 +44,10 @@ func (c *DeployBootstrapCommand) Execute(args []string) error {
 	// Deploying all passport backbone contracts
 	_, err = deployer.New(ownerSession).
 		Bootstrap(ctx)
+	if err != nil {
+		return err
+	}
 
-	return err
+	log.Warn("Done.")
+	return nil
 }

@@ -97,6 +97,7 @@ func (c *PassportPermissionCommand) Execute(args []string) error {
 		}
 	}
 
+	log.Warn("Done.")
 	return nil
 }
 

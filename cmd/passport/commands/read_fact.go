@@ -165,5 +165,6 @@ func (c *ReadFactCommand) Execute(args []string) (err error) {
 		return errors.Wrap(err, "could not write to file")
 	}
 
+	log.Warn("Done.")
 	return nil
 }
