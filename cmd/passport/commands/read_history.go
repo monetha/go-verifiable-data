@@ -2,12 +2,13 @@ package commands
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"
 	"github.com/monetha/go-verifiable-data/cmd/privatedata-exchange/commands/flag"
 	"github.com/monetha/go-verifiable-data/facts"
 	"github.com/pkg/errors"
-	"os"
 )
 
 // ReadHistoryCommand lists all passport fact changes
