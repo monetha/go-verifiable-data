@@ -271,7 +271,7 @@ Usage of `upgrade-passport-logic`:
 
 Command for reading the history of digital identity changes.
 
-## Usage
+### Usage
 
 Usage of `read-history`:
 ```
@@ -287,12 +287,68 @@ Usage of `read-history`:
     	log verbosity pattern
 ```
 
-## Examples
+### Examples
 
 * Read the entire change history for the digital identity [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
   in `Ropsten` block-chain and write it to the file `/dev/stdout` (outputs to the screen):
     ```bash
     ./passport read-history --out /dev/stdout \
       --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
+      --backendurl https://ropsten.infura.io
+    ```
+
+## read-fact-tx
+
+Command for reading digital identity fact value using transaction hash.
+
+### Usage
+
+Usage of `read-fact-tx`:
+```
+  --backendurl string
+    	backend URL
+  --out string
+    	save retrieved data to the specified file
+  --passaddr value
+    	Ethereum address of passport contract
+  --ftype string
+      the data type of fact (txdata, string, bytes, address, uint, int, bool, ipfs, privatedata)
+  --txhash value
+      the transaction hash to read history value from
+  --ipfsurl string
+      IPFS node address (default "https://ipfs.infura.io:5001") (to read ipfs and privatedata facts)
+  --verbosity int
+    	log verbosity (0-9) (default 2)
+  --vmodule string
+    	log verbosity pattern
+  --ownerkey string
+      digital identity owner private key filename (only for privatedata data type)
+  --datakey string
+      data decryption key file name (only for privatedata data type)
+  --quorum_enclave
+      Quorum enclave url to decrypt facts, stored using private transactions
+```
+
+### Examples
+
+* Retrieve the history value of type `txdata` stored in transaction [`0xd43201d6b23a18b90a53bf7ef1fffad0b04af603c039b6617601a225a129c632`](https://ropsten.etherscan.io/tx/0xd43201d6b23a18b90a53bf7ef1fffad0b04af603c039b6617601a225a129c632) from digital identity
+    [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+    in `Ropsten` block-chain and write it to the file `./history_image.jpg`:
+    ```bash
+    ./passport read-fact-tx --out history_image.jpg \
+      --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
+      --ftype txdata \
+      --txhash 0xd43201d6b23a18b90a53bf7ef1fffad0b04af603c039b6617601a225a129c632 \
+      --backendurl https://ropsten.infura.io
+    ```
+
+* Retrieve the history value of type `ipfs` stored in transaction [`0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca`](https://ropsten.etherscan.io/tx/0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca) from digital identity
+    [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
+    in `Ropsten` block-chain and write it to the file `./Monetha_WP.pdf`:
+    ```bash
+    ./passport read-fact-tx --out Monetha_WP.pdf \
+      --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
+      --ftype ipfs \
+      --txhash 0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca \
       --backendurl https://ropsten.infura.io
     ```
