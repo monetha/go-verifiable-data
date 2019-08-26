@@ -1,8 +1,9 @@
 package commands
 
 import (
-	flag2 "github.com/monetha/go-verifiable-data/cmd/internal/flag"
 	"io/ioutil"
+
+	flag2 "github.com/monetha/go-verifiable-data/cmd/internal/flag"
 
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"

@@ -2,8 +2,9 @@ package commands
 
 import (
 	"fmt"
-	"github.com/monetha/go-verifiable-data/cmd/internal/flag"
 	"os"
+
+	"github.com/monetha/go-verifiable-data/cmd/internal/flag"
 
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"
@@ -13,11 +14,11 @@ import (
 
 // ReadHistoryCommand lists all passport fact changes
 type ReadHistoryCommand struct {
-	BackendURL      string                `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
+	BackendURL      string               `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
 	PassportAddress flag.EthereumAddress `long:"passaddr" required:"true"     description:"Ethereum address of passport contract"`
-	FileName        string                `long:"out"     required:"true" description:"Save retrieved passports to the specified file"`
-	Verbosity       int                   `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
-	VModule         string                `long:"vmodule"                          description:"log verbosity pattern"`
+	FileName        string               `long:"out"     required:"true" description:"Save retrieved passports to the specified file"`
+	Verbosity       int                  `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
+	VModule         string               `long:"vmodule"                          description:"log verbosity pattern"`
 }
 
 // Execute implements flags.Commander interface

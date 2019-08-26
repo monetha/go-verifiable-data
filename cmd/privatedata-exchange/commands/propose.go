@@ -2,8 +2,9 @@ package commands
 
 import (
 	"crypto/rand"
-	flag2 "github.com/monetha/go-verifiable-data/cmd/internal/flag"
 	"io/ioutil"
+
+	flag2 "github.com/monetha/go-verifiable-data/cmd/internal/flag"
 
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"
@@ -27,8 +28,8 @@ type ProposeCommand struct {
 	StakedValue      flag.EthereumWei              `long:"stake"            required:"true" description:"amount of ethers to stake (in wei)"`
 	ExchangeKeyFile  string                        `long:"exchangekey"      required:"true" description:"file name where to save the exchange key (output)"`
 	BackendURL       string                        `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
-	Verbosity        int                          `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
-	VModule          string                       `long:"vmodule"                          description:"log verbosity pattern"`
+	Verbosity        int                           `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
+	VModule          string                        `long:"vmodule"                          description:"log verbosity pattern"`
 }
 
 // Execute implements flags.Commander interface

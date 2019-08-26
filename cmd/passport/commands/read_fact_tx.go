@@ -19,16 +19,16 @@ import (
 // ReadFactTxCommand reads passport fact value from transaction
 type ReadFactTxCommand struct {
 	cmdutils.QuorumPrivateTxICommand
-	BackendURL      string                `long:"backendurl" required:"true" description:"Ethereum backend URL"`
-	PassportAddress flag.EthereumAddress `long:"passaddr"   required:"true" description:"Ethereum address of passport contract"`
-	TXHash          flag.TXHash          `long:"txhash"     required:"true" description:"the transaction hash to read value from"`
-	FactType        flag.DataType        `long:"ftype"      required:"true" description:"the data type of fact (txhash, string, bytes, address, uint, int, bool, ipfs, privatedata)"`
-	FileName        string                `long:"out"        required:"true" description:"save fact value to the specified file"`
-	IPFSURL          string                         `long:"ipfsurl"                    description:"IPFS node address (to read IPFS and private facts)" default:"https://ipfs.infura.io:5001"`
+	BackendURL       string                        `long:"backendurl" required:"true" description:"Ethereum backend URL"`
+	PassportAddress  flag.EthereumAddress          `long:"passaddr"   required:"true" description:"Ethereum address of passport contract"`
+	TXHash           flag.TXHash                   `long:"txhash"     required:"true" description:"the transaction hash to read value from"`
+	FactType         flag.DataType                 `long:"ftype"      required:"true" description:"the data type of fact (txhash, string, bytes, address, uint, int, bool, ipfs, privatedata)"`
+	FileName         string                        `long:"out"        required:"true" description:"save fact value to the specified file"`
+	IPFSURL          string                        `long:"ipfsurl"                    description:"IPFS node address (to read IPFS and private facts)" default:"https://ipfs.infura.io:5001"`
 	PassportOwnerKey *flag.ECDSAPrivateKeyFromFile `long:"ownerkey"                   description:"digital identity owner private key filename (only for privatedata data type)"`
-	DataKeyFileName  string                         `long:"datakey"                    description:"data decryption key file name (only for privatedata data type)"`
-	Verbosity        int                            `long:"verbosity"                  description:"log verbosity (0-9)" default:"2"`
-	VModule          string                         `long:"vmodule"                    description:"log verbosity pattern"`
+	DataKeyFileName  string                        `long:"datakey"                    description:"data decryption key file name (only for privatedata data type)"`
+	Verbosity        int                           `long:"verbosity"                  description:"log verbosity (0-9)" default:"2"`
+	VModule          string                        `long:"vmodule"                    description:"log verbosity pattern"`
 }
 
 // Execute implements flags.Commander interface
