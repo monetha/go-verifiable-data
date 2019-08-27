@@ -4,11 +4,10 @@ import (
 	"crypto/rand"
 	"io/ioutil"
 
-	flag2 "github.com/monetha/go-verifiable-data/cmd/internal/flag"
+	"github.com/monetha/go-verifiable-data/cmd/internal/flag"
 
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"
-	"github.com/monetha/go-verifiable-data/cmd/privatedata-exchange/commands/flag"
 	"github.com/monetha/go-verifiable-data/facts"
 	"github.com/pkg/errors"
 )
@@ -21,15 +20,15 @@ var (
 // ProposeCommand handles propose command
 type ProposeCommand struct {
 	cmdutils.QuorumPrivateTxIOCommand
-	PassportAddress  flag2.EthereumAddress         `long:"passportaddr"     required:"true" description:"Ethereum address of passport contract"`
-	FactProvider     flag2.EthereumAddress         `long:"factprovideraddr" required:"true" description:"Ethereum address of fact provider"`
-	FactKey          flag2.FactKey                 `long:"fkey"             required:"true" description:"the key of the fact (max. 32 bytes)"`
-	DataRequesterKey flag2.ECDSAPrivateKeyFromFile `long:"requesterkey"     required:"true" description:"data requester private key filename"`
-	StakedValue      flag.EthereumWei              `long:"stake"            required:"true" description:"amount of ethers to stake (in wei)"`
-	ExchangeKeyFile  string                        `long:"exchangekey"      required:"true" description:"file name where to save the exchange key (output)"`
-	BackendURL       string                        `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
-	Verbosity        int                           `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
-	VModule          string                        `long:"vmodule"                          description:"log verbosity pattern"`
+	PassportAddress  flag.EthereumAddress         `long:"passportaddr"     required:"true" description:"Ethereum address of passport contract"`
+	FactProvider     flag.EthereumAddress         `long:"factprovideraddr" required:"true" description:"Ethereum address of fact provider"`
+	FactKey          flag.FactKey                 `long:"fkey"             required:"true" description:"the key of the fact (max. 32 bytes)"`
+	DataRequesterKey flag.ECDSAPrivateKeyFromFile `long:"requesterkey"     required:"true" description:"data requester private key filename"`
+	StakedValue      flag.EthereumWei             `long:"stake"            required:"true" description:"amount of ethers to stake (in wei)"`
+	ExchangeKeyFile  string                       `long:"exchangekey"      required:"true" description:"file name where to save the exchange key (output)"`
+	BackendURL       string                       `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
+	Verbosity        int                          `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
+	VModule          string                       `long:"vmodule"                          description:"log verbosity pattern"`
 }
 
 // Execute implements flags.Commander interface

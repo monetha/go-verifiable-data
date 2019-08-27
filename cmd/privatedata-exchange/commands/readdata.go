@@ -3,11 +3,10 @@ package commands
 import (
 	"io/ioutil"
 
-	flag2 "github.com/monetha/go-verifiable-data/cmd/internal/flag"
+	"github.com/monetha/go-verifiable-data/cmd/internal/flag"
 
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"
-	"github.com/monetha/go-verifiable-data/cmd/privatedata-exchange/commands/flag"
 	"github.com/monetha/go-verifiable-data/facts"
 	"github.com/monetha/go-verifiable-data/ipfs"
 	"github.com/pkg/errors"
@@ -20,7 +19,7 @@ var (
 
 // ReadCommand handles `read` command
 type ReadCommand struct {
-	PassportAddress flag2.EthereumAddress    `long:"passportaddr" required:"true" description:"Ethereum address of passport contract"`
+	PassportAddress flag.EthereumAddress     `long:"passportaddr" required:"true" description:"Ethereum address of passport contract"`
 	ExchangeIndex   flag.ExchangeIndex       `long:"exchidx"      required:"true" description:"private data exchange index"`
 	ExchangeKey     flag.ExchangeKeyFromFile `long:"exchangekey"  required:"true" description:"exchange key filename"`
 	DataFile        string                   `long:"datafile"     required:"true" description:"file name where to save the private data (output)"`
