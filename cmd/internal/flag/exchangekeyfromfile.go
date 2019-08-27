@@ -28,5 +28,5 @@ func (f *ExchangeKeyFromFile) UnmarshalFlag(value string) error {
 
 // AsBytes32 returns exchange key as [32]byte
 func (f *ExchangeKeyFromFile) AsBytes32() [32]byte {
-	return ([32]byte)(*f)
+	return *f
 }
