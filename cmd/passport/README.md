@@ -20,7 +20,7 @@ To output version of tool, run:
 
 # Commands
 
-## deploy-bootstrap
+## bootstrap
 
 Command to deploy three contracts at once:
 
@@ -29,11 +29,11 @@ Command to deploy three contracts at once:
 1. [PassportFactory](../../contracts/code/PassportFactory.sol) contract
 
 After passport factory contract is created, it can be used to deploy [Passport](../../contracts/code/Passport.sol) contracts using
-[deploy-passport](#deploy-passport) command.
+[create](#create) command.
 
 ### Usage
 
-Usage of `deploy-bootstrap`:
+Usage of `bootstrap`:
 ```
   --backendurl string
       backend URL (simulated backend used if empty)
@@ -53,16 +53,16 @@ Usage of `deploy-bootstrap`:
 
 * Deploying all contracts in Ropsten network using Ethereum private key stored in file `./owner.key`:
   ```bash
-  ./passport deploy-bootstrap --ownerkey ./owner.key --backendurl https://ropsten.infura.io
+  ./passport bootstrap --ownerkey ./owner.key --backendurl https://ropsten.infura.io
   ```
 
-## deploy-passport-factory
+## deploy-factory
 
 Command to deploy only [PassportFactory](../../contracts/code/PassportFactory.sol) contract.
 
 ### Usage
 
-Usage of `deploy-passport-factory`:
+Usage of `deploy-factory`:
 ```
   --backendurl string
       backend URL
@@ -86,18 +86,18 @@ Usage of `deploy-passport-factory`:
   [PassportLogicRegistry](../../contracts/code/PassportLogicRegistry.sol) contract (`0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c`) in Ropsten network using Ethereum private
   key stored in file `./owner.key`:
   ```bash
-  ./passport deploy-passport-factory --ownerkey ./owner.key \
+  ./passport deploy-factory --ownerkey ./owner.key \
      --registryaddr 0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c \
      --backendurl https://ropsten.infura.io
   ```
 
-## deploy-passport
+## create
 
 Command to deploy [Passport](../../contracts/code/Passport.sol) contract.
 
 ### Usage
 
-Usage of `deploy-passport`:
+Usage of `create`:
 ```
   --backendurl string
       backend URL
@@ -121,16 +121,16 @@ Usage of `deploy-passport`:
   [0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2](https://ropsten.etherscan.io/address/0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2#code)
   and Ethereum private key stored in file `./owner.key`:
   ```bash
-  ./passport deploy-passport --ownerkey ./owner.key --factoryaddr 0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2 --backendurl https://ropsten.infura.io
+  ./passport create --ownerkey ./owner.key --factoryaddr 0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2 --backendurl https://ropsten.infura.io
   ```
 
-## passport-list
+## list
 
 Command for getting a list of passports created using specific [PassportFactory](../../contracts/code/PassportFactory.sol) contract.
 
 ### Usage
 
-Usage of `passport-list`:
+Usage of `list`:
 ```
   --backendurl string
       backend URL
@@ -149,11 +149,11 @@ Usage of `passport-list`:
 * Get all passports created by the passport factory [`0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2`](https://ropsten.etherscan.io/address/0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2#code) in Ropsten network
   and write them to the file `./passports.csv`:
   ```bash
-  ./passport passport-list --out ./passports.csv \
+  ./passport list --out ./passports.csv \
     --backendurl https://ropsten.infura.io \
     --factoryaddr 0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2
   ```
-## passport-permission
+## permission
 
 A command that allows a digital identity owner to allow or deny a data source to write/delete data to/from a digital identity.
 By default any data source can write to a digital identity, but a digital identity owner can change permissions that allow only
@@ -161,7 +161,7 @@ data sources from the whitelist to write to a digital identity.
 
 ## Usage
 
-Usage of `passport-permission`:
+Usage of `permission`:
 ```
   --add string
       add data source address to the whitelist
@@ -193,7 +193,7 @@ Usage of `passport-permission`:
 adds data source `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d` to the whitelist in Ropsten network:
 
     ```bash
-    ./passport passport-permission --ownerkey pass_owner.key \
+    ./passport permission --ownerkey pass_owner.key \
       --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
       --add 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d \
       --backendurl https://ropsten.infura.io
@@ -203,7 +203,7 @@ adds data source `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d` to the whitelist i
 removes data source `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d` to the whitelist in Ropsten network:
 
     ```bash
-    ./passport passport-permission --ownerkey pass_owner.key \
+    ./passport permission --ownerkey pass_owner.key \
       --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
       --remove 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d \
       --backendurl https://ropsten.infura.io
@@ -213,7 +213,7 @@ removes data source `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d` to the whitelis
 allows to store the facts only to data sources from the whitelist:
 
     ```bash
-    ./passport passport-permission --ownerkey pass_owner.key \
+    ./passport permission --ownerkey pass_owner.key \
       --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
       --enablewhitelist \
       --backendurl https://ropsten.infura.io
@@ -223,19 +223,19 @@ allows to store the facts only to data sources from the whitelist:
 allows any data source to write the facts:
 
     ```bash
-    ./passport passport-permission --ownerkey pass_owner.key \
+    ./passport permission --ownerkey pass_owner.key \
       --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
       --disablewhitelist \
       --backendurl https://ropsten.infura.io
     ```
 
-## upgrade-passport-logic
+## upgrade-logic
 
 Command to upgrade [PassportLogic](../../contracts/code/PassportLogic.sol) contract in [PassportLogicRegistry](../../contracts/code/PassportLogicRegistry.sol) contract.
 
 ### Usage
 
-Usage of `upgrade-passport-logic`:
+Usage of `upgrade-logic`:
 ```
   --backendurl string
       backend URL
@@ -261,19 +261,19 @@ Usage of `upgrade-passport-logic`:
   [PassportLogicRegistry](../../contracts/code/PassportLogicRegistry.sol) contract (`0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c`) in Ropsten network using Ethereum private
   key stored in file `./owner.key` (you need to provide private key of [PassportLogicRegistry](../../contracts/code/PassportLogicRegistry.sol) contract owner):
   ```bash
-  ./passport upgrade-passport-logic --ownerkey ./owner.key \
+  ./passport upgrade-logic --ownerkey ./owner.key \
      --registryaddr 0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c \
      --newversion 0.2 \
      --backendurl https://ropsten.infura.io
   ```
 
-## read-history
+## history
 
 Command for reading the history of digital identity changes.
 
 ### Usage
 
-Usage of `read-history`:
+Usage of `history`:
 ```
   --backendurl string
       backend URL
@@ -292,7 +292,7 @@ Usage of `read-history`:
 * Read the entire change history for the digital identity [`0x1C3A76a9A27470657BcBE7BfB47820457E4DB682`](https://ropsten.etherscan.io/address/0x9cfabb3172dfd5ed740c3b8a327bf573226c5064)
   in `Ropsten` block-chain and write it to the file `/dev/stdout` (outputs to the screen):
     ```bash
-    ./passport read-history --out /dev/stdout \
+    ./passport history --out /dev/stdout \
       --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
       --backendurl https://ropsten.infura.io
     ```
