@@ -3,20 +3,19 @@ package commands
 import (
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/monetha/go-verifiable-data/cmd/internal/cmdutils"
-	flag2 "github.com/monetha/go-verifiable-data/cmd/internal/flag"
-	"github.com/monetha/go-verifiable-data/cmd/privatedata-exchange/commands/flag"
+	"github.com/monetha/go-verifiable-data/cmd/internal/flag"
 	"github.com/monetha/go-verifiable-data/facts"
 )
 
 // FinishCommand handles finish command
 type FinishCommand struct {
 	cmdutils.QuorumPrivateTxIOCommand
-	PassportAddress flag2.EthereumAddress         `long:"passportaddr" required:"true" description:"Ethereum address of passport contract"`
-	ExchangeIndex   flag.ExchangeIndex            `long:"exchidx"      required:"true" description:"private data exchange index"`
-	EthereumKey     flag2.ECDSAPrivateKeyFromFile `long:"requesterkey" required:"true" description:"data requester (or passport owner, when expired) private key filename"`
-	BackendURL      string                        `long:"backendurl"   required:"true" description:"Ethereum backend URL"`
-	Verbosity       int                           `long:"verbosity"                    description:"log verbosity (0-9)" default:"2"`
-	VModule         string                        `long:"vmodule"                      description:"log verbosity pattern"`
+	PassportAddress flag.EthereumAddress         `long:"passportaddr" required:"true" description:"Ethereum address of passport contract"`
+	ExchangeIndex   flag.ExchangeIndex           `long:"exchidx"      required:"true" description:"private data exchange index"`
+	EthereumKey     flag.ECDSAPrivateKeyFromFile `long:"requesterkey" required:"true" description:"data requester (or passport owner, when expired) private key filename"`
+	BackendURL      string                       `long:"backendurl"   required:"true" description:"Ethereum backend URL"`
+	Verbosity       int                          `long:"verbosity"                    description:"log verbosity (0-9)" default:"2"`
+	VModule         string                       `long:"vmodule"                      description:"log verbosity pattern"`
 }
 
 // Execute implements flags.Commander interface
