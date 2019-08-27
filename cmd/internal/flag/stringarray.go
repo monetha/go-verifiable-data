@@ -10,17 +10,15 @@ type StringArray []string
 // UnmarshalFlag implements flags.Unmarshaler interface
 func (k *StringArray) UnmarshalFlag(value string) error {
 	if value == "" {
-		*k = (StringArray)([]string{})
-		return nil
+		*k = []string{}
+	} else {
+		*k = strings.Split(value, ",")
 	}
 
-	a := strings.Split(value, ",")
-
-	*k = (StringArray)(a)
 	return nil
 }
 
 // AsStringArr returns value as string array
 func (k *StringArray) AsStringArr() []string {
-	return ([]string)(*k)
+	return *k
 }
