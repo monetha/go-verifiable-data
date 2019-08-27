@@ -149,7 +149,7 @@ Store the private key of this address in the file named `./owner.key`.
 To deploy all contracts in Rospten network using Ethereum private key stored in file `./owner.key`, run the command:
 
 ```bash
-./bin/passport deploy-bootstrap --ownerkey ./owner.key \
+./bin/passport bootstrap --ownerkey ./owner.key \
   --backendurl https://ropsten.infura.io
 ```
 
@@ -189,7 +189,7 @@ To create a passport contract you need to know address of the `PassportFactory` 
 using the `PassportFactory` contract deployed by Monetha ([`0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2`](https://ropsten.etherscan.io/address/0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2)):
 
 ```bash
-./bin/passport deploy-passport --ownerkey ./pass_owner.key \
+./bin/passport create --ownerkey ./pass_owner.key \
   --factoryaddr 0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2 \
   --backendurl https://ropsten.infura.io
 ```
@@ -221,7 +221,7 @@ Let's try to get a list of all passports using the address of `PassportFactory` 
 in Ropsten network:
 
 ```bash
-./bin/passport passport-list --out /dev/stdout \
+./bin/passport list --out /dev/stdout \
   --backendurl https://ropsten.infura.io \
   --factoryaddr 0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2
 ```
@@ -329,7 +329,7 @@ Consider an example of how owner of a passport `0x1C3A76a9A27470657BcBE7BfB47820
 `0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d` to the whitelist in Ropsten network:
 
 ```bash
-./bin/passport passport-permission --ownerkey pass_owner.key \
+./bin/passport permission --ownerkey pass_owner.key \
   --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
   --add 0x5b2AE3b3A801469886Bb8f5349fc3744cAa6348d \
   --backendurl https://ropsten.infura.io
@@ -343,13 +343,13 @@ Owner of a passport `0x1C3A76a9A27470657BcBE7BfB47820457E4DB682` may allow to st
 from the whitelist by running the command:
 
 ```bash
-./bin/passport passport-permission --ownerkey pass_owner.key \
+./bin/passport permission --ownerkey pass_owner.key \
   --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
   --enablewhitelist \
   --backendurl https://ropsten.infura.io
 ```
 
-More examples can be found [here](cmd/passport#passport-permission).
+More examples can be found [here](cmd/passport#permission).
 
 ### Reading facts history
 
@@ -359,7 +359,7 @@ Let's try to retrieve the entire change history for the passport [`0x1C3A76a9A27
 in `Ropsten` block-chain and write it to the file `/dev/stdout` (outputs to the screen, but you can change this to the file name to write to the file):
 
 ```bash
-./bin/passport read-history --out /dev/stdout \
+./bin/passport history --out /dev/stdout \
   --passaddr 0x1C3A76a9A27470657BcBE7BfB47820457E4DB682 \
   --backendurl https://ropsten.infura.io
 ```
@@ -427,8 +427,8 @@ to `0xbc8a86f54a467edbec32fbf27c08e7077221dd69bbea79707889ac6f787fe0ca`:
 
 After the [go-ethereum](https://github.com/ethereum/go-ethereum) community recently accepted [our changes](https://github.com/ethereum/go-ethereum/pull/17709),
 it became possible to compile Go SDK of reputation layer into WebAssembly module and run it in a browser.
-We have prepared a sample web application that has the same functionality as [`passport-list`](cmd/passport#passport-list), [`read-fact-tx`](cmd/passport#read-fact-tx) and
-[`read-history`](cmd/passport#read-history) utilities provide, i.e. it allows you to get the list of deployed passports and
+We have prepared a sample web application that has the same functionality as [`list`](cmd/passport#list), [`read-fact-tx`](cmd/passport#read-fact-tx) and
+[`history`](cmd/passport#history) utilities provide, i.e. it allows you to get the list of deployed passports and
 the history of passport changes directly in your web browser.
 
 To play with the web application, run the command
@@ -571,7 +571,7 @@ passport owner’s Ethereum private key (`--ownerkey` parameter).
 Let's try to retrieve the entire change history for the passport `0x4026a67a2C4746b94F168bd4d082708f78d7b29f` in Ropsten blockchain:
 
 ```bash
-./bin/passport read-history --out /dev/stdout \
+./bin/passport history --out /dev/stdout \
   --passaddr 0x4026a67a2C4746b94F168bd4d082708f78d7b29f \
   --backendurl https://ropsten.infura.io
 ```
@@ -962,8 +962,8 @@ instructions below to do this:
    $ echo e6181caaffff94a09d7e332fc8da9884d99902c7874eb74354bdcadf411929f1 > bootstrap_owner.key
    $ echo 4762e04d10832808a0aebdaa79c12de54afbe006bfffd228b3abcc494fe986f9 > passport_owner.key
    $ echo 61dced5af778942996880120b303fc11ee28cc8e5036d2fdff619b5675ded3f0 > data_provider.key
-   $ ./bin/passport deploy-bootstrap --ownerkey ./bootstrap_owner.key --backendurl http://localhost:22000
-   $ ./bin/passport deploy-passport --ownerkey ./passport_owner.key \
+   $ ./bin/passport bootstrap --ownerkey ./bootstrap_owner.key --backendurl http://localhost:22000
+   $ ./bin/passport create --ownerkey ./passport_owner.key \
         --factoryaddr 0x9d13C6D3aFE1721BEef56B55D303B09E021E27ab \
         --backendurl http://localhost:22000
    $ echo Johny | ./bin/passport write-fact --fkey name --ftype string \
@@ -985,7 +985,7 @@ instructions below to do this:
 
    For example:
    ```
-   ./bin/passport deploy-bootstrap --ownerkey ./bootstrap_owner.key \
+   ./bin/passport bootstrap --ownerkey ./bootstrap_owner.key \
       --backendurl http://localhost:22000 \
       --quorum_enclave "http://127.0.0.1:9081" \
       --quorum_privatefor "BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=,QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc="
