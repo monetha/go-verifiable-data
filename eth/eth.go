@@ -94,15 +94,14 @@ func (e *Eth) WaitForTxReceipt(ctx context.Context, txHash common.Hash) (tr *typ
 	}
 
 	for {
-		select {
-		case <-ctx.Done():
-			return nil, ctx.Err()
-		case <-time.After(4 * time.Second):
-		}
-
 		tr, err = e.onlySuccessfulReceipt(b.TransactionReceipt(ctx, txHash))
 		if err == ethereum.NotFound {
-			continue
+			select {
+			case <-ctx.Done():
+				return nil, ctx.Err()
+			case <-time.After(4 * time.Second):
+				continue
+			}
 		}
 		return
 	}
