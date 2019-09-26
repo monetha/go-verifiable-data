@@ -4,7 +4,6 @@
 package contracts
 
 import (
-	"fmt"
 	"math/big"
 	"strings"
 
@@ -784,18 +783,8 @@ func (_PassportLogicContract *PassportLogicContractCaller) PrivateDataExchanges(
 		State                uint8
 		StateExpired         *big.Int
 	})
-
-	var retCount *big.Int
-	err := _PassportLogicContract.contract.Call(opts, &retCount, "getPrivateDataExchangesCount")
-	if err != nil {
-		return *ret, err
-	}
-	if arg0.Int64() >= retCount.Int64() {
-		return *ret, fmt.Errorf("the number of private data exchanges is %d, so private data exchange index should be <%d", retCount, retCount)
-	}
-
 	out := ret
-	err = _PassportLogicContract.contract.Call(opts, out, "privateDataExchanges", arg0)
+	err := _PassportLogicContract.contract.Call(opts, out, "privateDataExchanges", arg0)
 	return *ret, err
 }
 
