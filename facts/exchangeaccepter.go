@@ -43,44 +43,55 @@ func NewExchangeAcceptor(e *eth.Eth, passportOwnerKey *ecdsa.PrivateKey, fs *ipf
 
 // AcceptPrivateDataExchange accepts private data exchange proposition (should be called only by the passport owner)
 func (a *ExchangeAcceptor) AcceptPrivateDataExchange(ctx context.Context, passportAddress common.Address, exchangeIdx *big.Int) error {
+	txHash, err := a.AcceptPrivateDataExchangeNoWait(ctx, passportAddress, exchangeIdx)
+	if err == nil {
+		_, err = a.s.WaitForTxReceipt(ctx, txHash)
+	}
+	return err
+}
+
+// AcceptPrivateDataExchangeNoWait accepts private data exchange proposition (should be called only by the passport owner)
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (a *ExchangeAcceptor) AcceptPrivateDataExchangeNoWait(ctx context.Context, passportAddress common.Address, exchangeIdx *big.Int) (common.Hash, error) {
 	backend := a.s.Backend
 
 	c := contracts.InitPassportLogicContract(passportAddress, backend)
 
 	ex, err := c.PrivateDataExchanges(&bind.CallOpts{Context: ctx}, exchangeIdx)
 	if err != nil {
-		return errors.Wrap(err, "failed to get proposed private data exchange")
+		return common.Hash{}, errors.Wrap(err, "failed to get proposed private data exchange")
 	}
 
 	// it should be proposed
 	exState := exchange.StateType(ex.State)
 	if exState != exchange.Proposed {
-		return ErrExchangeMustBeProposed
+		return common.Hash{}, ErrExchangeMustBeProposed
 	}
 
 	// it should not be expired
 	if isExpired(ex.StateExpired, a.clock.Now().Add(1*time.Hour)) {
-		return ErrExchangeIsExpiredOrWillBeExpiredVerySoon
+		return common.Hash{}, ErrExchangeIsExpiredOrWillBeExpiredVerySoon
 	}
 
 	// decrypt and check hash of ExchangeKey
 	publicKey := &ecdsa.PublicKey{}
 	if err := ecies.UnmarshalPublicKey(a.passportOwnerKey.Curve, ex.EncryptedExchangeKey, publicKey); err != nil {
-		return errors.Wrap(err, "failed to parse encrypted exchange key")
+		return common.Hash{}, errors.Wrap(err, "failed to parse encrypted exchange key")
 	}
 
 	ec, err := ecies.New(a.passportOwnerKey)
 	if err != nil {
-		return errors.Wrap(err, "failed to create ECIES instance")
+		return common.Hash{}, errors.Wrap(err, "failed to create ECIES instance")
 	}
 
 	_, exchangeKey, exchangeKeyHash, err := deriveSecretKeyringMaterial(ec, publicKey, passportAddress, ex.FactProvider, ex.Key)
 	if err != nil {
-		return err
+		return common.Hash{}, err
 	}
 
 	if subtle.ConstantTimeCompare(ex.ExchangeKeyHash[:], exchangeKeyHash[:]) != 1 {
-		return errors.New("proposed exchange has invalid exchange key hash")
+		return common.Hash{}, errors.New("proposed exchange has invalid exchange key hash")
 	}
 
 	// decrypt data secret key
@@ -97,7 +108,7 @@ func (a *ExchangeAcceptor) AcceptPrivateDataExchange(ctx context.Context, passpo
 			ex.Key,
 		)
 	if err != nil {
-		return errors.Wrap(err, "failed to decrypt data encryption key")
+		return common.Hash{}, errors.Wrap(err, "failed to decrypt data encryption key")
 	}
 
 	// XOR data secret key with exchange key
@@ -114,9 +125,8 @@ func (a *ExchangeAcceptor) AcceptPrivateDataExchange(ctx context.Context, passpo
 	a.s.Log("Accepting private data exchange", "exchange_index", exchangeIdx.String(), "encrypted_key", encryptedDataKey)
 	tx, err := c.AcceptPrivateDataExchange(&auth, exchangeIdx, encryptedDataKey)
 	if err != nil {
-		return errors.Wrap(err, "failed to accept proposed private data exchange")
+		return common.Hash{}, errors.Wrap(err, "failed to accept proposed private data exchange")
 	}
 
-	_, err = a.s.WaitForTxReceipt(ctx, tx.Hash())
-	return err
+	return tx.Hash(), nil
 }
