@@ -40,19 +40,31 @@ func NewExchangeFinisher(s *eth.Session, clock Clock) *ExchangeFinisher {
 // FinishPrivateDataExchange closes private data exchange after acceptance. It's supposed to be called by the data requester,
 // but passport owner also can call it after data exchange is expired.
 func (f *ExchangeFinisher) FinishPrivateDataExchange(ctx context.Context, passportAddress common.Address, exchangeIdx *big.Int) error {
+	txHash, err := f.FinishPrivateDataExchangeNoWait(ctx, passportAddress, exchangeIdx)
+	if err == nil {
+		_, err = f.s.WaitForTxReceipt(ctx, txHash)
+	}
+	return err
+}
+
+// FinishPrivateDataExchangeNoWait closes private data exchange after acceptance. It's supposed to be called by the data requester,
+// but passport owner also can call it after data exchange is expired.
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (f *ExchangeFinisher) FinishPrivateDataExchangeNoWait(ctx context.Context, passportAddress common.Address, exchangeIdx *big.Int) (common.Hash, error) {
 	backend := f.s.Backend
 
 	c := contracts.InitPassportLogicContract(passportAddress, backend)
 
 	ex, err := c.PrivateDataExchanges(&bind.CallOpts{Context: ctx}, exchangeIdx)
 	if err != nil {
-		return errors.Wrap(err, "failed to get proposed private data exchange")
+		return common.Hash{}, errors.Wrap(err, "failed to get proposed private data exchange")
 	}
 
 	// it should be accepted
 	exState := exchange.StateType(ex.State)
 	if exState != exchange.Accepted {
-		return ErrExchangeMustBeAccepted
+		return common.Hash{}, ErrExchangeMustBeAccepted
 	}
 
 	auth := f.s.TransactOpts
@@ -62,18 +74,17 @@ func (f *ExchangeFinisher) FinishPrivateDataExchange(ctx context.Context, passpo
 	if auth.From == ex.PassportOwner {
 		// now should be 1 minute after expiration
 		if !isExpired(ex.StateExpired, f.clock.Now().Add(-1*time.Minute)) {
-			return ErrExchangeHasNotExpired
+			return common.Hash{}, ErrExchangeHasNotExpired
 		}
 	} else if auth.From != ex.DataRequester {
-		return ErrOnlyExchangeParticipantsAreAllowedToCall
+		return common.Hash{}, ErrOnlyExchangeParticipantsAreAllowedToCall
 	}
 
 	f.s.Log("Finish private data exchange", "exchange_index", exchangeIdx.String())
 	tx, err := c.FinishPrivateDataExchange(&auth, exchangeIdx)
 	if err != nil {
-		return errors.Wrap(err, "failed to finish accepted private data exchange")
+		return common.Hash{}, errors.Wrap(err, "failed to finish accepted private data exchange")
 	}
 
-	_, err = f.s.WaitForTxReceipt(ctx, tx.Hash())
-	return err
+	return tx.Hash(), nil
 }

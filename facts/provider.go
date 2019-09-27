@@ -249,6 +249,17 @@ func (p *Provider) WritePrivateDataHashes(ctx context.Context, passportAddress c
 
 // DeleteTxData deletes tx data for the specific key
 func (p *Provider) DeleteTxData(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
+	txHash, err := p.DeleteTxDataNoWait(ctx, passportAddress, key)
+	if err == nil {
+		_, err = p.WaitForTxReceipt(ctx, txHash)
+	}
+	return txHash, err
+}
+
+// DeleteTxDataNoWait deletes tx data for the specific key.
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (p *Provider) DeleteTxDataNoWait(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
 
 	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
@@ -261,14 +272,22 @@ func (p *Provider) DeleteTxData(ctx context.Context, passportAddress common.Addr
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: DeleteTxDataBlockNumber: %v", err)
 	}
-	txHash := tx.Hash()
-	_, err = p.WaitForTxReceipt(ctx, txHash)
-
-	return txHash, err
+	return tx.Hash(), err
 }
 
 // DeleteBytes deletes bytes data for the specific key
 func (p *Provider) DeleteBytes(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
+	txHash, err := p.DeleteBytesNoWait(ctx, passportAddress, key)
+	if err == nil {
+		_, err = p.WaitForTxReceipt(ctx, txHash)
+	}
+	return txHash, err
+}
+
+// DeleteBytesNoWait deletes bytes data for the specific key.
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (p *Provider) DeleteBytesNoWait(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
 
 	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
@@ -281,14 +300,22 @@ func (p *Provider) DeleteBytes(ctx context.Context, passportAddress common.Addre
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: DeleteBytes: %v", err)
 	}
-	txHash := tx.Hash()
-	_, err = p.WaitForTxReceipt(ctx, txHash)
-
-	return txHash, err
+	return tx.Hash(), err
 }
 
 // DeleteString deletes string data for the specific key
 func (p *Provider) DeleteString(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
+	txHash, err := p.DeleteStringNoWait(ctx, passportAddress, key)
+	if err == nil {
+		_, err = p.WaitForTxReceipt(ctx, txHash)
+	}
+	return txHash, err
+}
+
+// DeleteStringNoWait deletes string data for the specific key.
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (p *Provider) DeleteStringNoWait(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
 
 	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
@@ -301,14 +328,22 @@ func (p *Provider) DeleteString(ctx context.Context, passportAddress common.Addr
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: DeleteString: %v", err)
 	}
-	txHash := tx.Hash()
-	_, err = p.WaitForTxReceipt(ctx, txHash)
-
-	return txHash, err
+	return tx.Hash(), err
 }
 
 // DeleteAddress deletes address data for the specific key
 func (p *Provider) DeleteAddress(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
+	txHash, err := p.DeleteAddressNoWait(ctx, passportAddress, key)
+	if err == nil {
+		_, err = p.WaitForTxReceipt(ctx, txHash)
+	}
+	return txHash, err
+}
+
+// DeleteAddressNoWait deletes address data for the specific key.
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (p *Provider) DeleteAddressNoWait(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
 
 	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
@@ -321,34 +356,49 @@ func (p *Provider) DeleteAddress(ctx context.Context, passportAddress common.Add
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: DeleteAddress: %v", err)
 	}
-	txHash := tx.Hash()
-	_, err = p.WaitForTxReceipt(ctx, txHash)
 
-	return txHash, err
+	return tx.Hash(), nil
 }
 
 // DeleteUint deletes uint data for the specific key
 func (p *Provider) DeleteUint(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
-	factProviderAuth := &p.TransactOpts
+	txHash, err := p.DeleteUintNoWait(ctx, passportAddress, key)
+	if err == nil {
+		_, err = p.WaitForTxReceipt(ctx, txHash)
+	}
+	return txHash, err
+}
 
+// DeleteUintNoWait deletes uint data for the specific key.
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (p *Provider) DeleteUintNoWait(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
+	factProviderAuth := &p.TransactOpts
 	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
-
 	p.Log("Deleting uint from passport", "fact_provider", factProviderAuth.From.Hex(), "key", key)
 	tx, err := c.DeleteUint(factProviderAuth, key)
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: DeleteUint: %v", err)
 	}
-	txHash := tx.Hash()
-	_, err = p.WaitForTxReceipt(ctx, txHash)
-
-	return txHash, err
+	return tx.Hash(), nil
 }
 
 // DeleteInt deletes int data for the specific key
 func (p *Provider) DeleteInt(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
+	txHash, err := p.DeleteIntNoWait(ctx, passportAddress, key)
+	if err == nil {
+		_, err = p.WaitForTxReceipt(ctx, txHash)
+	}
+	return txHash, err
+}
+
+// DeleteIntNoWait deletes int data for the specific key.
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (p *Provider) DeleteIntNoWait(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
 
 	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
@@ -361,14 +411,22 @@ func (p *Provider) DeleteInt(ctx context.Context, passportAddress common.Address
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: DeleteInt: %v", err)
 	}
-	txHash := tx.Hash()
-	_, err = p.WaitForTxReceipt(ctx, txHash)
-
-	return txHash, err
+	return tx.Hash(), err
 }
 
 // DeleteBool deletes bool data for the specific key
 func (p *Provider) DeleteBool(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
+	txHash, err := p.DeleteBoolNoWait(ctx, passportAddress, key)
+	if err == nil {
+		_, err = p.WaitForTxReceipt(ctx, txHash)
+	}
+	return txHash, err
+}
+
+// DeleteBoolNoWait deletes bool data for the specific key.
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (p *Provider) DeleteBoolNoWait(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
 
 	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
@@ -381,14 +439,22 @@ func (p *Provider) DeleteBool(ctx context.Context, passportAddress common.Addres
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: DeleteBool: %v", err)
 	}
-	txHash := tx.Hash()
-	_, err = p.WaitForTxReceipt(ctx, txHash)
-
-	return txHash, err
+	return tx.Hash(), err
 }
 
 // DeleteIPFSHash deletes IPFS hash for the specific key
 func (p *Provider) DeleteIPFSHash(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
+	txHash, err := p.DeleteIPFSHashNoWait(ctx, passportAddress, key)
+	if err == nil {
+		_, err = p.WaitForTxReceipt(ctx, txHash)
+	}
+	return txHash, err
+}
+
+// DeleteIPFSHashNoWait deletes IPFS hash for the specific key.
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (p *Provider) DeleteIPFSHashNoWait(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
 
 	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
@@ -401,14 +467,20 @@ func (p *Provider) DeleteIPFSHash(ctx context.Context, passportAddress common.Ad
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: DeleteIPFSHash: %v", err)
 	}
-	txHash := tx.Hash()
-	_, err = p.WaitForTxReceipt(ctx, txHash)
-
-	return txHash, err
+	return tx.Hash(), err
 }
 
 // DeletePrivateDataHashes deletes IPFS private data for the specific key
 func (p *Provider) DeletePrivateDataHashes(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
+	txHash, err := p.DeletePrivateDataHashesNoWait(ctx, passportAddress, key)
+	if err == nil {
+		_, err = p.WaitForTxReceipt(ctx, txHash)
+	}
+	return txHash, err
+}
+
+// DeletePrivateDataHashesNoWait deletes IPFS private data for the specific key
+func (p *Provider) DeletePrivateDataHashesNoWait(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
 
 	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
@@ -421,8 +493,5 @@ func (p *Provider) DeletePrivateDataHashes(ctx context.Context, passportAddress 
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: DeletePrivateDataHashes: %v", err)
 	}
-	txHash := tx.Hash()
-	_, err = p.WaitForTxReceipt(ctx, txHash)
-
-	return txHash, err
+	return tx.Hash(), err
 }
