@@ -44,6 +44,15 @@ func (p *Provider) initPassportLogicContractToModify(ctx context.Context, opts *
 
 // WriteTxData writes data for the specific key (uses transaction data)
 func (p *Provider) WriteTxData(ctx context.Context, passportAddress common.Address, key [32]byte, data []byte) (common.Hash, error) {
+	txHash, err := p.WriteTxDataNoWait(ctx, passportAddress, key, data)
+	if err == nil {
+		_, err = p.WaitForTxReceipt(ctx, txHash)
+	}
+	return txHash, err
+}
+
+// WriteTxDataNoWait writes data for the specific key (uses transaction data)
+func (p *Provider) WriteTxDataNoWait(ctx context.Context, passportAddress common.Address, key [32]byte, data []byte) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
 
 	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
@@ -56,14 +65,22 @@ func (p *Provider) WriteTxData(ctx context.Context, passportAddress common.Addre
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: SetTxDataBlockNumber: %v", err)
 	}
-	txHash := tx.Hash()
-	_, err = p.WaitForTxReceipt(ctx, txHash)
-
-	return txHash, err
+	return tx.Hash(), err
 }
 
 // WriteBytes writes data for the specific key (uses Ethereum storage)
 func (p *Provider) WriteBytes(ctx context.Context, passportAddress common.Address, key [32]byte, data []byte) (common.Hash, error) {
+	txHash, err := p.WriteBytesNoWait(ctx, passportAddress, key, data)
+	if err == nil {
+		_, err = p.WaitForTxReceipt(ctx, txHash)
+	}
+	return txHash, err
+}
+
+// WriteBytesNoWait writes data for the specific key (uses Ethereum storage).
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (p *Provider) WriteBytesNoWait(ctx context.Context, passportAddress common.Address, key [32]byte, data []byte) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
 
 	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
@@ -76,14 +93,22 @@ func (p *Provider) WriteBytes(ctx context.Context, passportAddress common.Addres
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: SetBytes: %v", err)
 	}
-	txHash := tx.Hash()
-	_, err = p.WaitForTxReceipt(ctx, txHash)
-
-	return txHash, err
+	return tx.Hash(), err
 }
 
 // WriteString writes data for the specific key (uses Ethereum storage)
 func (p *Provider) WriteString(ctx context.Context, passportAddress common.Address, key [32]byte, data string) (common.Hash, error) {
+	txHash, err := p.WriteStringNoWait(ctx, passportAddress, key, data)
+	if err == nil {
+		_, err = p.WaitForTxReceipt(ctx, txHash)
+	}
+	return txHash, err
+}
+
+// WriteStringNoWait writes data for the specific key (uses Ethereum storage).
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (p *Provider) WriteStringNoWait(ctx context.Context, passportAddress common.Address, key [32]byte, data string) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
 
 	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
@@ -96,14 +121,22 @@ func (p *Provider) WriteString(ctx context.Context, passportAddress common.Addre
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: SetString: %v", err)
 	}
-	txHash := tx.Hash()
-	_, err = p.WaitForTxReceipt(ctx, txHash)
-
-	return txHash, err
+	return tx.Hash(), err
 }
 
 // WriteAddress writes data for the specific key (uses Ethereum storage)
 func (p *Provider) WriteAddress(ctx context.Context, passportAddress common.Address, key [32]byte, data common.Address) (common.Hash, error) {
+	txHash, err := p.WriteAddressNoWait(ctx, passportAddress, key, data)
+	if err == nil {
+		_, err = p.WaitForTxReceipt(ctx, txHash)
+	}
+	return txHash, err
+}
+
+// WriteAddressNoWait writes data for the specific key (uses Ethereum storage).
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (p *Provider) WriteAddressNoWait(ctx context.Context, passportAddress common.Address, key [32]byte, data common.Address) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
 
 	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
@@ -116,14 +149,22 @@ func (p *Provider) WriteAddress(ctx context.Context, passportAddress common.Addr
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: SetAddress: %v", err)
 	}
-	txHash := tx.Hash()
-	_, err = p.WaitForTxReceipt(ctx, txHash)
-
-	return txHash, err
+	return tx.Hash(), err
 }
 
 // WriteUint writes data for the specific key (uses Ethereum storage)
 func (p *Provider) WriteUint(ctx context.Context, passportAddress common.Address, key [32]byte, data *big.Int) (common.Hash, error) {
+	txHash, err := p.WriteUintNoWait(ctx, passportAddress, key, data)
+	if err == nil {
+		_, err = p.WaitForTxReceipt(ctx, txHash)
+	}
+	return txHash, err
+}
+
+// WriteUintNoWait writes data for the specific key (uses Ethereum storage).
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (p *Provider) WriteUintNoWait(ctx context.Context, passportAddress common.Address, key [32]byte, data *big.Int) (common.Hash, error) {
 	if data == nil {
 		panic("big-integer cannot be nil")
 	}
@@ -146,10 +187,7 @@ func (p *Provider) WriteUint(ctx context.Context, passportAddress common.Address
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: SetUint: %v", err)
 	}
-	txHash := tx.Hash()
-	_, err = p.WaitForTxReceipt(ctx, txHash)
-
-	return txHash, err
+	return tx.Hash(), err
 }
 
 var (
@@ -160,6 +198,17 @@ var (
 
 // WriteInt writes data for the specific key (uses Ethereum storage)
 func (p *Provider) WriteInt(ctx context.Context, passportAddress common.Address, key [32]byte, data *big.Int) (common.Hash, error) {
+	txHash, err := p.WriteIntNoWait(ctx, passportAddress, key, data)
+	if err == nil {
+		_, err = p.WaitForTxReceipt(ctx, txHash)
+	}
+	return txHash, err
+}
+
+// WriteIntNoWait writes data for the specific key (uses Ethereum storage).
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (p *Provider) WriteIntNoWait(ctx context.Context, passportAddress common.Address, key [32]byte, data *big.Int) (common.Hash, error) {
 	if data == nil {
 		panic("big-integer cannot be nil")
 	}
@@ -181,14 +230,22 @@ func (p *Provider) WriteInt(ctx context.Context, passportAddress common.Address,
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: SetInt: %v", err)
 	}
-	txHash := tx.Hash()
-	_, err = p.WaitForTxReceipt(ctx, txHash)
-
-	return txHash, err
+	return tx.Hash(), err
 }
 
 // WriteBool writes data for the specific key (uses Ethereum storage)
 func (p *Provider) WriteBool(ctx context.Context, passportAddress common.Address, key [32]byte, data bool) (common.Hash, error) {
+	txHash, err := p.WriteBoolNoWait(ctx, passportAddress, key, data)
+	if err == nil {
+		_, err = p.WaitForTxReceipt(ctx, txHash)
+	}
+	return txHash, err
+}
+
+// WriteBoolNoWait writes data for the specific key (uses Ethereum storage).
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (p *Provider) WriteBoolNoWait(ctx context.Context, passportAddress common.Address, key [32]byte, data bool) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
 
 	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
@@ -201,14 +258,22 @@ func (p *Provider) WriteBool(ctx context.Context, passportAddress common.Address
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: SetBool: %v", err)
 	}
-	txHash := tx.Hash()
-	_, err = p.WaitForTxReceipt(ctx, txHash)
-
-	return txHash, err
+	return tx.Hash(), err
 }
 
 // WriteIPFSHash writes IPFS hash for specific key (uses Ethereum storage to store the hash)
 func (p *Provider) WriteIPFSHash(ctx context.Context, passportAddress common.Address, key [32]byte, hash string) (common.Hash, error) {
+	txHash, err := p.WriteIPFSHashNoWait(ctx, passportAddress, key, hash)
+	if err == nil {
+		_, err = p.WaitForTxReceipt(ctx, txHash)
+	}
+	return txHash, err
+}
+
+// WriteIPFSHashNoWait writes IPFS hash for specific key (uses Ethereum storage to store the hash).
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (p *Provider) WriteIPFSHashNoWait(ctx context.Context, passportAddress common.Address, key [32]byte, hash string) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
 
 	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
@@ -221,14 +286,22 @@ func (p *Provider) WriteIPFSHash(ctx context.Context, passportAddress common.Add
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: SetIPFSHash: %v", err)
 	}
-	txHash := tx.Hash()
-	_, err = p.WaitForTxReceipt(ctx, txHash)
-
-	return txHash, err
+	return tx.Hash(), err
 }
 
 // WritePrivateDataHashes writes IPFS hash of encrypted private data and hash of data encryption key
 func (p *Provider) WritePrivateDataHashes(ctx context.Context, passportAddress common.Address, key [32]byte, privateData *PrivateDataHashes) (common.Hash, error) {
+	txHash, err := p.WritePrivateDataHashesNoWait(ctx, passportAddress, key, privateData)
+	if err == nil {
+		_, err = p.WaitForTxReceipt(ctx, txHash)
+	}
+	return txHash, err
+}
+
+// WritePrivateDataHashesNoWait writes IPFS hash of encrypted private data and hash of data encryption key.
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (p *Provider) WritePrivateDataHashesNoWait(ctx context.Context, passportAddress common.Address, key [32]byte, privateData *PrivateDataHashes) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
 
 	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
@@ -241,10 +314,7 @@ func (p *Provider) WritePrivateDataHashes(ctx context.Context, passportAddress c
 	if err != nil {
 		return common.Hash{}, fmt.Errorf("facts: SetPrivateDataHashes: %v", err)
 	}
-	txHash := tx.Hash()
-	_, err = p.WaitForTxReceipt(ctx, txHash)
-
-	return txHash, err
+	return tx.Hash(), err
 }
 
 // DeleteTxData deletes tx data for the specific key
