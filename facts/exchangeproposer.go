@@ -39,6 +39,32 @@ func (e *ExchangeProposer) ProposePrivateDataExchange(
 	exchangeStakeWei *big.Int,
 	rand io.Reader,
 ) (*ProposePrivateDataExchangeResult, error) {
+	noWaitResult, err := e.ProposePrivateDataExchangeNoWait(ctx, passportAddress, factProviderAddress, factKey, exchangeStakeWei, rand)
+	if err != nil {
+		return nil, err
+	}
+
+	return e.GetProposePrivateDataExchangeResult(ctx, noWaitResult)
+}
+
+// ProposePrivateDataExchangeResultNoWait holds result of calling ProposePrivateDataExchangeNoWait
+type ProposePrivateDataExchangeResultNoWait struct {
+	ExchangeKey     [32]byte
+	ExchangeKeyHash common.Hash
+	TxHash          common.Hash
+}
+
+// ProposePrivateDataExchangeNoWait creates private data exchange proposition.
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (e *ExchangeProposer) ProposePrivateDataExchangeNoWait(
+	ctx context.Context,
+	passportAddress common.Address,
+	factProviderAddress common.Address,
+	factKey [32]byte,
+	exchangeStakeWei *big.Int,
+	rand io.Reader,
+) (*ProposePrivateDataExchangeResultNoWait, error) {
 	backend := e.Backend
 	auth := e.TransactOpts
 	auth.Context = ctx
@@ -71,7 +97,20 @@ func (e *ExchangeProposer) ProposePrivateDataExchange(
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to propose private data exchange")
 	}
-	txr, err := e.WaitForTxReceipt(ctx, tx.Hash())
+
+	res := &ProposePrivateDataExchangeResultNoWait{
+		ExchangeKeyHash: exchangeKeyHash,
+		TxHash:          tx.Hash(),
+	}
+	copy(res.ExchangeKey[:], exchangeKey)
+	return res, nil
+}
+
+// GetProposePrivateDataExchangeResult waits for transaction to be mined if it's not mined yet and retrieves proposed private data exchange result.
+func (e *ExchangeProposer) GetProposePrivateDataExchangeResult(ctx context.Context, noWaitResult *ProposePrivateDataExchangeResultNoWait) (*ProposePrivateDataExchangeResult, error) {
+	auth := e.TransactOpts
+
+	txr, err := e.WaitForTxReceipt(ctx, noWaitResult.TxHash)
 	if err != nil {
 		return nil, err
 	}
@@ -89,11 +128,9 @@ func (e *ExchangeProposer) ProposePrivateDataExchange(
 
 	log.Warn("PrivateDataExchangeProposed", "exchange_index", ev.ExchangeIdx.String(), "data_requester", ev.DataRequester.String(), "passport_owner", ev.PassportOwner.String())
 
-	res := &ProposePrivateDataExchangeResult{
+	return &ProposePrivateDataExchangeResult{
 		ExchangeIdx:     exchangeIdx,
-		ExchangeKeyHash: exchangeKeyHash,
-	}
-	copy(res.ExchangeKey[:], exchangeKey)
-
-	return res, nil
+		ExchangeKey:     noWaitResult.ExchangeKey,
+		ExchangeKeyHash: noWaitResult.ExchangeKeyHash,
+	}, nil
 }
