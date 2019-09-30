@@ -51,7 +51,9 @@ func (p *Provider) WriteTxData(ctx context.Context, passportAddress common.Addre
 	return txHash, err
 }
 
-// WriteTxDataNoWait writes data for the specific key (uses transaction data)
+// WriteTxDataNoWait writes data for the specific key (uses transaction data).
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
 func (p *Provider) WriteTxDataNoWait(ctx context.Context, passportAddress common.Address, key [32]byte, data []byte) (common.Hash, error) {
 	factProviderAuth := &p.TransactOpts
 
