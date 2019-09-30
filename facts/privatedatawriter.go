@@ -47,6 +47,28 @@ func (w *PrivateDataWriter) WritePrivateData(
 	data []byte,
 	rand io.Reader,
 ) (*WritePrivateDataResult, error) {
+	res, err := w.WritePrivateDataNoWait(ctx, passportAddress, factKey, data, rand)
+	if err != nil {
+		return nil, err
+	}
+	_, err = w.s.WaitForTxReceipt(ctx, res.TransactionHash)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+// WritePrivateDataNoWait encrypts private data, adds encrypted content to IPFS and then writes hashes of encrypted data to passport in Ethereum network.
+// `rand` - used to generate random encryption key (use rand.Reader from "crypto/rand" package in real application)
+// This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
+// sure that the transaction was successfully mined.
+func (w *PrivateDataWriter) WritePrivateDataNoWait(
+	ctx context.Context,
+	passportAddress common.Address,
+	factKey [32]byte,
+	data []byte,
+	rand io.Reader,
+) (*WritePrivateDataResult, error) {
 	ownerPubKey, err := NewReader(w.s.Eth).ReadOwnerPublicKey(ctx, passportAddress)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to read owner public key")
@@ -113,7 +135,7 @@ func (w *PrivateDataWriter) WritePrivateData(
 	}
 
 	w.log("Writing private data hashes to Ethereum", "passport", passportAddress, "fact_key", factKey, "ipfs_hash", dataIPFSHash, "data_key_hash", skmHash.String())
-	txHash, err := NewProvider(w.s).WritePrivateDataHashes(ctx, passportAddress, factKey, privateDataHashes)
+	txHash, err := NewProvider(w.s).WritePrivateDataHashesNoWait(ctx, passportAddress, factKey, privateDataHashes)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to write private data hashes to Ethereum network")
 	}
