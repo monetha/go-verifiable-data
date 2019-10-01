@@ -277,3 +277,24 @@ func (d *Deploy) DeployPassport(ctx context.Context, passportFactoryAddress comm
 
 	return passportAddress, nil
 }
+
+// DeployFactProviderRegistry deploys only FactProviderRegistry contract
+func (d *Deploy) DeployFactProviderRegistry(ctx context.Context) (common.Address, error) {
+	backend := d.Backend
+	ownerAuth := d.TransactOpts
+	ownerAuth.Context = ctx
+
+	d.Log("Deploying FactProviderRegistry", "owner_address", ownerAuth.From)
+	factProviderRegistryAddress, tx, _, err := contracts.DeployFactProviderRegistryContract(&ownerAuth, backend)
+	if err != nil {
+		return common.Address{}, fmt.Errorf("deploying FactProviderRegistry contract: %v", err)
+	}
+	txr, err := d.WaitForTxReceipt(ctx, tx.Hash())
+	if err != nil {
+		return common.Address{}, err
+	}
+
+	d.Log("FactProviderRegistry deployed", "contract_address", factProviderRegistryAddress.Hex(), "gas_used", txr.GasUsed)
+
+	return factProviderRegistryAddress, nil
+}
