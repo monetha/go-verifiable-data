@@ -26,7 +26,7 @@ func NewRegistryWriter(s *eth.Session, factProviderRegistry common.Address) *Reg
 }
 
 // SetFactProviderInfo writes information about fact provider into registry.
-func (r *RegistryWriter) SetFactProviderInfo(ctx context.Context, factProvider common.Address, info *FactProviderInfo) (common.Hash, error) {
+func (r *RegistryWriter) SetFactProviderInfo(ctx context.Context, factProvider common.Address, info *Info) (common.Hash, error) {
 	txHash, err := r.SetFactProviderInfoNoWait(ctx, factProvider, info)
 	if err == nil {
 		_, err = r.WaitForTxReceipt(ctx, txHash)
@@ -37,7 +37,7 @@ func (r *RegistryWriter) SetFactProviderInfo(ctx context.Context, factProvider c
 // SetFactProviderInfoNoWait writes information about fact provider into registry.
 // This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
 // sure that the transaction was successfully mined.
-func (r *RegistryWriter) SetFactProviderInfoNoWait(ctx context.Context, factProvider common.Address, info *FactProviderInfo) (common.Hash, error) {
+func (r *RegistryWriter) SetFactProviderInfoNoWait(ctx context.Context, factProvider common.Address, info *Info) (common.Hash, error) {
 	tx, err := r.c.SetFactProviderInfo(r.txOpts(ctx), factProvider, info.Name, info.ReputationPassport, info.Website)
 	if err != nil {
 		return common.Hash{}, errors.Wrap(err, "failed to set fact provider info")

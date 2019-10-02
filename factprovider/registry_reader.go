@@ -21,7 +21,7 @@ func NewRegistryReader(e *eth.Eth, factProviderRegistry common.Address) *Registr
 }
 
 // GetFactProviderInfo retrieves fact provider information given it's address. It returns nil when registry contains no information about fact provider.
-func (r *RegistryReader) GetFactProviderInfo(ctx context.Context, factProviderAddress common.Address) (*FactProviderInfo, error) {
+func (r *RegistryReader) GetFactProviderInfo(ctx context.Context, factProviderAddress common.Address) (*Info, error) {
 	fp, err := r.registryContract.FactProviders(&bind.CallOpts{Context: ctx}, factProviderAddress)
 	if err != nil {
 		return nil, err
@@ -29,7 +29,7 @@ func (r *RegistryReader) GetFactProviderInfo(ctx context.Context, factProviderAd
 	if !fp.Initialized {
 		return nil, nil
 	}
-	return &FactProviderInfo{
+	return &Info{
 		Name:               fp.Name,
 		ReputationPassport: fp.ReputationPassport,
 		Website:            fp.Website,
