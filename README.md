@@ -127,6 +127,7 @@ The contract addresses deployed on Ropsten:
 | `PassportLogic` | [`0xaa8e71D8Fb521eaEdE9F11d8fd5182920Cb03229`](https://ropsten.etherscan.io/address/0xaa8e71D8Fb521eaEdE9F11d8fd5182920Cb03229) |
 | `PassportLogicRegistry`  | [`0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c`](https://ropsten.etherscan.io/address/0x11C96d40244d37ad3Bb788c15F6376cEfA28CF7c) |
 | `PassportFactory` | [`0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2`](https://ropsten.etherscan.io/address/0x35Cb95Db8E6d56D1CF8D5877EB13e9EE74e457F2) |
+| `FactProviderRegistry` | [`0xf9dbC37BBdC68E0Ba03185F1877059C595DcF083`](https://ropsten.etherscan.io/address/0xf9dbC37BBdC68E0Ba03185F1877059C595DcF083) |
 
 The contract addresses deployed on Mainnet:
 
@@ -135,6 +136,7 @@ The contract addresses deployed on Mainnet:
 | `PassportLogic` | [`0xA9068B8E0D0a5B2c77dF601be3bB3d168c7fc3e2`](https://etherscan.io/address/0xA9068B8E0D0a5B2c77dF601be3bB3d168c7fc3e2) |
 | `PassportLogicRegistry`  | [`0x41c32A8387ff178659ED9B04190613623F545657`](https://etherscan.io/address/0x41c32A8387ff178659ED9B04190613623F545657) |
 | `PassportFactory` | [`0x53b21DC502b163Bcf3bD9a68d5db5e8E6110E1CC`](https://etherscan.io/address/0x53b21DC502b163Bcf3bD9a68d5db5e8E6110E1CC) |
+| `FactProviderRegistry` | [`0xD4666f08A40dFD0945Cac5aB83fF04625a60664C`](https://etherscan.io/address/0xD4666f08A40dFD0945Cac5aB83fF04625a60664C) |
 
 Consider the process of deploying your own set of auxiliary repoutation layer contracts to experiment with our implementation. If you are going to deploy your contracts, then you will have to support them yourself.
 

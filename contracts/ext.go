@@ -15,6 +15,8 @@ import (
 var (
 	// PassportLogicABI is prepared(parsed) ABI specification of PassportLogic contract
 	PassportLogicABI abi.ABI
+	// FactProviderRegistryABI is prepared(parsed) ABI specification of FactProviderRegistry contract
+	FactProviderRegistryABI abi.ABI
 )
 
 func init() {
@@ -22,6 +24,10 @@ func init() {
 	PassportLogicABI, err = abi.JSON(strings.NewReader(PassportLogicContractABI))
 	if err != nil {
 		panic("contracts: initializing PassportLogicContractABI: " + err.Error())
+	}
+	FactProviderRegistryABI, err = abi.JSON(strings.NewReader(FactProviderRegistryContractABI))
+	if err != nil {
+		panic("contracts: initializing FactProviderRegistryContractABI: " + err.Error())
 	}
 }
 
@@ -33,6 +39,16 @@ func InitPassportLogicContract(address common.Address, backend bind.ContractBack
 		PassportLogicContractCaller:     PassportLogicContractCaller{contract: contract},
 		PassportLogicContractTransactor: PassportLogicContractTransactor{contract: contract},
 		PassportLogicContractFilterer:   PassportLogicContractFilterer{contract: contract}}
+}
+
+// InitFactProviderRegistryContract creates a new instance of FactProviderRegistryContract, bound to a specific deployed contract.
+// This method is faster than NewFactProviderRegistryContract and doesn't return an error, because it reuses parsed FactProviderRegistryABI.
+func InitFactProviderRegistryContract(address common.Address, backend bind.ContractBackend) *FactProviderRegistryContract {
+	contract := bind.NewBoundContract(address, FactProviderRegistryABI, backend, backend, backend)
+	return &FactProviderRegistryContract{
+		FactProviderRegistryContractCaller:     FactProviderRegistryContractCaller{contract: contract},
+		FactProviderRegistryContractTransactor: FactProviderRegistryContractTransactor{contract: contract},
+		FactProviderRegistryContractFilterer:   FactProviderRegistryContractFilterer{contract: contract}}
 }
 
 // PassportFactoryLogFilterer filters PassportFactory event logs
