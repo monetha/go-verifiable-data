@@ -29,9 +29,9 @@ func NewProvider(s *eth.Session) *Provider {
 	return (*Provider)(s)
 }
 
-func (p *Provider) initPassportLogicContractToModify(ctx context.Context, opts *bind.TransactOpts, passportAddress common.Address) (*contracts.PassportLogicContract, error) {
+func (p *Provider) initPassportLogicContractToModify(opts *bind.TransactOpts, passportAddress common.Address) (*contracts.PassportLogicContract, error) {
 	c := contracts.InitPassportLogicContract(passportAddress, p.Backend)
-	allowed, err := c.IsAllowedFactProvider(&bind.CallOpts{Context: ctx}, p.TransactOpts.From)
+	allowed, err := c.IsAllowedFactProvider(&bind.CallOpts{Context: opts.Context}, opts.From)
 	if err != nil {
 		return nil, fmt.Errorf("facts: IsAllowedFactProvider(): %v", err)
 	}
@@ -40,6 +40,12 @@ func (p *Provider) initPassportLogicContractToModify(ctx context.Context, opts *
 	}
 
 	return c, nil
+}
+
+func (p *Provider) txOpts(ctx context.Context) *bind.TransactOpts {
+	opts := p.TransactOpts
+	opts.Context = ctx
+	return &opts
 }
 
 // WriteTxData writes data for the specific key (uses transaction data)
@@ -55,9 +61,9 @@ func (p *Provider) WriteTxData(ctx context.Context, passportAddress common.Addre
 // This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
 // sure that the transaction was successfully mined.
 func (p *Provider) WriteTxDataNoWait(ctx context.Context, passportAddress common.Address, key [32]byte, data []byte) (common.Hash, error) {
-	factProviderAuth := &p.TransactOpts
+	factProviderAuth := p.txOpts(ctx)
 
-	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	c, err := p.initPassportLogicContractToModify(factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
@@ -83,9 +89,9 @@ func (p *Provider) WriteBytes(ctx context.Context, passportAddress common.Addres
 // This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
 // sure that the transaction was successfully mined.
 func (p *Provider) WriteBytesNoWait(ctx context.Context, passportAddress common.Address, key [32]byte, data []byte) (common.Hash, error) {
-	factProviderAuth := &p.TransactOpts
+	factProviderAuth := p.txOpts(ctx)
 
-	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	c, err := p.initPassportLogicContractToModify(factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
@@ -111,9 +117,9 @@ func (p *Provider) WriteString(ctx context.Context, passportAddress common.Addre
 // This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
 // sure that the transaction was successfully mined.
 func (p *Provider) WriteStringNoWait(ctx context.Context, passportAddress common.Address, key [32]byte, data string) (common.Hash, error) {
-	factProviderAuth := &p.TransactOpts
+	factProviderAuth := p.txOpts(ctx)
 
-	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	c, err := p.initPassportLogicContractToModify(factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
@@ -139,9 +145,9 @@ func (p *Provider) WriteAddress(ctx context.Context, passportAddress common.Addr
 // This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
 // sure that the transaction was successfully mined.
 func (p *Provider) WriteAddressNoWait(ctx context.Context, passportAddress common.Address, key [32]byte, data common.Address) (common.Hash, error) {
-	factProviderAuth := &p.TransactOpts
+	factProviderAuth := p.txOpts(ctx)
 
-	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	c, err := p.initPassportLogicContractToModify(factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
@@ -177,9 +183,9 @@ func (p *Provider) WriteUintNoWait(ctx context.Context, passportAddress common.A
 
 	data = new(big.Int).Set(data)
 
-	factProviderAuth := &p.TransactOpts
+	factProviderAuth := p.txOpts(ctx)
 
-	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	c, err := p.initPassportLogicContractToModify(factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
@@ -220,9 +226,9 @@ func (p *Provider) WriteIntNoWait(ctx context.Context, passportAddress common.Ad
 
 	data = new(big.Int).Set(data)
 
-	factProviderAuth := &p.TransactOpts
+	factProviderAuth := p.txOpts(ctx)
 
-	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	c, err := p.initPassportLogicContractToModify(factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
@@ -248,9 +254,9 @@ func (p *Provider) WriteBool(ctx context.Context, passportAddress common.Address
 // This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
 // sure that the transaction was successfully mined.
 func (p *Provider) WriteBoolNoWait(ctx context.Context, passportAddress common.Address, key [32]byte, data bool) (common.Hash, error) {
-	factProviderAuth := &p.TransactOpts
+	factProviderAuth := p.txOpts(ctx)
 
-	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	c, err := p.initPassportLogicContractToModify(factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
@@ -276,9 +282,9 @@ func (p *Provider) WriteIPFSHash(ctx context.Context, passportAddress common.Add
 // This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
 // sure that the transaction was successfully mined.
 func (p *Provider) WriteIPFSHashNoWait(ctx context.Context, passportAddress common.Address, key [32]byte, hash string) (common.Hash, error) {
-	factProviderAuth := &p.TransactOpts
+	factProviderAuth := p.txOpts(ctx)
 
-	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	c, err := p.initPassportLogicContractToModify(factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
@@ -304,9 +310,9 @@ func (p *Provider) WritePrivateDataHashes(ctx context.Context, passportAddress c
 // This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
 // sure that the transaction was successfully mined.
 func (p *Provider) WritePrivateDataHashesNoWait(ctx context.Context, passportAddress common.Address, key [32]byte, privateData *PrivateDataHashes) (common.Hash, error) {
-	factProviderAuth := &p.TransactOpts
+	factProviderAuth := p.txOpts(ctx)
 
-	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	c, err := p.initPassportLogicContractToModify(factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
@@ -332,9 +338,9 @@ func (p *Provider) DeleteTxData(ctx context.Context, passportAddress common.Addr
 // This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
 // sure that the transaction was successfully mined.
 func (p *Provider) DeleteTxDataNoWait(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
-	factProviderAuth := &p.TransactOpts
+	factProviderAuth := p.txOpts(ctx)
 
-	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	c, err := p.initPassportLogicContractToModify(factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
@@ -360,9 +366,9 @@ func (p *Provider) DeleteBytes(ctx context.Context, passportAddress common.Addre
 // This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
 // sure that the transaction was successfully mined.
 func (p *Provider) DeleteBytesNoWait(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
-	factProviderAuth := &p.TransactOpts
+	factProviderAuth := p.txOpts(ctx)
 
-	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	c, err := p.initPassportLogicContractToModify(factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
@@ -388,9 +394,9 @@ func (p *Provider) DeleteString(ctx context.Context, passportAddress common.Addr
 // This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
 // sure that the transaction was successfully mined.
 func (p *Provider) DeleteStringNoWait(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
-	factProviderAuth := &p.TransactOpts
+	factProviderAuth := p.txOpts(ctx)
 
-	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	c, err := p.initPassportLogicContractToModify(factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
@@ -416,9 +422,9 @@ func (p *Provider) DeleteAddress(ctx context.Context, passportAddress common.Add
 // This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
 // sure that the transaction was successfully mined.
 func (p *Provider) DeleteAddressNoWait(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
-	factProviderAuth := &p.TransactOpts
+	factProviderAuth := p.txOpts(ctx)
 
-	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	c, err := p.initPassportLogicContractToModify(factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
@@ -445,8 +451,8 @@ func (p *Provider) DeleteUint(ctx context.Context, passportAddress common.Addres
 // This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
 // sure that the transaction was successfully mined.
 func (p *Provider) DeleteUintNoWait(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
-	factProviderAuth := &p.TransactOpts
-	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	factProviderAuth := p.txOpts(ctx)
+	c, err := p.initPassportLogicContractToModify(factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
@@ -471,9 +477,9 @@ func (p *Provider) DeleteInt(ctx context.Context, passportAddress common.Address
 // This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
 // sure that the transaction was successfully mined.
 func (p *Provider) DeleteIntNoWait(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
-	factProviderAuth := &p.TransactOpts
+	factProviderAuth := p.txOpts(ctx)
 
-	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	c, err := p.initPassportLogicContractToModify(factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
@@ -499,9 +505,9 @@ func (p *Provider) DeleteBool(ctx context.Context, passportAddress common.Addres
 // This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
 // sure that the transaction was successfully mined.
 func (p *Provider) DeleteBoolNoWait(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
-	factProviderAuth := &p.TransactOpts
+	factProviderAuth := p.txOpts(ctx)
 
-	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	c, err := p.initPassportLogicContractToModify(factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
@@ -527,9 +533,9 @@ func (p *Provider) DeleteIPFSHash(ctx context.Context, passportAddress common.Ad
 // This method does not wait for the transaction to be mined. Use the method without the NoWait suffix if you need to make
 // sure that the transaction was successfully mined.
 func (p *Provider) DeleteIPFSHashNoWait(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
-	factProviderAuth := &p.TransactOpts
+	factProviderAuth := p.txOpts(ctx)
 
-	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	c, err := p.initPassportLogicContractToModify(factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
@@ -553,9 +559,9 @@ func (p *Provider) DeletePrivateDataHashes(ctx context.Context, passportAddress 
 
 // DeletePrivateDataHashesNoWait deletes IPFS private data for the specific key
 func (p *Provider) DeletePrivateDataHashesNoWait(ctx context.Context, passportAddress common.Address, key [32]byte) (common.Hash, error) {
-	factProviderAuth := &p.TransactOpts
+	factProviderAuth := p.txOpts(ctx)
 
-	c, err := p.initPassportLogicContractToModify(ctx, factProviderAuth, passportAddress)
+	c, err := p.initPassportLogicContractToModify(factProviderAuth, passportAddress)
 	if err != nil {
 		return common.Hash{}, err
 	}
