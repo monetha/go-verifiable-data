@@ -10,17 +10,17 @@ import (
 	"github.com/pkg/errors"
 )
 
-// DeployFactProviderRegistry deploys FactProviderRegistry contract
-type DeployFactProviderRegistry struct {
+// DeployFactProviderRegistryCommand deploys FactProviderRegistry contract
+type DeployFactProviderRegistryCommand struct {
 	cmdutils.QuorumPrivateTxIOCommand
-	OwnerKey   flag.ECDSAPrivateKeyFromFile `long:"ownerkey" required:"true"     description:"factory contract owner private key filename"`
-	BackendURL string                       `long:"backendurl"       required:"true" description:"Ethereum backend URL"`
-	Verbosity  int                          `long:"verbosity"                        description:"log verbosity (0-9)" default:"2"`
-	VModule    string                       `long:"vmodule"                          description:"log verbosity pattern"`
+	OwnerKey   flag.ECDSAPrivateKeyFromFile `long:"ownerkey"   required:"true" description:"fact provider registry owner private key filename"`
+	BackendURL string                       `long:"backendurl" required:"true" description:"Ethereum backend URL"`
+	Verbosity  int                          `long:"verbosity"                  description:"log verbosity (0-9)" default:"2"`
+	VModule    string                       `long:"vmodule"                    description:"log verbosity pattern"`
 }
 
 // Execute implements flags.Commander interface
-func (c *DeployFactProviderRegistry) Execute(args []string) error {
+func (c *DeployFactProviderRegistryCommand) Execute(args []string) error {
 	cmdutils.InitLogging(log.Lvl(c.Verbosity), c.VModule)
 	ctx := cmdutils.CreateCtrlCContext()
 
