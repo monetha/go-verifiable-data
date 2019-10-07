@@ -89,6 +89,7 @@ The go-verifiable-data project comes with several executables found in the [`cmd
 | [`passport`](cmd/passport) | Utility tool for working with passports: deploy needed passport contracts, create passports, write/read data facts, etc.
 | [`privatedata-exchange`](cmd/privatedata-exchange) | Utility tool for exchanging private data |
 | [`passport-scanner`](cmd/passport-scanner) | Web application (WebAssembly module) to get the list of deployed passports and the history of passport changes in a web browser. |
+| [`provider-registry`](cmd/provider-registry) | Utility tool for fact provider information registration in fact provider registry. |
 
 ## Contributing
 
